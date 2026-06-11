@@ -1,0 +1,40 @@
+.input {
+  height: 40px;
+  padding: 0 var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-sm-size);
+  color: var(--color-ink-primary);
+  background: var(--color-surface-default);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  outline: none;
+  width: 100%;
+  transition:
+    border-color var(--duration-normal) var(--ease-move),
+    box-shadow var(--duration-fast) var(--ease-move);
+}
+
+.input::placeholder {
+  color: var(--color-ink-disabled);
+}
+
+/* Focus: accent border + one soft halo (no hard double ring). */
+.input:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Error: the border itself carries the semantic colour. */
+.error {
+  border-color: var(--color-error-default);
+}
+.error:focus {
+  border-color: var(--color-error-default);
+  box-shadow: var(--shadow-focus-error);
+}
+
+.input:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+  background: var(--color-surface-disabled);
+}

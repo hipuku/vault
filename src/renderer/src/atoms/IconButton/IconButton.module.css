@@ -1,0 +1,33 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink-tertiary);
+  border-radius: var(--radius-full);
+  transition:
+    background var(--duration-normal) var(--ease-move),
+    color var(--duration-normal) var(--ease-move);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--color-surface-subtle);
+  color: var(--color-ink-secondary);
+}
+
+.button:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.sm {
+  width: 24px;
+  height: 24px;
+}
+
+.md {
+  width: 28px;
+  height: 28px;
+}

@@ -1,0 +1,166 @@
+import React, { useState, useEffect, useMemo } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import type { Colour } from '@shared/types'
+import { Toolbar } from '../primitives/Toolbar/Toolbar'
+import { EmptyState } from '../primitives/EmptyState/EmptyState'
+import { SectionGrid } from '../primitives/SectionGrid/SectionGrid'
+import { ConfirmDialog } from '../primitives/ConfirmDialog/ConfirmDialog'
+import { Button } from '../atoms/Button/Button'
+import { FavouriteToggle } from '../domain/FavouriteToggle/FavouriteToggle'
+import { ColorCard } from '../domain/ColorCard/ColorCard'
+import { ColorDrawer } from '../domain/ColorDrawer/ColorDrawer'
+import { AddColorModal } from '../domain/AddColorModal/AddColorModal'
+import { TagGroup } from '../domain/TagGroup/TagGroup'
+import { useColours } from '../hooks/useColours'
+import { useDrawer } from '../hooks/useDrawer'
+import { useConfirm } from '../hooks/useConfirm'
+import { sortColours, groupColours, SORT_OPTIONS, GROUP_OPTIONS, type SortKey, type GroupKey } from '../lib/colourSort'
+import { warmColourNames } from '../lib/colour'
+import styles from './ColorsPage.module.css'
+
+interface ColorsPageProps {
+  activeTagId: number | null
+  embedded?: { title: string }
+}
+
+export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.ReactElement | null {
+  const { colours, addColour, renameColour, setFavourite, removeColour } = useColours()
+  const [favOnly, setFavOnly] = useState(false)
+  const [tagIds, setTagIds] = useState<Set<number> | null>(null)
+  const [addOpen, setAddOpen] = useState(false)
+  const [sortKey, setSortKey] = useState<SortKey>('recent')
+  const [groupKey, setGroupKey] = useState<GroupKey>('none')
+  const drawer = useDrawer<Colour>()
+  const confirm = useConfirm()
+
+  useEffect(() => { warmColourNames() }, [])
+
+  async function addColours(list: Array<{ hex: string; name: string }>): Promise<void> {
+    for (const { hex, name } of list) await addColour(hex, name)
+  }
+
+  useEffect(() => {
+    if (activeTagId == null) { setTagIds(null); return }
+    let live = true
+    window.api.tag.listAssetIds('colour', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
+    return () => { live = false }
+  }, [activeTagId, drawer.open])
+
+  const filtered = useMemo(
+    () => colours.filter(c => {
+      if (favOnly && !c.favourite) return false
+      if (tagIds && !tagIds.has(c.id)) return false
+      return true
+    }),
+    [colours, favOnly, tagIds]
+  )
+
+  const groups = useMemo(
+    () => groupColours(sortColours(filtered, sortKey), groupKey),
+    [filtered, sortKey, groupKey]
+  )
+
+  async function handleDelete(colour: Colour): Promise<void> {
+    const ok = await confirm.confirm({
+      title: `Delete "${colour.name}"?`,
+      message: 'This colour will be removed from your library. This can’t be undone.',
+      confirmLabel: 'Delete colour',
+    })
+    if (ok) { await removeColour(colour.id); drawer.closeDrawer() }
+  }
+
+  const drawerColour = drawer.item ? colours.find(c => c.id === drawer.item!.id) ?? null : null
+
+  const card = (colour: Colour): React.ReactElement => (
+    <ColorCard key={colour.id} colour={colour} onOpen={drawer.openDrawer} />
+  )
+
+  const grids =
+    groupKey === 'none'
+      ? <SectionGrid>{groups[0]?.colours.map(card)}</SectionGrid>
+      : groups.map(g => (
+          <TagGroup key={g.title} title={g.title} count={g.colours.length}>
+            <SectionGrid>{g.colours.map(card)}</SectionGrid>
+          </TagGroup>
+        ))
+
+  const overlays = (
+    <>
+      <ColorDrawer
+        colour={drawerColour}
+        onClose={drawer.closeDrawer}
+        onRename={renameColour}
+        onToggleFavourite={setFavourite}
+        onDelete={handleDelete}
+      />
+      <AddColorModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        library={colours}
+        onAdd={addColour}
+        onAddMany={addColours}
+      />
+      <ConfirmDialog
+        open={confirm.isOpen}
+        title={confirm.title}
+        message={confirm.message}
+        confirmLabel={confirm.confirmLabel}
+        onConfirm={confirm.onConfirm}
+        onCancel={confirm.onCancel}
+      />
+    </>
+  )
+
+  if (embedded) {
+    if (filtered.length === 0) return null
+    return (
+      <>
+        <TagGroup title={embedded.title} count={filtered.length}>
+          <SectionGrid>{sortColours(filtered, sortKey).map(card)}</SectionGrid>
+        </TagGroup>
+        {overlays}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Toolbar
+        title="Colors"
+        actions={
+          <>
+            <select className={styles.control} value={sortKey} onChange={e => setSortKey(e.target.value as SortKey)} aria-label="Sort">
+              {SORT_OPTIONS.map(o => <option key={o.key} value={o.key}>Sort: {o.label}</option>)}
+            </select>
+            <select className={styles.control} value={groupKey} onChange={e => setGroupKey(e.target.value as GroupKey)} aria-label="Group">
+              {GROUP_OPTIONS.map(o => <option key={o.key} value={o.key}>{o.label}</option>)}
+            </select>
+            <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
+            <Button variant="primary" size="md" onClick={() => setAddOpen(true)}>
+              <FontAwesomeIcon icon={faPlus} />
+              Add colour
+            </Button>
+          </>
+        }
+      />
+      <div className="scroll-area">
+        {colours.length === 0 ? (
+          <EmptyState
+            title="Add your first colour"
+            description="Add by hex or extract from an image. We’ll suggest a name, check WCAG contrast, and flag near-duplicates."
+            action={<Button variant="primary" size="md" onClick={() => setAddOpen(true)}><FontAwesomeIcon icon={faPlus} />Add colour</Button>}
+          />
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            title="No colours match this filter"
+            description={favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours carry this tag yet.'}
+          />
+        ) : (
+          <div className={styles.groups}>{grids}</div>
+        )}
+      </div>
+      {overlays}
+    </>
+  )
+}

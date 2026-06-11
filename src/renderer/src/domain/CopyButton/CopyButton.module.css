@@ -1,0 +1,56 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-subtle);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--text-13);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-secondary);
+  transition:
+    background var(--duration-normal) var(--ease-move),
+    color var(--duration-normal) var(--ease-move);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.chip:hover {
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-primary);
+}
+
+.copied {
+  background: var(--color-success-subtle);
+  color: var(--color-success-solid);
+}
+
+.mono .label {
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 12px;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity var(--duration-normal) var(--ease-move);
+}
+
+.chip:hover .icon,
+.copied .icon {
+  opacity: 1;
+}

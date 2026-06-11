@@ -1,0 +1,87 @@
+{
+  "name": "vault",
+  "version": "0.1.0",
+  "description": "Offline desktop palette tool",
+  "main": "./out/main/index.js",
+  "author": "hipuku",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.web.json",
+    "dist": "npm run build && electron-builder",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "postinstall": "electron-rebuild -f -w better-sqlite3"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.8",
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.1",
+    "better-sqlite3": "^11.5.0",
+    "chroma-js": "^3.2.0",
+    "culori": "^4.0.2",
+    "react-colorful": "^5.7.0"
+  },
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@electron-toolkit/utils": "^3.0.0",
+    "@electron/rebuild": "^3.7.2",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/chroma-js": "^3.1.2",
+    "@types/culori": "^4.0.1",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^3.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  },
+  "build": {
+    "appId": "dev.hipuku.vault",
+    "productName": "Vault",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "resources/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": "resources/"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "resources/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "resources/entitlements.mac.plist",
+      "entitlementsInherit": "resources/entitlements.mac.plist"
+    },
+    "dmg": {
+      "title": "Vault",
+      "icon": "resources/icon.icns"
+    },
+    "nsis": {
+      "oneClick": false
+    }
+  }
+}

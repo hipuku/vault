@@ -1,0 +1,184 @@
+/* ── Brand wordmark ──────────────────────────────────────────────────────── */
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-4) var(--space-5);
+}
+
+.brandWordmark {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+/* ── Sidebar nav items ───────────────────────────────────────────────────── */
+
+.navSection {
+  padding: var(--space-4) var(--space-4) var(--space-1);
+  font-size: var(--type-label-xs-size);
+  font-weight: var(--type-label-xs-weight);
+  letter-spacing: var(--type-label-xs-tracking);
+  color: var(--color-ink-tertiary);
+  text-transform: uppercase;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin: 1px var(--space-2);
+  width: calc(100% - var(--space-4));
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--type-label-size);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-tertiary);
+  border-radius: var(--radius-full);
+  transition:
+    background var(--duration-normal) var(--ease-move),
+    color var(--duration-normal) var(--ease-move);
+}
+
+.navItem:hover {
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-secondary);
+}
+
+/* Active: neutral pill keeps the rail calm; the accent rides only the icon,
+   a quiet "you are here" rather than a loud filled accent pill. */
+.navItemActive,
+.navItemActive:hover {
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.navItemActive .navIcon {
+  color: var(--color-primary-default);
+}
+
+.navIcon {
+  width: 15px;
+  flex-shrink: 0;
+  color: inherit;
+  transition: color var(--duration-fast) var(--ease-move);
+}
+
+/* ── Tags area ───────────────────────────────────────────────────────────── */
+
+.tagsArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-1) 0;
+}
+
+/* A tag row behaves like a nav item: a single subtle pill on hover/active.
+   The chip carries no state of its own. Trailing edit/delete icons stay hidden
+   until hover or selection, when they slide in and the label shrinks to fit. */
+.tagItem {
+  display: flex;
+  align-items: center;
+  margin: 1px var(--space-2);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-normal) var(--ease-move);
+}
+
+.tagItem:hover,
+.tagItemActive,
+.tagItemActive:hover {
+  background: var(--color-surface-sunken);
+}
+
+.tagSelect {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: var(--type-label-size);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-tertiary);
+  border-radius: var(--radius-full);
+  transition: color var(--duration-normal) var(--ease-move);
+}
+
+.tagItem:hover .tagSelect { color: var(--color-ink-secondary); }
+.tagItemActive .tagSelect { color: var(--color-ink-primary); font-weight: var(--weight-semibold); }
+
+.tagDot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.tagLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tagItemActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width var(--duration-normal) var(--ease-move),
+    opacity var(--duration-fast) var(--ease-move);
+}
+
+.tagItem:hover .tagItemActions,
+.tagItemActive .tagItemActions {
+  width: 50px;
+  opacity: 1;
+  padding-right: var(--space-1);
+}
+
+.tagAction {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink-disabled);
+  font-size: var(--text-11);
+  border-radius: var(--radius-full);
+  transition: color var(--duration-fast) var(--ease-move);
+}
+
+.tagAction:hover { color: var(--color-ink-secondary); }
+.tagActionDanger:hover { color: var(--color-error-default); }
+
+/* ── Add tag footer ──────────────────────────────────────────────────────── */
+
+.sidebarFooter {
+  margin-top: auto;
+  padding: var(--space-2);
+  border-top: var(--border-width) solid var(--color-border-subtle);
+}
+
+.addTagBtn {
+  width: 100%;
+}
+
+.tagDivider {
+  margin: var(--space-3) var(--space-4) var(--space-2);
+}

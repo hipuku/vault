@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface-default);
+  transition: box-shadow var(--duration-normal) var(--ease-move);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.swatch {
+  position: relative;
+  height: 88px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.fav {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  font-size: var(--text-12);
+  opacity: 0.9;
+}
+
+.edit {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-12);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-move), background var(--duration-normal) var(--ease-move);
+}
+
+.swatch:hover .edit {
+  opacity: 0.9;
+  background: oklch(from currentColor l c h / 0.12);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+}
+
+.name {
+  font-size: var(--type-body-size);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink-primary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.hex {
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
+  color: var(--color-ink-tertiary);
+}

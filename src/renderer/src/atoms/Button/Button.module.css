@@ -1,0 +1,83 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: var(--border-width) solid transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+  transition:
+    background var(--duration-normal) var(--ease-move),
+    color var(--duration-normal) var(--ease-move),
+    border-color var(--duration-normal) var(--ease-move),
+    box-shadow var(--duration-fast) var(--ease-move);
+}
+
+/* The label leads; the FA solid glyph (optically heavier than text) is scaled
+   down to a supporting accent so the two read as complementary. */
+.button svg {
+  font-size: 0.85em;
+}
+
+.button:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* ── Sizes (boxier — more vertical presence, pill radius kept) ─────────────── */
+
+.sm {
+  height: 32px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-13);
+  border-radius: var(--radius-full);
+}
+
+.md {
+  height: 40px;
+  padding: 0 var(--space-5);
+  font-size: var(--text-14);
+  border-radius: var(--radius-full);
+}
+
+/* ── Variants ────────────────────────────────────────────────────────────── */
+
+.primary {
+  background: var(--color-primary-default);
+  color: var(--color-ink-inverse);
+}
+.primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+.primary:active:not(:disabled) { background: var(--color-primary-pressed); }
+
+/* Secondary = true outline: transparent fill, real border, ink text. */
+.secondary {
+  background: transparent;
+  color: var(--color-ink-primary);
+  border-color: var(--color-border-strong);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--color-surface-subtle);
+  border-color: var(--color-ink-tertiary);
+}
+
+/* Ghost = text only; a step lighter than filled/outline so the de-emphasis reads. */
+.ghost {
+  background: transparent;
+  color: var(--color-ink-secondary);
+  font-weight: var(--weight-semibold);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-primary);
+}
+
+.danger {
+  background: var(--color-error-subtle);
+  color: var(--color-error-default);
+}
+.danger:hover:not(:disabled) {
+  background: var(--color-error-default);
+  color: var(--color-ink-inverse);
+}

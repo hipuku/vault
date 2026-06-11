@@ -1,0 +1,203 @@
+/* ─── haus / primitives ──────────────────────────────────────────────────────
+   Raw values only. No component or semantic meaning.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer haus.primitives {
+  :root {
+    /* Brand: deep raspberry. Anchored on #AA1155 (-500) and #880044 (-700),
+       built as a perceptual OKLCH ramp (hue ~358-3, chroma peaks mid-tone). */
+    --raspberry-100: oklch(96.5% 0.016 3);
+    --raspberry-200: oklch(91%   0.044 3);
+    --raspberry-300: oklch(82%   0.082 3);
+    --raspberry-400: oklch(64%   0.150 3);
+    --raspberry-500: oklch(48.2% 0.186 2.5);
+    --raspberry-600: oklch(44%   0.176 1.7);
+    --raspberry-700: oklch(40.5% 0.164 0.9);
+    --raspberry-800: oklch(33%   0.116 0);
+    --raspberry-900: oklch(23%   0.090 358);
+    --raspberry-950: oklch(15%   0.056 356);
+
+    --damson-0:   oklch(100% 0 0);
+    --damson-50:  oklch(99% 0.003 290);
+    --damson-100: oklch(97% 0.006 290);
+    --damson-200: oklch(93% 0.008 290);
+    --damson-300: oklch(86% 0.010 290);
+    --damson-400: oklch(74% 0.010 290);
+    --damson-500: oklch(60% 0.008 290);
+    --damson-600: oklch(48% 0.007 290);
+    --damson-700: oklch(37% 0.006 290);
+    --damson-800: oklch(27% 0.005 290);
+    --damson-900: oklch(18% 0.003 290);
+    --damson-950: oklch(11% 0.002 290);
+
+    --elderberry-100: oklch(97% 0.020 265);
+    --elderberry-200: oklch(93% 0.040 265);
+    --elderberry-400: oklch(74% 0.160 265);
+    --elderberry-500: oklch(55% 0.200 265);
+    --elderberry-700: oklch(42% 0.160 265);
+    --elderberry-900: oklch(30% 0.120 265);
+
+    --greengage-100: oklch(97% 0.030 148);
+    --greengage-500: oklch(58% 0.185 148);
+    --greengage-700: oklch(45% 0.150 148);
+
+    --mango-100: oklch(97% 0.025 65);
+    --mango-500: oklch(60% 0.175 65);
+    --mango-700: oklch(47% 0.142 65);
+
+    --cherry-100: oklch(97% 0.030 27);
+    --cherry-500: oklch(58% 0.200 27);
+    --cherry-700: oklch(44% 0.168 27);
+
+    --font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+
+    --text-11: 0.6875rem;
+    --text-12: 0.75rem;
+    --text-13: 0.8125rem;
+    --text-14: 0.875rem;
+    --text-16: 1rem;
+    --text-20: 1.25rem;
+    --text-24: 1.5rem;
+    --text-28: 1.75rem;
+
+    --weight-regular:  400;
+    --weight-medium:   500;
+    --weight-semibold: 600;
+    --weight-bold:     700;
+
+    --leading-tight:   1.15;
+    --leading-snug:    1.25;
+    --leading-compact: 1.3;
+    --leading-normal:  1.4;
+    --leading-relaxed: 1.5;
+
+    --tracking-tight:  -0.01em;
+    --tracking-normal:  0em;
+    --tracking-wide:    0.02em;
+
+    --space-1:  0.25rem;
+    --space-2:  0.5rem;
+    --space-3:  0.75rem;
+    --space-4:  1rem;
+    --space-5:  1.25rem;
+    --space-6:  1.5rem;
+    --space-8:  2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    --radius-sm:   0.25rem;
+    --radius-md:   0.5rem;
+    --radius-lg:   0.75rem;
+    --radius-xl:   1rem;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 2px oklch(18% 0.003 290 / 0.06);
+    --shadow-md: 0 4px 6px -1px oklch(18% 0.003 290 / 0.10), 0 2px 4px -2px oklch(18% 0.003 290 / 0.10);
+    --shadow-lg: 0 10px 15px -3px oklch(18% 0.003 290 / 0.10), 0 4px 6px -4px oklch(18% 0.003 290 / 0.07);
+
+    --z-dropdown: 100;
+    --z-modal:    400;
+    --z-toast:    500;
+
+    --border-width: 1px;
+    --opacity-disabled: 0.4;
+
+    /* ── Durations ────────────────────────────────────────────────────────── */
+    --duration-fast:     100ms;
+    --duration-normal:   200ms;
+    --duration-moderate: 300ms;
+
+    --ease-enter:  cubic-bezier(0.00, 0.00, 0.20, 1.00);
+    --ease-exit:   cubic-bezier(0.40, 0.00, 1.00, 1.00);
+    --ease-move:   cubic-bezier(0.40, 0.00, 0.20, 1.00);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1.00);
+  }
+}
+
+/* ─── haus / semantics ───────────────────────────────────────────────────────
+   Intent aliases. Light mode only.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer haus.semantics {
+  :root {
+    color-scheme: light;
+
+    --color-surface-default:  var(--damson-0);
+    --color-surface-subtle:   var(--damson-100);
+    --color-surface-raised:   var(--damson-0);
+    --color-surface-overlay:  var(--damson-50);
+    --color-surface-sunken:   var(--damson-200);
+    --color-surface-inverse:  var(--damson-900);
+    --color-surface-disabled: var(--damson-100);
+
+    --color-ink-primary:   var(--damson-900);
+    --color-ink-secondary: var(--damson-700);
+    --color-ink-tertiary:  var(--damson-500);
+    --color-ink-disabled:  var(--damson-400);
+    --color-ink-inverse:   var(--damson-0);
+
+    --color-border-subtle:   var(--damson-100);
+    --color-border-default:  var(--damson-200);
+    --color-border-strong:   var(--damson-300);
+    --color-border-focus:    var(--raspberry-500);
+    --color-border-disabled: var(--damson-200);
+
+    --color-primary-default:  var(--raspberry-500);
+    --color-primary-hover:    var(--raspberry-600);
+    --color-primary-pressed:  var(--raspberry-700);
+    --color-primary-subtle:   var(--raspberry-100);
+    --color-primary-disabled: var(--damson-200);
+
+    --color-success-subtle:  var(--greengage-100);
+    --color-success-default: var(--greengage-500);
+    --color-success-solid:   var(--greengage-700);
+
+    --color-error-subtle:  var(--cherry-100);
+    --color-error-default: var(--cherry-500);
+
+    --color-backdrop: oklch(from var(--damson-950) l c h / 0.6);
+
+    /* Brand-coloured headings (titles), and danger headings for destructive dialogs. */
+    --color-title:        var(--color-primary-default);
+    --color-title-danger: var(--color-error-default);
+
+    /* A single soft accent halo — paired with an accent border on focus reads as
+       one cohesive focus state, not a hard double ring. */
+    --shadow-focus:       0 0 0 3px oklch(from var(--color-primary-default) l c h / 0.20);
+    --shadow-focus-error: 0 0 0 3px oklch(from var(--color-error-default) l c h / 0.20);
+
+    --type-label-xs-size:    var(--text-11);
+    --type-label-xs-weight:  var(--weight-medium);
+    --type-label-xs-tracking: var(--tracking-wide);
+
+    --type-label-sm-size:    var(--text-12);
+    --type-label-sm-weight:  var(--weight-medium);
+    --type-label-sm-tracking: var(--tracking-wide);
+
+    --type-label-size:       var(--text-13);
+    --type-label-weight:     var(--weight-medium);
+    --type-label-tracking:   var(--tracking-normal);
+
+    --type-body-sm-size:     var(--text-13);
+    --type-body-sm-weight:   var(--weight-regular);
+    --type-body-sm-leading:  var(--leading-relaxed);
+
+    --type-body-size:        var(--text-14);
+    --type-body-weight:      var(--weight-regular);
+    --type-body-leading:     var(--leading-relaxed);
+
+    --type-heading-sm-size:    var(--text-16);
+    --type-heading-sm-weight:  var(--weight-semibold);
+    --type-heading-sm-tracking: var(--tracking-tight);
+
+    --type-heading-size:       var(--text-20);
+    --type-heading-weight:     var(--weight-bold);
+    --type-heading-tracking:   var(--tracking-tight);
+
+    /* Page/section titles — a step above headings. */
+    --type-title-size:         var(--text-24);
+    --type-title-weight:       var(--weight-bold);
+    --type-title-tracking:     var(--tracking-tight);
+  }
+}

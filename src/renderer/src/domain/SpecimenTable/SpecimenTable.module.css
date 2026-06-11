@@ -1,0 +1,42 @@
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
+}
+
+.label {
+  font-size: var(--type-label-sm-size);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.specimen {
+  color: var(--color-ink-primary);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-11);
+  color: var(--color-ink-tertiary);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.trailing {
+  display: inline-flex;
+  justify-content: flex-end;
+}

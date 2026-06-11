@@ -1,0 +1,34 @@
+.toolbar {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--type-title-size);
+  font-weight: var(--type-title-weight);
+  letter-spacing: var(--type-title-tracking);
+  color: var(--color-ink-primary);
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.extras {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
