@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faKeyboard, faImage, faTriangleExclamation, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faKeyboard, faImage, faCheck, faPen, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import type { Colour } from '@shared/types'
 import { Button } from '../../atoms/Button/Button'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Spinner } from '../../atoms/Spinner/Spinner'
-import { ContrastBadges } from '../ContrastBadges/ContrastBadges'
+import { Callout } from '../../primitives/Callout/Callout'
+import { Tooltip } from '../../primitives/Tooltip/Tooltip'
 import {
-  normaliseHex, nearestNames, findSimilar, formatDeltaE, confidenceLabel, firstUnusedName, prefersDarkText,
+  normaliseHex, nearestNames, findSimilar, formatDeltaE, confidenceLabel, firstUnusedName,
 } from '../../lib/colour'
 import { extractDominantColours } from '../../lib/extractColours'
 import styles from './AddColorModal.module.css'
@@ -19,9 +20,14 @@ interface AddColorModalProps {
   library: Colour[]
   onAdd: (hex: string, name: string) => void
   onAddMany: (list: Array<{ hex: string; name: string }>) => void
+  /** Locks the colour to a fixed hex (no picker, no image tab) — e.g. promoting a
+   *  palette swatch to the library. */
+  fixedHex?: string
+  /** Override the primary-button label (default "Add colour"). */
+  submitLabel?: string
 }
 
-export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddColorModalProps): React.ReactElement | null {
+export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedHex, submitLabel }: AddColorModalProps): React.ReactElement | null {
   const [tab, setTab] = useState<'hex' | 'image'>('hex')
 
   // ── From-hex state ──
@@ -31,9 +37,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
   const pickerRef = useRef<HTMLDivElement>(null)
 
   // ── From-image state ──
+  interface ImageRow { hex: string; name: string; included: boolean }
   const [preview, setPreview] = useState<string | null>(null)
-  const [swatches, setSwatches] = useState<string[]>([])
-  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [rows, setRows] = useState<ImageRow[]>([])
+  const [editingHex, setEditingHex] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -49,9 +56,11 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
   useEffect(() => {
     if (!open) {
       setTab('hex'); setText(''); setChosenName(null); setPickerOpen(false)
-      setPreview(null); setSwatches([]); setSelected(new Set()); setLoading(false); setDragOver(false)
+      setPreview(null); setRows([]); setEditingHex(null); setLoading(false); setDragOver(false)
+    } else if (fixedHex) {
+      setTab('hex'); setText(fixedHex)
     }
-  }, [open])
+  }, [open, fixedHex])
 
   useEffect(() => {
     if (!open) return
@@ -86,16 +95,45 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
     })
     setPreview(dataUrl)
     const colours = await extractDominantColours(dataUrl, 8)
-    setSwatches(colours)
-    setSelected(new Set(colours))
+    setRows(colours.map(h => ({ hex: h, name: nearestNames(h, 1).best.name, included: true })))
     setLoading(false)
   }
 
+  function toggleRow(hex: string): void {
+    setRows(prev => prev.map(r => r.hex === hex ? { ...r, included: !r.included } : r))
+  }
+
+  function setRowName(hex: string, name: string): void {
+    setRows(prev => prev.map(r => r.hex === hex ? { ...r, name } : r))
+  }
+
   function addImage(): void {
-    const chosen = swatches.filter(h => selected.has(h))
-    onAddMany(chosen.map(h => ({ hex: h, name: nearestNames(h, 1).best.name })))
+    onAddMany(rows.filter(r => r.included).map(r => ({ hex: r.hex, name: r.name })))
     onClose()
   }
+
+  const includedCount = rows.filter(r => r.included).length
+
+  // Count included rows per name (lowercased) to flag duplicates within the batch.
+  const nameCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const r of rows) {
+      if (!r.included) continue
+      const key = r.name.trim().toLowerCase()
+      counts.set(key, (counts.get(key) ?? 0) + 1)
+    }
+    return counts
+  }, [rows])
+
+  // Near-duplicate lookup per extracted hex. Depends only on the hexes + library,
+  // so it doesn't re-run the O(library) ΔE scan while editing row names.
+  const hexKey = rows.map(r => r.hex).join('|')
+  const similarByHex = useMemo(() => {
+    const map = new Map<string, ReturnType<typeof findSimilar>>()
+    for (const r of rows) map.set(r.hex, findSimilar(r.hex, library))
+    return map
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hexKey, library])
 
   if (!open) return null
 
@@ -105,14 +143,18 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
     <div className={styles.overlay} role="dialog" aria-modal aria-label="Add colour">
       <div className={styles.modal}>
         <div className={styles.header}>
-          <div className={styles.tabs}>
-            <button type="button" className={[styles.tab, tab === 'hex' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('hex')}>
-              <FontAwesomeIcon icon={faKeyboard} /> From hex
-            </button>
-            <button type="button" className={[styles.tab, tab === 'image' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('image')}>
-              <FontAwesomeIcon icon={faImage} /> From image
-            </button>
-          </div>
+          {fixedHex ? (
+            <h2 className={styles.heading}>Save to library</h2>
+          ) : (
+            <div className={styles.tabs}>
+              <button type="button" className={[styles.tab, tab === 'hex' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('hex')}>
+                <FontAwesomeIcon icon={faKeyboard} /> From hex
+              </button>
+              <button type="button" className={[styles.tab, tab === 'image' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('image')}>
+                <FontAwesomeIcon icon={faImage} /> From image
+              </button>
+            </div>
+          )}
           <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
         </div>
 
@@ -120,10 +162,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
           <div className={styles.body}>
             <div className={styles.hexRow}>
               <div className={styles.pickerWrap} ref={pickerRef}>
-                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed' }} onClick={() => setPickerOpen(o => !o)} aria-label="Pick a colour" />
-                {pickerOpen && <div className={styles.popover}><HexColorPicker color={hex ?? '#aa1155'} onChange={setText} /></div>}
+                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }} onClick={fixedHex ? undefined : () => setPickerOpen(o => !o)} aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'} />
+                {pickerOpen && !fixedHex && <div className={styles.popover}><HexColorPicker color={hex ?? '#aa1155'} onChange={setText} /></div>}
               </div>
-              <input className={styles.hexInput} value={text} onChange={e => setText(e.target.value)} placeholder="#hex or paste a colour" spellCheck={false} autoFocus onKeyDown={e => { if (e.key === 'Enter') addHex() }} />
+              <input className={styles.hexInput} value={text} onChange={e => setText(e.target.value)} placeholder="#hex or paste a colour" spellCheck={false} autoFocus={!fixedHex} readOnly={!!fixedHex} onKeyDown={e => { if (e.key === 'Enter') addHex() }} />
             </div>
 
             {hex && result && (
@@ -149,32 +191,25 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
                   </div>
                 </div>
 
-                <div className={styles.section}>
-                  <span className={styles.sectionLabel}>Contrast</span>
-                  <ContrastBadges hex={hex} />
-                </div>
-
                 {similar && (
-                  <p className={styles.warn}>
-                    <FontAwesomeIcon icon={faTriangleExclamation} className={styles.warnIcon} />
+                  <Callout variant="warning">
                     Similar to <strong>{similar.name}</strong> ({similar.hex}) — ΔE {formatDeltaE(similar.deltaE)}
-                  </p>
+                  </Callout>
                 )}
                 {dupName && (
-                  <p className={styles.warn}>
-                    <FontAwesomeIcon icon={faTriangleExclamation} className={styles.warnIcon} />
+                  <Callout variant="warning">
                     You already have a colour named “{chosenName}”.
                     {suggestion && (
                       <button type="button" className={styles.useInstead} onClick={() => setChosenName(suggestion.name)}>Use “{suggestion.name}” instead</button>
                     )}
-                  </p>
+                  </Callout>
                 )}
               </>
             )}
 
             <div className={styles.footer}>
               <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
-              <Button variant="primary" size="md" onClick={addHex} disabled={!hex}>Add colour</Button>
+              <Button variant="primary" size="md" onClick={addHex} disabled={!hex}>{submitLabel ?? 'Add colour'}</Button>
             </div>
           </div>
         ) : (
@@ -198,16 +233,62 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
                 {loading ? (
                   <div className={styles.loading}><Spinner /> Extracting…</div>
                 ) : (
-                  <div className={styles.swatchGrid}>
-                    {swatches.map(h => {
-                      const on = selected.has(h)
+                  <div className={styles.extractRows}>
+                    {rows.map(r => {
+                      const key = r.name.trim().toLowerCase()
+                      const sim = similarByHex.get(r.hex) ?? null
+                      const nameTaken = existingNames.has(key)
+                      const dupInBatch = !nameTaken && r.included && (nameCounts.get(key) ?? 0) > 1
+                      const warnings: string[] = []
+                      if (sim) warnings.push(`Similar to “${sim.name}” — ΔE ${formatDeltaE(sim.deltaE)}`)
+                      if (nameTaken) warnings.push(`You already have a colour named “${r.name}”`)
+                      else if (dupInBatch) warnings.push(`Another selected row is also named “${r.name}”`)
                       return (
-                        <button key={h} type="button" className={[styles.swatch, on ? styles.swatchOn : ''].filter(Boolean).join(' ')} onClick={() => setSelected(prev => { const n = new Set(prev); n.has(h) ? n.delete(h) : n.add(h); return n })}>
-                          <span className={styles.swatchBlock} style={{ background: h }}>
-                            {on && <FontAwesomeIcon icon={faCheck} className={styles.swatchCheck} style={{ color: prefersDarkText(h) ? '#000' : '#fff' }} />}
+                        <label key={r.hex} className={[styles.extractRow, r.included ? '' : styles.extractRowOff].filter(Boolean).join(' ')}>
+                          <input type="checkbox" className={styles.extractCheck} checked={r.included} onChange={() => toggleRow(r.hex)} />
+                          <span className={styles.extractSwatch} style={{ background: r.hex }} />
+                          <span className={styles.extractMain}>
+                            {editingHex === r.hex ? (
+                              <input
+                                type="text"
+                                autoFocus
+                                className={styles.extractName}
+                                value={r.name}
+                                onChange={e => setRowName(r.hex, e.target.value)}
+                                onBlur={() => setEditingHex(null)}
+                                onFocus={e => e.target.select()}
+                                onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') (e.target as HTMLInputElement).blur() }}
+                              />
+                            ) : (
+                              <span className={styles.extractNameText}>{r.name}</span>
+                            )}
+                            {warnings.length > 0 && (
+                              <Tooltip label={warnings.join(' · ')} align="start">
+                                <span
+                                  className={styles.extractWarn}
+                                  onMouseDown={e => { e.preventDefault(); e.stopPropagation() }}
+                                  onClick={e => { e.preventDefault(); e.stopPropagation() }}
+                                >
+                                  <FontAwesomeIcon icon={faTriangleExclamation} />
+                                </span>
+                              </Tooltip>
+                            )}
+                            {editingHex !== r.hex && (
+                              <div className={styles.extractPen}>
+                                <button
+                                  type="button"
+                                  className="icon-btn icon-btn--xs"
+                                  onMouseDown={e => e.preventDefault()}
+                                  onClick={e => { e.preventDefault(); setEditingHex(r.hex) }}
+                                  aria-label="Edit name"
+                                >
+                                  <FontAwesomeIcon icon={faPen} />
+                                </button>
+                              </div>
+                            )}
                           </span>
-                          <span className={styles.swatchHex}>{h}</span>
-                        </button>
+                          <span className={styles.extractHex}>{r.hex}</span>
+                        </label>
                       )
                     })}
                   </div>
@@ -216,11 +297,11 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany }: AddC
             )}
 
             <div className={styles.footer}>
-              {preview && <Button variant="ghost" size="md" onClick={() => { setPreview(null); setSwatches([]); setSelected(new Set()) }}>Choose another</Button>}
+              {preview && <Button variant="secondary" size="md" onClick={() => { setPreview(null); setRows([]) }}>Choose another</Button>}
               <div className={styles.footerRight}>
                 <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
-                <Button variant="primary" size="md" onClick={addImage} disabled={selected.size === 0}>
-                  Add {selected.size > 0 ? selected.size : ''} colour{selected.size === 1 ? '' : 's'}
+                <Button variant="primary" size="md" onClick={addImage} disabled={includedCount === 0}>
+                  Add {includedCount > 0 ? includedCount : ''} colour{includedCount === 1 ? '' : 's'}
                 </Button>
               </div>
             </div>

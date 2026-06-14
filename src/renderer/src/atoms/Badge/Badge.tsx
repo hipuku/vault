@@ -3,7 +3,7 @@ import styles from './Badge.module.css'
 
 interface BadgeProps {
   label: string
-  variant?: 'success' | 'error' | 'neutral'
+  variant?: 'success' | 'warning' | 'error' | 'neutral'
   className?: string
 }
 

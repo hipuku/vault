@@ -7,6 +7,18 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+
   typecheck:
     name: Typecheck
     runs-on: macos-latest
@@ -22,7 +34,7 @@ jobs:
   build:
     name: Build
     runs-on: macos-latest
-    needs: typecheck
+    needs: [lint, typecheck]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

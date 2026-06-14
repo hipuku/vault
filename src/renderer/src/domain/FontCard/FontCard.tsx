@@ -1,8 +1,9 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faPen } from '@fortawesome/free-solid-svg-icons'
 import type { Font } from '@shared/types'
-import { parseWeights, categoryGeneric } from '../../lib/fontLoader'
+import { parseWeights, categoryGeneric, categoryLabel } from '../../lib/fontLoader'
+import { Pill } from '../../atoms/Pill/Pill'
 import styles from './FontCard.module.css'
 
 interface FontCardProps {
@@ -10,47 +11,31 @@ interface FontCardProps {
   previewText: string
   previewSize: number
   onOpen: (font: Font) => void
-  onToggleFavourite: (id: number, favourite: 0 | 1) => void
 }
 
-function weightSummary(weights: string[]): string {
-  if (weights.length <= 4) return weights.join(' · ')
-  return `${weights.length} weights`
-}
-
-export function FontCard({ font, previewText, previewSize, onOpen, onToggleFavourite }: FontCardProps): React.ReactElement {
+export function FontCard({ font, previewText, previewSize, onOpen }: FontCardProps): React.ReactElement {
   const weights = parseWeights(font.weights)
   const stack = `'${font.family}', ${categoryGeneric(font.category)}`
 
   return (
-    <div className={styles.card}>
-      <button
-        type="button"
-        className={styles.preview}
-        style={{ fontFamily: stack, fontSize: `${previewSize}px` }}
-        onClick={() => onOpen(font)}
-        aria-label={`Open ${font.family}`}
-      >
-        {previewText || 'The quick brown fox'}
-      </button>
-
-      <div className={styles.footer}>
-        <div className={styles.nameRow}>
-          <span className={styles.name} style={{ fontFamily: stack }}>{font.family}</span>
-          <button
-            type="button"
-            className={[styles.star, font.favourite ? styles.starOn : ''].filter(Boolean).join(' ')}
-            onClick={() => onToggleFavourite(font.id, font.favourite ? 0 : 1)}
-            aria-label={font.favourite ? 'Unfavourite' : 'Favourite'}
-          >
-            <FontAwesomeIcon icon={faStar} />
-          </button>
+    <button type="button" className={styles.card} onClick={() => onOpen(font)} aria-label={`Open ${font.family}`}>
+      <div className={styles.previewWrap}>
+        <div className={styles.preview} style={{ fontFamily: stack, fontSize: `${previewSize}px` }}>
+          {previewText || 'The quick brown fox'}
         </div>
-        <span className={styles.meta}>
-          {font.category} · {font.source === 'google' ? 'Google Fonts' : 'Local file'}
-        </span>
-        <span className={styles.weights}>{weightSummary(weights)}</span>
+        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
       </div>
-    </div>
+
+      <div className={styles.body}>
+        <div className={styles.nameRow}>
+          {font.favourite === 1 && <FontAwesomeIcon icon={faStar} className={styles.favInline} />}
+          <span className={styles.name}>{font.family}</span>
+        </div>
+        <div className={styles.meta}>
+          <Pill label={categoryLabel(font.category)} />
+          <span className={styles.value}>{weights.length} weight{weights.length === 1 ? '' : 's'}</span>
+        </div>
+      </div>
+    </button>
   )
 }

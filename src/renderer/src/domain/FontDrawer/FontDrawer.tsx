@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faTrash, faFolderOpen, faDownload, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import type { Font, Tag } from '@shared/types'
 import { Drawer } from '../../primitives/Drawer/Drawer'
 import { Button } from '../../atoms/Button/Button'
-import { Tag as TagPill } from '../../atoms/Tag/Tag'
+import { TagSelect } from '../TagSelect/TagSelect'
+import { TagModal } from '../TagModal/TagModal'
 import { CopyButton } from '../CopyButton/CopyButton'
-import { parseWeights, categoryGeneric, googleCssUrl, loadGoogleFont } from '../../lib/fontLoader'
+import { parseWeights, fontStack, googleCssUrl, loadGoogleFont, localFontPaths } from '../../lib/fontLoader'
 import styles from './FontDrawer.module.css'
 
 interface FontDrawerProps {
   font: Font | null
+  previewText: string
+  previewSize: number
   onClose: () => void
   onToggleFavourite: (id: number, favourite: 0 | 1) => void
   onDelete: (font: Font) => void
@@ -21,10 +24,11 @@ const WEIGHT_NAMES: Record<string, string> = {
   '500': 'Medium', '600': 'SemiBold', '700': 'Bold', '800': 'ExtraBold', '900': 'Black',
 }
 
-export function FontDrawer({ font, onClose, onToggleFavourite, onDelete }: FontDrawerProps): React.ReactElement {
-  const [preview, setPreview] = useState('The quick brown fox jumps over the lazy dog')
+export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFavourite, onDelete }: FontDrawerProps): React.ReactElement {
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [assigned, setAssigned] = useState<Set<number>>(new Set())
+  const [tagModalOpen, setTagModalOpen] = useState(false)
+  const [newTagLabel, setNewTagLabel] = useState('')
 
   useEffect(() => {
     if (!font) return
@@ -49,8 +53,17 @@ export function FontDrawer({ font, onClose, onToggleFavourite, onDelete }: FontD
     }
   }
 
+  async function createTag(label: string, col: string): Promise<void> {
+    if (!font) return
+    const tag = await window.api.tag.create(label, col)
+    await window.api.tag.assign('font', font.id, tag.id)
+    setAllTags(prev => [...prev, tag].sort((a, b) => a.label.localeCompare(b.label)))
+    setAssigned(prev => new Set(prev).add(tag.id))
+    setTagModalOpen(false)
+  }
+
   const weights = font ? parseWeights(font.weights) : []
-  const stack = font ? `'${font.family}', ${categoryGeneric(font.category)}` : ''
+  const stack = font ? fontStack(font) : ''
   const fontFamilyCss = font ? `font-family: ${stack};` : ''
   const importCss = font && font.source === 'google'
     ? `@import url('${googleCssUrl(font.family, weights)}');`
@@ -64,7 +77,7 @@ export function FontDrawer({ font, onClose, onToggleFavourite, onDelete }: FontD
             <span className={styles.bigName} style={{ fontFamily: stack }}>{font.family}</span>
             <button
               type="button"
-              className={[styles.star, font.favourite ? styles.starOn : ''].filter(Boolean).join(' ')}
+              className={['icon-btn', styles.star, font.favourite ? 'icon-btn--star' : ''].filter(Boolean).join(' ')}
               onClick={() => onToggleFavourite(font.id, font.favourite ? 0 : 1)}
               aria-label={font.favourite ? 'Unfavourite' : 'Favourite'}
             >
@@ -73,49 +86,47 @@ export function FontDrawer({ font, onClose, onToggleFavourite, onDelete }: FontD
           </div>
           <p className={styles.sub}>{font.category} · {font.source === 'google' ? 'Google Fonts' : 'Local file'}</p>
 
-          <div className={styles.group}>
-            <input
-              className={styles.previewInput}
-              value={preview}
-              onChange={e => setPreview(e.target.value)}
-              aria-label="Preview text"
-            />
-          </div>
-
-          <div className={styles.group}>
-            <h3 className={styles.groupTitle}>Weights</h3>
-            <div className={styles.specimens}>
-              {weights.map(w => (
-                <div key={w} className={styles.specimenRow}>
-                  <span className={styles.specimenLabel}>{WEIGHT_NAMES[w] ?? w} {w}</span>
-                  <span className={styles.specimen} style={{ fontFamily: stack, fontWeight: Number(w) }}>
-                    {preview || 'The quick brown fox'}
-                  </span>
-                </div>
-              ))}
+          {/* Each weight is its own titled block (eyebrow heading + specimen). */}
+          {weights.map(w => (
+            <div key={w} className={styles.group}>
+              <h3 className="eyebrow">{WEIGHT_NAMES[w] ?? w} {w}</h3>
+              <span className={styles.specimen} style={{ fontFamily: stack, fontWeight: Number(w), fontSize: previewSize }}>
+                {previewText || 'The quick brown fox'}
+              </span>
             </div>
-          </div>
+          ))}
 
           <div className={styles.group}>
-            <h3 className={styles.groupTitle}>Use</h3>
+            <h3 className="eyebrow">Use</h3>
             <div className={styles.copyRow}>
               <CopyButton value={fontFamilyCss} label="font-family" />
               {importCss && <CopyButton value={importCss} label="@import" />}
             </div>
-            {font.source === 'local' && <p className={styles.path}>{font.source_url}</p>}
           </div>
 
           <div className={styles.group}>
-            <h3 className={styles.groupTitle}>Tags</h3>
-            {allTags.length === 0 ? (
-              <p className={styles.hint}>Create tags in the sidebar to organise fonts.</p>
+            <h3 className="eyebrow">File</h3>
+            {font.source === 'local' ? (
+              <span className={styles.fileActions}>
+                <Button variant="secondary" size="md" onClick={() => { const p = localFontPaths(font)[0]; if (p) window.api.font.reveal(p) }}>
+                  <FontAwesomeIcon icon={faFolderOpen} /> Show in Finder
+                </Button>
+              </span>
             ) : (
-              <div className={styles.tagList}>
-                {allTags.map(tag => (
-                  <TagPill key={tag.id} label={tag.label} colour={tag.colour} active={assigned.has(tag.id)} onClick={() => toggleTag(tag)} />
-                ))}
-              </div>
+              <span className={styles.fileActions}>
+                <Button variant="secondary" size="md" onClick={() => { void window.api.font.downloadGoogle(font.family, weights) }}>
+                  <FontAwesomeIcon icon={faDownload} /> Download font file
+                </Button>
+                <Button variant="ghost" size="md" onClick={() => window.open(`https://fonts.google.com/specimen/${font.family.replace(/ /g, '+')}`, '_blank')}>
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} /> View on Google Fonts
+                </Button>
+              </span>
             )}
+          </div>
+
+          <div className={styles.group}>
+            <h3 className="eyebrow">Projects</h3>
+            <TagSelect allTags={allTags} selectedIds={assigned} onToggle={toggleTag} onCreateNew={(label) => { setNewTagLabel(label); setTagModalOpen(true) }} />
           </div>
 
           <div className={styles.footer}>
@@ -126,6 +137,8 @@ export function FontDrawer({ font, onClose, onToggleFavourite, onDelete }: FontD
           </div>
         </div>
       )}
+
+      <TagModal open={tagModalOpen} mode="create" initial={{ label: newTagLabel }} onSubmit={createTag} onClose={() => setTagModalOpen(false)} />
     </Drawer>
   )
 }

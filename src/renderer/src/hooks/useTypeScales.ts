@@ -5,9 +5,8 @@ export function useTypeScales(): {
   scales: TypeScale[]
   stepsByScale: Record<number, TypeScaleStep[]>
   create: (name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]) => Promise<TypeScale>
-  setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
+  rename: (id: number, name: string) => Promise<void>
   remove: (id: number) => Promise<void>
-  updateStep: (scaleId: number, stepId: number, size: number, weight: number, lineHeight: string, letterSpacing: string) => Promise<void>
   refresh: () => Promise<void>
 } {
   const [scales, setScales] = useState<TypeScale[]>([])
@@ -30,9 +29,9 @@ export function useTypeScales(): {
     return ts
   }, [refresh])
 
-  const setFavourite = useCallback(async (id: number, favourite: 0 | 1): Promise<void> => {
-    await window.api.typeScale.updateFavourite(id, favourite)
-    setScales(prev => prev.map(s => (s.id === id ? { ...s, favourite } : s)))
+  const rename = useCallback(async (id: number, name: string): Promise<void> => {
+    await window.api.typeScale.updateName(id, name)
+    setScales(prev => prev.map(s => (s.id === id ? { ...s, name } : s)))
   }, [])
 
   const remove = useCallback(async (id: number): Promise<void> => {
@@ -40,13 +39,5 @@ export function useTypeScales(): {
     setScales(prev => prev.filter(s => s.id !== id))
   }, [])
 
-  const updateStep = useCallback(async (scaleId: number, stepId: number, size: number, weight: number, lineHeight: string, letterSpacing: string): Promise<void> => {
-    await window.api.typeScaleStep.update(stepId, size, weight, lineHeight, letterSpacing)
-    setStepsByScale(prev => ({
-      ...prev,
-      [scaleId]: (prev[scaleId] ?? []).map(s => (s.id === stepId ? { ...s, size, weight, line_height: lineHeight, letter_spacing: letterSpacing } : s)),
-    }))
-  }, [])
-
-  return { scales, stepsByScale, create, setFavourite, remove, updateStep, refresh }
+  return { scales, stepsByScale, create, rename, remove, refresh }
 }

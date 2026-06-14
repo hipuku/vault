@@ -1,15 +1,18 @@
-import { app, BrowserWindow, ipcMain, clipboard, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, clipboard, shell, dialog, nativeImage } from 'electron'
 import { join } from 'path'
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import { is } from '@electron-toolkit/utils'
 import * as colourQueries from './db/queries/colour'
 import * as fontQueries from './db/queries/font'
 import { getGoogleFonts } from './lib/googleFonts'
+import { copyFontFiles } from './lib/fontStorage'
+import { listInstalledFonts } from './lib/installedFonts'
 import * as paletteQueries from './db/queries/palette'
 import * as typeScaleQueries from './db/queries/type-scale'
 import * as tagQueries from './db/queries/tag'
-import { generateLightnessScale } from '../shared/lib/lightnessScale'
-import type { AssetType, TypeScaleStepInput } from '../shared/types'
+import { generateTonalSystem } from '../shared/lib/tonalSystem'
+import { generateExpressiveSet } from '../shared/lib/expressiveSet'
+import type { AssetType, TypeScaleStepInput, FillStrategy, RampName, LocalFontFile } from '../shared/types'
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -54,21 +57,56 @@ ipcMain.handle('colour:update-name', (_e, id: number, name: string) =>
 ipcMain.handle('colour:update-favourite', (_e, id: number, favourite: 0 | 1) =>
   colourQueries.updateColourFavourite(id, favourite)
 )
-ipcMain.handle('colour:delete', (_e, id: number) => colourQueries.deleteColour(id))
+ipcMain.handle('colour:palettes-using', (_e, id: number) => colourQueries.palettesUsingColour(id))
+ipcMain.handle('colour:delete', (_e, id: number) => {
+  // A colour used to build a palette cannot be deleted (it anchors swatches).
+  const using = colourQueries.palettesUsingColour(id)
+  if (using.length > 0) {
+    throw new Error(`In use by ${using.length} palette${using.length === 1 ? '' : 's'}`)
+  }
+  return colourQueries.deleteColour(id)
+})
 
 // ── Fonts ─────────────────────────────────────────────────────────────────────
 
 ipcMain.handle('font:add-google', (_e, family: string, category: string, weights: string) =>
   fontQueries.addGoogleFont(family, category, weights)
 )
-ipcMain.handle('font:add-local', (_e, family: string, category: string, sourceUrl: string) =>
-  fontQueries.addLocalFont(family, category, sourceUrl)
-)
+ipcMain.handle('font:add-local', async (_e, family: string, files: LocalFontFile[]) => {
+  // Copy the bytes into app storage so the vault owns them (no broken paths).
+  const copied = await copyFontFiles(files)
+  return fontQueries.addLocalFont(family, copied)
+})
+ipcMain.handle('font:list-installed', () => listInstalledFonts())
+ipcMain.handle('font:reveal', (_e, path: string) => shell.showItemInFolder(path))
+ipcMain.handle('font:download-google', async (_e, family: string, weights: string[]) => {
+  const fam = family.trim().replace(/\s+/g, '+')
+  const wght = [...new Set(weights)].sort((a, b) => Number(a) - Number(b)).join(';')
+  const cssUrl = `https://fonts.googleapis.com/css2?family=${fam}:wght@${wght}&display=swap`
+  // A desktop UA makes Google serve woff2 (and emit the file URL we want).
+  const ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  const css = await (await fetch(cssUrl, { headers: { 'User-Agent': ua } })).text()
+  const match = css.match(/url\((https:[^)]+\.woff2)\)/)
+  if (!match) throw new Error('No downloadable file found for this font.')
+  const bytes = Buffer.from(await (await fetch(match[1])).arrayBuffer())
+  const { canceled, filePath } = await dialog.showSaveDialog({ defaultPath: `${fam.replace(/\+/g, '')}.woff2` })
+  if (canceled || !filePath) return false
+  await writeFile(filePath, bytes)
+  return true
+})
 ipcMain.handle('font:list', () => fontQueries.listFonts())
 ipcMain.handle('font:update-favourite', (_e, id: number, favourite: 0 | 1) =>
   fontQueries.updateFontFavourite(id, favourite)
 )
-ipcMain.handle('font:delete', (_e, id: number) => fontQueries.deleteFont(id))
+ipcMain.handle('font:scales-using', (_e, id: number) => fontQueries.typeScalesUsingFont(id))
+ipcMain.handle('font:delete', (_e, id: number) => {
+  // A font used by a type scale cannot be deleted (it anchors heading/body roles).
+  const using = fontQueries.typeScalesUsingFont(id)
+  if (using.length > 0) {
+    throw new Error(`In use by ${using.length} type scale${using.length === 1 ? '' : 's'}`)
+  }
+  return fontQueries.deleteFont(id)
+})
 ipcMain.handle('font:google-list', () => getGoogleFonts())
 ipcMain.handle('font:read-file', async (_e, path: string) => {
   const buf = await readFile(path)
@@ -77,38 +115,27 @@ ipcMain.handle('font:read-file', async (_e, path: string) => {
 
 // ── Palettes ──────────────────────────────────────────────────────────────────
 
-ipcMain.handle('palette:create-from-hex', (_e, name: string, baseHex: string, swatches: string[]) =>
-  paletteQueries.createPaletteFromHex(name, baseHex, swatches)
-)
-ipcMain.handle('palette:create-from-library', (_e, name: string, hexList: string[]) =>
-  paletteQueries.createPaletteFromLibrary(name, hexList)
-)
-ipcMain.handle('palette:list', () => paletteQueries.listPalettes())
-ipcMain.handle('palette:update-favourite', (_e, id: number, favourite: 0 | 1) =>
-  paletteQueries.updatePaletteFavourite(id, favourite)
-)
-ipcMain.handle('palette:duplicate', (_e, id: number) => paletteQueries.duplicatePalette(id))
-ipcMain.handle('palette:delete', (_e, id: number) => paletteQueries.deletePalette(id))
-ipcMain.handle('palette:regenerate', (_e, id: number) => {
-  const swatches = paletteQueries.listSwatches(id)
-  const lockedHexes = swatches.map(s => (s.locked ? s.hex : null))
-  const palette = paletteQueries.listPalettes().find(p => p.id === id)
-  const baseHex = palette?.base_hex || swatches[4]?.hex || '#6b7280'
-  const newScale = generateLightnessScale(baseHex, { steps: swatches.length })
-  const merged = newScale.map((hex, i) => lockedHexes[i] ?? hex)
-  return paletteQueries.regeneratePalette(id, merged)
+ipcMain.handle('palette:create-tonal', (_e, name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => {
+  const swatches = generateTonalSystem(seedHex, ramps, seedColourId)
+  return paletteQueries.createTonalPalette(name, seedHex, seedColourId, ramps, swatches)
 })
+ipcMain.handle('palette:create-expressive', (_e, name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy) => {
+  const swatches = generateExpressiveSet(seeds, targetCount, strategy)
+  return paletteQueries.createExpressivePalette(name, { kind: 'expressive', seeds, targetCount, strategy }, swatches)
+})
+ipcMain.handle('palette:list', () => paletteQueries.listPalettes())
+ipcMain.handle('palette:update-name', (_e, id: number, name: string) =>
+  paletteQueries.updatePaletteName(id, name)
+)
+ipcMain.handle('palette:delete', (_e, id: number) => paletteQueries.deletePalette(id))
 
 // ── Swatches ──────────────────────────────────────────────────────────────────
 
 ipcMain.handle('swatch:list', (_e, paletteId: number) =>
   paletteQueries.listSwatches(paletteId)
 )
-ipcMain.handle('swatch:update-label', (_e, id: number, label: string) =>
-  paletteQueries.updateSwatchLabel(id, label)
-)
-ipcMain.handle('swatch:update-locked', (_e, id: number, locked: 0 | 1) =>
-  paletteQueries.updateSwatchLocked(id, locked)
+ipcMain.handle('swatch:promote', (_e, id: number, name: string) =>
+  paletteQueries.promoteSwatch(id, name)
 )
 
 // ── Type Scales ───────────────────────────────────────────────────────────────
@@ -119,17 +146,12 @@ ipcMain.handle(
     typeScaleQueries.createTypeScale(name, headingFontId, bodyFontId, baseSize, ratio, steps)
 )
 ipcMain.handle('type-scale:list', () => typeScaleQueries.listTypeScales())
-ipcMain.handle('type-scale:update-favourite', (_e, id: number, favourite: 0 | 1) =>
-  typeScaleQueries.updateTypeScaleFavourite(id, favourite)
+ipcMain.handle('type-scale:update-name', (_e, id: number, name: string) =>
+  typeScaleQueries.updateTypeScaleName(id, name)
 )
 ipcMain.handle('type-scale:delete', (_e, id: number) => typeScaleQueries.deleteTypeScale(id))
 ipcMain.handle('type-scale-step:list', (_e, typeScaleId: number) =>
   typeScaleQueries.listTypeScaleSteps(typeScaleId)
-)
-ipcMain.handle(
-  'type-scale-step:update',
-  (_e, id: number, size: number, weight: number, lineHeight: string, letterSpacing: string) =>
-    typeScaleQueries.updateTypeScaleStep(id, size, weight, lineHeight, letterSpacing)
 )
 
 // ── Tags ──────────────────────────────────────────────────────────────────────
@@ -167,6 +189,11 @@ ipcMain.handle('clipboard:write', (_e, text: string) => {
 // ── App lifecycle ─────────────────────────────────────────────────────────────
 
 app.whenReady().then(() => {
+  // Dev dock icon (packaged builds get it from electron-builder's build.mac.icon).
+  if (process.platform === 'darwin' && app.dock) {
+    const icon = nativeImage.createFromPath(join(app.getAppPath(), 'resources', 'icon.png'))
+    if (!icon.isEmpty()) app.dock.setIcon(icon)
+  }
   createWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

@@ -35,22 +35,22 @@ export function TagView({ tagId }: { tagId: number }): React.ReactElement {
         title={
           <span className={styles.header}>
             {tag && <span className={styles.dot} style={{ background: tag.colour }} />}
-            {tag?.label ?? 'Tag'}
+            {tag?.label ?? 'Project'}
           </span>
         }
       />
       <div className="scroll-area">
         {total === 0 ? (
           <EmptyState
-            title={`Nothing tagged "${tag?.label ?? ''}" yet`}
-            description="Assign this tag to colours, fonts, palettes, or type scales from their drawers."
+            title={`Nothing in "${tag?.label ?? ''}" yet`}
+            description="Add colours, fonts, palettes, or type scales to this project from their drawers."
           />
         ) : (
           <div className={styles.groups}>
-            <ColorsPage activeTagId={tagId} embedded={{ title: 'Colors' }} />
-            <FontsPage activeTagId={tagId} embedded={{ title: 'Fonts' }} />
             <PalettesPage activeTagId={tagId} embedded={{ title: 'Palettes' }} />
             <TypeScalesPage activeTagId={tagId} embedded={{ title: 'Type Scales' }} />
+            <ColorsPage activeTagId={tagId} embedded={{ title: 'Colors' }} />
+            <FontsPage activeTagId={tagId} embedded={{ title: 'Fonts' }} />
           </div>
         )}
       </div>

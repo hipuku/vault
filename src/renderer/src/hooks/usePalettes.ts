@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { Palette, Swatch, Tag } from '@shared/types'
+import type { Colour, Palette, RampName, FillStrategy, Swatch, Tag } from '@shared/types'
 
 interface PaletteData {
   palettes: Palette[]
@@ -8,12 +8,11 @@ interface PaletteData {
 }
 
 export function usePalettes(): PaletteData & {
-  createFromHex: (name: string, baseHex: string, swatches: string[]) => Promise<Palette>
-  createFromLibrary: (name: string, hexList: string[]) => Promise<Palette>
-  duplicate: (id: number) => Promise<void>
-  setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
+  createTonal: (name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => Promise<Palette>
+  createExpressive: (name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy) => Promise<Palette>
+  rename: (id: number, name: string) => Promise<void>
   remove: (id: number) => Promise<void>
-  updateSwatchLabel: (paletteId: number, swatchId: number, label: string) => Promise<void>
+  promoteSwatch: (paletteId: number, swatchId: number, name: string, onColoursRefresh?: () => void) => Promise<Colour>
   refresh: () => Promise<void>
 } {
   const [palettes, setPalettes] = useState<Palette[]>([])
@@ -33,26 +32,21 @@ export function usePalettes(): PaletteData & {
 
   useEffect(() => { refresh() }, [refresh])
 
-  const createFromHex = useCallback(async (name: string, baseHex: string, swatches: string[]): Promise<Palette> => {
-    const p = await window.api.palette.createFromHex(name, baseHex, swatches)
+  const createTonal = useCallback(async (name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]): Promise<Palette> => {
+    const p = await window.api.palette.createTonal(name, seedHex, seedColourId, ramps)
     await refresh()
     return p
   }, [refresh])
 
-  const createFromLibrary = useCallback(async (name: string, hexList: string[]): Promise<Palette> => {
-    const p = await window.api.palette.createFromLibrary(name, hexList)
+  const createExpressive = useCallback(async (name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy): Promise<Palette> => {
+    const p = await window.api.palette.createExpressive(name, seeds, targetCount, strategy)
     await refresh()
     return p
   }, [refresh])
 
-  const duplicate = useCallback(async (id: number): Promise<void> => {
-    await window.api.palette.duplicate(id)
-    await refresh()
-  }, [refresh])
-
-  const setFavourite = useCallback(async (id: number, favourite: 0 | 1): Promise<void> => {
-    await window.api.palette.updateFavourite(id, favourite)
-    setPalettes(prev => prev.map(p => (p.id === id ? { ...p, favourite } : p)))
+  const rename = useCallback(async (id: number, name: string): Promise<void> => {
+    await window.api.palette.updateName(id, name)
+    setPalettes(prev => prev.map(p => (p.id === id ? { ...p, name } : p)))
   }, [])
 
   const remove = useCallback(async (id: number): Promise<void> => {
@@ -60,16 +54,18 @@ export function usePalettes(): PaletteData & {
     setPalettes(prev => prev.filter(p => p.id !== id))
   }, [])
 
-  const updateSwatchLabel = useCallback(async (paletteId: number, swatchId: number, label: string): Promise<void> => {
-    await window.api.swatch.updateLabel(swatchId, label)
+  const promoteSwatch = useCallback(async (paletteId: number, swatchId: number, name: string, onColoursRefresh?: () => void): Promise<Colour> => {
+    const colour = await window.api.swatch.promote(swatchId, name)
     setSwatches(prev => ({
       ...prev,
-      [paletteId]: (prev[paletteId] ?? []).map(s => (s.id === swatchId ? { ...s, label } : s)),
+      [paletteId]: (prev[paletteId] ?? []).map(s => (s.id === swatchId ? { ...s, colour_id: colour.id } : s)),
     }))
+    onColoursRefresh?.()
+    return colour
   }, [])
 
   return {
     palettes, swatchesByPalette, tagsByPalette,
-    createFromHex, createFromLibrary, duplicate, setFavourite, remove, updateSwatchLabel, refresh,
+    createTonal, createExpressive, rename, remove, promoteSwatch, refresh,
   }
 }

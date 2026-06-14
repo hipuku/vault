@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import type { Palette } from '@shared/types'
+import type { Colour, Palette } from '@shared/types'
 import { Toolbar } from '../primitives/Toolbar/Toolbar'
 import { EmptyState } from '../primitives/EmptyState/EmptyState'
 import { SectionGrid } from '../primitives/SectionGrid/SectionGrid'
 import { ConfirmDialog } from '../primitives/ConfirmDialog/ConfirmDialog'
 import { Button } from '../atoms/Button/Button'
-import { FavouriteToggle } from '../domain/FavouriteToggle/FavouriteToggle'
 import { PaletteCard } from '../domain/PaletteCard/PaletteCard'
-import { PaletteDrawer } from '../domain/PaletteDrawer/PaletteDrawer'
-import { PaletteModal } from '../domain/PaletteModal/PaletteModal'
+import { PaletteCreate } from '../domain/PaletteCreate/PaletteCreate'
+import { PaletteView } from '../domain/PaletteView/PaletteView'
 import { TagGroup } from '../domain/TagGroup/TagGroup'
 import { usePalettes } from '../hooks/usePalettes'
-import { useDrawer } from '../hooks/useDrawer'
 import { useConfirm } from '../hooks/useConfirm'
 
 interface PalettesPageProps {
@@ -22,42 +20,58 @@ interface PalettesPageProps {
 }
 
 export function PalettesPage({ activeTagId, embedded }: PalettesPageProps): React.ReactElement | null {
-  const { palettes, swatchesByPalette, tagsByPalette, createFromHex, createFromLibrary, duplicate, setFavourite, remove, updateSwatchLabel, refresh } = usePalettes()
-  const [favOnly, setFavOnly] = useState(false)
+  const {
+    palettes, swatchesByPalette,
+    createTonal, createExpressive,
+    rename, remove, promoteSwatch, refresh,
+  } = usePalettes()
+
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
-  const [modalOpen, setModalOpen] = useState(false)
-  const drawer = useDrawer<Palette>()
+  const [view, setView] = useState<'list' | 'create' | 'view'>('list')
+  const [viewId, setViewId] = useState<number | null>(null)
+  const [library, setLibrary] = useState<Colour[]>([])
   const confirm = useConfirm()
+
+  useEffect(() => { window.api.colour.list().then(setLibrary) }, [])
+
+  const openCreate = useCallback((): void => {
+    window.api.colour.list().then(setLibrary)
+    setView('create')
+  }, [])
+
+  const openView = useCallback((p: Palette): void => { setViewId(p.id); setView('view') }, [])
+  const backToList = useCallback((): void => { setView('list'); setViewId(null); refresh() }, [refresh])
 
   useEffect(() => {
     if (activeTagId == null) { setTagIds(null); return }
     let live = true
     window.api.tag.listAssetIds('palette', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
     return () => { live = false }
-  }, [activeTagId, drawer.open])
+  }, [activeTagId, view])
 
   const filtered = useMemo(
     () => palettes.filter(p => {
-      if (favOnly && !p.favourite) return false
       if (tagIds && !tagIds.has(p.id)) return false
       return true
     }),
-    [palettes, favOnly, tagIds]
+    [palettes, tagIds]
   )
 
   async function handleDelete(palette: Palette): Promise<void> {
     const ok = await confirm.confirm({
       title: `Delete "${palette.name}"?`,
-      message: 'This palette and its swatches will be removed. This can’t be undone.',
+      message: 'This palette and its swatches will be removed. This cannot be undone.',
       confirmLabel: 'Delete palette',
     })
     if (ok) {
       await remove(palette.id)
-      drawer.closeDrawer()
+      setView('list'); setViewId(null)
     }
   }
 
-  const drawerPalette = drawer.item ? palettes.find(p => p.id === drawer.item!.id) ?? null : null
+  const handlePromote = useCallback(async (paletteId: number, swatchId: number, name: string): Promise<unknown> => {
+    return promoteSwatch(paletteId, swatchId, name, () => { window.api.colour.list().then(setLibrary) })
+  }, [promoteSwatch])
 
   const grid = (
     <SectionGrid>
@@ -66,37 +80,21 @@ export function PalettesPage({ activeTagId, embedded }: PalettesPageProps): Reac
           key={palette.id}
           palette={palette}
           swatches={swatchesByPalette[palette.id] ?? []}
-          tags={tagsByPalette[palette.id] ?? []}
-          onOpen={drawer.openDrawer}
-          onDuplicate={duplicate}
-          onDelete={handleDelete}
-          onToggleFavourite={setFavourite}
+          onOpen={openView}
         />
       ))}
     </SectionGrid>
   )
 
   const overlays = (
-    <>
-      <PaletteDrawer
-        palette={drawerPalette}
-        swatches={drawerPalette ? swatchesByPalette[drawerPalette.id] ?? [] : []}
-        onClose={() => { drawer.closeDrawer(); refresh() }}
-        onToggleFavourite={setFavourite}
-        onDuplicate={async id => { await duplicate(id) }}
-        onDelete={handleDelete}
-        onLabelChange={updateSwatchLabel}
-      />
-      <PaletteModal open={modalOpen} onClose={() => setModalOpen(false)} onCreateFromHex={createFromHex} onCreateFromLibrary={createFromLibrary} />
-      <ConfirmDialog
-        open={confirm.isOpen}
-        title={confirm.title}
-        message={confirm.message}
-        confirmLabel={confirm.confirmLabel}
-        onConfirm={confirm.onConfirm}
-        onCancel={confirm.onCancel}
-      />
-    </>
+    <ConfirmDialog
+      open={confirm.isOpen}
+      title={confirm.title}
+      message={confirm.message}
+      confirmLabel={confirm.confirmLabel}
+      onConfirm={confirm.onConfirm}
+      onCancel={confirm.onCancel}
+    />
   )
 
   if (embedded) {
@@ -109,31 +107,59 @@ export function PalettesPage({ activeTagId, embedded }: PalettesPageProps): Reac
     )
   }
 
+  if (view === 'create') {
+    return (
+      <PaletteCreate
+        library={library}
+        onCancel={backToList}
+        onCreateTonal={createTonal}
+        onCreateExpressive={createExpressive}
+      />
+    )
+  }
+
+  if (view === 'view') {
+    const p = palettes.find(x => x.id === viewId)
+    if (p) {
+      return (
+        <>
+          <PaletteView
+            palette={p}
+            swatches={swatchesByPalette[p.id] ?? []}
+            onBack={backToList}
+            onRename={rename}
+            onDelete={handleDelete}
+            onPromote={handlePromote}
+          />
+          {overlays}
+        </>
+      )
+    }
+    // palette no longer exists (e.g. deleted) — fall back to the list
+  }
+
   return (
     <>
       <Toolbar
         title="Palettes"
         actions={
-          <>
-            <Button variant="primary" size="md" onClick={() => setModalOpen(true)}>
-              <FontAwesomeIcon icon={faPlus} />
-              New palette
-            </Button>
-            <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
-          </>
+          <Button variant="primary" size="md" onClick={openCreate}>
+            <FontAwesomeIcon icon={faPlus} />
+            New palette
+          </Button>
         }
       />
       <div className="scroll-area">
         {palettes.length === 0 ? (
           <EmptyState
-            title="Build a palette from a hex or your colour library"
-            description="Generate a 10-step perceptual scale, or compose swatches from saved colours."
-            action={<Button variant="primary" size="md" onClick={() => setModalOpen(true)}><FontAwesomeIcon icon={faPlus} />New palette</Button>}
+            title="Build a tonal system or expressive set"
+            description="Generate a 10-step perceptual ramp, or compose multi-hue palettes from your library colours."
+            action={<Button variant="primary" size="md" onClick={openCreate}><FontAwesomeIcon icon={faPlus} />New palette</Button>}
           />
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No palettes match this filter"
-            description={favOnly ? 'No favourites yet — star a palette to see it here.' : 'No palettes carry this tag yet.'}
+            description="No palettes in this project yet."
           />
         ) : grid}
       </div>

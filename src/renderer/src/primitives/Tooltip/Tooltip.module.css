@@ -1,0 +1,29 @@
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Positioned via a portal on document.body; coordinates + transform are set
+   inline from the trigger's bounding rect (see Tooltip.tsx). */
+.bubble {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  width: max-content;
+  max-width: 220px;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface-inverse);
+  color: var(--color-ink-inverse);
+  font-family: var(--font-sans);
+  font-size: var(--text-12);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  animation: fade var(--duration-fast) var(--ease-move);
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { Font, GoogleFontMeta } from '@shared/types'
+import type { Font, GoogleFontMeta, LocalFontFile } from '@shared/types'
 import { ensureFontLoaded } from '../lib/fontLoader'
 
 export function useFonts(): {
   fonts: Font[]
   addGoogle: (meta: GoogleFontMeta) => Promise<Font>
-  addLocal: (family: string, category: string, path: string) => Promise<Font>
+  addLocal: (family: string, files: LocalFontFile[]) => Promise<Font>
   setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
   removeFont: (id: number) => Promise<void>
   refresh: () => Promise<void>
@@ -27,8 +27,8 @@ export function useFonts(): {
     return f
   }, [])
 
-  const addLocal = useCallback(async (family: string, category: string, path: string): Promise<Font> => {
-    const f = await window.api.font.addLocal(family, category, path)
+  const addLocal = useCallback(async (family: string, files: LocalFontFile[]): Promise<Font> => {
+    const f = await window.api.font.addLocal(family, files)
     await ensureFontLoaded(f)
     setFonts(prev => [f, ...prev])
     return f

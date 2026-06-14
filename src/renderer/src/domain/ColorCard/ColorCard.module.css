@@ -1,10 +1,15 @@
 .card {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding: 0;
   border: var(--border-width) solid var(--color-border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--color-surface-default);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
   transition: box-shadow var(--duration-normal) var(--ease-move);
 }
 
@@ -15,23 +20,45 @@
 .swatch {
   position: relative;
   height: 88px;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: block;
   width: 100%;
 }
 
-.fav {
+/* 10-shade lightness ramp, revealed on card hover */
+.shades {
   position: absolute;
-  top: var(--space-2);
-  left: var(--space-2);
-  font-size: var(--text-12);
-  opacity: 0.9;
+  inset: 0;
+  display: flex;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-move);
+}
+
+.card:hover .shades {
+  opacity: 1;
+}
+
+.shade {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+/* "you are here" pin on the strip the colour's lightness maps to */
+.shadeActive::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-2);
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-default);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
 }
 
 .edit {
   position: absolute;
+  z-index: 1;
   top: var(--space-2);
   right: var(--space-2);
   width: 24px;
@@ -41,20 +68,36 @@
   justify-content: center;
   font-size: var(--text-12);
   border-radius: var(--radius-full);
+  /* Always light: the 10-shade ramp revealed on hover is dark at this corner;
+     drop-shadow keeps it legible on the occasional pale swatch. */
+  color: #fff;
   opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-move), background var(--duration-normal) var(--ease-move);
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
+  transition: opacity var(--duration-normal) var(--ease-move);
 }
 
-.swatch:hover .edit {
+.card:hover .edit {
   opacity: 0.9;
-  background: oklch(from currentColor l c h / 0.12);
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
   padding: var(--space-3);
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.favInline {
+  color: var(--mango-500);
+  font-size: var(--text-12);
+  flex-shrink: 0;
 }
 
 .name {
@@ -64,6 +107,12 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .hex {

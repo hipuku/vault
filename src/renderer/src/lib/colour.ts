@@ -3,6 +3,7 @@ import { nearestNames } from './colourNames'
 
 const toRgb = converter('rgb')
 const toHsl = converter('hsl')
+const toOklch = converter('oklch')
 const deltaE = differenceCiede2000()
 
 export const WHITE = '#ffffff'
@@ -69,6 +70,19 @@ export function contrast(hex: string, against: string): ContrastResult {
 /** Whether black text reads better than white on this background. */
 export function prefersDarkText(hex: string): boolean {
   return wcagContrast(hex, BLACK) >= wcagContrast(hex, WHITE)
+}
+
+/** Index of the shade whose OKLCH lightness is closest to `hex` — i.e. where the
+ *  colour "falls" on a lightness ramp. */
+export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): number {
+  const l = toOklch(hex)?.l ?? 0
+  let best = 0
+  let bestDelta = Infinity
+  shades.forEach((s, i) => {
+    const delta = Math.abs((toOklch(s)?.l ?? 0) - l)
+    if (delta < bestDelta) { bestDelta = delta; best = i }
+  })
+  return best
 }
 
 // ── Nearest name (meodai dataset, two-pass — see colourNames.ts) ───────────────

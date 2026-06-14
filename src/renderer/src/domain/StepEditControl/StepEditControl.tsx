@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
+import { IconButton } from '../../atoms/IconButton/IconButton'
+import { Select } from '../../primitives/Select/Select'
 import styles from './StepEditControl.module.css'
 
 interface StepEditControlProps {
@@ -28,31 +30,37 @@ export function StepEditControl({ size, weight, lineHeight, letterSpacing, onCha
 
   return (
     <div className={styles.root} ref={ref}>
-      <button type="button" className={styles.trigger} onClick={() => setOpen(o => !o)} aria-label="Edit step">
+      <IconButton label="Edit step" size="sm" onClick={() => setOpen(o => !o)} aria-expanded={open}>
         <FontAwesomeIcon icon={faSliders} />
-      </button>
+      </IconButton>
       {open && (
         <div className={styles.popover}>
           <label className={styles.field}>
-            <span>Size</span>
-            <div className={styles.inputUnit}>
-              <input type="number" min={6} max={200} value={size} onChange={e => onChange(Number(e.target.value) || size, weight, lineHeight, letterSpacing)} className={styles.input} />
+            <span className={styles.fieldLabel}>Size</span>
+            <span className={styles.unitField}>
+              <input type="number" min={6} max={200} value={size} onChange={e => onChange(Number(e.target.value) || size, weight, lineHeight, letterSpacing)} className={styles.unitInput} />
               <span className={styles.unit}>px</span>
-            </div>
+            </span>
+          </label>
+          <div className={styles.field}>
+            <span className={styles.fieldLabel}>Weight</span>
+            <span className={styles.controlBox}>
+              <Select
+                block
+                ariaLabel="Weight"
+                value={String(weight)}
+                options={WEIGHTS.map(w => ({ key: String(w), label: String(w) }))}
+                onChange={k => onChange(size, Number(k), lineHeight, letterSpacing)}
+              />
+            </span>
+          </div>
+          <label className={styles.field}>
+            <span className={styles.fieldLabel}>Line height</span>
+            <input value={lineHeight} onChange={e => onChange(size, weight, e.target.value, letterSpacing)} className={styles.control} />
           </label>
           <label className={styles.field}>
-            <span>Weight</span>
-            <select value={weight} onChange={e => onChange(size, Number(e.target.value), lineHeight, letterSpacing)} className={styles.input}>
-              {WEIGHTS.map(w => <option key={w} value={w}>{w}</option>)}
-            </select>
-          </label>
-          <label className={styles.field}>
-            <span>Line height</span>
-            <input value={lineHeight} onChange={e => onChange(size, weight, e.target.value, letterSpacing)} className={styles.input} />
-          </label>
-          <label className={styles.field}>
-            <span>Tracking</span>
-            <input value={letterSpacing} onChange={e => onChange(size, weight, lineHeight, e.target.value)} className={styles.input} />
+            <span className={styles.fieldLabel}>Tracking</span>
+            <input value={letterSpacing} onChange={e => onChange(size, weight, lineHeight, e.target.value)} className={styles.control} />
           </label>
         </div>
       )}

@@ -1,6 +1,34 @@
 export type Section = 'colours' | 'fonts' | 'palettes' | 'type_scales'
 export type AssetType = 'colour' | 'font' | 'palette' | 'type_scale'
 
+export type PaletteKind = 'tonal' | 'expressive'
+export type RampName = 'primary' | 'neutral' | 'success' | 'warning' | 'error'
+export type FillStrategy = 'cohesive-distinct' | 'interpolate' | 'harmony'
+
+export interface TonalParams {
+  kind: 'tonal'
+  seedHex: string
+  seedColourId: number | null
+  ramps: RampName[]
+}
+
+export interface ExpressiveParams {
+  kind: 'expressive'
+  seeds: Array<{ hex: string; colourId: number | null }>
+  targetCount: number
+  strategy: FillStrategy
+}
+
+export type GenParams = TonalParams | ExpressiveParams
+
+export interface SwatchInput {
+  hex: string
+  label: string
+  group_key: string
+  colour_id: number | null
+  sort_order: number
+}
+
 export interface Colour {
   id: number
   name: string
@@ -20,6 +48,23 @@ export interface Font {
   created_at: string
 }
 
+// One uploaded local font file mapped to a weight + style within a family.
+export interface LocalFontFile {
+  path: string
+  weight: number
+  style: 'normal' | 'italic'
+}
+
+// A font installed on the machine (Font Book), grouped by family.
+export interface InstalledFace {
+  path: string
+  style: string
+}
+export interface InstalledFamily {
+  family: string
+  faces: InstalledFace[]
+}
+
 // A Google Fonts catalogue entry (from the metadata endpoint).
 export interface GoogleFontMeta {
   family: string
@@ -31,7 +76,9 @@ export interface GoogleFontMeta {
 export interface Palette {
   id: number
   name: string
+  kind: PaletteKind
   base_hex: string
+  gen_params: string
   favourite: 0 | 1
   created_at: string
   updated_at: string
@@ -42,14 +89,22 @@ export interface Swatch {
   palette_id: number
   hex: string
   label: string
+  group_key: string
+  colour_id: number | null
   sort_order: number
   locked: 0 | 1
   created_at: string
 }
 
+// Step names span both presets — `markup` (HTML tags) and `semantic` (product roles).
 export type TypeScaleStepName =
-  | 'Display' | 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6'
+  // markup
+  | 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6' | 'Paragraph' | 'Small'
+  // semantic
+  | 'Display' | 'Headline' | 'Title'
   | 'Body Large' | 'Body' | 'Body Small' | 'Caption' | 'Label'
+
+export type TypeScaleKind = 'markup' | 'semantic'
 
 export interface TypeScale {
   id: number
@@ -104,42 +159,43 @@ export interface VaultApi {
     list:             () => Promise<Colour[]>
     updateName:       (id: number, name: string) => Promise<void>
     updateFavourite:  (id: number, favourite: 0 | 1) => Promise<void>
+    palettesUsing:    (id: number) => Promise<Array<{ id: number; name: string }>>
     delete:           (id: number) => Promise<void>
   }
   font: {
     addGoogle:        (family: string, category: string, weights: string) => Promise<Font>
-    addLocal:         (family: string, category: string, sourceUrl: string) => Promise<Font>
+    addLocal:         (family: string, files: LocalFontFile[]) => Promise<Font>
     list:             () => Promise<Font[]>
     updateFavourite:  (id: number, favourite: 0 | 1) => Promise<void>
+    scalesUsing:      (id: number) => Promise<Array<{ id: number; name: string }>>
     delete:           (id: number) => Promise<void>
     googleList:       () => Promise<GoogleFontMeta[]>
+    listInstalled:    () => Promise<InstalledFamily[]>
+    reveal:           (path: string) => Promise<void>
+    downloadGoogle:   (family: string, weights: string[]) => Promise<boolean>
     readFile:         (path: string) => Promise<Uint8Array>
   }
   /** Resolve a dropped/selected File to its absolute path (Electron 33+ via webUtils). */
   getPathForFile: (file: File) => string
   palette: {
-    createFromHex:     (name: string, baseHex: string, swatches: string[]) => Promise<Palette>
-    createFromLibrary: (name: string, hexList: string[]) => Promise<Palette>
-    list:              () => Promise<Palette[]>
-    updateFavourite:   (id: number, favourite: 0 | 1) => Promise<void>
-    duplicate:         (id: number) => Promise<Palette>
-    delete:            (id: number) => Promise<void>
-    regenerate:        (id: number) => Promise<Swatch[]>
+    createTonal:      (name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => Promise<Palette>
+    createExpressive: (name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy) => Promise<Palette>
+    list:             () => Promise<Palette[]>
+    updateName:       (id: number, name: string) => Promise<void>
+    delete:           (id: number) => Promise<void>
   }
   swatch: {
-    list:         (paletteId: number) => Promise<Swatch[]>
-    updateLabel:  (id: number, label: string) => Promise<void>
-    updateLocked: (id: number, locked: 0 | 1) => Promise<void>
+    list:    (paletteId: number) => Promise<Swatch[]>
+    promote: (id: number, name: string) => Promise<Colour>
   }
   typeScale: {
     create:           (name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]) => Promise<TypeScale>
     list:             () => Promise<TypeScale[]>
-    updateFavourite:  (id: number, favourite: 0 | 1) => Promise<void>
+    updateName:       (id: number, name: string) => Promise<void>
     delete:           (id: number) => Promise<void>
   }
   typeScaleStep: {
     list:   (typeScaleId: number) => Promise<TypeScaleStep[]>
-    update: (id: number, size: number, weight: number, lineHeight: string, letterSpacing: string) => Promise<void>
   }
   tag: {
     create:         (label: string, colour: string) => Promise<TagWithCount>

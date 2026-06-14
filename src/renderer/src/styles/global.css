@@ -23,6 +23,19 @@ body {
   user-select: none;
 }
 
+/* Inputs inherit the app font; every placeholder shares one muted token so they
+   read identically across the app (raw <input>s otherwise fall back to the
+   browser default grey, and Firefox/Chrome dim placeholders differently). */
+input, textarea, select {
+  font-family: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-ink-disabled);
+  opacity: 1;
+}
+
 /* App shell */
 .app {
   display: flex;
@@ -78,6 +91,67 @@ body {
 *:focus-visible {
   outline: none;
   box-shadow: var(--shadow-focus);
+}
+
+/* ── Icon button — THE locked pattern for every icon-only button ───────────
+   Rest: transparent, muted icon. Hover: circular tinted background + stronger
+   icon. Compose a size modifier and (optionally) a tone modifier.
+   Reveal animations (slide/fade) belong on the wrapper, not here. */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-ink-tertiary);
+  border-radius: var(--radius-full);
+  transition:
+    background var(--duration-normal) var(--ease-move),
+    color var(--duration-normal) var(--ease-move);
+}
+.icon-btn:hover:not(:disabled) {
+  background: var(--color-surface-subtle);
+  color: var(--color-ink-secondary);
+}
+.icon-btn:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.icon-btn--sm { width: 24px; height: 24px; font-size: var(--text-12); }
+.icon-btn--xs { width: 20px; height: 20px; font-size: var(--text-11); }
+
+/* Tones (hover tint + colour) */
+.icon-btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary-default);
+}
+.icon-btn--danger:hover:not(:disabled) {
+  background: var(--color-error-subtle);
+  color: var(--color-error-default);
+}
+
+/* Favourite "on" state — gold icon, holds through hover */
+.icon-btn--star { color: var(--mango-500); }
+.icon-btn--star:hover:not(:disabled) {
+  background: var(--color-surface-subtle);
+  color: var(--mango-500);
+}
+
+/* ── Eyebrow — THE shared section/group label ───────────────────────────────
+   Uppercase, tracked, muted. Used for every section title (Projects, Contrast,
+   Weights, Quality, …). Spacing belongs on the wrapper, not here. */
+.eyebrow {
+  font-size: var(--type-label-sm-size);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-tertiary);
 }
 
 /* Reduced motion */

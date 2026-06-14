@@ -12,10 +12,11 @@ import { ColorCard } from '../domain/ColorCard/ColorCard'
 import { ColorDrawer } from '../domain/ColorDrawer/ColorDrawer'
 import { AddColorModal } from '../domain/AddColorModal/AddColorModal'
 import { TagGroup } from '../domain/TagGroup/TagGroup'
+import { ColorFilters } from '../domain/ColorFilters/ColorFilters'
 import { useColours } from '../hooks/useColours'
 import { useDrawer } from '../hooks/useDrawer'
 import { useConfirm } from '../hooks/useConfirm'
-import { sortColours, groupColours, SORT_OPTIONS, GROUP_OPTIONS, type SortKey, type GroupKey } from '../lib/colourSort'
+import { sortColours, groupColours, type SortKey, type GroupKey } from '../lib/colourSort'
 import { warmColourNames } from '../lib/colour'
 import styles from './ColorsPage.module.css'
 
@@ -40,6 +41,7 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
     for (const { hex, name } of list) await addColour(hex, name)
   }
 
+  // Sidebar tag (cross-section TagView / embedded) → constrains to one tag.
   useEffect(() => {
     if (activeTagId == null) { setTagIds(null); return }
     let live = true
@@ -62,6 +64,15 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
   )
 
   async function handleDelete(colour: Colour): Promise<void> {
+    const using = await window.api.colour.palettesUsing(colour.id)
+    if (using.length > 0) {
+      await confirm.confirm({
+        title: `Can’t delete “${colour.name}”`,
+        message: `It’s used to build ${using.length} palette${using.length === 1 ? '' : 's'} (${using.map(p => p.name).join(', ')}). Remove it from ${using.length === 1 ? 'that palette' : 'those palettes'} first.`,
+        confirmLabel: 'OK',
+      })
+      return
+    }
     const ok = await confirm.confirm({
       title: `Delete "${colour.name}"?`,
       message: 'This colour will be removed from your library. This can’t be undone.',
@@ -89,6 +100,7 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
     <>
       <ColorDrawer
         colour={drawerColour}
+        library={colours}
         onClose={drawer.closeDrawer}
         onRename={renameColour}
         onToggleFavourite={setFavourite}
@@ -130,12 +142,12 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
         title="Colors"
         actions={
           <>
-            <select className={styles.control} value={sortKey} onChange={e => setSortKey(e.target.value as SortKey)} aria-label="Sort">
-              {SORT_OPTIONS.map(o => <option key={o.key} value={o.key}>Sort: {o.label}</option>)}
-            </select>
-            <select className={styles.control} value={groupKey} onChange={e => setGroupKey(e.target.value as GroupKey)} aria-label="Group">
-              {GROUP_OPTIONS.map(o => <option key={o.key} value={o.key}>{o.label}</option>)}
-            </select>
+            <ColorFilters
+              sortKey={sortKey}
+              onSortChange={setSortKey}
+              groupKey={groupKey}
+              onGroupChange={setGroupKey}
+            />
             <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
             <Button variant="primary" size="md" onClick={() => setAddOpen(true)}>
               <FontAwesomeIcon icon={faPlus} />
@@ -154,7 +166,7 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No colours match this filter"
-            description={favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours carry this tag yet.'}
+            description={favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours in this project yet.'}
           />
         ) : (
           <div className={styles.groups}>{grids}</div>

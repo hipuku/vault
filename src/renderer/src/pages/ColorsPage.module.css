@@ -1,28 +1,3 @@
-.control {
-  height: 40px;
-  padding: 0 var(--space-4);
-  border-radius: var(--radius-full);
-  border: var(--border-width) solid var(--color-border-strong);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-secondary);
-  outline: none;
-  transition: border-color var(--duration-normal) var(--ease-move), color var(--duration-normal) var(--ease-move);
-}
-
-.control:hover {
-  border-color: var(--color-ink-tertiary);
-  color: var(--color-ink-primary);
-}
-
-.control:focus {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
-}
-
 .groups {
   display: flex;
   flex-direction: column;

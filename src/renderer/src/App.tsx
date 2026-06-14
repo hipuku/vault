@@ -57,8 +57,8 @@ function Sidebar({
       title: `Delete "${tag.label}"?`,
       message: used
         ? `It's on ${tag.count} ${tag.count === 1 ? 'item' : 'items'} and will be removed from ${tag.count === 1 ? 'it' : 'them'}. This can't be undone.`
-        : `This tag isn't used yet. This can't be undone.`,
-      confirmLabel: 'Delete tag',
+        : `This project isn't used yet. This can't be undone.`,
+      confirmLabel: 'Delete project',
     })
     if (ok) {
       if (activeTagId === tag.id) onTagSelect(null)
@@ -89,7 +89,7 @@ function Sidebar({
       {tags.length > 0 && (
         <>
           <Divider className={styles.tagDivider} />
-          <div className={styles.navSection}>Tags</div>
+          <div className={styles.navSection}>Projects</div>
           <div className={styles.tagsArea}>
             {tags.map(tag => (
               <div
@@ -105,10 +105,10 @@ function Sidebar({
                   <span className={styles.tagLabel}>{tag.label}</span>
                 </button>
                 <div className={styles.tagItemActions}>
-                  <button type="button" className={styles.tagAction} aria-label={`Edit tag ${tag.label}`} onClick={() => setModal({ mode: 'edit', tag })}>
+                  <button type="button" className="icon-btn icon-btn--xs" aria-label={`Edit project ${tag.label}`} onClick={() => setModal({ mode: 'edit', tag })}>
                     <FontAwesomeIcon icon={faPen} />
                   </button>
-                  <button type="button" className={[styles.tagAction, styles.tagActionDanger].join(' ')} aria-label={`Delete tag ${tag.label}`} onClick={() => handleDelete(tag)}>
+                  <button type="button" className="icon-btn icon-btn--xs icon-btn--danger" aria-label={`Delete project ${tag.label}`} onClick={() => handleDelete(tag)}>
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </div>
@@ -121,7 +121,7 @@ function Sidebar({
       <div className={styles.sidebarFooter}>
         <Button variant="secondary" size="md" className={styles.addTagBtn} onClick={() => setModal({ mode: 'create' })}>
           <FontAwesomeIcon icon={faPlus} />
-          Add tag
+          Add project
         </Button>
       </div>
 

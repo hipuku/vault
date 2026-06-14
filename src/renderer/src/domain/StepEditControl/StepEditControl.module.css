@@ -3,72 +3,86 @@
   display: inline-flex;
 }
 
-.trigger {
-  width: 28px;
-  height: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  color: var(--color-ink-tertiary);
-  transition: background var(--duration-fast) var(--ease-move), color var(--duration-fast) var(--ease-move);
-}
-
-.trigger:hover { background: var(--color-surface-subtle); color: var(--color-ink-secondary); }
-
 .popover {
   position: absolute;
   top: calc(100% + var(--space-1));
   right: 0;
   z-index: var(--z-dropdown);
-  width: 200px;
-  padding: var(--space-3);
+  width: 248px;
+  padding: var(--space-4);
   background: var(--color-surface-default);
   border: var(--border-width) solid var(--color-border-subtle);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
+/* Each row: label on the left, a uniformly sized control on the right. */
 .field {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-3);
+}
+
+.fieldLabel {
   font-size: var(--text-12);
   color: var(--color-ink-secondary);
 }
 
-.inputUnit {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+/* Every control occupies the same footprint (40px matches the Select trigger). */
+.controlBox,
+.unitField,
+.control {
+  width: 120px;
+  height: 40px;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
+/* Plain text/number inputs (line height, tracking) */
+.control {
+  padding: 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-13);
+  color: var(--color-ink-primary);
+  background: var(--color-surface-default);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  outline: none;
+}
+.control:focus { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+
+/* Size field — value + a px suffix that always hugs the number. */
+.unitField {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  background: var(--color-surface-default);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+}
+.unitField:focus-within { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.unitInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-13);
+  color: var(--color-ink-primary);
+}
 .unit {
-  position: absolute;
-  right: var(--space-2);
-  font-size: var(--text-11);
+  margin-left: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
   color: var(--color-ink-disabled);
   pointer-events: none;
 }
 
-.input {
-  width: 96px;
-  height: 28px;
-  padding: 0 var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-sm);
-  outline: none;
-}
-
-.input:focus { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+/* The Weight Select (block) fills the control box. */
+.controlBox > * { width: 100%; }

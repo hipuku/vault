@@ -1,0 +1,34 @@
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--type-body-sm-size);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-secondary);
+}
+
+.icon {
+  width: 13px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+.body strong {
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink-primary);
+}
+
+.info { background: var(--color-info-subtle); }
+.info .icon { color: var(--color-info-default); }
+
+.warning { background: var(--color-warning-subtle); }
+.warning .icon { color: var(--color-warning-default); }
+
+.error { background: var(--color-error-subtle); }
+.error .icon { color: var(--color-error-default); }

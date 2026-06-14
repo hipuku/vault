@@ -1,38 +1,45 @@
 import { getDb } from '../index'
-import type { Palette, Swatch } from '../../../shared/types'
+import type { Colour, Palette, Swatch, SwatchInput, GenParams, RampName } from '../../../shared/types'
 
-export function createPaletteFromHex(name: string, baseHex: string, swatches: string[]): Palette {
+function insertPalette(
+  name: string,
+  kind: 'tonal' | 'expressive',
+  baseHex: string,
+  genParams: GenParams,
+  swatches: SwatchInput[],
+): Palette {
   const db = getDb()
   const { lastInsertRowid } = db
-    .prepare('INSERT INTO palettes (name, base_hex) VALUES (?, ?)')
-    .run(name, baseHex)
+    .prepare('INSERT INTO palettes (name, kind, base_hex, gen_params) VALUES (?, ?, ?, ?)')
+    .run(name, kind, baseHex, JSON.stringify(genParams))
   const id = Number(lastInsertRowid)
-
-  const insertSwatch = db.prepare(
-    'INSERT INTO swatches (palette_id, hex, label, sort_order) VALUES (?, ?, ?, ?)'
+  const ins = db.prepare(
+    `INSERT INTO swatches (palette_id, hex, label, group_key, colour_id, sort_order)
+     VALUES (?, ?, ?, ?, ?, ?)`
   )
-  db.transaction((hexes: string[]) => {
-    hexes.forEach((hex, i) => insertSwatch.run(id, hex, '', i))
+  db.transaction((list: SwatchInput[]) => {
+    for (const s of list) ins.run(id, s.hex, s.label, s.group_key, s.colour_id, s.sort_order)
   })(swatches)
-
   return db.prepare('SELECT * FROM palettes WHERE id = ?').get(id) as Palette
 }
 
-export function createPaletteFromLibrary(name: string, hexList: string[]): Palette {
-  const db = getDb()
-  const { lastInsertRowid } = db
-    .prepare("INSERT INTO palettes (name, base_hex) VALUES (?, '')")
-    .run(name)
-  const id = Number(lastInsertRowid)
+export function createTonalPalette(
+  name: string,
+  seedHex: string,
+  seedColourId: number | null,
+  ramps: RampName[],
+  swatches: SwatchInput[],
+): Palette {
+  return insertPalette(name, 'tonal', seedHex,
+    { kind: 'tonal', seedHex, seedColourId, ramps }, swatches)
+}
 
-  const insertSwatch = db.prepare(
-    'INSERT INTO swatches (palette_id, hex, label, sort_order) VALUES (?, ?, ?, ?)'
-  )
-  db.transaction((hexes: string[]) => {
-    hexes.forEach((hex, i) => insertSwatch.run(id, hex, '', i))
-  })(hexList)
-
-  return db.prepare('SELECT * FROM palettes WHERE id = ?').get(id) as Palette
+export function createExpressivePalette(
+  name: string,
+  params: Extract<GenParams, { kind: 'expressive' }>,
+  swatches: SwatchInput[],
+): Palette {
+  return insertPalette(name, 'expressive', '', params, swatches)
 }
 
 export function listPalettes(): Palette[] {
@@ -41,30 +48,8 @@ export function listPalettes(): Palette[] {
     .all() as Palette[]
 }
 
-export function updatePaletteFavourite(id: number, favourite: 0 | 1): void {
-  getDb().prepare('UPDATE palettes SET favourite = ? WHERE id = ?').run(favourite, id)
-}
-
-export function duplicatePalette(id: number): Palette {
-  const db = getDb()
-  const source = db.prepare('SELECT * FROM palettes WHERE id = ?').get(id) as Palette
-  const swatches = db
-    .prepare('SELECT * FROM swatches WHERE palette_id = ? ORDER BY sort_order')
-    .all(id) as Swatch[]
-
-  const { lastInsertRowid } = db
-    .prepare('INSERT INTO palettes (name, base_hex) VALUES (?, ?)')
-    .run(`${source.name} copy`, source.base_hex)
-  const newId = Number(lastInsertRowid)
-
-  const insertSwatch = db.prepare(
-    'INSERT INTO swatches (palette_id, hex, label, sort_order) VALUES (?, ?, ?, ?)'
-  )
-  db.transaction(() => {
-    swatches.forEach(s => insertSwatch.run(newId, s.hex, s.label, s.sort_order))
-  })()
-
-  return db.prepare('SELECT * FROM palettes WHERE id = ?').get(newId) as Palette
+export function updatePaletteName(id: number, name: string): void {
+  getDb().prepare("UPDATE palettes SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
 export function deletePalette(id: number): void {
@@ -77,28 +62,12 @@ export function listSwatches(paletteId: number): Swatch[] {
     .all(paletteId) as Swatch[]
 }
 
-export function updateSwatchLabel(id: number, label: string): void {
-  getDb().prepare('UPDATE swatches SET label = ? WHERE id = ?').run(label, id)
-}
-
-export function updateSwatchLocked(id: number, locked: 0 | 1): void {
-  getDb().prepare('UPDATE swatches SET locked = ? WHERE id = ?').run(locked, id)
-}
-
-export function regeneratePalette(id: number, newHexes: string[]): Swatch[] {
+export function promoteSwatch(swatchId: number, name: string): Colour {
   const db = getDb()
-  const swatches = db
-    .prepare('SELECT * FROM swatches WHERE palette_id = ? ORDER BY sort_order')
-    .all(id) as Swatch[]
-
-  const update = db.prepare('UPDATE swatches SET hex = ? WHERE id = ?')
-  db.transaction(() => {
-    swatches.forEach((s, i) => {
-      if (!s.locked && newHexes[i] !== undefined) update.run(newHexes[i], s.id)
-    })
-  })()
-
-  return db
-    .prepare('SELECT * FROM swatches WHERE palette_id = ? ORDER BY sort_order')
-    .all(id) as Swatch[]
+  const sw = db.prepare('SELECT * FROM swatches WHERE id = ?').get(swatchId) as Swatch
+  const { lastInsertRowid } = db
+    .prepare('INSERT INTO colours (hex, name) VALUES (?, ?)').run(sw.hex, name)
+  const colourId = Number(lastInsertRowid)
+  db.prepare('UPDATE swatches SET colour_id = ? WHERE id = ?').run(colourId, swatchId)
+  return db.prepare('SELECT * FROM colours WHERE id = ?').get(colourId) as Colour
 }

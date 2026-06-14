@@ -1,62 +1,64 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faEllipsisVertical, faCopy, faTrash } from '@fortawesome/free-solid-svg-icons'
-import type { Palette, Swatch, Tag } from '@shared/types'
-import { Menu } from '../../primitives/Menu/Menu'
+import { faPen, faBarsStaggered, faTableColumns } from '@fortawesome/free-solid-svg-icons'
+import type { Palette, Swatch } from '@shared/types'
+import { Pill } from '../../atoms/Pill/Pill'
 import styles from './PaletteCard.module.css'
 
 interface PaletteCardProps {
   palette: Palette
   swatches: Swatch[]
-  tags: Tag[]
   onOpen: (palette: Palette) => void
-  onDuplicate: (id: number) => void
-  onDelete: (palette: Palette) => void
-  onToggleFavourite: (id: number, favourite: 0 | 1) => void
 }
 
-export function PaletteCard({ palette, swatches, tags, onOpen, onDuplicate, onDelete, onToggleFavourite }: PaletteCardProps): React.ReactElement {
-  return (
-    <div className={styles.card}>
-      <button type="button" className={styles.strip} onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
-        {swatches.map(s => (
-          <span key={s.id} className={styles.swatch} style={{ background: s.hex }} />
-        ))}
-      </button>
+export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): React.ReactElement {
+  // Group swatches by group_key, ordered by min sort_order within each group.
+  const groups = useMemo(() => {
+    const map = new Map<string, Swatch[]>()
+    for (const s of swatches) {
+      if (!map.has(s.group_key)) map.set(s.group_key, [])
+      map.get(s.group_key)!.push(s)
+    }
+    return Array.from(map.entries()).sort(([, a], [, b]) =>
+      Math.min(...a.map(s => s.sort_order)) - Math.min(...b.map(s => s.sort_order))
+    )
+  }, [swatches])
 
-      <div className={styles.footer}>
-        <div className={styles.nameRow}>
-          <span className={styles.name}>{palette.name}</span>
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={[styles.star, palette.favourite ? styles.starOn : ''].filter(Boolean).join(' ')}
-              onClick={() => onToggleFavourite(palette.id, palette.favourite ? 0 : 1)}
-              aria-label={palette.favourite ? 'Unfavourite' : 'Favourite'}
-            >
-              <FontAwesomeIcon icon={faStar} />
-            </button>
-            <Menu
-              triggerLabel="Palette actions"
-              trigger={<FontAwesomeIcon icon={faEllipsisVertical} />}
-              items={[
-                { label: 'Duplicate', icon: faCopy, onClick: () => onDuplicate(palette.id) },
-                { label: 'Delete', icon: faTrash, danger: true, onClick: () => onDelete(palette) },
-              ]}
-            />
+  const count = groups.length
+  const meta = palette.kind === 'expressive'
+    ? { icon: faTableColumns, label: 'Expressive', value: `${count} ${count === 1 ? 'hue' : 'hues'}` }
+    : { icon: faBarsStaggered, label: 'Tonal', value: `${count} ${count === 1 ? 'ramp' : 'ramps'}` }
+
+  return (
+    <button type="button" className={styles.card} onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
+      <div className={styles.preview}>
+        {palette.kind === 'expressive' ? (
+          <div className={styles.expGrid}>
+            {groups.map(([key, gs]) => (
+              <div key={key} className={styles.expCol}>
+                {gs.map(s => <span key={s.id} className={styles.expSwatch} style={{ background: s.hex }} />)}
+              </div>
+            ))}
           </div>
-        </div>
-        {tags.length > 0 && (
-          <div className={styles.tags}>
-            {tags.map(t => (
-              <span key={t.id} className={styles.tag}>
-                <span className={styles.tagDot} style={{ background: t.colour }} />
-                {t.label}
-              </span>
+        ) : (
+          <div className={styles.tonalRows}>
+            {groups.map(([key, gs]) => (
+              <div key={key} className={styles.tonalRow}>
+                {gs.map(s => <span key={s.id} className={styles.swatch} style={{ background: s.hex }} />)}
+              </div>
             ))}
           </div>
         )}
+        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
       </div>
-    </div>
+
+      <div className={styles.body}>
+        <span className={styles.name}>{palette.name}</span>
+        <div className={styles.meta}>
+          <Pill icon={meta.icon} label={meta.label} />
+          <span className={styles.value}>{meta.value}</span>
+        </div>
+      </div>
+    </button>
   )
 }

@@ -140,9 +140,53 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
   padding: var(--space-5);
   min-height: 0;
 }
+
+.fileRows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+.fileRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+.fileSpecimen {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-20);
+  color: var(--color-ink-primary);
+  background: var(--color-surface-subtle);
+  border-radius: var(--radius-sm);
+}
+.fileName {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-12);
+  color: var(--color-ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Fixed-width cells so the Weight/Style selects align down the rows. */
+.weightCell { width: 144px; flex-shrink: 0; }
+.styleCell { width: 116px; flex-shrink: 0; }
+
+.addMoreWrap { align-self: flex-start; }
 
 .dropzone {
   flex: 1;
@@ -203,4 +247,9 @@
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
   border-top: var(--border-width) solid var(--color-border-subtle);
+}
+
+.dupWarn {
+  font-size: var(--text-12);
+  color: var(--color-warning-default);
 }

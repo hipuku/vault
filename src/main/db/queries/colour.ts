@@ -21,6 +21,18 @@ export function updateColourFavourite(id: number, favourite: 0 | 1): void {
   getDb().prepare('UPDATE colours SET favourite = ? WHERE id = ?').run(favourite, id)
 }
 
+/** Palettes that reference this colour (via an anchored swatch). A colour in use
+ *  cannot be deleted. */
+export function palettesUsingColour(id: number): Array<{ id: number; name: string }> {
+  return getDb().prepare(
+    `SELECT DISTINCT p.id, p.name
+       FROM swatches s
+       JOIN palettes p ON p.id = s.palette_id
+      WHERE s.colour_id = ?
+      ORDER BY p.name`
+  ).all(id) as Array<{ id: number; name: string }>
+}
+
 export function deleteColour(id: number): void {
   getDb().prepare('DELETE FROM colours WHERE id = ?').run(id)
 }

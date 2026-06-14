@@ -1,0 +1,87 @@
+import React, { useState, useRef, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
+import styles from './Select.module.css'
+
+export interface SelectOption<K extends string> {
+  key: K
+  label: string
+}
+
+interface SelectProps<K extends string> {
+  value: K
+  options: ReadonlyArray<SelectOption<K>>
+  onChange: (key: K) => void
+  /** Accessible label for the trigger (e.g. "Sort"). */
+  ariaLabel: string
+  /** Optional label prefix shown before the value in the trigger (e.g. "Sort:"). */
+  prefix?: string
+  align?: 'left' | 'right'
+  /** Full-width, input-styled trigger (for form fields) instead of the toolbar pill. */
+  block?: boolean
+}
+
+/** A custom dropdown replacing native <select>: a trigger (current label +
+ *  padded chevron) opening a panel of options with a check on the selected one.
+ *  Closes on outside-click and Escape — mirrors the Menu primitive. */
+export function Select<K extends string>({
+  value,
+  options,
+  onChange,
+  ariaLabel,
+  prefix,
+  align = 'left',
+  block = false,
+}: SelectProps<K>): React.ReactElement {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function onDown(e: MouseEvent): void {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
+    window.addEventListener('mousedown', onDown)
+    window.addEventListener('keydown', onKey)
+    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
+  }, [open])
+
+  const current = options.find(o => o.key === value)
+
+  return (
+    <div className={[styles.root, block ? styles.block : ''].filter(Boolean).join(' ')} ref={ref}>
+      <button
+        type="button"
+        className={[styles.trigger, block ? styles.triggerBlock : ''].filter(Boolean).join(' ')}
+        aria-label={ariaLabel}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+      >
+        <span className={styles.label}>
+          {prefix && <span className={styles.prefix}>{prefix} </span>}
+          {current?.label}
+        </span>
+        <FontAwesomeIcon icon={faChevronDown} className={styles.caret} />
+      </button>
+      {open && (
+        <div className={[styles.panel, align === 'right' ? styles.right : styles.left].join(' ')} role="listbox">
+          {options.map(o => (
+            <button
+              key={o.key}
+              type="button"
+              role="option"
+              aria-selected={o.key === value}
+              className={styles.option}
+              onClick={() => { setOpen(false); onChange(o.key) }}
+            >
+              <span className={styles.optionLabel}>{o.label}</span>
+              {o.key === value && <FontAwesomeIcon icon={faCheck} className={styles.optionCheck} />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

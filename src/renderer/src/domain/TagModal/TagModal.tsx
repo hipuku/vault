@@ -11,7 +11,7 @@ import styles from './TagModal.module.css'
 interface TagModalProps {
   open: boolean
   mode: 'create' | 'edit'
-  initial?: { label: string; colour: string }
+  initial?: { label?: string; colour?: string }
   onSubmit: (label: string, colour: string) => Promise<void>
   onClose: () => void
 }
@@ -45,7 +45,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
     try {
       await onSubmit(label.trim(), colour)
     } catch {
-      setError('A tag with that name already exists.')
+      setError('A project with that name already exists.')
       setBusy(false)
     }
   }
@@ -53,10 +53,10 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
   if (!open) return null
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-label={mode === 'create' ? 'New tag' : 'Edit tag'}>
+    <div className={styles.overlay} role="dialog" aria-modal aria-label={mode === 'create' ? 'New project' : 'Edit project'}>
       <div className={styles.modal}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{mode === 'create' ? 'New tag' : 'Edit tag'}</h2>
+          <h2 className={styles.title}>{mode === 'create' ? 'New project' : 'Edit project'}</h2>
           <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
         </div>
 
@@ -66,7 +66,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
             value={label}
             error={!!error}
             onChange={e => { setLabel(e.target.value); setError(null) }}
-            placeholder="Tag name"
+            placeholder="Project name"
             onKeyDown={e => { if (e.key === 'Enter') submit() }}
           />
           {error && <p className={styles.error}>{error}</p>}
@@ -93,7 +93,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
         <div className={styles.footer}>
           <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
           <Button variant="primary" size="md" onClick={submit} disabled={!label.trim() || busy}>
-            {mode === 'create' ? 'Add tag' : 'Save'}
+            {mode === 'create' ? 'Add project' : 'Save'}
           </Button>
         </div>
       </div>

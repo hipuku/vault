@@ -99,6 +99,7 @@
     --z-dropdown: 100;
     --z-modal:    400;
     --z-toast:    500;
+    --z-tooltip:  600;
 
     --border-width: 1px;
     --opacity-disabled: 0.4;
@@ -155,6 +156,12 @@
 
     --color-error-subtle:  var(--cherry-100);
     --color-error-default: var(--cherry-500);
+
+    --color-warning-subtle:  var(--mango-100);
+    --color-warning-default: var(--mango-700);
+
+    --color-info-subtle:  var(--elderberry-100);
+    --color-info-default: var(--elderberry-700);
 
     --color-backdrop: oklch(from var(--damson-950) l c h / 0.6);
 

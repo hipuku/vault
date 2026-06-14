@@ -1,4 +1,4 @@
-export const CURRENT_SCHEMA_VERSION = 2
+export const CURRENT_SCHEMA_VERSION = 3
 
 export const CREATE_TABLES = `
   CREATE TABLE IF NOT EXISTS colours (
@@ -23,7 +23,9 @@ export const CREATE_TABLES = `
   CREATE TABLE IF NOT EXISTS palettes (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     name       TEXT    NOT NULL,
+    kind       TEXT    NOT NULL DEFAULT 'tonal',
     base_hex   TEXT    NOT NULL DEFAULT '',
+    gen_params TEXT    NOT NULL DEFAULT '{}',
     favourite  INTEGER NOT NULL DEFAULT 0,
     created_at TEXT    NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT    NOT NULL DEFAULT (datetime('now'))
@@ -34,6 +36,8 @@ export const CREATE_TABLES = `
     palette_id INTEGER NOT NULL REFERENCES palettes(id) ON DELETE CASCADE,
     hex        TEXT    NOT NULL,
     label      TEXT    NOT NULL DEFAULT '',
+    group_key  TEXT    NOT NULL DEFAULT '',
+    colour_id  INTEGER REFERENCES colours(id) ON DELETE SET NULL,
     sort_order INTEGER NOT NULL DEFAULT 0,
     locked     INTEGER NOT NULL DEFAULT 0,
     created_at TEXT    NOT NULL DEFAULT (datetime('now'))

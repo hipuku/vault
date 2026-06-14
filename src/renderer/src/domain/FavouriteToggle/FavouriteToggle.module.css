@@ -25,6 +25,6 @@
 
 .on {
   background: var(--color-primary-subtle);
-  border-color: var(--color-primary-default);
+  border-color: transparent;
   color: var(--color-primary-default);
 }

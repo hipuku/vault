@@ -1,0 +1,128 @@
+.titleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 920px;
+  padding: var(--space-6);
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.heroStrip {
+  display: flex;
+  height: 96px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.heroSwatch { flex: 1; }
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.heroDivider {
+  width: 1px;
+  height: 16px;
+  background: var(--color-border-default);
+  margin: 0 var(--space-1);
+}
+
+.projectPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-subtle);
+  color: var(--color-ink-tertiary);
+  font-size: var(--type-label-xs-size);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+.projectDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Preview (inside a Panel) ────────────────────────────────────────────── */
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.groupName {
+  font-size: var(--text-14);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink-primary);
+}
+
+.stops { display: flex; gap: var(--space-2); }
+.stopsTonal .swatch { height: 44px; }
+.stopsExpressive .swatch { height: 56px; }
+
+.stop {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.swatchWrap { position: relative; }
+.swatch { display: block; width: 100%; border-radius: var(--radius-sm); }
+.stopLabel { font-size: var(--text-12); color: var(--color-ink-tertiary); }
+
+/* Swatch overlay actions — scrim so they read on any colour + a clear hover. */
+.promote,
+.inLib {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: #fff;
+}
+.promote {
+  border: none;
+  background: rgb(0 0 0 / 0.4);
+  cursor: pointer;
+  font-size: var(--text-12);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-move), background var(--duration-fast) var(--ease-move);
+}
+.swatchWrap:hover .promote { opacity: 1; }
+.promote:hover { background: rgb(0 0 0 / 0.65); }
+.inLib {
+  font-size: var(--text-14);
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5));
+}

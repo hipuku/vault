@@ -3,40 +3,104 @@
   flex-direction: column;
 }
 
-.row {
+/* ── Header ──────────────────────────────────────────────────────────────── */
+
+.header {
   display: grid;
-  grid-template-columns: 96px 1fr auto auto;
+  grid-template-columns: 120px 1fr;
   align-items: center;
+  gap: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-width) solid var(--color-border-default);
+}
+
+.metricsHead {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  padding: var(--space-3) 0;
+}
+
+/* Column header: icon + label (palette "group name" style) + a muted unit. */
+.headCell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.headIcon {
+  font-size: var(--text-12);
+  color: var(--color-ink-tertiary);
+  align-self: center;
+}
+.headLabel {
+  font-size: var(--text-14);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink-primary);
+}
+.headUnit {
+  font-size: var(--text-14);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink-tertiary);
+}
+
+/* ── Step rows ───────────────────────────────────────────────────────────── */
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) 0;
   border-bottom: var(--border-width) solid var(--color-border-subtle);
 }
 
-.label {
+.stepName {
   font-size: var(--type-label-sm-size);
   font-weight: var(--weight-semibold);
   color: var(--color-ink-tertiary);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
+  padding-top: 2px;
+}
+
+.content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .specimen {
   color: var(--color-ink-primary);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   min-width: 0;
+  overflow: hidden;
+  /* Wrap to a few lines so line-height is actually visible. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.specimenLarge { -webkit-line-clamp: 2; }
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
 }
 
-.meta {
+.metric {
   font-family: var(--font-mono);
-  font-size: var(--text-11);
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
   color: var(--color-ink-tertiary);
   white-space: nowrap;
-  text-align: right;
 }
 
+/* Create-mode hover edit — revealed top-right of the row. */
 .trailing {
-  display: inline-flex;
-  justify-content: flex-end;
+  position: absolute;
+  top: var(--space-4);
+  right: 0;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-move);
 }
+.row:hover .trailing { opacity: 1; }

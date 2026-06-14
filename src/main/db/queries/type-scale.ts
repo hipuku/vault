@@ -38,8 +38,8 @@ export function listTypeScales(): TypeScale[] {
     .all() as TypeScale[]
 }
 
-export function updateTypeScaleFavourite(id: number, favourite: 0 | 1): void {
-  getDb().prepare('UPDATE type_scales SET favourite = ? WHERE id = ?').run(favourite, id)
+export function updateTypeScaleName(id: number, name: string): void {
+  getDb().prepare("UPDATE type_scales SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
 export function deleteTypeScale(id: number): void {
@@ -50,20 +50,4 @@ export function listTypeScaleSteps(typeScaleId: number): TypeScaleStep[] {
   return getDb()
     .prepare('SELECT * FROM type_scale_steps WHERE type_scale_id = ? ORDER BY sort_order')
     .all(typeScaleId) as TypeScaleStep[]
-}
-
-export function updateTypeScaleStep(
-  id: number,
-  size: number,
-  weight: number,
-  lineHeight: string,
-  letterSpacing: string
-): void {
-  getDb()
-    .prepare(`
-      UPDATE type_scale_steps
-      SET size = ?, weight = ?, line_height = ?, letter_spacing = ?
-      WHERE id = ?
-    `)
-    .run(size, weight, lineHeight, letterSpacing, id)
 }

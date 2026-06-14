@@ -1,0 +1,9 @@
+node_modules
+dist
+out
+*.local
+*.tsbuildinfo
+.DS_Store
+
+# Local scratch notes only — committed docs (README / DESIGN / FEATURE) are tracked
+*.local.md

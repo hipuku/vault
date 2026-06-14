@@ -8,7 +8,7 @@ import { SectionGrid } from '../primitives/SectionGrid/SectionGrid'
 import { ConfirmDialog } from '../primitives/ConfirmDialog/ConfirmDialog'
 import { Button } from '../atoms/Button/Button'
 import { FavouriteToggle } from '../domain/FavouriteToggle/FavouriteToggle'
-import { FontPreviewBar } from '../domain/FontPreviewBar/FontPreviewBar'
+import { FontPreviewControl } from '../domain/FontPreviewControl/FontPreviewControl'
 import { FontCard } from '../domain/FontCard/FontCard'
 import { FontDrawer } from '../domain/FontDrawer/FontDrawer'
 import { FontAdder } from '../domain/FontAdder/FontAdder'
@@ -27,7 +27,7 @@ interface FontsPageProps {
 export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.ReactElement | null {
   const { fonts, addGoogle, addLocal, setFavourite, removeFont } = useFonts()
   const [previewText, setPreviewText] = useState(DEFAULT_PREVIEW)
-  const [previewSize, setPreviewSize] = useState(28)
+  const [previewSize, setPreviewSize] = useState(20)
   const [favOnly, setFavOnly] = useState(false)
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [adderOpen, setAdderOpen] = useState(false)
@@ -53,6 +53,15 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
   const existingFamilies = useMemo(() => new Set(fonts.map(f => f.family)), [fonts])
 
   async function handleDelete(font: Font): Promise<void> {
+    const using = await window.api.font.scalesUsing(font.id)
+    if (using.length > 0) {
+      await confirm.confirm({
+        title: `Can’t remove “${font.family}”`,
+        message: `It’s used by ${using.length} type scale${using.length === 1 ? '' : 's'} (${using.map(s => s.name).join(', ')}). Remove it from ${using.length === 1 ? 'that scale' : 'those scales'} first.`,
+        confirmLabel: 'OK',
+      })
+      return
+    }
     const ok = await confirm.confirm({
       title: `Remove "${font.family}"?`,
       message: 'This font will be removed from your library. This can’t be undone.',
@@ -75,7 +84,6 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
           previewText={previewText}
           previewSize={previewSize}
           onOpen={drawer.openDrawer}
-          onToggleFavourite={setFavourite}
         />
       ))}
     </SectionGrid>
@@ -83,8 +91,14 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
 
   const overlays = (
     <>
-      <FontDrawer font={drawerFont} onClose={drawer.closeDrawer} onToggleFavourite={setFavourite} onDelete={handleDelete} />
-      <FontAdder open={adderOpen} onClose={() => setAdderOpen(false)} existing={existingFamilies} onAddGoogle={addGoogle} onAddLocal={addLocal} />
+      <FontDrawer font={drawerFont} previewText={previewText} previewSize={previewSize} onClose={drawer.closeDrawer} onToggleFavourite={setFavourite} onDelete={handleDelete} />
+      <FontAdder
+        open={adderOpen}
+        onClose={() => setAdderOpen(false)}
+        existing={existingFamilies}
+        onAddGoogle={addGoogle}
+        onAddLocal={addLocal}
+      />
       <ConfirmDialog
         open={confirm.isOpen}
         title={confirm.title}
@@ -112,16 +126,15 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
         title="Fonts"
         actions={
           <>
+            <FontPreviewControl text={previewText} size={previewSize} onTextChange={setPreviewText} onSizeChange={setPreviewSize} />
+            <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
             <Button variant="primary" size="md" onClick={() => setAdderOpen(true)}>
               <FontAwesomeIcon icon={faPlus} />
               Add font
             </Button>
-            <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
           </>
         }
-      >
-        <FontPreviewBar text={previewText} size={previewSize} onTextChange={setPreviewText} onSizeChange={setPreviewSize} />
-      </Toolbar>
+      />
 
       <div className="scroll-area">
         {fonts.length === 0 ? (
@@ -133,7 +146,7 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No fonts match this filter"
-            description={favOnly ? 'No favourites yet — star a font to see it here.' : 'No fonts carry this tag yet.'}
+            description={favOnly ? 'No favourites yet — star a font to see it here.' : 'No fonts in this project yet.'}
           />
         ) : grid}
       </div>

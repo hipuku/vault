@@ -12,7 +12,7 @@
 .modal {
   background: var(--color-surface-default);
   border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   width: 420px;
   max-width: 100%;

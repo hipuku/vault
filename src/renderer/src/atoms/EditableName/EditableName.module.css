@@ -1,0 +1,37 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* One box for both the display span and the edit input, so switching modes never
+   shifts layout (mirrors ColorDrawer's `.name`). */
+.field {
+  field-sizing: content;
+  min-width: 1ch;
+  max-width: 100%;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.field:focus,
+.field:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* pen reveals on hover of the row */
+.pen {
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-move);
+}
+.root:hover .pen { opacity: 1; }

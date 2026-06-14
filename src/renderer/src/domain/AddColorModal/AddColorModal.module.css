@@ -12,7 +12,7 @@
 .modal {
   background: var(--color-surface-default);
   border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   width: 480px;
   max-width: 100%;
@@ -31,6 +31,13 @@
 }
 
 .tabs { display: flex; gap: var(--space-1); }
+
+.heading {
+  font-size: var(--type-heading-size);
+  font-weight: var(--type-heading-weight);
+  color: var(--color-ink-primary);
+  padding-left: var(--space-1);
+}
 
 .tab {
   display: inline-flex;
@@ -94,7 +101,7 @@
   color: var(--color-ink-primary);
   background: var(--color-surface-default);
   border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   outline: none;
   transition: border-color var(--duration-normal) var(--ease-move), box-shadow var(--duration-fast) var(--ease-move);
 }
@@ -137,7 +144,7 @@
 }
 .nameChip:hover { background: var(--color-surface-subtle); }
 .nameChipOn {
-  border-color: var(--color-primary-default);
+  border-color: transparent;
   background: var(--color-primary-subtle);
   color: var(--color-primary-default);
 }
@@ -149,22 +156,12 @@
 }
 .nameChipOn .nameDelta { color: var(--color-primary-default); }
 
-.warn {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-secondary);
-}
-.warn strong { font-weight: var(--weight-semibold); color: var(--color-ink-primary); }
-.warnIcon { width: 13px; color: var(--mango-500); }
-
 .useInstead {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
+  margin-left: var(--space-1);
   font-family: var(--font-sans);
   font-size: var(--type-body-sm-size);
   font-weight: var(--weight-semibold);
@@ -220,19 +217,111 @@
   padding: var(--space-4) 0;
 }
 
-.swatchGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); }
+.extractRows {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+}
 
-.swatch { display: flex; flex-direction: column; gap: var(--space-1); background: none; border: none; padding: 0; cursor: pointer; }
-.swatchBlock {
-  height: 56px;
-  border-radius: var(--radius-md);
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+.extractRow {
   display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-  transition: opacity var(--duration-normal) var(--ease-move), box-shadow var(--duration-normal) var(--ease-move);
+  gap: var(--space-3);
+  height: 44px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity var(--duration-normal) var(--ease-move), background var(--duration-normal) var(--ease-move);
 }
-.swatchOn .swatchBlock { opacity: 1; box-shadow: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-primary-default); }
-.swatchCheck { width: 14px; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45)); }
-.swatchHex { font-family: var(--font-mono); font-size: var(--text-11); color: var(--color-ink-tertiary); text-align: center; }
+.extractRow:hover { background: var(--color-surface-subtle); }
+.extractRowOff { opacity: 0.4; }
+
+.extractCheck {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--color-primary-default);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.extractSwatch {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+}
+
+/* name + warning + pen hug the swatch; hex is pushed to the far right */
+.extractMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.extractName {
+  field-sizing: content;
+  max-width: 240px;
+  min-width: 1ch;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-13);
+  line-height: var(--leading-tight);
+  color: var(--color-ink-primary);
+  padding: 2px 0;
+  cursor: text;
+}
+.extractName:focus,
+.extractName:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.extractNameText {
+  min-width: 0;
+  max-width: 240px;
+  font-family: var(--font-sans);
+  font-size: var(--text-13);
+  line-height: var(--leading-tight);
+  color: var(--color-ink-primary);
+  padding: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.extractWarn {
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: var(--text-12);
+  color: var(--mango-500);
+}
+
+.extractPen {
+  display: flex;
+  align-items: center;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width var(--duration-normal) var(--ease-move),
+    opacity var(--duration-fast) var(--ease-move);
+}
+
+.extractRow:hover .extractPen {
+  width: 20px;
+  opacity: 1;
+}
+
+.extractHex {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-12);
+  color: var(--color-ink-tertiary);
+  flex-shrink: 0;
+}
