@@ -4,8 +4,6 @@ The *why* behind the build: the product intent, the architecture, the design sys
 the non-obvious calls. Written for someone reading the repo cold. Not exhaustive — the
 decisions that took a minute of thought are the ones worth recording.
 
----
-
 ## What it is
 
 Vault is an **offline, single-user desktop app for capturing and shaping design tokens** —
