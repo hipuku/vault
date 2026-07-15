@@ -17,27 +17,17 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Import signing certificate
-        if: env.CSC_LINK != ''
-        run: |
-          echo "${{ secrets.CSC_LINK }}" | base64 --decode > certificate.p12
-          security create-keychain -p "" build.keychain
-          security import certificate.p12 -k build.keychain -P "${{ secrets.CSC_KEY_PASSWORD }}" -T /usr/bin/codesign
-          security list-keychains -s build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-        env:
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-
-      - name: Build and notarise
+      # Unsigned build — Vault ships as a direct download, not via the App Store.
+      # CSC_IDENTITY_AUTO_DISCOVERY=false makes the build deterministic (no attempt
+      # to find a signing identity on the runner). The app keeps Electron's ad-hoc
+      # signature, so it launches on Apple Silicon after the user clears quarantine
+      # (see README → Install). To ship signed + notarised later: add an Apple
+      # Developer cert as CSC_LINK/CSC_KEY_PASSWORD + APPLE_ID/APPLE_APP_SPECIFIC_
+      # PASSWORD/APPLE_TEAM_ID secrets, and remove the env override below.
+      - name: Build unsigned .dmg (arm64 + x64)
         run: npm run dist:mac
         env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v2

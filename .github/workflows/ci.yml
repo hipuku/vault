@@ -31,10 +31,22 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
 
+  test:
+    name: Test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:run
+
   build:
     name: Build
     runs-on: macos-latest
-    needs: [lint, typecheck]
+    needs: [lint, typecheck, test]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

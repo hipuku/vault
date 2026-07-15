@@ -1,0 +1,86 @@
+import { describe, it, expect } from 'vitest'
+import type { Colour } from '@shared/types'
+import { sortColours, groupColours, hueFamily } from '@renderer/lib/colourSort'
+
+function colour(p: Partial<Colour>): Colour {
+  return {
+    id: 1, hex: '#000000', name: '', favourite: 0,
+    created_at: '2026-01-01T00:00:00Z', ...p,
+  } as Colour
+}
+
+describe('hueFamily', () => {
+  it('classifies saturated colours into named OKLCH families', () => {
+    // NB: OKLCH hue ≠ sRGB intuition — sRGB #ff0000 lands in Orange (hue ~29).
+    expect(hueFamily('#e0115f')).toBe('Red')   // hue ~9
+    expect(hueFamily('#ff0000')).toBe('Orange') // hue ~29
+    expect(hueFamily('#00cc00')).toBe('Green')  // hue ~142
+    expect(hueFamily('#0891b2')).toBe('Blue')   // hue ~222
+  })
+
+  it('calls near-achromatic colours Neutral', () => {
+    expect(hueFamily('#808080')).toBe('Neutral')
+    expect(hueFamily('#ffffff')).toBe('Neutral')
+    expect(hueFamily('#111111')).toBe('Neutral')
+  })
+})
+
+describe('sortColours', () => {
+  it('sorts by name A–Z', () => {
+    const out = sortColours([
+      colour({ id: 1, name: 'Zephyr' }),
+      colour({ id: 2, name: 'Amber' }),
+      colour({ id: 3, name: 'Mint' }),
+    ], 'name')
+    expect(out.map(c => c.name)).toEqual(['Amber', 'Mint', 'Zephyr'])
+  })
+
+  it('sorts by recency, breaking ties on id descending', () => {
+    const out = sortColours([
+      colour({ id: 1, created_at: '2026-01-01T00:00:00Z' }),
+      colour({ id: 2, created_at: '2026-03-01T00:00:00Z' }),
+      colour({ id: 3, created_at: '2026-03-01T00:00:00Z' }),
+    ], 'recent')
+    expect(out.map(c => c.id)).toEqual([3, 2, 1])
+  })
+
+  it('does not mutate the input array', () => {
+    const input = [colour({ id: 1, name: 'B' }), colour({ id: 2, name: 'A' })]
+    const snapshot = input.map(c => c.id)
+    sortColours(input, 'name')
+    expect(input.map(c => c.id)).toEqual(snapshot)
+  })
+})
+
+describe('groupColours', () => {
+  it('returns a single untitled group when grouping is off', () => {
+    const colours = [colour({ id: 1 }), colour({ id: 2 })]
+    const groups = groupColours(colours, 'none')
+    expect(groups).toHaveLength(1)
+    expect(groups[0].title).toBe('')
+    expect(groups[0].colours).toHaveLength(2)
+  })
+
+  it('drops empty hue buckets and keeps family order', () => {
+    const groups = groupColours([
+      colour({ id: 1, hex: '#0891b2' }), // Blue (OKLCH hue ~222)
+      colour({ id: 2, hex: '#e0115f' }), // Red (OKLCH hue ~9)
+    ], 'hue')
+    const titles = groups.map(g => g.title)
+    expect(titles).toContain('Red')
+    expect(titles).toContain('Blue')
+    expect(titles).not.toContain('Green')
+    expect(titles.indexOf('Red')).toBeLessThan(titles.indexOf('Blue'))
+  })
+
+  it('splits by contrast into light- and dark-text buckets', () => {
+    const groups = groupColours([
+      colour({ id: 1, hex: '#ffffff' }), // prefers dark text
+      colour({ id: 2, hex: '#000000' }), // prefers light text
+    ], 'contrast')
+    const light = groups.find(g => g.title.startsWith('Light'))
+    const dark = groups.find(g => g.title.startsWith('Dark'))
+    expect(light?.colours.map(c => c.id)).toEqual([1])
+    expect(dark?.colours.map(c => c.id)).toEqual([2])
+  })
+})
