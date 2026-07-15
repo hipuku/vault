@@ -24,8 +24,11 @@ jobs:
       # (see README → Install). To ship signed + notarised later: add an Apple
       # Developer cert as CSC_LINK/CSC_KEY_PASSWORD + APPLE_ID/APPLE_APP_SPECIFIC_
       # PASSWORD/APPLE_TEAM_ID secrets, and remove the env override below.
+      # `--publish never`: electron-builder only builds the DMGs into dist/. On a
+      # tag it would otherwise try to publish to GitHub itself and fail without a
+      # token — publishing is the dedicated softprops step below.
       - name: Build unsigned .dmg (arm64 + x64)
-        run: npm run dist:mac
+        run: npm run dist:mac -- --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
