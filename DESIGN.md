@@ -1,8 +1,9 @@
 # Vault — Design Notes
 
-The *why* behind the build: the product intent, the architecture, the design system, and
-the non-obvious calls. Written for someone reading the repo cold. Not exhaustive — the
-decisions that took a minute of thought are the ones worth recording.
+Why Vault is built the way it is — the product intent, the architecture, the design system, and
+the calls that weren't obvious. This is a decision log, not a spec: I've recorded the choices
+that took real thought (and the alternatives I rejected), and skipped the parts the code already
+explains. I wear both hats here — designer and engineer — so the reasoning below mixes the two.
 
 ## What it is
 
@@ -55,8 +56,9 @@ shared/  — pure, process-agnostic logic (colour maths, tonal/expressive
   `VaultApi` surface; all privileged work (DB, filesystem, network) is in main.
 - **`shared/` is the spine.** Generators and analysers are pure functions, so the same code
   drives the live preview in the renderer and the persisted result computed in main — no drift.
-- **CI** typechecks, lints, and builds on every PR; tagged releases produce a signed, notarised
-  `.dmg`.
+- **CI** typechecks, lints, tests, and builds on every PR; a tagged release builds unsigned
+  `.dmg` installers (Apple Silicon + Intel) and publishes them to GitHub Releases. It ships as a
+  direct download, not through the App Store — see the README for the one-time Gatekeeper step.
 
 ### Data model
 
@@ -81,6 +83,10 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **One affordance, learned once.** The same patterns repeat across sections: card =
   whole-card button + hover edit pen + `Pill` (descriptor) + mono (value); viewers are
   hero + `Panel`s; create flows are a two-pane (controls | live preview).
+- **Accessible by default.** Dialogs, drawers, menus, and popovers are keyboard-navigable and
+  dismiss on Escape; focus moves into an overlay on open and returns to the trigger on close;
+  focus rings use `:focus-visible` with the accent halo; and all motion respects
+  `prefers-reduced-motion`.
 
 ---
 
@@ -92,8 +98,29 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **better-sqlite3 over an ORM.** Synchronous, zero-ceremony, and the schema is small enough
   that hand-written SQL is clearer than a query builder.
 - **CSS Modules over Tailwind.** A bespoke token system is the point; utilities would hide it.
-- **Font Awesome (SVG) over icon-font sets.** Tree-shaken React components, no FOUT.
 - **No Storybook.** The app *is* the component gallery; a second harness wasn't earning its keep.
+
+### Visual & brand
+- **Deep raspberry as the *only* accent.** One memorable colour, not a rainbow of UI states.
+  Raspberry (anchored on `#AA1155` / `#880044`, built as an OKLCH ramp) is reserved for the
+  wordmark, primary actions, focus rings, and the active nav item; everything else is calm
+  neutral (the `damson` greys). The restraint is deliberate — when accent means "act here," a
+  busy accent palette would dilute the signal.
+- **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
+  via `@fontsource-variable/manrope` rather than the Google CDN — a local-first app can't depend
+  on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400
+  only, which flattens the UI's weight hierarchy *and* breaks the type-scale tool, whose entire
+  job is demonstrating weight steps.
+- **Full-radius pill geometry.** Buttons, nav items, and tags are fully rounded — a soft,
+  friendly identity, distinct from the sharp-cornered "devtool" default, applied consistently
+  enough that the shape reads as Vault's rather than as decoration.
+- **Font Awesome (SVG) over Lucide.** I started on Lucide and switched: FA's solid set sits at a
+  more consistent optical weight next to Manrope, and the SVG-React packages tree-shake to only
+  the icons used — no icon-font FOUT.
+- **Light mode only, on purpose.** A calm, paper-like single theme keeps attention on the
+  *content* — the colours and type you're collecting — and let me spend the design budget on one
+  polished surface instead of two adequate ones. The two-tier token layer means a dark theme is
+  mostly overriding the semantic aliases: deferred, not designed out.
 
 ### Colour
 - **Perceptual maths (LCH, ΔE2000).** Ramps and "nearest name" run in a perceptual space so
@@ -117,6 +144,10 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 ### Interaction
 - **Four sections, not tabs.** Colours / Fonts / Palettes / Type scales are peers in a sidebar,
   plus an aggregated per-project view.
+- **"Projects", not "tags".** Underneath, the schema is a generic `tags` / `asset_tags` join —
+  any asset, many tags — because that's the flexible data model. But users don't think in tags;
+  they think in the project they're working on. So the UI says *Projects* while the generic join
+  stays underneath, keeping the model open without leaking its plumbing into the language.
 - **Drawer for vault items, page for generated artifacts.** A colour or font is a quick glance
   (drawer); a palette or type scale is a worked object (full page with export).
 - **Generated artifacts are immutable after creation.** You tune a type scale while creating it
@@ -124,6 +155,11 @@ auto-join at creation; vault items (colour, font) belong to **many**.
   swatches post-hoc. Hand-tuning past the ratio flips the meta pill to **Custom**.
 - **Favourites are a filter, copy feedback is inline, deletes confirm, duplicates warn.** Small
   consistency rules applied everywhere.
+- **⌘K command palette.** A keyboard-first path over the same actions the sidebar and toolbars
+  already expose — jump to a section or project, or start a new asset, without reaching for the
+  mouse. It's the power-user affordance for people who live in Raycast/Linear, not a second way
+  to do things the UI hides. The fuzzy ranking is a pure function (`lib/commandFilter.ts`),
+  unit-tested on its own so the matching logic can't regress unnoticed behind the UI.
 
 ---
 

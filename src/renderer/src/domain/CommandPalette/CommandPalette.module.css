@@ -1,0 +1,121 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-backdrop);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14vh;
+}
+
+.palette {
+  width: 560px;
+  max-width: calc(100vw - var(--space-8));
+  max-height: 60vh;
+  background: var(--color-surface-default);
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
+}
+
+.inputIcon {
+  color: var(--color-ink-tertiary);
+  font-size: var(--text-14);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: var(--space-4) 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-16);
+  color: var(--color-ink-primary);
+}
+
+.input::placeholder {
+  color: var(--color-ink-tertiary);
+}
+
+/* The palette card is itself the focus context and the input is always focused
+   while it's open — so suppress the global accent ring here (it would otherwise
+   show as a clipped rectangle inside the rounded container). */
+.input:focus-visible {
+  box-shadow: none;
+}
+
+.empty {
+  padding: var(--space-6);
+  text-align: center;
+  font-size: var(--type-body-sm-size);
+  color: var(--color-ink-tertiary);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-ink-primary);
+  font-size: var(--type-body-size);
+}
+
+.itemActive {
+  background: var(--color-surface-sunken);
+}
+
+.itemIcon {
+  width: 1rem;
+  color: var(--color-ink-tertiary);
+  font-size: var(--text-13);
+}
+
+.itemActive .itemIcon {
+  color: var(--color-primary-default);
+}
+
+.itemLabel {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemHint {
+  font-size: var(--type-label-sm-size);
+  font-weight: var(--type-label-sm-weight);
+  letter-spacing: var(--type-label-sm-tracking);
+  text-transform: uppercase;
+  color: var(--color-ink-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    scroll-behavior: auto;
+  }
+}

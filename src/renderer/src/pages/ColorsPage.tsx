@@ -23,9 +23,13 @@ import styles from './ColorsPage.module.css'
 interface ColorsPageProps {
   activeTagId: number | null
   embedded?: { title: string }
+  openCreate?: boolean
+  onCreateConsumed?: () => void
+  openItemId?: number | null
+  onItemOpened?: () => void
 }
 
-export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.ReactElement | null {
+export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: ColorsPageProps): React.ReactElement | null {
   const { colours, addColour, renameColour, setFavourite, removeColour } = useColours()
   const [favOnly, setFavOnly] = useState(false)
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
@@ -36,6 +40,19 @@ export function ColorsPage({ activeTagId, embedded }: ColorsPageProps): React.Re
   const confirm = useConfirm()
 
   useEffect(() => { warmColourNames() }, [])
+
+  // Opened from the command palette (⌘K → "Add colour").
+  useEffect(() => {
+    if (openCreate) { setAddOpen(true); onCreateConsumed?.() }
+  }, [openCreate, onCreateConsumed])
+
+  // Selected a specific colour in the command palette → open its drawer.
+  useEffect(() => {
+    if (openItemId == null || colours.length === 0) return
+    const colour = colours.find(c => c.id === openItemId)
+    if (colour) drawer.openDrawer(colour)
+    onItemOpened?.()
+  }, [openItemId, colours, onItemOpened, drawer])
 
   async function addColours(list: Array<{ hex: string; name: string }>): Promise<void> {
     for (const { hex, name } of list) await addColour(hex, name)

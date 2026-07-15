@@ -19,9 +19,11 @@ import { fontStackById, fontFamilyById } from '../lib/fontLoader'
 interface TypeScalesPageProps {
   activeTagId: number | null
   embedded?: { title: string }
+  openCreate?: boolean
+  onCreateConsumed?: () => void
 }
 
-export function TypeScalesPage({ activeTagId, embedded }: TypeScalesPageProps): React.ReactElement | null {
+export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSignal, onCreateConsumed }: TypeScalesPageProps): React.ReactElement | null {
   const { scales, stepsByScale, create, rename, remove, refresh } = useTypeScales()
   const { fonts } = useFonts()
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
@@ -32,6 +34,11 @@ export function TypeScalesPage({ activeTagId, embedded }: TypeScalesPageProps): 
   const openCreate = useCallback((): void => setView('create'), [])
   const openView = useCallback((s: TypeScale): void => { setViewId(s.id); setView('view') }, [])
   const backToList = useCallback((): void => { setView('list'); setViewId(null); refresh() }, [refresh])
+
+  // Opened from the command palette (⌘K → "New type scale").
+  useEffect(() => {
+    if (openCreateSignal) { openCreate(); onCreateConsumed?.() }
+  }, [openCreateSignal, onCreateConsumed, openCreate])
 
   useEffect(() => {
     if (activeTagId == null) { setTagIds(null); return }

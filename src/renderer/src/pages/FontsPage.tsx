@@ -22,9 +22,13 @@ const DEFAULT_PREVIEW = 'The quick brown fox jumps over the lazy dog'
 interface FontsPageProps {
   activeTagId: number | null
   embedded?: { title: string }
+  openCreate?: boolean
+  onCreateConsumed?: () => void
+  openItemId?: number | null
+  onItemOpened?: () => void
 }
 
-export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.ReactElement | null {
+export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: FontsPageProps): React.ReactElement | null {
   const { fonts, addGoogle, addLocal, setFavourite, removeFont } = useFonts()
   const [previewText, setPreviewText] = useState(DEFAULT_PREVIEW)
   const [previewSize, setPreviewSize] = useState(20)
@@ -33,6 +37,19 @@ export function FontsPage({ activeTagId, embedded }: FontsPageProps): React.Reac
   const [adderOpen, setAdderOpen] = useState(false)
   const drawer = useDrawer<Font>()
   const confirm = useConfirm()
+
+  // Opened from the command palette (⌘K → "Add font").
+  useEffect(() => {
+    if (openCreate) { setAdderOpen(true); onCreateConsumed?.() }
+  }, [openCreate, onCreateConsumed])
+
+  // Selected a specific font in the command palette → open its drawer.
+  useEffect(() => {
+    if (openItemId == null || fonts.length === 0) return
+    const font = fonts.find(f => f.id === openItemId)
+    if (font) drawer.openDrawer(font)
+    onItemOpened?.()
+  }, [openItemId, fonts, onItemOpened, drawer])
 
   useEffect(() => {
     if (activeTagId == null) { setTagIds(null); return }

@@ -17,9 +17,11 @@ import { useConfirm } from '../hooks/useConfirm'
 interface PalettesPageProps {
   activeTagId: number | null
   embedded?: { title: string }
+  openCreate?: boolean
+  onCreateConsumed?: () => void
 }
 
-export function PalettesPage({ activeTagId, embedded }: PalettesPageProps): React.ReactElement | null {
+export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSignal, onCreateConsumed }: PalettesPageProps): React.ReactElement | null {
   const {
     palettes, swatchesByPalette,
     createTonal, createExpressive,
@@ -41,6 +43,11 @@ export function PalettesPage({ activeTagId, embedded }: PalettesPageProps): Reac
 
   const openView = useCallback((p: Palette): void => { setViewId(p.id); setView('view') }, [])
   const backToList = useCallback((): void => { setView('list'); setViewId(null); refresh() }, [refresh])
+
+  // Opened from the command palette (⌘K → "New palette").
+  useEffect(() => {
+    if (openCreateSignal) { openCreate(); onCreateConsumed?.() }
+  }, [openCreateSignal, onCreateConsumed, openCreate])
 
   useEffect(() => {
     if (activeTagId == null) { setTagIds(null); return }

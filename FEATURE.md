@@ -116,3 +116,12 @@ colours, fonts — in one aggregated view.
 
 ![Add a project](screenshots/project-add.png)
 ![Project view](screenshots/project-view.png)
+
+---
+
+## Command palette
+
+Press **⌘K** anywhere to jump to a section or project, or start a new colour, font, palette, or
+type scale — all without leaving the keyboard. Start typing to search your library too: existing
+**colours**, **fonts**, and **projects** match by name (colours show a swatch), and picking one
+opens it. Results are ranked by a fuzzy matcher; **↑/↓** to move, **⏎** to run, **Esc** to dismiss.
