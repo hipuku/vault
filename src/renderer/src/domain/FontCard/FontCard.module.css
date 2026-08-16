@@ -59,7 +59,7 @@
 }
 
 .favInline {
-  color: var(--mango-500);
+  color: var(--amber-500);
   font-size: var(--text-12);
   flex-shrink: 0;
 }

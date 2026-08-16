@@ -101,10 +101,10 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **No Storybook.** The app *is* the component gallery; a second harness wasn't earning its keep.
 
 ### Visual & brand
-- **Deep raspberry as the *only* accent.** One memorable colour, not a rainbow of UI states.
-  Raspberry (anchored on `#AA1155` / `#880044`, built as an OKLCH ramp) is reserved for the
+- **Deep ruby as the *only* accent.** One memorable colour, not a rainbow of UI states.
+  Ruby (anchored on `#AA1155` / `#880044`, built as an OKLCH ramp) is reserved for the
   wordmark, primary actions, focus rings, and the active nav item; everything else is calm
-  neutral (the `damson` greys). The restraint is deliberate — when accent means "act here," a
+  neutral (the `onyx` greys). The restraint is deliberate — when accent means "act here," a
   busy accent palette would dilute the signal.
 - **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
   via `@fontsource-variable/manrope` rather than the Google CDN — a local-first app can't depend

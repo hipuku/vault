@@ -114,7 +114,7 @@ describe('nearestShadeIndex', () => {
 
 describe('findSimilar', () => {
   const library = [
-    { id: 1, name: 'Raspberry', hex: '#aa1155' },
+    { id: 1, name: 'Ruby', hex: '#aa1155' },
     { id: 2, name: 'Ocean', hex: '#4a90d9' },
   ]
 
@@ -138,7 +138,7 @@ describe('findSimilar', () => {
   })
 
   it('applies the threshold as a strict upper bound', () => {
-    const target = '#a81255' // ΔE ~0.43 from Raspberry
+    const target = '#a81255' // ΔE ~0.43 from Ruby
     const d = findSimilar(target, library, 100)!.deltaE
     expect(findSimilar(target, library, d + 0.01)?.id).toBe(1)
     expect(findSimilar(target, library, d)).toBeNull() // strict `<`, so d itself excludes

@@ -33,7 +33,7 @@
   font-size: var(--type-heading-sm-size);
   font-weight: var(--type-heading-sm-weight);
   letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-title);
+  color: var(--color-ink-primary);
 }
 
 .body {

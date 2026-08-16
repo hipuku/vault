@@ -137,10 +137,10 @@ textarea::placeholder {
 }
 
 /* Favourite "on" state — gold icon, holds through hover */
-.icon-btn--star { color: var(--mango-500); }
+.icon-btn--star { color: var(--amber-500); }
 .icon-btn--star:hover:not(:disabled) {
   background: var(--color-surface-subtle);
-  color: var(--mango-500);
+  color: var(--amber-500);
 }
 
 /* ── Eyebrow — THE shared section/group label ───────────────────────────────

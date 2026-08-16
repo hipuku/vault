@@ -24,7 +24,7 @@
   font-size: var(--type-heading-sm-size);
   font-weight: var(--type-heading-sm-weight);
   letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-title-danger);
+  color: var(--color-ink-primary);
 }
 
 .message {
