@@ -37,7 +37,7 @@ leaves your machine.
 - **Typed IPC boundary.** A context-isolated renderer (no `nodeIntegration`) reaches Node only
   through a single typed `window.api` (`VaultApi`) surface; all DB, filesystem, and network work
   lives in main.
-- **Tested logic, gated in CI.** 86 Vitest unit tests over the pure `lib/` functions (generators,
+- **Tested logic, gated in CI.** 99 Vitest unit tests over the pure `lib/` functions (generators,
   exporters, colour maths) run alongside lint + typecheck on every push.
 - **Local-first by construction.** Synchronous better-sqlite3 + font bytes copied into `userData`;
   the app works fully offline.
