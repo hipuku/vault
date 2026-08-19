@@ -28,9 +28,12 @@ leaves your machine.
   native CSS `@layer`; perceptual colour ramps, relative-colour syntax (`oklch(from … )`), and
   full space / radius / shadow / z-index / motion scales. Components never hardcode values.
 - **One source of truth across processes.** `shared/` holds pure, DOM- and Node-free logic —
-  colour maths, tonal/expressive palette generators, the type-scale ramp — imported by **both**
-  main and renderer. The live preview and the persisted result run identical code, so they can't
-  drift.
+  colour maths, the palette generators, the type-scale ramp, palette analysis. The palette
+  generators are imported by **both** main and renderer: the renderer previews with them and
+  main re-runs them from the seed before writing, so the saved palette and the previewed one
+  can't drift. Type scales take the other route — the renderer materialises the steps and main
+  only persists the rows — so there the shared module is shared across the renderer's own
+  create flow, viewer and card rather than across processes.
 - **Perceptual colour throughout.** "Nearest name" is a two-pass CIE76 → CIEDE2000 search over a
   ~31,900-name dataset; ramps, grouping, and contrast all reason in perceptual space (LCH/OKLCH),
   not RGB distance.

@@ -48,14 +48,20 @@ Electron, three processes, strict boundaries:
 └───────────────────────────────────────────────────────────────┘
 
 shared/  — pure, process-agnostic logic (colour maths, tonal/expressive
-           generators, type-scale ramp, palette analysis). Imported by
-           BOTH main and renderer; no DOM, no Node.
+           generators, type-scale ramp, palette analysis); no DOM, no Node.
+           The palette generators are imported by BOTH main and renderer;
+           the type-scale ramp and analyser are renderer-only today.
 ```
 
 - **Context-isolated, no `nodeIntegration`.** The renderer only ever touches the typed
   `VaultApi` surface; all privileged work (DB, filesystem, network) is in main.
-- **`shared/` is the spine.** Generators and analysers are pure functions, so the same code
-  drives the live preview in the renderer and the persisted result computed in main — no drift.
+- **`shared/` is the spine.** Generators and analysers are pure functions, so the same code can
+  drive the live preview in the renderer and the persisted result computed in main. That is what
+  the palette handlers do: `palette:create-tonal` and `palette:create-expressive` re-run the
+  generator from the seed before writing, so preview and stored result can't drift. Type scales
+  are generated once in the renderer and passed to main as rows, so nothing is recomputed there —
+  the shared module still holds the ratio presets and the "is this hand-tuned" rule that the
+  create flow, viewer and card all read.
 - **CI** typechecks, lints, tests, and builds on every PR; a tagged release builds unsigned
   `.dmg` installers (Apple Silicon + Intel) and publishes them to GitHub Releases. It ships as a
   direct download, not through the App Store — see the README for the one-time Gatekeeper step.
