@@ -45,6 +45,94 @@ leaves your machine.
 - **Local-first by construction.** Synchronous better-sqlite3 + font bytes copied into `userData`;
   the app works fully offline.
 
+## Architecture
+
+Three processes, one typed boundary, and a pure core shared across it.
+
+```
+ renderer · Chromium — React, CSS Modules
+┌─────────────────────────────────────────────────────────────────────┐
+│  contextIsolation: true          nodeIntegration: false             │
+│                                                                     │
+│  No require. No fs. No net. No database handle. The renderer        │
+│  cannot reach Node even if a dependency tries to.                   │
+│                                                                     │
+│  It reaches privilege through exactly one object:                   │
+│                                                                     │
+│                     window.api : VaultApi                           │
+└────────────────────────────────┬────────────────────────────────────┘
+                                 │  typed method calls
+                                 │  the only way across
+ preload · the bridge            ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  contextBridge.exposeInMainWorld('api', api)                        │
+│                                                                     │
+│  Every method is one line: an ipcRenderer.invoke(channel, …).       │
+│  No logic, no state, no shortcuts. A typed switchboard and          │
+│  nothing else, so the whole attack surface is one readable file.    │
+└────────────────────────────────┬────────────────────────────────────┘
+                                 │  ipcRenderer.invoke ⇄ ipcMain.handle
+                                 │  request/response, namespaced channels:
+                                 │
+                                 │    colour:      palette:     tag:
+                                 │    font:        swatch:      clipboard:
+                                 │    type-scale:  type-scale-step:
+ main · Node                     ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  Owns everything privileged. Nothing here is reachable directly.    │
+│                                                                     │
+│   db/     better-sqlite3, synchronous, five query modules           │
+│           colour · font · palette · tag · type-scale                │
+│                                                                     │
+│   lib/    fontStorage      copies font bytes into userData          │
+│           googleFonts      the Google Fonts metadata catalogue      │
+│           installedFonts   reads the system's installed families    │
+└─────────────────────────────────────────────────────────────────────┘
+
+ shared/ · pure — no DOM, no Node, no Electron
+┌─────────────────────────────────────────────────────────────────────┐
+│  Colour maths, the palette generators, the type-scale ramp,         │
+│  palette analysis, and the VaultApi types themselves.               │
+│                                                                     │
+│  Imported by main AND renderer. This is the one module both         │
+│  sides are allowed to agree on.                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Why the renderer is powerless by construction.** `nodeIntegration: false` means renderer code
+has no `require`, and `contextIsolation: true` runs the preload script in a separate JavaScript
+world from the page. The renderer cannot read the preload's scope, reach into `ipcRenderer`
+directly, or monkey-patch its way to Node. It sees `window.api` and nothing more. Every database
+write, file read, and network request in Vault happens on the far side of that boundary.
+
+**`sandbox: false` is a deliberate trade-off.** It lets the preload script use Node built-ins
+directly, which is what keeps the bridge a single flat file instead of a second IPC hop. Context
+isolation still stands, so the renderer remains cut off from Node; the concession is that the
+preload script itself is privileged. That is why it holds no logic. It is auditable in one read,
+and every method on it is a forwarding call whose entire body is visible on one line.
+
+**Why `shared/` is imported by both processes.** The palette generators run in two places on
+purpose. The renderer runs them to preview a palette live, and main re-runs them from the same
+seed before writing to SQLite. The saved palette and the previewed one therefore cannot drift,
+because they are the same function over the same input rather than two implementations that
+happen to agree today.
+
+Type scales take the other route: the renderer materialises the steps and main only persists the
+rows. There, `shared/` is shared across the renderer's own create flow, viewer and card rather
+than across the process boundary. The rule is not "share everything", it is "share the thing
+whose disagreement would be a bug".
+
+**All outbound traffic is Google Fonts, and there are exactly two calls.** `googleFonts` fetches
+the metadata catalogue, and the `font:download-google` handler resolves a family's CSS and then
+its `.woff2` bytes. Both are user-initiated, both hit `fonts.google.com` or `fonts.googleapis.com` and nothing else, and
+neither runs unless you go looking for a font. There is no telemetry, no account check, and no
+update ping. Everything else in Vault, including the entire library, is local by construction.
+
+**The one call that is not IPC.** `getPathForFile` is a direct `webUtils` call in the preload,
+not an `invoke`. Electron's file objects no longer expose a filesystem path to the renderer, so
+this resolves a dropped `File` to its real path on the privileged side and hands back a string.
+It reads from the drop event, never from arbitrary renderer input.
+
 ## Install
 
 Vault is a direct-download Mac app — not on the App Store, no account required.
