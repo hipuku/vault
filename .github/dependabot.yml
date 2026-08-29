@@ -9,12 +9,15 @@ updates:
       day: monday
     open-pull-requests-limit: 5
     groups:
+      # Vite's usable major is set by electron-vite's peer range, not by anything in
+      # this repo, so it moves with Electron rather than with the linters. Grouped the
+      # other way, one unsatisfiable Vite major blocks every lint and test bump too.
       electron:
-        patterns: ['electron', 'electron-*', '@electron/*', '@electron-toolkit/*']
+        patterns: ['electron', 'electron-*', '@electron/*', '@electron-toolkit/*', 'vite', '@vitejs/*']
       react:
         patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
       tooling:
-        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'vite', 'vitest', '@vitejs/*']
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'vitest']
     commit-message:
       prefix: 'deps'
     ignore:

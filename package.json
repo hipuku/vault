@@ -18,7 +18,7 @@
     "format:check": "prettier --check .",
     "dist": "npm run build && electron-builder",
     "dist:mac": "npm run build && electron-builder --mac",
-    "postinstall": "electron-rebuild -f -w better-sqlite3"
+    "postinstall": "install-electron"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.8",
@@ -33,8 +33,7 @@
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/tsconfig": "^2.0.0",
-    "@electron-toolkit/utils": "^3.0.0",
-    "@electron/rebuild": "^3.7.2",
+    "@electron-toolkit/utils": "^4.0.0",
     "@eslint/js": "^10.0.1",
     "@types/better-sqlite3": "^7.6.12",
     "@types/chroma-js": "^3.1.2",
@@ -43,9 +42,9 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "electron": "^33.2.1",
-    "electron-builder": "^25.1.8",
-    "electron-vite": "^3.0.0",
+    "electron": "^44.0.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -98,5 +97,8 @@
     "nsis": {
       "oneClick": false
     }
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
