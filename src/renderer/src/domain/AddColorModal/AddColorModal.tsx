@@ -38,7 +38,7 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
   const [chosenName, setChosenName] = useState<string | null>(null)
   // Aliased so the picker reads as its own thing inside a component with several
   // other pieces of state.
-  const { open: pickerOpen, toggle: togglePicker, ref: pickerRef } = usePopover()
+  const { open: pickerOpen, toggle: togglePicker, close: closePicker, ref: pickerRef } = usePopover()
 
   // ── From-image state ──
   interface ImageRow { hex: string; name: string; included: boolean }
@@ -59,12 +59,12 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
 
   useEffect(() => {
     if (!open) {
-      setTab('hex'); setText(''); setChosenName(null); togglePicker()
+      setTab('hex'); setText(''); setChosenName(null); closePicker()
       setPreview(null); setRows([]); setEditingHex(null); setLoading(false); setDragOver(false)
     } else if (fixedHex) {
       setTab('hex'); setText(fixedHex)
     }
-  }, [open, fixedHex])
+  }, [open, fixedHex, closePicker])
 
   const dupName = chosenName ? existingNames.has(chosenName.toLowerCase()) : false
   const suggestion = result && dupName ? firstUnusedName(result, existingNames) : null
@@ -151,7 +151,7 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
           <div className={styles.body}>
             <div className={styles.hexRow}>
               <div className={styles.pickerWrap} ref={pickerRef}>
-                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }} onClick={fixedHex ? undefined : () => togglePicker()} aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'} />
+                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }} onClick={fixedHex ? undefined : togglePicker} aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'} />
                 {pickerOpen && !fixedHex && (
                   <Popover align="left" pad="tight"><HexColorPicker color={hex ?? '#aa1155'} onChange={setText} /></Popover>
                 )}
