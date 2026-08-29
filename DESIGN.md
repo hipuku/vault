@@ -68,10 +68,76 @@ shared/  — pure, process-agnostic logic (colour maths, tonal/expressive
 
 ### Data model
 
-SQLite, one file. `colours`, `fonts`, `palettes` + `swatches`, `type_scales` +
-`type_scale_steps`, and a generic `tags` / `asset_tags` join so any asset can belong to
-projects. Generated artifacts (palette, type scale) belong to **exactly one** project and
-auto-join at creation; vault items (colour, font) belong to **many**.
+SQLite, one file. Two library tables (`colours`, `fonts`), two generated artifacts each with
+their own children (`palettes` + `swatches`, `type_scales` + `type_scale_steps`), and a generic
+`tags` / `asset_tags` join so any asset can belong to projects.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044','edgeLabelBackground':'#ffffff'}}}%%
+erDiagram
+    colours {
+        int id PK
+        string hex
+        string name
+    }
+    fonts {
+        int id PK
+        string family
+        string source "google | installed | local"
+        string source_url "managed paths, local only"
+    }
+    palettes {
+        int id PK
+        string kind "tonal | expressive"
+        string base_hex
+        string gen_params "the seed, so it can be regenerated"
+    }
+    swatches {
+        int id PK
+        int palette_id FK
+        int colour_id FK "set when promoted to the library"
+        string group_key
+    }
+    type_scales {
+        int id PK
+        int heading_font_id FK
+        int body_font_id FK
+        real base_size
+        string ratio
+    }
+    type_scale_steps {
+        int id PK
+        int type_scale_id FK
+        string step_name
+        real size
+    }
+    tags {
+        int id PK
+        string label "shown as Project in the UI"
+    }
+    asset_tags {
+        int tag_id FK
+        string asset_type "polymorphic, no FK"
+        int asset_id
+    }
+
+    palettes     ||--o{ swatches         : "cascades on delete"
+    type_scales  ||--o{ type_scale_steps : "cascades on delete"
+    colours      ||--o| swatches         : "anchors"
+    fonts        ||--o| type_scales      : "heading + body"
+    tags         ||--o{ asset_tags       : ""
+    asset_tags   }o--|| colours          : "asset_type = colour"
+    asset_tags   }o--|| fonts            : "asset_type = font"
+    asset_tags   }o--|| palettes         : "asset_type = palette"
+    asset_tags   }o--|| type_scales      : "asset_type = type_scale"
+```
+
+Generated artifacts (palette, type scale) belong to **exactly one** project and auto-join at
+creation; vault items (colour, font) belong to **many**.
+
+`asset_tags` is polymorphic, so SQLite cannot enforce it with a foreign key and cannot cascade
+it — the dashed relationships above are held by convention, and cleaning them up on delete is
+the application's job.
 
 ---
 
@@ -80,10 +146,37 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **Tokens first.** Colour, type, spacing, radius, motion, and elevation are CSS custom
   properties. Components never hardcode values (the only literal colours are `#000`/`#fff`
   contrast overlays on swatches, which are intentionally theme-independent).
-- **Component taxonomy.** `atoms` (Button, Input, Pill, Badge, Panel, SegmentedControl,
-  IconButton, EditableName…) → `primitives` (Toolbar, Drawer, Select, ConfirmDialog,
-  EmptyState…) → `domain` (cards, viewers, create flows, modals) → `pages`. Logic lives in
-  `hooks`; pure helpers in `lib`.
+- **Component taxonomy.** Four levels, imports strictly downward — no atom reaches for a
+  primitive, no primitive reaches for a domain component. Logic lives in `hooks`; pure helpers
+  in `lib`.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044'}}}%%
+flowchart TD
+    P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
+    D["domain · 26<br/><small>cards · drawers · viewers · create flows · modals</small>"]
+    R["primitives · 8<br/><small>Toolbar · Drawer · Select · ConfirmDialog<br/>EmptyState · Callout · SectionGrid · Tooltip</small>"]
+    A["atoms · 10<br/><small>Button · IconButton · Input · Badge · Pill · Panel<br/>SegmentedControl · EditableName · Divider · Spinner</small>"]
+    H["hooks<br/><small>state + IPC</small>"]
+    L["lib / shared<br/><small>pure functions</small>"]
+
+    P --> D --> R --> A
+    P -.-> R
+    P -.-> A
+    D -.-> A
+    P --> H
+    D --> H
+    H --> L
+    D -.-> L
+
+    classDef lvl fill:#feeff2,stroke:#aa1055,color:#111113
+    classDef side fill:#f5f4f9,stroke:#d1d0d7,color:#3f3f43
+    class P,D,R,A lvl
+    class H,L side
+```
+
+Solid arrows are the level ladder; dashed are the shortcuts a level is allowed to take past the
+one below it. Nothing points upward, and nothing points sideways within a level.
 - **CSS Modules, not Tailwind or inline styles.** Co-located `.module.css` keeps the token
   vocabulary visible and the markup readable, with no runtime styling cost.
 - **The same patterns repeat across sections.** Card =
