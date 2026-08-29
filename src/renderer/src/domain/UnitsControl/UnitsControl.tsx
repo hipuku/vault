@@ -7,6 +7,7 @@ import type {
 } from '../../lib/typeUnits'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../primitives/Popover/Popover'
+import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
 import styles from './UnitsControl.module.css'
 
 interface UnitsControlProps {
@@ -33,16 +34,15 @@ export function UnitsControl({ units, onChange }: UnitsControlProps): React.Reac
 
   return (
     <div className={styles.root} ref={ref}>
-      <button
-        type="button"
-        className={styles.trigger}
+      <TriggerPill
+        
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={toggle}
       >
         <FontAwesomeIcon icon={faSliders} />
         <span className={styles.summary}>{units.size} · {units.tracking}</span>
-      </button>
+      </TriggerPill>
 
       {open && (
         <Popover align="right" width="md" column role="dialog" ariaLabel="Display units">

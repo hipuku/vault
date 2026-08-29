@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../Popover/Popover'
+import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
 import styles from './Select.module.css'
 
 export interface SelectOption<K extends string> {
@@ -41,9 +42,8 @@ export function Select<K extends string>({
 
   return (
     <div className={[styles.root, block ? styles.block : ''].filter(Boolean).join(' ')} ref={ref}>
-      <button
-        type="button"
-        className={[styles.trigger, block ? styles.triggerBlock : ''].filter(Boolean).join(' ')}
+      <TriggerPill
+        block={block}
         aria-label={ariaLabel}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -54,7 +54,7 @@ export function Select<K extends string>({
           {current?.label}
         </span>
         <FontAwesomeIcon icon={faChevronDown} className={styles.caret} />
-      </button>
+      </TriggerPill>
       {open && (
         <Popover align={align === 'right' ? 'right' : 'stretch'} pad="tight" role="listbox">
           {options.map(o => (

@@ -4,6 +4,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { SORT_OPTIONS, GROUP_OPTIONS, type SortKey, type GroupKey } from '../../lib/colourSort'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../primitives/Popover/Popover'
+import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
 import styles from './ColorFilters.module.css'
 
 interface ColorFiltersProps {
@@ -25,16 +26,15 @@ export function ColorFilters({
 
   return (
     <div className={styles.root} ref={ref}>
-      <button
-        type="button"
-        className={styles.trigger}
+      <TriggerPill
+        
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={toggle}
       >
         <FontAwesomeIcon icon={faFilter} className={styles.triggerIcon} />
         Filters
-      </button>
+      </TriggerPill>
 
       {open && (
         <Popover align="right" width="sm" pad="roomy" role="dialog" ariaLabel="Filters">
