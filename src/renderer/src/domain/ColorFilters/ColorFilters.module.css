@@ -1,3 +1,5 @@
+/* The floating panel comes from Popover. */
+
 .root {
   position: relative;
   display: inline-flex;
@@ -32,22 +34,6 @@
 }
 
 .triggerIcon { width: 12px; }
-
-.panel {
-  position: absolute;
-  top: calc(100% + var(--space-1));
-  right: 0;
-  z-index: var(--z-dropdown);
-  width: 240px;
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
 
 .section {
   margin: 0;

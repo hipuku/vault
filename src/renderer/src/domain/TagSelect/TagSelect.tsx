@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import type { Tag } from '@shared/types'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../../primitives/Popover/Popover'
 import styles from './TagSelect.module.css'
 
 interface TagSelectProps {
@@ -18,23 +20,13 @@ interface TagSelectProps {
 /** Notion-style combobox: type to prefix-filter, pick from the dropdown, or
  *  create a new entry (prefilled with the query) from the row at the bottom. */
 export function TagSelect({ allTags, selectedIds, onToggle, onCreateNew, single = false, placeholder }: TagSelectProps): React.ReactElement {
-  const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void {
-      if (ref.current && !ref.current.contains(e.target as Node)) { setOpen(false); setQuery('') }
-    }
-    function onKey(e: KeyboardEvent): void {
-      if (e.key === 'Escape') { setOpen(false); setQuery(''); inputRef.current?.blur() }
-    }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, setOpen, ref } = usePopover(() => {
+    setQuery('')
+    inputRef.current?.blur()
+  })
 
   const selected = useMemo(() => allTags.filter(t => selectedIds.has(t.id)), [allTags, selectedIds])
   const q = query.trim().toLowerCase()
@@ -97,7 +89,7 @@ export function TagSelect({ allTags, selectedIds, onToggle, onCreateNew, single 
       </div>
 
       {open && (
-        <div className={styles.panel}>
+        <Popover align="stretch" pad="tight">
           <div className={styles.list}>
             {filtered.map(t => (
               <button key={t.id} type="button" className={styles.option} onMouseDown={e => { e.preventDefault(); pick(t) }}>
@@ -114,7 +106,7 @@ export function TagSelect({ allTags, selectedIds, onToggle, onCreateNew, single 
             <FontAwesomeIcon icon={faPlus} className={styles.createIcon} />
             {q && !exactMatch ? `Create “${query.trim()}”` : 'Create new project'}
           </button>
-        </div>
+        </Popover>
       )}
     </div>
   )

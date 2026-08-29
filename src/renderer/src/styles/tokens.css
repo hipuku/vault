@@ -116,6 +116,13 @@
     --modal-width-lg: 30rem;     /* 480px — form with a preview */
     --modal-width-xl: 37.5rem;   /* 600px — code / table */
 
+    /* ── Popover widths ───────────────────────────────────────────────────────
+       Seven floating panels had six widths. Three steps carry them; 248 rounds to
+       240, which is a popover, not a layout.                                        */
+    --popover-width-sm: 15rem;    /* 240px — filters, step editor */
+    --popover-width-md: 17.5rem;  /* 280px — unit settings */
+    --popover-width-lg: 20rem;    /* 320px — preview settings */
+
     --radius-sm:   0.25rem;
     --radius-md:   0.5rem;
     --radius-lg:   0.75rem;

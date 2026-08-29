@@ -1,3 +1,5 @@
+/* The floating panel and its alignment come from Popover. */
+
 .root {
   position: relative;
   display: inline-flex;
@@ -52,23 +54,6 @@
   flex-shrink: 0;
   color: var(--color-ink-tertiary);
 }
-
-.panel {
-  position: absolute;
-  top: calc(100% + var(--space-1));
-  z-index: var(--z-dropdown);
-  min-width: 100%;
-  padding: var(--space-1);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-}
-
-.left { left: 0; }
-.right { right: 0; }
 
 .option {
   display: flex;

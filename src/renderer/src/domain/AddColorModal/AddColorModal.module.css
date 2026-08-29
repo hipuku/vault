@@ -24,18 +24,6 @@
   padding: 0;
 }
 
-.popover {
-  position: absolute;
-  top: calc(100% + var(--space-2));
-  left: 0;
-  z-index: var(--z-dropdown);
-  padding: var(--space-3);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
 .hexInput {
   flex: 1;
   height: var(--control-height-lg);

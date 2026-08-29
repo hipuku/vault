@@ -12,6 +12,8 @@ import {
 } from '../../lib/colour'
 import { extractDominantColours } from '../../lib/extractColours'
 import Modal from '../../primitives/Modal/Modal'
+import { Popover } from '../../primitives/Popover/Popover'
+import { usePopover } from '../../hooks/usePopover'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import styles from './AddColorModal.module.css'
 
@@ -33,9 +35,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
 
   // ── From-hex state ──
   const [text, setText] = useState('')
-  const [pickerOpen, setPickerOpen] = useState(false)
   const [chosenName, setChosenName] = useState<string | null>(null)
-  const pickerRef = useRef<HTMLDivElement>(null)
+  // Aliased so the picker reads as its own thing inside a component with several
+  // other pieces of state.
+  const { open: pickerOpen, toggle: togglePicker, ref: pickerRef } = usePopover()
 
   // ── From-image state ──
   interface ImageRow { hex: string; name: string; included: boolean }
@@ -56,19 +59,12 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
 
   useEffect(() => {
     if (!open) {
-      setTab('hex'); setText(''); setChosenName(null); setPickerOpen(false)
+      setTab('hex'); setText(''); setChosenName(null); togglePicker()
       setPreview(null); setRows([]); setEditingHex(null); setLoading(false); setDragOver(false)
     } else if (fixedHex) {
       setTab('hex'); setText(fixedHex)
     }
   }, [open, fixedHex])
-
-  useEffect(() => {
-    if (!pickerOpen) return
-    function onDown(e: MouseEvent): void { if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) setPickerOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    return () => window.removeEventListener('mousedown', onDown)
-  }, [pickerOpen])
 
   const dupName = chosenName ? existingNames.has(chosenName.toLowerCase()) : false
   const suggestion = result && dupName ? firstUnusedName(result, existingNames) : null
@@ -155,8 +151,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
           <div className={styles.body}>
             <div className={styles.hexRow}>
               <div className={styles.pickerWrap} ref={pickerRef}>
-                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }} onClick={fixedHex ? undefined : () => setPickerOpen(o => !o)} aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'} />
-                {pickerOpen && !fixedHex && <div className={styles.popover}><HexColorPicker color={hex ?? '#aa1155'} onChange={setText} /></div>}
+                <button type="button" className={styles.preview} style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }} onClick={fixedHex ? undefined : () => togglePicker()} aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'} />
+                {pickerOpen && !fixedHex && (
+                  <Popover align="left" pad="tight"><HexColorPicker color={hex ?? '#aa1155'} onChange={setText} /></Popover>
+                )}
               </div>
               <input className={styles.hexInput} value={text} onChange={e => setText(e.target.value)} placeholder="#hex or paste a colour" spellCheck={false} autoFocus={!fixedHex} readOnly={!!fixedHex} onKeyDown={e => { if (e.key === 'Enter') addHex() }} />
             </div>

@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../Popover/Popover'
 import styles from './Select.module.css'
 
 export interface SelectOption<K extends string> {
@@ -33,19 +35,7 @@ export function Select<K extends string>({
   align = 'left',
   block = false,
 }: SelectProps<K>): React.ReactElement {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, setOpen, toggle, ref } = usePopover()
 
   const current = options.find(o => o.key === value)
 
@@ -57,7 +47,7 @@ export function Select<K extends string>({
         aria-label={ariaLabel}
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={() => setOpen(o => !o)}
+        onClick={() => toggle()}
       >
         <span className={styles.label}>
           {prefix && <span className={styles.prefix}>{prefix} </span>}
@@ -66,7 +56,7 @@ export function Select<K extends string>({
         <FontAwesomeIcon icon={faChevronDown} className={styles.caret} />
       </button>
       {open && (
-        <div className={[styles.panel, align === 'right' ? styles.right : styles.left].join(' ')} role="listbox">
+        <Popover align={align === 'right' ? 'right' : 'stretch'} pad="tight" role="listbox">
           {options.map(o => (
             <button
               key={o.key}
@@ -80,7 +70,7 @@ export function Select<K extends string>({
               {o.key === value && <FontAwesomeIcon icon={faCheck} className={styles.optionCheck} />}
             </button>
           ))}
-        </div>
+        </Popover>
       )}
     </div>
   )

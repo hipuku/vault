@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import { SORT_OPTIONS, GROUP_OPTIONS, type SortKey, type GroupKey } from '../../lib/colourSort'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../../primitives/Popover/Popover'
 import styles from './ColorFilters.module.css'
 
 interface ColorFiltersProps {
@@ -19,19 +21,7 @@ export function ColorFilters({
   groupKey,
   onGroupChange,
 }: ColorFiltersProps): React.ReactElement {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, toggle, ref } = usePopover()
 
   return (
     <div className={styles.root} ref={ref}>
@@ -40,14 +30,14 @@ export function ColorFilters({
         className={styles.trigger}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
       >
         <FontAwesomeIcon icon={faFilter} className={styles.triggerIcon} />
         Filters
       </button>
 
       {open && (
-        <div className={styles.panel} role="dialog" aria-label="Sort and group colours">
+        <Popover align="right" width="sm" pad="roomy" role="dialog" ariaLabel="Filters">
           <fieldset className={styles.section}>
             <legend className={styles.legend}>Sort</legend>
             {SORT_OPTIONS.map(o => (
@@ -77,7 +67,7 @@ export function ColorFilters({
               </label>
             ))}
           </fieldset>
-        </div>
+        </Popover>
       )}
     </div>
   )

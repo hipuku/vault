@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../../primitives/Popover/Popover'
 import styles from './FontPreviewControl.module.css'
 
 interface FontPreviewControlProps {
@@ -12,19 +14,7 @@ interface FontPreviewControlProps {
  *  ColorFilters idiom so the Fonts toolbar matches the other pages. The single
  *  source of truth for how font cards and the drawer specimens render. */
 export function FontPreviewControl({ text, size, onTextChange, onSizeChange }: FontPreviewControlProps): React.ReactElement {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, toggle, ref } = usePopover()
 
   return (
     <div className={styles.root} ref={ref}>
@@ -33,14 +23,14 @@ export function FontPreviewControl({ text, size, onTextChange, onSizeChange }: F
         className={styles.trigger}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
       >
         <span className={styles.aa}>Aa</span>
         <span className={styles.size}>{size}px</span>
       </button>
 
       {open && (
-        <div className={styles.panel} role="dialog" aria-label="Preview text and size">
+        <Popover align="right" width="lg" column role="dialog" ariaLabel="Preview settings">
           <input
             className={styles.textInput}
             value={text}
@@ -62,7 +52,7 @@ export function FontPreviewControl({ text, size, onTextChange, onSizeChange }: F
             />
             <span className={styles.sizeVal}>{size}px</span>
           </div>
-        </div>
+        </Popover>
       )}
     </div>
   )

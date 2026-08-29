@@ -1,3 +1,5 @@
+/* The floating panel comes from Popover. */
+
 .root { position: relative; }
 
 .trigger {
@@ -25,22 +27,6 @@
   line-height: 1;
 }
 .size { color: var(--color-ink-tertiary); }
-
-.panel {
-  position: absolute;
-  top: calc(100% + var(--space-1));
-  right: 0;
-  z-index: var(--z-dropdown);
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-}
 
 .textInput {
   width: 100%;

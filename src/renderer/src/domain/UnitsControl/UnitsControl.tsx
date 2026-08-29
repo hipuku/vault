@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { Select } from '../../primitives/Select/Select'
 import type {
   TypeUnits, SizeUnit, WeightDisplay, LineHeightUnit, TrackingUnit,
 } from '../../lib/typeUnits'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../../primitives/Popover/Popover'
 import styles from './UnitsControl.module.css'
 
 interface UnitsControlProps {
@@ -27,19 +29,7 @@ const TRACKING_OPTS: Array<{ key: TrackingUnit; label: string }> = [
 
 /** Compact popover that sets the table's display units — mirrors FontPreviewControl. */
 export function UnitsControl({ units, onChange }: UnitsControlProps): React.ReactElement {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
-    }
-    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, toggle, ref } = usePopover()
 
   return (
     <div className={styles.root} ref={ref}>
@@ -48,14 +38,14 @@ export function UnitsControl({ units, onChange }: UnitsControlProps): React.Reac
         className={styles.trigger}
         aria-haspopup="dialog"
         aria-expanded={open}
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
       >
         <FontAwesomeIcon icon={faSliders} />
         <span className={styles.summary}>{units.size} · {units.tracking}</span>
       </button>
 
       {open && (
-        <div className={styles.panel} role="dialog" aria-label="Display units">
+        <Popover align="right" width="md" column role="dialog" ariaLabel="Display units">
           <div className={styles.row}>
             <span className={styles.label}>Size</span>
             <Select block ariaLabel="Size unit" value={units.size} options={SIZE_OPTS}
@@ -76,7 +66,7 @@ export function UnitsControl({ units, onChange }: UnitsControlProps): React.Reac
             <Select block ariaLabel="Tracking unit" value={units.tracking} options={TRACKING_OPTS}
               onChange={tracking => onChange({ ...units, tracking })} />
           </div>
-        </div>
+        </Popover>
       )}
     </div>
   )

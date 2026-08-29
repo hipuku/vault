@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Select } from '../../primitives/Select/Select'
+import { usePopover } from '../../hooks/usePopover'
+import { Popover } from '../../primitives/Popover/Popover'
 import styles from './StepEditControl.module.css'
 
 interface StepEditControlProps {
@@ -16,25 +18,15 @@ interface StepEditControlProps {
 const WEIGHTS = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 export function StepEditControl({ size, weight, lineHeight, letterSpacing, onChange }: StepEditControlProps): React.ReactElement {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function onDown(e: MouseEvent): void { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false) }
-    function onKey(e: KeyboardEvent): void { if (e.key === 'Escape') setOpen(false) }
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('keydown', onKey)
-    return () => { window.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey) }
-  }, [open])
+  const { open, toggle, ref } = usePopover()
 
   return (
     <div className={styles.root} ref={ref}>
-      <IconButton label="Edit step" size="sm" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+      <IconButton label="Edit step" size="sm" onClick={toggle} aria-expanded={open}>
         <FontAwesomeIcon icon={faSliders} />
       </IconButton>
       {open && (
-        <div className={styles.popover}>
+        <Popover align="right" width="sm" role="dialog" ariaLabel="Edit step">
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Size</span>
             <span className={styles.unitField}>
@@ -62,7 +54,7 @@ export function StepEditControl({ size, weight, lineHeight, letterSpacing, onCha
             <span className={styles.fieldLabel}>Tracking</span>
             <input value={letterSpacing} onChange={e => onChange(size, weight, lineHeight, e.target.value)} className={styles.control} />
           </label>
-        </div>
+        </Popover>
       )}
     </div>
   )
