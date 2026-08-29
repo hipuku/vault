@@ -80,7 +80,8 @@
       "icon-btn--star": "star",
       "icon-btn--sm": "sm",
       "icon-btn--xs": "xs"
-    }
+    },
+    "glyph": "always"
   },
   "3 \u00b7 Input": {
     "cssPath": "src/renderer/src/atoms/Input/Input.module.css",
@@ -104,26 +105,6 @@
     "labels": {
       "error:null": "default",
       "error": "error"
-    }
-  },
-  "4 \u00b7 Select": {
-    "cssPath": "src/renderer/src/molecules/Select/Select.module.css",
-    "base": "root",
-    "label": "assembly \u2014 see TriggerPill + MenuOption + Popover",
-    "axes": [
-      {
-        "prop": "variant",
-        "values": [
-          null
-        ],
-        "asClass": true
-      }
-    ],
-    "states": [
-      null
-    ],
-    "labels": {
-      "variant:null": "root"
     }
   },
   "5 \u00b7 Badge": {
@@ -217,7 +198,8 @@
     ],
     "states": [
       null
-    ]
+    ],
+    "glyph": "always"
   },
   "9 \u00b7 Divider": {
     "cssPath": "src/renderer/src/atoms/Divider/Divider.module.css",
@@ -259,27 +241,6 @@
     "labels": {
       "false": "no actions",
       "true": "with actions"
-    }
-  },
-  "11 \u00b7 EditableName": {
-    "cssPath": "src/renderer/src/atoms/EditableName/EditableName.module.css",
-    "base": "field",
-    "label": "Coral Blush",
-    "axes": [
-      {
-        "prop": "variant",
-        "values": [
-          null
-        ],
-        "asClass": true
-      }
-    ],
-    "states": [
-      null,
-      "focus-visible"
-    ],
-    "labels": {
-      "variant:null": "field"
     }
   },
   "12 \u00b7 Tooltip": {

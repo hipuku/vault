@@ -17,7 +17,8 @@ const STYLE = `
 .mxtbl td { padding: 9px 14px 9px 0; border-top: 1px solid var(--color-border-subtle); vertical-align: top; }
 .mxtbl td.rowh { font-family: var(--font-mono); font-size: var(--text-11); color: var(--color-primary-default); white-space: nowrap; padding-top: 15px; padding-right: var(--space-4); }
 .mxcell .chip { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); white-space: nowrap; border-style: solid; }
-.mxcell .chip svg { width: .85em; height: .85em; fill: currentColor; }
+.mxcell .chip svg { width: max(.85em, 11px); height: max(.85em, 11px); fill: currentColor; flex: 0 0 auto; }
+.mxcell .chip .slot { display: inline-flex; align-items: center; gap: 4px; padding-left: 6px; margin-left: 2px; border-left: 1px solid currentColor; opacity: .55; }
 .mxvals { margin-top: 6px; font-family: var(--font-mono); font-size: 10px; line-height: 1.55; color: var(--color-ink-tertiary); }
 .mxvals b { color: var(--color-ink-secondary); font-weight: var(--weight-medium); }
 .mxsame { font-size: var(--text-11); color: var(--color-ink-tertiary); font-style: italic; margin-top: 4px; }
@@ -25,6 +26,9 @@ const STYLE = `
 if (!html.includes('state matrix')) html = html.replace('</style>', STYLE + '</style>')
 
 const PLUS = '<svg viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>'
+const PEN = '<svg viewBox="0 0 512 512"><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L301.5 89.8l-11.3 11.3-22.6 22.6L58.6 332.6c-10.4 10.4-18 23.3-22.2 37.4L1 488.5c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l118.5-35.4c14.1-4.2 27-11.8 37.4-22.2L414.4 253.7 410.3 231z"/></svg>'
+const TRASH = '<svg viewBox="0 0 448 512"><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>'
+const DOT = '<span style="width:12px;height:12px;border-radius:999px;background:#aa1055;flex:0 0 auto"></span>'
 
 let done = 0
 for (const [heading, spec] of Object.entries(specs)) {
@@ -36,7 +40,9 @@ for (const [heading, spec] of Object.entries(specs)) {
   t += '</tr></thead><tbody>\n'
 
   for (const row of rows) {
-    const wantsIcon = row.combo.some(c => c.prop === 'icon' && c.value === true)
+    const wantsIcon = spec.glyph === 'always' || row.combo.some(c => c.prop === 'icon' && c.value === true)
+    const wantsLead = row.combo.some(c => c.prop === 'leading' && c.value === true)
+    const wantsActions = row.combo.some(c => c.prop === 'actions' && c.value === true)
     t += `        <tr><td class="rowh">${row.label}</td>`
     for (const cell of row.cells) {
       const v = cell.values
@@ -58,7 +64,9 @@ for (const [heading, spec] of Object.entries(specs)) {
       const vals = PAINT.filter(k => v[k] !== undefined && k !== 'border')
         .map(k => `<b>${k}</b> ${pretty(v[k])}`).join('<br>')
       const same = !cell.differs ? '<div class="mxsame">same as default — no frame needed</div>' : ''
-      t += `<td class="mxcell"><span class="chip" style="${style}">${wantsIcon ? PLUS : ''}${spec.label ?? 'Label'}</span>${same}<div class="mxvals">${vals}</div></td>`
+      const lead = wantsLead ? DOT : ''
+      const actions = wantsActions ? `<span class="slot">${PEN}${TRASH}</span>` : ''
+      t += `<td class="mxcell"><span class="chip" style="${style}">${wantsIcon ? PLUS : ''}${lead}${spec.label ?? 'Label'}${actions}</span>${same}<div class="mxvals">${vals}</div></td>`
     }
     t += '</tr>\n'
   }
