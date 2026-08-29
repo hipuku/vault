@@ -38,12 +38,14 @@ leaves your machine.
   ~31,900-name dataset; ramps, grouping, and contrast all reason in perceptual space (LCH/OKLCH),
   not RGB distance.
 - **Typed IPC boundary.** A context-isolated renderer (no `nodeIntegration`) reaches Node only
-  through a single typed `window.api` (`VaultApi`) surface; all DB, filesystem, and network work
-  lives in main.
-- **Tested logic, gated in CI.** 99 Vitest unit tests over the pure `lib/` functions (generators,
-  exporters, colour maths) run alongside lint + typecheck on every push.
-- **Local-first by construction.** Synchronous better-sqlite3 + font bytes copied into `userData`;
-  the app works fully offline.
+  through a single typed `window.api` (`VaultApi`) surface; all database and filesystem work lives in main. Font previews are the one
+  exception — see *Outbound traffic* below.
+- **Tested logic, gated in CI.** 99 Vitest unit tests over the pure `lib/` functions — the
+  exporters, the colour maths, the type-scale units and the command filter — run alongside
+  lint + typecheck on every push. The palette generators are not yet covered.
+- **Local-first.** Synchronous better-sqlite3, with the bytes of uploaded and installed fonts
+  copied into `userData`. Colours, palettes and type scales work with no network at all; a font
+  added from Google is stored as a reference and renders from Google's CDN.
 
 ## Architecture
 
@@ -54,7 +56,7 @@ Three processes, one typed boundary, and a pure core shared across it.
 ┌─────────────────────────────────────────────────────────────────────┐
 │  contextIsolation: true          nodeIntegration: false             │
 │                                                                     │
-│  No require. No fs. No net. No database handle. The renderer        │
+│  No require. No fs. No database handle. The renderer                │
 │  cannot reach Node even if a dependency tries to.                   │
 │                                                                     │
 │  It reaches privilege through exactly one object:                   │
@@ -68,8 +70,8 @@ Three processes, one typed boundary, and a pure core shared across it.
 │  contextBridge.exposeInMainWorld('api', api)                        │
 │                                                                     │
 │  Every method is one line: an ipcRenderer.invoke(channel, …).       │
-│  No logic, no state, no shortcuts. A typed switchboard and          │
-│  nothing else, so the whole attack surface is one readable file.    │
+│  No logic, no state, no shortcuts. The whole bridge is              │
+│  one file you can read in a sitting.                                │
 └────────────────────────────────┬────────────────────────────────────┘
                                  │  ipcRenderer.invoke ⇄ ipcMain.handle
                                  │  request/response, namespaced channels:
@@ -99,34 +101,41 @@ Three processes, one typed boundary, and a pure core shared across it.
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Why the renderer is powerless by construction.** `nodeIntegration: false` means renderer code
+**What the renderer cannot do.** `nodeIntegration: false` means renderer code
 has no `require`, and `contextIsolation: true` runs the preload script in a separate JavaScript
 world from the page. The renderer cannot read the preload's scope, reach into `ipcRenderer`
 directly, or monkey-patch its way to Node. It sees `window.api` and nothing more. Every database
-write, file read, and network request in Vault happens on the far side of that boundary.
+write and file read in Vault happens on the far side of that boundary. Network is the one
+exception, and it is described below.
 
 **`sandbox: false` is a deliberate trade-off.** It lets the preload script use Node built-ins
 directly, which is what keeps the bridge a single flat file instead of a second IPC hop. Context
 isolation still stands, so the renderer remains cut off from Node; the concession is that the
-preload script itself is privileged. That is why it holds no logic. It is auditable in one read,
-and every method on it is a forwarding call whose entire body is visible on one line.
+preload script itself is privileged. That is why it holds no logic: every method on it is a
+one-line forwarding call.
 
 **Why `shared/` is imported by both processes.** The palette generators run in two places on
 purpose. The renderer runs them to preview a palette live, and main re-runs them from the same
 seed before writing to SQLite. The saved palette and the previewed one therefore cannot drift,
-because they are the same function over the same input rather than two implementations that
-happen to agree today.
+because they are the same function over the same input.
 
 Type scales take the other route: the renderer materialises the steps and main only persists the
 rows. There, `shared/` is shared across the renderer's own create flow, viewer and card rather
-than across the process boundary. The rule is not "share everything", it is "share the thing
-whose disagreement would be a bug".
+than across the process boundary.
 
-**All outbound traffic is Google Fonts, and there are exactly two calls.** `googleFonts` fetches
-the metadata catalogue, and the `font:download-google` handler resolves a family's CSS and then
-its `.woff2` bytes. Both are user-initiated, both hit `fonts.google.com` or `fonts.googleapis.com` and nothing else, and
-neither runs unless you go looking for a font. There is no telemetry, no account check, and no
-update ping. Everything else in Vault, including the entire library, is local by construction.
+**Outbound traffic is Google Fonts and nothing else.** Three requests, across three hosts, none
+of which runs unless you go looking for a font:
+
+| Request | Where from | Host |
+|---|---|---|
+| The family metadata catalogue (`getGoogleFonts`) | main | `fonts.google.com` |
+| A family's CSS, then its `.woff2` bytes (`font:download-google`) | main | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+| The stylesheet that renders a Google font in a preview (`fontLoader`) | **renderer** | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+
+The third is the exception to the boundary above: previewing a Google-sourced font appends a
+`<link rel="stylesheet">` to the document, so that request leaves the renderer rather than main.
+Everything else — the database, the library, every colour and palette and type scale — is local.
+There is no telemetry, no account check, and no update ping.
 
 **The one call that is not IPC.** `getPathForFile` is a direct `webUtils` call in the preload,
 not an `invoke`. Electron's file objects no longer expose a filesystem path to the renderer, so

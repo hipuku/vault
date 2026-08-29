@@ -41,7 +41,9 @@ Empty states guide the first capture.
 
 ## Fonts
 
-Add fonts from three sources, all copied into app storage so the vault owns the bytes.
+Add fonts from three sources. Installed fonts and local uploads are copied into app storage,
+so the vault owns the bytes; a Google font is stored as a reference and rendered from
+Google's CDN, with `Download` fetching the file on demand.
 
 **Google Fonts** — search the catalogue, preview in-place, add in a click.
 

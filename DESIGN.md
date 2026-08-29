@@ -14,8 +14,8 @@ colours, fonts, palettes, and type scales. Two jobs:
 2. **A studio** — gather a project's colours and fonts, then *generate* a palette and a type
    scale from them.
 
-It's deliberately personal software: no accounts, no cloud, no crowd metrics. Everything lives
-on disk and works on a plane.
+It's deliberately personal software: no accounts, no cloud, no crowd metrics. The library lives
+on disk.
 
 ![Colours library](screenshots/colors-library.png)
 ![Palette creation](screenshots/palette-create-tonal.png)
@@ -32,7 +32,7 @@ Electron, three processes, strict boundaries:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ main (Node)                                                  │
-│  • better-sqlite3  →  ~/Library/Application Support/vault     │
+│  • better-sqlite3  →  ~/Library/Application Support/Vault     │
 │  • IPC handlers (colour / font / palette / type-scale / tag) │
 │  • Google Fonts metadata fetch, installed-font enumeration,  │
 │    font-file storage (copy bytes into userData/fonts/)       │
@@ -55,14 +55,14 @@ shared/  — pure, process-agnostic logic (colour maths, tonal/expressive
 
 - **Context-isolated, no `nodeIntegration`.** The renderer only ever touches the typed
   `VaultApi` surface; all privileged work (DB, filesystem, network) is in main.
-- **`shared/` is the spine.** Generators and analysers are pure functions, so the same code can
+- **`shared/` holds the logic both processes need.** Generators and analysers are pure functions, so the same code can
   drive the live preview in the renderer and the persisted result computed in main. That is what
   the palette handlers do: `palette:create-tonal` and `palette:create-expressive` re-run the
   generator from the seed before writing, so preview and stored result can't drift. Type scales
   are generated once in the renderer and passed to main as rows, so nothing is recomputed there —
   the shared module still holds the ratio presets and the "is this hand-tuned" rule that the
   create flow, viewer and card all read.
-- **CI** typechecks, lints, tests, and builds on every PR; a tagged release builds unsigned
+- **CI** typechecks, lints, tests, and builds on every push to `main` and every PR; a tagged release builds unsigned
   `.dmg` installers (Apple Silicon + Intel) and publishes them to GitHub Releases. It ships as a
   direct download, not through the App Store — see the README for the one-time Gatekeeper step.
 
@@ -85,8 +85,8 @@ auto-join at creation; vault items (colour, font) belong to **many**.
   EmptyState…) → `domain` (cards, viewers, create flows, modals) → `pages`. Logic lives in
   `hooks`; pure helpers in `lib`.
 - **CSS Modules, not Tailwind or inline styles.** Co-located `.module.css` keeps the token
-  vocabulary visible and the markup readable; no utility soup, no runtime styling cost.
-- **One affordance, learned once.** The same patterns repeat across sections: card =
+  vocabulary visible and the markup readable, with no runtime styling cost.
+- **The same patterns repeat across sections.** Card =
   whole-card button + hover edit pen + `Pill` (descriptor) + mono (value); viewers are
   hero + `Panel`s; create flows are a two-pane (controls | live preview).
 - **Accessible by default.** Dialogs, drawers, menus, and popovers are keyboard-navigable and
@@ -104,14 +104,14 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **better-sqlite3 over an ORM.** Synchronous, zero-ceremony, and the schema is small enough
   that hand-written SQL is clearer than a query builder.
 - **CSS Modules over Tailwind.** A bespoke token system is the point; utilities would hide it.
-- **No Storybook.** The app *is* the component gallery; a second harness wasn't earning its keep.
+- **No Storybook.** The app already exercises every component; a second harness would be a
+  parallel surface to maintain.
 
 ### Visual & brand
 - **Deep ruby as the *only* accent.** One memorable colour, not a rainbow of UI states.
   Ruby (anchored on `#AA1155` / `#880044`, built as an OKLCH ramp) is reserved for the
   wordmark, primary actions, focus rings, and the active nav item; everything else is calm
-  neutral (the `onyx` greys). The restraint is deliberate — when accent means "act here," a
-  busy accent palette would dilute the signal.
+  neutral (the `onyx` greys), so the accent reliably means "act here".
 - **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
   via `@fontsource-variable/manrope` rather than the Google CDN — a local-first app can't depend
   on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400
@@ -124,9 +124,9 @@ auto-join at creation; vault items (colour, font) belong to **many**.
   more consistent optical weight next to Manrope, and the SVG-React packages tree-shake to only
   the icons used — no icon-font FOUT.
 - **Light mode only, on purpose.** A calm, paper-like single theme keeps attention on the
-  *content* — the colours and type you're collecting — and let me spend the design budget on one
-  polished surface instead of two adequate ones. The two-tier token layer means a dark theme is
-  mostly overriding the semantic aliases: deferred, not designed out.
+  *content* — the colours and type you're collecting — and concentrated the design work on one
+  surface. The two-tier token layer means a dark theme is mostly a matter of overriding the
+  semantic aliases: deferred rather than ruled out.
 
 ### Colour
 - **Perceptual maths (LCH, ΔE2000).** Ramps and "nearest name" run in a perceptual space so
@@ -135,17 +135,19 @@ auto-join at creation; vault items (colour, font) belong to **many**.
   a multi-hue set). Same two-pane create flow, different generator.
 
 ### Fonts & type
-- **Three sources, app-owned bytes.** Google (CSS link), **installed** (enumerated via
-  `system_profiler`, the Font Book set), and file upload. On import the bytes are **copied into
-  app storage** so a moved or deleted original never breaks the vault — and the file stays
-  shareable (Show in Finder / Download).
+- **Three sources; two of them app-owned bytes.** **Installed** (enumerated via
+  `system_profiler`, the Font Book set) and **file upload** copy the bytes into app storage on
+  import, so a moved or deleted original never breaks the vault, and the file stays shareable
+  (Show in Finder / Download). **Google** is the exception: adding one stores family, category
+  and weights only, and previews render from Google's CDN over a stylesheet link. `Download`
+  fetches the `.woff2` on demand and saves it where you choose. Copying Google bytes into the
+  vault on add would make the library genuinely offline — it is the obvious next change here.
 - **Type-scale presets, not free-form.** *Product* (Display→Label) and *Web/Markup* (h1–h6 +
   paragraph/small) — chosen at creation like tonal/expressive. The chosen ramp is materialised
   into rows, so there's no schema cost and the "kind" is recoverable from the step names.
 - **Units are a reading concern, decoupled from storage.** Sizes persist in px, line-heights as
   unitless multipliers, tracking in em; the viewer converts live (px/rem/pt · unitless/px/% ·
-  em/px/%) via one popover, and export captures whatever's selected. "What you see is what you
-  ship."
+  em/px/%) via one popover, and export captures whatever's selected.
 
 ### Interaction
 - **Four sections, not tabs.** Colours / Fonts / Palettes / Type scales are peers in a sidebar,
@@ -153,7 +155,7 @@ auto-join at creation; vault items (colour, font) belong to **many**.
 - **"Projects", not "tags".** Underneath, the schema is a generic `tags` / `asset_tags` join —
   any asset, many tags — because that's the flexible data model. But users don't think in tags;
   they think in the project they're working on. So the UI says *Projects* while the generic join
-  stays underneath, keeping the model open without leaking its plumbing into the language.
+  stays underneath.
 - **Drawer for vault items, page for generated artifacts.** A colour or font is a quick glance
   (drawer); a palette or type scale is a worked object (full page with export).
 - **Generated artifacts are immutable after creation.** You tune a type scale while creating it
@@ -163,9 +165,8 @@ auto-join at creation; vault items (colour, font) belong to **many**.
   consistency rules applied everywhere.
 - **⌘K command palette.** A keyboard-first path over the same actions the sidebar and toolbars
   already expose — jump to a section or project, or start a new asset, without reaching for the
-  mouse. It's the power-user affordance for people who live in Raycast/Linear, not a second way
-  to do things the UI hides. The fuzzy ranking is a pure function (`lib/commandFilter.ts`),
-  unit-tested on its own so the matching logic can't regress unnoticed behind the UI.
+  mouse. Every action it offers is also reachable from the sidebar or a toolbar. The fuzzy
+  ranking is a pure function (`lib/commandFilter.ts`) with its own unit tests.
 
 ---
 
