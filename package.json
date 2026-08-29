@@ -1,6 +1,6 @@
 {
   "name": "vault",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Offline Mac app for capturing and shaping design tokens — colours, fonts, palettes, and type scales.",
   "main": "./out/main/index.js",
   "author": "hipuku",
