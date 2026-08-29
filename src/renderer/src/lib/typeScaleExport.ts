@@ -1,4 +1,4 @@
-import type { ExportFormatDef } from '../domain/ExportModal/ExportModal'
+import type { ExportFormatDef } from '../organisms/ExportModal/ExportModal'
 import { type TypeUnits, formatSize, formatLineHeight, formatTracking } from './typeUnits'
 
 interface StepLike {

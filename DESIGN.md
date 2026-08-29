@@ -146,17 +146,24 @@ the application's job.
 - **Tokens first.** Colour, type, spacing, radius, motion, and elevation are CSS custom
   properties. Components never hardcode values (the only literal colours are `#000`/`#fff`
   contrast overlays on swatches, which are intentionally theme-independent).
-- **Component taxonomy.** Four levels, imports strictly downward — no atom reaches for a
-  primitive, no primitive reaches for a domain component. Logic lives in `hooks`; pure helpers
-  in `lib`.
+- **Component taxonomy.** Three levels — atoms, molecules, organisms — matching the vocabulary
+  the Figma library uses, so a component has one name in both places. Logic lives in `hooks`;
+  pure helpers in `lib`.
+
+  The rule is **never upward**: an atom cannot reach for a molecule, a molecule cannot reach for
+  an organism. Same-tier composition is allowed and happens ten times — `ConfirmDialog` is built
+  on `Modal`, `StepEditControl` and `UnitsControl` on `Select`, `PaletteView` on `ExportModal`.
+  The previous four-level split had zero same-tier imports, and that was worth giving up: the
+  fourth level existed only because `primitives/` was holding both base controls and
+  compositions, which is the distinction atoms and molecules already make.
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044'}}}%%
 flowchart TD
     P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
-    D["domain · 26<br/><small>cards · drawers · viewers · create flows · modals</small>"]
-    R["primitives · 8<br/><small>Toolbar · Drawer · Select · ConfirmDialog<br/>EmptyState · Callout · SectionGrid · Tooltip</small>"]
-    A["atoms · 10<br/><small>Button · IconButton · Input · Badge · Pill · Panel<br/>SegmentedControl · EditableName · Divider · Spinner</small>"]
+    D["organisms · 17<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
+    R["molecules · 16<br/><small>Modal · Select · Drawer · Toolbar · ConfirmDialog<br/>TagSelect · UnitsControl · StepEditControl · …</small>"]
+    A["atoms · 15<br/><small>Button · IconButton · Input · Badge · Pill · Panel · Popover<br/>SegmentedControl · TriggerPill · MenuOption · Tooltip · …</small>"]
     H["hooks<br/><small>state + IPC</small>"]
     L["lib / shared<br/><small>pure functions</small>"]
 
@@ -176,7 +183,7 @@ flowchart TD
 ```
 
 Solid arrows are the level ladder; dashed are the shortcuts a level is allowed to take past the
-one below it. Nothing points upward, and nothing points sideways within a level.
+one below it. Nothing points upward.
 - **CSS Modules, not Tailwind or inline styles.** Co-located `.module.css` keeps the token
   vocabulary visible and the markup readable, with no runtime styling cost.
 - **The same patterns repeat across sections.** Card =
