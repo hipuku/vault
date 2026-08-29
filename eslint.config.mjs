@@ -20,6 +20,17 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
+  // The build scripts are Node ESM, not app code: they read argv, write files and
+  // report to stdout. Without their own globals block they fall through to the base
+  // config, which knows no `process` and no `console`.
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: { ...globals.node },
+      sourceType: 'module',
+      ecmaVersion: 'latest',
+    },
+  },
   // Prettier owns formatting — disable any stylistic ESLint rules that would fight it.
   prettier,
 )
