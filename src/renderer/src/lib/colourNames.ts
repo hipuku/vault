@@ -51,7 +51,8 @@ export function warmColourNames(): void {
 const CIE76_RADIUS = 28
 
 export function nearestNames(hex: string, count = 6): NameResult {
-  const empty: NameResult = { best: { name: '', hex, deltaE: 0 }, runners: [], confidence: { veryClose: 0, approximate: 0, distant: 0 } }
+  // deltaE NaN, not 0: an unparseable hex has no match, and 0 would render as an exact one.
+  const empty: NameResult = { best: { name: '', hex, deltaE: NaN }, runners: [], confidence: { veryClose: 0, approximate: 0, distant: 0 } }
   const lab = toLab(hex)
   if (!lab) return empty
 
@@ -63,9 +64,14 @@ export function nearestNames(hex: string, count = 6): NameResult {
   }
   const pool = candidates.length ? candidates : list
 
+  // Sort on the raw distance, round only for display. Rounding first collapsed every
+  // candidate within 0.05 into a tie, which the dataset's key order then broke
+  // arbitrarily — roughly one colour in fourteen was named by a match that was not
+  // the nearest one.
   const scored = pool
-    .map(e => ({ name: e.name, hex: e.hex, deltaE: Math.round(deltaE(hex, e.hex) * 10) / 10 }))
+    .map(e => ({ name: e.name, hex: e.hex, deltaE: deltaE(hex, e.hex) }))
     .sort((a, b) => a.deltaE - b.deltaE)
+    .map(m => ({ ...m, deltaE: Math.round(m.deltaE * 10) / 10 }))
 
   if (scored.length === 0) return empty
 
