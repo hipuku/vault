@@ -51,55 +51,40 @@ leaves your machine.
 
 Three processes, one typed boundary, and a pure core shared across it.
 
-```
- renderer · Chromium — React, CSS Modules
-┌─────────────────────────────────────────────────────────────────────┐
-│  contextIsolation: true          nodeIntegration: false             │
-│                                                                     │
-│  No require. No fs. No database handle. The renderer                │
-│  cannot reach Node even if a dependency tries to.                   │
-│                                                                     │
-│  It reaches privilege through exactly one object:                   │
-│                                                                     │
-│                     window.api : VaultApi                           │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │  typed method calls
-                                 │  the only way across
- preload · the bridge            ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  contextBridge.exposeInMainWorld('api', api)                        │
-│                                                                     │
-│  Every method is one line: an ipcRenderer.invoke(channel, …).       │
-│  No logic, no state, no shortcuts. The whole bridge is              │
-│  one file you can read in a sitting.                                │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │  ipcRenderer.invoke ⇄ ipcMain.handle
-                                 │  request/response, namespaced channels:
-                                 │
-                                 │    colour:      palette:     tag:
-                                 │    font:        swatch:      clipboard:
-                                 │    type-scale:  type-scale-step:
- main · Node                     ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  Owns everything privileged. Nothing here is reachable directly.    │
-│                                                                     │
-│   db/     better-sqlite3, synchronous, five query modules           │
-│           colour · font · palette · tag · type-scale                │
-│                                                                     │
-│   lib/    fontStorage      copies font bytes into userData          │
-│           googleFonts      the Google Fonts metadata catalogue      │
-│           installedFonts   reads the system's installed families    │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044','edgeLabelBackground':'#ffffff'}}}%%
+flowchart TB
+    subgraph RENDERER ["renderer · Chromium — React, CSS Modules"]
+        R["contextIsolation: true · nodeIntegration: false<br/><b>window.api : VaultApi</b><br/><small>the only object it can reach privilege through</small>"]
+    end
 
- shared/ · pure — no DOM, no Node, no Electron
-┌─────────────────────────────────────────────────────────────────────┐
-│  Colour maths, the palette generators, the type-scale ramp,         │
-│  palette analysis, and the VaultApi types themselves.               │
-│                                                                     │
-│  Imported by main AND renderer. This is the one module both         │
-│  sides are allowed to agree on.                                     │
-└─────────────────────────────────────────────────────────────────────┘
+    subgraph PRELOAD ["preload · the bridge"]
+        B["contextBridge.exposeInMainWorld('api', api)<br/><small>every method is one line: ipcRenderer.invoke(channel, …)</small>"]
+    end
+
+    subgraph MAIN ["main · Node — owns everything privileged"]
+        DB["db/<br/><small>better-sqlite3, synchronous</small><br/><small>colour · font · palette · tag · type-scale</small>"]
+        LIB["lib/<br/><small>fontStorage · googleFonts · installedFonts</small>"]
+    end
+
+    subgraph SHARED ["shared/ · pure — no DOM, no Node, no Electron"]
+        S["colour maths · palette generators · type-scale ramp<br/>palette analysis · the VaultApi types"]
+    end
+
+    R -- "typed method calls<br/>the only way across" --> B
+    B -- "ipcRenderer.invoke ⇄ ipcMain.handle<br/>colour: font: palette: swatch:<br/>tag: type-scale: type-scale-step: clipboard:" --> DB
+    B --> LIB
+    S -. "imported by" .-> R
+    S -. "imported by" .-> DB
+
+    classDef box fill:#feeff2,stroke:#aa1055,color:#111113
+    classDef pure fill:#f5f4f9,stroke:#d1d0d7,color:#3f3f43
+    class R,B,DB,LIB box
+    class S pure
 ```
+
+The renderer holds no `require`, no `fs`, and no database handle. `shared/` is the one module
+both sides import, and the four notes below are why each of those choices was made.
 
 **What the renderer cannot do.** `nodeIntegration: false` means renderer code
 has no `require`, and `contextIsolation: true` runs the preload script in a separate JavaScript
