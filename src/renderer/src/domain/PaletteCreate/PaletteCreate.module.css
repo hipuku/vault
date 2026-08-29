@@ -43,7 +43,7 @@
   font-weight: var(--weight-medium);
   color: var(--color-ink-tertiary);
 }
-.labelHint { font-weight: var(--weight-normal); color: var(--color-ink-tertiary); opacity: 0.7; }
+.labelHint { font-weight: var(--weight-regular); color: var(--color-ink-tertiary); opacity: 0.7; }
 
 .empty {
   font-size: var(--text-13);

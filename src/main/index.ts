@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, clipboard, shell, dialog, nativeImage } from 'electron'
-import { join } from 'path'
+import { join, resolve, relative, isAbsolute } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import { is } from '@electron-toolkit/utils'
 import * as colourQueries from './db/queries/colour'
@@ -13,6 +13,30 @@ import * as tagQueries from './db/queries/tag'
 import { generateTonalSystem } from '../shared/lib/tonalSystem'
 import { generateExpressiveSet } from '../shared/lib/expressiveSet'
 import type { AssetType, TypeScaleStepInput, FillStrategy, RampName, LocalFontFile } from '../shared/types'
+
+/** The scheme of a URL, or '' if it will not parse. */
+function safeProtocol(url: string): string {
+  try {
+    return new URL(url).protocol
+  } catch {
+    return ''
+  }
+}
+
+/** Resolve a renderer-supplied font path, refusing anything outside the directory the
+ *  app owns. Both callers pass a path that came from the database, and every path the
+ *  database holds was written by copyFontFiles into userData/fonts — so this rejects
+ *  nothing legitimate, and stops the two path-taking handlers being a general-purpose
+ *  read-any-file / reveal-any-file primitive for the renderer. */
+function ownedFontPath(candidate: string): string {
+  const root = resolve(app.getPath('userData'), 'fonts')
+  const full = resolve(root, candidate)
+  const rel = relative(root, full)
+  if (rel.startsWith('..') || isAbsolute(rel)) {
+    throw new Error('Refusing to read outside the managed fonts directory.')
+  }
+  return full
+}
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -33,9 +57,21 @@ function createWindow(): void {
 
   win.on('ready-to-show', () => win.show())
 
+  // Only http(s) reaches the OS opener. Any other scheme — file:, smb:, a custom
+  // handler registered by another app — is a way to have the shell run something on
+  // the user's behalf from a string the renderer chose.
   win.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url)
+    if (/^https?:$/.test(safeProtocol(url))) shell.openExternal(url)
     return { action: 'deny' }
+  })
+
+  // The renderer is only ever the bundled app. Without this, anything that can set
+  // location.href moves the top-level frame to a remote origin, and that origin then
+  // holds the whole window.api surface.
+  win.webContents.on('will-navigate', (event, url) => {
+    const devServer = process.env['ELECTRON_RENDERER_URL']
+    const allowed = devServer ? url.startsWith(devServer) : url.startsWith('file://')
+    if (!allowed) event.preventDefault()
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
@@ -78,7 +114,7 @@ ipcMain.handle('font:add-local', async (_e, family: string, files: LocalFontFile
   return fontQueries.addLocalFont(family, copied)
 })
 ipcMain.handle('font:list-installed', () => listInstalledFonts())
-ipcMain.handle('font:reveal', (_e, path: string) => shell.showItemInFolder(path))
+ipcMain.handle('font:reveal', (_e, path: string) => shell.showItemInFolder(ownedFontPath(path)))
 ipcMain.handle('font:download-google', async (_e, family: string, weights: string[]) => {
   const fam = family.trim().replace(/\s+/g, '+')
   const wght = [...new Set(weights)].sort((a, b) => Number(a) - Number(b)).join(';')
@@ -109,7 +145,7 @@ ipcMain.handle('font:delete', (_e, id: number) => {
 })
 ipcMain.handle('font:google-list', () => getGoogleFonts())
 ipcMain.handle('font:read-file', async (_e, path: string) => {
-  const buf = await readFile(path)
+  const buf = await readFile(ownedFontPath(path))
   return new Uint8Array(buf)
 })
 
