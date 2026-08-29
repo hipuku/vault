@@ -16,6 +16,9 @@ export interface ModalProps {
   chrome?: 'header' | 'plain'
   /** Search-led surfaces sit high rather than centred. */
   align?: 'center' | 'top'
+  /** Replaces the header's title node — a tab strip, typically. `title` still names
+   *  the dialog for assistive tech. The close button and the rule stay. */
+  header?: React.ReactNode
   /** Closing on a backdrop click is opt-in: a destructive confirm should not. */
   dismissOnBackdrop?: boolean
   footer?: React.ReactNode
@@ -41,6 +44,7 @@ export default function Modal({
   size = 'md',
   chrome = 'header',
   align = 'center',
+  header,
   dismissOnBackdrop = false,
   footer,
   children,
@@ -96,13 +100,13 @@ export default function Modal({
           .join(' ')}
         role="dialog"
         aria-modal
-        aria-labelledby={titleId}
+        {...(header ? { 'aria-label': title } : { 'aria-labelledby': titleId })}
         tabIndex={-1}
       >
         {chrome === 'header' ? (
           <>
             <div className={styles.header}>
-              <h2 id={titleId} className={styles.title}>{title}</h2>
+              {header ?? <h2 id={titleId} className={styles.title}>{title}</h2>}
               <IconButton label="Close" onClick={onClose}>
                 <FontAwesomeIcon icon={faXmark} />
               </IconButton>

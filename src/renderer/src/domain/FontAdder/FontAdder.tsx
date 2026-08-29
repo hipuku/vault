@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faMagnifyingGlass, faUpload, faCheck, faLaptop } from '@fortawesome/free-solid-svg-icons'
 import type { GoogleFontMeta, LocalFontFile, InstalledFamily } from '@shared/types'
 import { Button } from '../../atoms/Button/Button'
-import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Input } from '../../atoms/Input/Input'
 import { Spinner } from '../../atoms/Spinner/Spinner'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
@@ -11,6 +10,7 @@ import { Select } from '../../primitives/Select/Select'
 import {
   loadGoogleFont, loadPreviewFont, familyFromFilename, categoryGeneric, detectWeightStyle,
 } from '../../lib/fontLoader'
+import Modal from '../../primitives/Modal/Modal'
 import styles from './FontAdder.module.css'
 
 interface FontAdderProps {
@@ -103,13 +103,6 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent): void => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
-
-  useEffect(() => {
     if (!open || list) return
     window.api.font.googleList().then(g => { googleCache = g; setList(g) }).catch(() => setLoadErr(true))
   }, [open, list])
@@ -164,26 +157,25 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
     setLocalRows(prev => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)))
   }
 
-  if (!open) return null
-
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-label="Add a font">
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          <div className={styles.tabs}>
-            <button type="button" className={[styles.tab, tab === 'google' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('google')}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} /> Google Fonts
-            </button>
-            <button type="button" className={[styles.tab, tab === 'installed' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('installed')}>
-              <FontAwesomeIcon icon={faLaptop} /> Installed
-            </button>
-            <button type="button" className={[styles.tab, tab === 'local' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('local')}>
-              <FontAwesomeIcon icon={faUpload} /> Upload file
-            </button>
-          </div>
-          <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
-        </div>
-
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Add a font"
+      size="xl"
+      header={
+        <SegmentedControl
+          ariaLabel="Font source"
+          value={tab}
+          onChange={setTab}
+          options={[
+            { id: 'google', label: 'Google Fonts', icon: faMagnifyingGlass },
+            { id: 'installed', label: 'Installed', icon: faLaptop },
+            { id: 'local', label: 'Upload file', icon: faUpload },
+          ]}
+        />
+      }
+    >
         {tab === 'google' ? (
           <div className={styles.googleBody}>
             <Input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Search Google Fonts…" />
@@ -308,7 +300,6 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
             </Button>
           </div>
         )}
-      </div>
-    </div>
+    </Modal>
   )
 }

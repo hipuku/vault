@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faKeyboard, faImage, faCheck, faPen, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faKeyboard, faImage, faCheck, faPen, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import type { Colour } from '@shared/types'
 import { Button } from '../../atoms/Button/Button'
-import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Spinner } from '../../atoms/Spinner/Spinner'
 import { Callout } from '../../primitives/Callout/Callout'
 import { Tooltip } from '../../primitives/Tooltip/Tooltip'
@@ -12,6 +11,8 @@ import {
   normaliseHex, nearestNames, findSimilar, formatDeltaE, confidenceLabel, firstUnusedName,
 } from '../../lib/colour'
 import { extractDominantColours } from '../../lib/extractColours'
+import Modal from '../../primitives/Modal/Modal'
+import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import styles from './AddColorModal.module.css'
 
 interface AddColorModalProps {
@@ -61,13 +62,6 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
       setTab('hex'); setText(fixedHex)
     }
   }, [open, fixedHex])
-
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent): void => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
 
   useEffect(() => {
     if (!pickerOpen) return
@@ -135,29 +129,28 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hexKey, library])
 
-  if (!open) return null
-
   const allNames = result ? [result.best, ...result.runners] : []
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-label="Add colour">
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          {fixedHex ? (
-            <h2 className={styles.heading}>Save to library</h2>
-          ) : (
-            <div className={styles.tabs}>
-              <button type="button" className={[styles.tab, tab === 'hex' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('hex')}>
-                <FontAwesomeIcon icon={faKeyboard} /> From hex
-              </button>
-              <button type="button" className={[styles.tab, tab === 'image' ? styles.tabOn : ''].filter(Boolean).join(' ')} onClick={() => setTab('image')}>
-                <FontAwesomeIcon icon={faImage} /> From image
-              </button>
-            </div>
-          )}
-          <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
-        </div>
-
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={fixedHex ? 'Save to library' : 'Add colour'}
+      size="lg"
+      header={
+        fixedHex ? undefined : (
+          <SegmentedControl
+            ariaLabel="Colour source"
+            value={tab}
+            onChange={setTab}
+            options={[
+              { id: 'hex', label: 'From hex', icon: faKeyboard },
+              { id: 'image', label: 'From image', icon: faImage },
+            ]}
+          />
+        )
+      }
+    >
         {tab === 'hex' ? (
           <div className={styles.body}>
             <div className={styles.hexRow}>
@@ -307,7 +300,6 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
             </div>
           </div>
         )}
-      </div>
-    </div>
+    </Modal>
   )
 }
