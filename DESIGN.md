@@ -189,10 +189,13 @@ one below it. Nothing points upward.
 - **The same patterns repeat across sections.** Card =
   whole-card button + hover edit pen + `Pill` (descriptor) + mono (value); viewers are
   hero + `Panel`s; create flows are a two-pane (controls | live preview).
-- **Accessible by default.** Dialogs, drawers, menus, and popovers are keyboard-navigable and
-  dismiss on Escape; focus moves into an overlay on open and returns to the trigger on close;
-  focus rings use `:focus-visible` with the accent halo; and all motion respects
-  `prefers-reduced-motion`.
+- **Accessible by default.** Every overlay dismisses on Escape. Dialogs and drawers share one
+  `useFocusTrap`: focus moves to the first control on open, Tab cycles inside the overlay, and
+  focus returns to whatever opened it on close. Focus rings are `:focus-visible` with the accent
+  halo, and all motion respects `prefers-reduced-motion`.
+
+  The exception is the command palette, which manages its own focus because it is a combobox
+  driven by `aria-activedescendant` and arrow keys rather than by Tab.
 
 ---
 

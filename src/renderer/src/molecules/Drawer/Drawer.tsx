@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useRef } from 'react'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import styles from './Drawer.module.css'
 
 interface DrawerProps {
@@ -8,14 +9,8 @@ interface DrawerProps {
 }
 
 export function Drawer({ open, onClose, children }: DrawerProps): React.ReactElement {
-  useEffect(() => {
-    if (!open) return
-    const handler = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [open, onClose])
+  const panelRef = useRef<HTMLElement>(null)
+  useFocusTrap(open, panelRef, onClose)
 
   return (
     <>
@@ -25,8 +20,12 @@ export function Drawer({ open, onClose, children }: DrawerProps): React.ReactEle
         aria-hidden="true"
       />
       <aside
+        ref={panelRef}
         className={[styles.drawer, open ? styles.open : ''].filter(Boolean).join(' ')}
         aria-hidden={!open}
+        role="dialog"
+        aria-modal={open}
+        tabIndex={-1}
       >
         {children}
       </aside>

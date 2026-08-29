@@ -1,6 +1,7 @@
-import React, { useEffect, useId, useRef } from 'react'
+import React, { useId, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import styles from './Modal.module.css'
 
@@ -25,17 +26,11 @@ export interface ModalProps {
   children: React.ReactNode
 }
 
-const FOCUSABLE =
-  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
-  'textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-
 /**
  * The shared modal shell: overlay, panel, focus management.
  *
- * The focus behaviour is the reason this exists as much as the styling is. Every
- * hand-rolled copy handled Escape and none of them trapped focus or gave it back, so
- * Tab walked into the page behind the dialog and closing one dropped focus to <body>.
- * Doing it here fixes it everywhere at once.
+ * Focus is handled by useFocusTrap, which Drawer uses too — every hand-rolled copy of
+ * this shell handled Escape and none of them trapped focus or gave it back.
  */
 export default function Modal({
   open,
@@ -52,40 +47,7 @@ export default function Modal({
   const panelRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
 
-  useEffect(() => {
-    if (!open) return
-    const opener = document.activeElement as HTMLElement | null
-
-    // Move focus in: the first field if there is one, otherwise the panel itself, so
-    // the next Tab starts inside the dialog rather than at the top of the page.
-    const panel = panelRef.current
-    const first = panel?.querySelector<HTMLElement>(FOCUSABLE)
-    ;(first ?? panel)?.focus()
-
-    const onKey = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') {
-        onClose()
-        return
-      }
-      if (e.key !== 'Tab' || !panel) return
-      const items = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)]
-      if (items.length === 0) {
-        e.preventDefault()
-        return
-      }
-      const edge = e.shiftKey ? items[0] : items[items.length - 1]
-      if (document.activeElement === edge) {
-        e.preventDefault()
-        ;(e.shiftKey ? items[items.length - 1] : items[0]).focus()
-      }
-    }
-
-    window.addEventListener('keydown', onKey)
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      opener?.focus()
-    }
-  }, [open, onClose])
+  useFocusTrap(open, panelRef, onClose)
 
   if (!open) return null
 
