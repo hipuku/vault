@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button } from '../../atoms/Button/Button'
+import Modal from '../Modal/Modal'
 import styles from './ConfirmDialog.module.css'
 
 interface ConfirmDialogProps {
@@ -11,6 +12,12 @@ interface ConfirmDialogProps {
   onCancel: () => void
 }
 
+/**
+ * Enter is deliberately not bound. It used to fire the destructive action from a
+ * window listener, so a stray keystroke while the dialog appeared could delete
+ * something with nothing focused to show for it. Modal focuses the first control in
+ * the panel, which is Cancel, so Enter now does the safe thing by construction.
+ */
 export function ConfirmDialog({
   open,
   title,
@@ -19,28 +26,21 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps): React.ReactElement | null {
-  useEffect(() => {
-    if (!open) return
-    const handler = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') onCancel()
-      if (e.key === 'Enter') onConfirm()
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [open, onConfirm, onCancel])
-
-  if (!open) return null
-
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-labelledby="confirm-title">
-      <div className={styles.dialog}>
-        <h2 id="confirm-title" className={styles.title}>{title}</h2>
-        <p className={styles.message}>{message}</p>
-        <div className={styles.actions}>
+    <Modal
+      open={open}
+      onClose={onCancel}
+      title={title}
+      size="sm"
+      chrome="plain"
+      footer={
+        <>
           <Button variant="ghost" size="md" onClick={onCancel}>Cancel</Button>
           <Button variant="danger" size="md" onClick={onConfirm}>{confirmLabel}</Button>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    >
+      <p className={styles.message}>{message}</p>
+    </Modal>
   )
 }

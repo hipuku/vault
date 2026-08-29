@@ -1,10 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faCopy, faCheck, faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faCheck, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../../atoms/Button/Button'
-import { IconButton } from '../../atoms/IconButton/IconButton'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import { useCopy } from '../../hooks/useCopy'
+import Modal from '../../primitives/Modal/Modal'
 import styles from './ExportModal.module.css'
 
 export interface ExportFormatDef {
@@ -37,15 +37,6 @@ export function ExportModal({ open, onClose, title, formats, generate, filenameB
 
   const code = useMemo(() => (formatId ? generate(formatId) : ''), [formatId, generate])
 
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent): void => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
-
-  if (!open) return null
-
   const meta = formats.find(f => f.id === formatId) ?? formats[0]
 
   function download(): void {
@@ -59,14 +50,24 @@ export function ExportModal({ open, onClose, title, formats, generate, filenameB
   }
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-label="Export">
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>Export “{title}”</h2>
-          <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
-        </div>
-
-        <div className={styles.formats}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`Export “${title}”`}
+      size="xl"
+      footer={
+        <>
+          <span className={styles.hint}>{meta?.hint ?? ''}</span>
+          <Button variant="secondary" size="md" onClick={download}>
+            <FontAwesomeIcon icon={faDownload} /> Download .{meta?.ext}
+          </Button>
+          <Button variant="primary" size="md" onClick={() => copy(code)}>
+            <FontAwesomeIcon icon={copied ? faCheck : faCopy} /> {copied ? 'Copied' : 'Copy'}
+          </Button>
+        </>
+      }
+    >
+      <div className={styles.formats}>
           <SegmentedControl
             ariaLabel="Export format"
             options={formats.map(f => ({ id: f.id, label: f.label }))}
@@ -75,18 +76,7 @@ export function ExportModal({ open, onClose, title, formats, generate, filenameB
           />
         </div>
 
-        <pre className={styles.code}><code>{code}</code></pre>
-
-        <div className={styles.footer}>
-          <span className={styles.hint}>{meta?.hint ?? ''}</span>
-          <Button variant="secondary" size="md" onClick={download}>
-            <FontAwesomeIcon icon={faDownload} /> Download .{meta?.ext}
-          </Button>
-          <Button variant="primary" size="md" onClick={() => copy(code)}>
-            <FontAwesomeIcon icon={copied ? faCheck : faCopy} /> {copied ? 'Copied' : 'Copy'}
-          </Button>
-        </div>
-      </div>
-    </div>
+      <pre className={styles.code}><code>{code}</code></pre>
+    </Modal>
   )
 }

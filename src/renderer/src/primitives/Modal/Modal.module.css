@@ -1,0 +1,76 @@
+/* The one modal shell. Six copies of this had drifted to six widths across two radii,
+   three header paddings and two overflow rules. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-backdrop);
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.center { align-items: center; }
+/* Search-led surfaces sit high, so the list grows downward into stable space
+   rather than pushing the input around as results change. */
+.top { align-items: flex-start; padding-top: 14vh; }
+
+.panel {
+  background: var(--color-surface-default);
+  border: var(--border-width) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: var(--modal-width, var(--modal-width-md));
+  max-width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sm { --modal-width: var(--modal-width-sm); }
+.md { --modal-width: var(--modal-width-md); }
+.lg { --modal-width: var(--modal-width-lg); }
+.xl { --modal-width: var(--modal-width-xl); }
+
+/* Padded rather than scrolling: for a short dialog the body is the whole panel. */
+.plain {
+  padding: var(--space-6);
+  gap: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+  border-bottom: var(--border-width) solid var(--color-border-subtle);
+  flex: 0 0 auto;
+}
+
+.title {
+  font-size: var(--type-heading-sm-size);
+  font-weight: var(--type-heading-sm-weight);
+  letter-spacing: var(--type-heading-sm-tracking);
+  color: var(--color-ink-primary);
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex: 0 0 auto;
+}
+
+.chromed .footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--border-width) solid var(--color-border-subtle);
+}

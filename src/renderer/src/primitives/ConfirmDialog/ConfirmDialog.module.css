@@ -1,40 +1,8 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--color-backdrop);
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dialog {
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-6);
-  width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.title {
-  font-size: var(--type-heading-sm-size);
-  font-weight: var(--type-heading-sm-weight);
-  letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-ink-primary);
-}
+/* Shell, title and actions all come from Modal (chrome="plain", size="sm").
+   Only the message paragraph is specific to a confirm. */
 
 .message {
   font-size: var(--type-body-sm-size);
   color: var(--color-ink-secondary);
   line-height: var(--type-body-sm-leading);
-}
-
-.actions {
-  display: flex;
-  gap: var(--space-2);
-  justify-content: flex-end;
 }

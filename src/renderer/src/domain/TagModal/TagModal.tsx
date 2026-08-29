@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
-import { IconButton } from '../../atoms/IconButton/IconButton'
 import { TAG_COLOURS } from '../../lib/tagColours'
 import { prefersDarkText } from '../../lib/colour'
+import Modal from '../../primitives/Modal/Modal'
 import styles from './TagModal.module.css'
 
 interface TagModalProps {
@@ -31,13 +31,6 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
     }
   }, [open, initial])
 
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent): void => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, onClose])
-
   async function submit(): Promise<void> {
     if (!label.trim() || busy) return
     setBusy(true)
@@ -50,17 +43,22 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
     }
   }
 
-  if (!open) return null
-
   return (
-    <div className={styles.overlay} role="dialog" aria-modal aria-label={mode === 'create' ? 'New project' : 'Edit project'}>
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>{mode === 'create' ? 'New project' : 'Edit project'}</h2>
-          <IconButton label="Close" onClick={onClose}><FontAwesomeIcon icon={faXmark} /></IconButton>
-        </div>
-
-        <div className={styles.body}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={mode === 'create' ? 'New project' : 'Edit project'}
+      size="md"
+      footer={
+        <>
+          <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" size="md" onClick={submit} disabled={!label.trim() || busy}>
+            {mode === 'create' ? 'Add project' : 'Save'}
+          </Button>
+        </>
+      }
+    >
+      <div className={styles.body}>
           <Input
             autoFocus
             value={label}
@@ -88,15 +86,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
               )
             })}
           </div>
-        </div>
-
-        <div className={styles.footer}>
-          <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" size="md" onClick={submit} disabled={!label.trim() || busy}>
-            {mode === 'create' ? 'Add project' : 'Save'}
-          </Button>
-        </div>
       </div>
-    </div>
+    </Modal>
   )
 }

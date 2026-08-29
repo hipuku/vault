@@ -1,40 +1,4 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--color-backdrop);
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-6);
-}
-
-.modal {
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  width: 600px;
-  max-width: 100%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
-  border-bottom: var(--border-width) solid var(--color-border-subtle);
-}
-
-.title {
-  font-size: var(--type-heading-size);
-  font-weight: var(--type-heading-weight);
-  color: var(--color-ink-primary);
-}
+/* Shell, header, title and footer come from Modal. */
 
 .formats {
   padding: var(--space-4) var(--space-5) 0;
@@ -52,14 +16,6 @@
   line-height: var(--leading-relaxed);
   color: var(--color-ink-primary);
   white-space: pre;
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5);
-  border-top: var(--border-width) solid var(--color-border-subtle);
 }
 
 .hint {

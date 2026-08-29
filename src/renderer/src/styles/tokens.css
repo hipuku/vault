@@ -107,6 +107,15 @@
     --dot-md: 1rem;        /* 16px — swatch in a row */
     --dot-lg: 1.125rem;    /* 18px — swatch in a drawer header */
 
+    /* ── Overlay widths ───────────────────────────────────────────────────────
+       Six hand-built modals had drifted to six widths. Four steps carry them; the two
+       that sit off the scale (FontAdder 520, CommandPalette 560) keep an explicit
+       override so the exception stays visible.                                        */
+    --modal-width-sm: 22.5rem;   /* 360px — confirm */
+    --modal-width-md: 26.25rem;  /* 420px — short form */
+    --modal-width-lg: 30rem;     /* 480px — form with a preview */
+    --modal-width-xl: 37.5rem;   /* 600px — code / table */
+
     --radius-sm:   0.25rem;
     --radius-md:   0.5rem;
     --radius-lg:   0.75rem;
