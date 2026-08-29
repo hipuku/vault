@@ -1,7 +1,6 @@
 import fs from 'fs'
-import { pretty } from './resolve-tokens.mjs'
 
-/** Every rule in a module stylesheet, in source order (cascade order). */
+/** Every rule in a stylesheet, in source order. */
 function rules(css) {
   const out = []
   css = css.replace(/\/\*[\s\S]*?\*\//g, '')
@@ -18,60 +17,62 @@ function rules(css) {
   return out
 }
 
-/** Which pseudo-state, if any, a selector targets. */
 function stateOf(sel) {
   const m = sel.match(/:(hover|active|focus-visible|focus-within|disabled|checked)\b/)
   return m ? m[1] : null
 }
 
-/**
- * Effective values for one variant in one state, by walking the sheet in source order
- * and applying every rule whose class list this combination satisfies.
- */
-/** Class + pseudo-class count, which is what decides these rules against each other. */
+/** Class + pseudo-class count — what decides these rules against each other. */
 function specificity(sel) {
-  const classes = (sel.match(/\.[A-Za-z][\w-]*/g) || []).length
-  const pseudos = (sel.match(/:(?!not\()[a-z-]+/g) || []).length
-  return classes + pseudos
+  return (sel.match(/\.[A-Za-z][\w-]*/g) || []).length + (sel.match(/:(?!not\()[a-z-]+/g) || []).length
 }
 
-function computed(rs, base, variant, size, state, props) {
-  const have = new Set([base, variant, size].filter(Boolean))
+/** Effective declarations for one set of classes in one state. */
+function computed(rs, classes, state, props) {
+  const have = new Set(classes.filter(Boolean))
   const matched = []
   for (const [i, r] of rs.entries()) {
-    const classes = [...r.sel.matchAll(/\.([A-Za-z][\w-]*)/g)].map(m => m[1])
-    if (!classes.length || !classes.every(c => have.has(c))) continue
+    const cs = [...r.sel.matchAll(/\.([A-Za-z][\w-]*)/g)].map(m => m[1])
+    if (!cs.length || !cs.every(c => have.has(c))) continue
     const s = stateOf(r.sel)
-    if (s && s !== state) continue                       // a state rule for a different state
+    if (s && s !== state) continue
     if (/:not\(:disabled\)/.test(r.sel) && state === 'disabled') continue
     matched.push({ r, spec: specificity(r.sel), i })
   }
-  // Apply in cascade order: specificity first, source order as the tie-break. Without
-  // the specificity pass a later low-specificity rule (.block) wrongly beat an earlier
-  // higher one (.trigger:focus-visible), and the matrix showed a focus ring that the
-  // browser never renders that way.
   matched.sort((a, b) => a.spec - b.spec || a.i - b.i)
   const out = {}
   for (const { r } of matched) for (const p of props) if (r.decls[p] !== undefined) out[p] = r.decls[p]
   return out
 }
 
-const VISUAL = ['background', 'background-color', 'color', 'border-color', 'border', 'opacity', 'box-shadow', 'font-weight']
+export const PAINT = ['background', 'background-color', 'color', 'border-color', 'border', 'opacity', 'box-shadow']
+export const LAYOUT = ['height', 'padding', 'border-radius', 'font-size', 'font-weight', 'gap']
+const ALL = [...PAINT, ...LAYOUT]
 
-export function stateMatrix({ cssPath, base, variants, sizes = [null], states }) {
-  const rs = rules(fs.readFileSync(cssPath, 'utf8'))
-  const rows = []
-  for (const v of variants) {
-    for (const size of sizes) {
-      for (const st of states) {
-        const c = computed(rs, base, v, size, st, VISUAL)
-        // does this state actually differ from the default?
-        const d = computed(rs, base, v, size, null, VISUAL)
-        const changed = Object.keys(c).filter(k => c[k] !== d[k])
-        rows.push({ variant: v, size, state: st, values: c, differs: st === null ? true : changed.length > 0, changed })
-      }
-    }
-  }
-  return rows
+/** Cartesian product of the declared axes. */
+function combos(axes) {
+  return axes.reduce((acc, ax) =>
+    acc.flatMap(row => ax.values.map(v => [...row, { prop: ax.prop, value: v, asClass: ax.asClass }])), [[]])
 }
-export { VISUAL }
+
+/**
+ * One row per combination of every non-state axis, one cell per state.
+ * `asClass` axes contribute a CSS class; the others (an icon, a label) change the
+ * frame without changing the selector, so they are carried through for rendering.
+ */
+export function fullMatrix({ cssPath, base, axes, states, labels = {} }) {
+  const rs = rules(fs.readFileSync(cssPath, 'utf8'))
+  return combos(axes).map(combo => {
+    const classes = [base, ...combo.filter(c => c.asClass && c.value !== null).map(c => c.value)]
+    const cells = states.map(st => {
+      const values = computed(rs, classes, st, ALL)
+      const dflt = computed(rs, classes, null, ALL)
+      const differs = st === null || PAINT.some(p => values[p] !== dflt[p])
+      return { state: st, values, differs }
+    })
+    const label = combo
+      .map(c => labels[c.value] ?? (c.value === null ? (labels[`${c.prop}:null`] ?? 'default') : c.value))
+      .join(' · ')
+    return { combo, label, cells }
+  })
+}

@@ -2,11 +2,34 @@
   "1 \u00b7 Button": {
     "cssPath": "src/renderer/src/atoms/Button/Button.module.css",
     "base": "button",
-    "variants": [
-      "primary",
-      "secondary",
-      "ghost",
-      "danger"
+    "label": "Add colour",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          "primary",
+          "secondary",
+          "ghost",
+          "danger"
+        ],
+        "asClass": true
+      },
+      {
+        "prop": "size",
+        "values": [
+          "sm",
+          "md"
+        ],
+        "asClass": true
+      },
+      {
+        "prop": "icon",
+        "values": [
+          false,
+          true
+        ],
+        "asClass": false
+      }
     ],
     "states": [
       null,
@@ -14,282 +37,316 @@
       "active",
       "disabled"
     ],
-    "chip": {
-      "label": "Add colour",
-      "height": "var(--control-height-lg)",
-      "padding": "0 var(--space-5)",
-      "fontSize": "var(--text-14)",
-      "fontWeight": "var(--weight-bold)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "false": "no icon",
+      "true": "icon"
     }
   },
   "2 \u00b7 IconButton": {
     "cssPath": "src/renderer/src/styles/global.css",
     "base": "icon-btn",
-    "variants": [
-      null,
-      "icon-btn--primary",
-      "icon-btn--danger",
-      "icon-btn--star"
+    "label": "",
+    "axes": [
+      {
+        "prop": "tone",
+        "values": [
+          null,
+          "icon-btn--primary",
+          "icon-btn--danger",
+          "icon-btn--star"
+        ],
+        "asClass": true
+      },
+      {
+        "prop": "size",
+        "values": [
+          null,
+          "icon-btn--sm",
+          "icon-btn--xs"
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "neutral",
-    "labels": {
-      "icon-btn--primary": "primary",
-      "icon-btn--danger": "danger",
-      "icon-btn--star": "star"
-    },
     "states": [
       null,
       "hover",
       "disabled"
     ],
-    "chip": {
-      "label": "\u270e",
-      "height": "28px",
-      "padding": "0 9px",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "tone:null": "neutral",
+      "size:null": "md",
+      "icon-btn--primary": "primary",
+      "icon-btn--danger": "danger",
+      "icon-btn--star": "star",
+      "icon-btn--sm": "sm",
+      "icon-btn--xs": "xs"
     }
   },
   "3 \u00b7 Input": {
     "cssPath": "src/renderer/src/atoms/Input/Input.module.css",
     "base": "input",
-    "variants": [
-      null,
-      "error"
+    "label": "Coral",
+    "axes": [
+      {
+        "prop": "error",
+        "values": [
+          null,
+          "error"
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "default",
     "states": [
       null,
       "focus-visible",
       "disabled"
     ],
-    "chip": {
-      "label": "Coral",
-      "height": "var(--control-height-lg)",
-      "padding": "0 var(--space-4)",
-      "fontSize": "var(--text-14)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "var(--radius-md)"
+    "labels": {
+      "error:null": "default",
+      "error": "error"
     }
   },
   "4 \u00b7 Select": {
     "cssPath": "src/renderer/src/molecules/Select/Select.module.css",
     "base": "root",
-    "variants": [
-      null
+    "label": "assembly \u2014 see TriggerPill + MenuOption + Popover",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          null
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "root",
     "states": [
       null
     ],
-    "chip": {
-      "label": "(composes TriggerPill + MenuOption + Popover)",
-      "height": "var(--control-height-lg)",
-      "padding": "0 var(--space-4)",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-semibold)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "variant:null": "root"
     }
   },
   "5 \u00b7 Badge": {
     "cssPath": "src/renderer/src/atoms/Badge/Badge.module.css",
     "base": "badge",
-    "variants": [
-      "success",
-      "warning",
-      "error",
-      "neutral"
+    "label": "Even",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          "success",
+          "warning",
+          "error",
+          "neutral"
+        ],
+        "asClass": true
+      }
     ],
     "states": [
       null
-    ],
-    "chip": {
-      "label": "Even",
-      "height": "22px",
-      "padding": "0 var(--space-3)",
-      "fontSize": "var(--text-11)",
-      "fontWeight": "var(--weight-semibold)",
-      "radius": "var(--radius-full)"
-    }
+    ]
   },
   "6 \u00b7 Pill": {
     "cssPath": "src/renderer/src/atoms/Pill/Pill.module.css",
     "base": "pill",
-    "variants": [
-      null
+    "label": "Sans-serif",
+    "axes": [
+      {
+        "prop": "icon",
+        "values": [
+          false,
+          true
+        ],
+        "asClass": false
+      }
     ],
-    "baseLabel": "pill",
     "states": [
       null
     ],
-    "chip": {
-      "label": "Sans-serif",
-      "height": "22px",
-      "padding": "0 var(--space-3)",
-      "fontSize": "var(--text-11)",
-      "fontWeight": "var(--weight-medium)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "false": "no icon",
+      "true": "icon"
     }
   },
   "7 \u00b7 SegmentedControl": {
     "cssPath": "src/renderer/src/atoms/SegmentedControl/SegmentedControl.module.css",
     "base": "seg",
-    "variants": [
-      null,
-      "segOn"
+    "label": "From hex",
+    "axes": [
+      {
+        "prop": "selected",
+        "values": [
+          null,
+          "segOn"
+        ],
+        "asClass": true
+      },
+      {
+        "prop": "size",
+        "values": [
+          null,
+          "sm"
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "off",
     "states": [
       null,
       "hover"
     ],
-    "chip": {
-      "label": "From hex",
-      "height": "var(--control-height-md)",
-      "padding": "0 var(--space-4)",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-medium)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "selected:null": "off",
+      "segOn": "on",
+      "size:null": "md",
+      "sm": "sm"
     }
   },
   "8 \u00b7 Spinner": {
     "cssPath": "src/renderer/src/atoms/Spinner/Spinner.module.css",
     "base": "spinner",
-    "variants": [
-      "sm",
-      "md"
+    "label": "",
+    "axes": [
+      {
+        "prop": "size",
+        "values": [
+          "sm",
+          "md"
+        ],
+        "asClass": true
+      }
     ],
     "states": [
       null
-    ],
-    "chip": {
-      "label": "\u25e0",
-      "height": "20px",
-      "padding": "0 6px",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "var(--radius-full)"
-    }
+    ]
   },
   "9 \u00b7 Divider": {
     "cssPath": "src/renderer/src/atoms/Divider/Divider.module.css",
     "base": "divider",
-    "variants": [
-      null
+    "label": "",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          null
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "divider",
     "states": [
       null
     ],
-    "chip": {
-      "label": "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014",
-      "height": "20px",
-      "padding": "0",
-      "fontSize": "var(--text-11)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "0"
+    "labels": {
+      "variant:null": "divider"
     }
   },
   "10 \u00b7 Panel": {
     "cssPath": "src/renderer/src/atoms/Panel/Panel.module.css",
     "base": "panel",
-    "variants": [
-      null
+    "label": "Panel surface",
+    "axes": [
+      {
+        "prop": "actions",
+        "values": [
+          false,
+          true
+        ],
+        "asClass": false
+      }
     ],
-    "baseLabel": "panel",
     "states": [
       null
     ],
-    "chip": {
-      "label": "Panel surface",
-      "height": "44px",
-      "padding": "0 var(--space-4)",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "var(--radius-lg)"
+    "labels": {
+      "false": "no actions",
+      "true": "with actions"
     }
   },
   "11 \u00b7 EditableName": {
     "cssPath": "src/renderer/src/atoms/EditableName/EditableName.module.css",
     "base": "field",
-    "variants": [
-      null
+    "label": "Coral Blush",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          null
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "field",
     "states": [
       null,
       "focus-visible"
     ],
-    "chip": {
-      "label": "Coral Blush",
-      "height": "28px",
-      "padding": "0 var(--space-2)",
-      "fontSize": "var(--text-14)",
-      "fontWeight": "var(--weight-semibold)",
-      "radius": "var(--radius-sm)"
+    "labels": {
+      "variant:null": "field"
     }
   },
   "12 \u00b7 Tooltip": {
     "cssPath": "src/renderer/src/atoms/Tooltip/Tooltip.module.css",
     "base": "bubble",
-    "variants": [
-      null
+    "label": "Copy hex",
+    "axes": [
+      {
+        "prop": "variant",
+        "values": [
+          null
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "bubble",
     "states": [
       null
     ],
-    "chip": {
-      "label": "Copy hex",
-      "height": "24px",
-      "padding": "0 var(--space-2)",
-      "fontSize": "var(--text-11)",
-      "fontWeight": "var(--weight-medium)",
-      "radius": "var(--radius-sm)"
+    "labels": {
+      "variant:null": "bubble"
     }
   },
   "13 \u00b7 TriggerPill": {
     "cssPath": "src/renderer/src/atoms/TriggerPill/TriggerPill.module.css",
     "base": "trigger",
-    "variants": [
-      null,
-      "block"
+    "label": "Filters",
+    "axes": [
+      {
+        "prop": "block",
+        "values": [
+          null,
+          "block"
+        ],
+        "asClass": true
+      }
     ],
-    "baseLabel": "pill",
     "states": [
       null,
       "hover",
       "focus-visible"
     ],
-    "chip": {
-      "label": "Filters",
-      "height": "var(--control-height-lg)",
-      "padding": "0 var(--space-4)",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-semibold)",
-      "radius": "var(--radius-full)"
+    "labels": {
+      "block:null": "pill",
+      "block": "block"
     }
   },
   "14 \u00b7 MenuOption": {
     "cssPath": "src/renderer/src/atoms/MenuOption/MenuOption.module.css",
     "base": "option",
-    "variants": [
-      null
+    "label": "Perfect fourth",
+    "axes": [
+      {
+        "prop": "leading",
+        "values": [
+          false,
+          true
+        ],
+        "asClass": false
+      }
     ],
-    "baseLabel": "row",
     "states": [
       null,
       "hover"
     ],
-    "chip": {
-      "label": "Perfect fourth",
-      "height": "32px",
-      "padding": "0 var(--space-3)",
-      "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-regular)",
-      "radius": "var(--radius-sm)"
+    "labels": {
+      "false": "no dot",
+      "true": "dot"
     }
   }
 }
