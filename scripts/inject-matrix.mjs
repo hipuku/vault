@@ -39,7 +39,10 @@ for (const [heading, spec] of Object.entries(specs)) {
   t += '</tr></thead><tbody>\n'
 
   for (const [variant, cells] of byVariant) {
-    t += `        <tr><td class="rowh">${variant === "null" || variant === null ? (spec.baseLabel ?? "default") : variant}</td>`
+    const label = variant === "null" || variant === null
+      ? (spec.baseLabel ?? "default")
+      : (spec.labels?.[variant] ?? variant)
+    t += `        <tr><td class="rowh">${label}</td>`
     for (const s of states) {
       const r = cells[String(s)]
       const v = r.values

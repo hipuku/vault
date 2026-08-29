@@ -23,46 +23,32 @@
       "radius": "var(--radius-full)"
     }
   },
-  "5 \u00b7 Badge": {
-    "cssPath": "src/renderer/src/atoms/Badge/Badge.module.css",
-    "base": "badge",
-    "variants": [
-      "success",
-      "warning",
-      "error",
-      "neutral"
-    ],
-    "states": [
-      null
-    ],
-    "chip": {
-      "label": "Even",
-      "height": "22px",
-      "padding": "0 var(--space-3)",
-      "fontSize": "var(--text-11)",
-      "fontWeight": "var(--weight-semibold)",
-      "radius": "var(--radius-full)"
-    }
-  },
-  "13 \u00b7 TriggerPill": {
-    "cssPath": "src/renderer/src/atoms/TriggerPill/TriggerPill.module.css",
-    "base": "trigger",
+  "2 \u00b7 IconButton": {
+    "cssPath": "src/renderer/src/styles/global.css",
+    "base": "icon-btn",
     "variants": [
       null,
-      "block"
+      "icon-btn--primary",
+      "icon-btn--danger",
+      "icon-btn--star"
     ],
-    "baseLabel": "pill",
+    "baseLabel": "neutral",
+    "labels": {
+      "icon-btn--primary": "primary",
+      "icon-btn--danger": "danger",
+      "icon-btn--star": "star"
+    },
     "states": [
       null,
       "hover",
-      "focus-visible"
+      "disabled"
     ],
     "chip": {
-      "label": "Filters",
-      "height": "var(--control-height-lg)",
-      "padding": "0 var(--space-4)",
+      "label": "\u270e",
+      "height": "28px",
+      "padding": "0 9px",
       "fontSize": "var(--text-13)",
-      "fontWeight": "var(--weight-semibold)",
+      "fontWeight": "var(--weight-regular)",
       "radius": "var(--radius-full)"
     }
   },
@@ -88,6 +74,65 @@
       "radius": "var(--radius-md)"
     }
   },
+  "4 \u00b7 Select": {
+    "cssPath": "src/renderer/src/molecules/Select/Select.module.css",
+    "base": "root",
+    "variants": [
+      null
+    ],
+    "baseLabel": "root",
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "(composes TriggerPill + MenuOption + Popover)",
+      "height": "var(--control-height-lg)",
+      "padding": "0 var(--space-4)",
+      "fontSize": "var(--text-13)",
+      "fontWeight": "var(--weight-semibold)",
+      "radius": "var(--radius-full)"
+    }
+  },
+  "5 \u00b7 Badge": {
+    "cssPath": "src/renderer/src/atoms/Badge/Badge.module.css",
+    "base": "badge",
+    "variants": [
+      "success",
+      "warning",
+      "error",
+      "neutral"
+    ],
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "Even",
+      "height": "22px",
+      "padding": "0 var(--space-3)",
+      "fontSize": "var(--text-11)",
+      "fontWeight": "var(--weight-semibold)",
+      "radius": "var(--radius-full)"
+    }
+  },
+  "6 \u00b7 Pill": {
+    "cssPath": "src/renderer/src/atoms/Pill/Pill.module.css",
+    "base": "pill",
+    "variants": [
+      null
+    ],
+    "baseLabel": "pill",
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "Sans-serif",
+      "height": "22px",
+      "padding": "0 var(--space-3)",
+      "fontSize": "var(--text-11)",
+      "fontWeight": "var(--weight-medium)",
+      "radius": "var(--radius-full)"
+    }
+  },
   "7 \u00b7 SegmentedControl": {
     "cssPath": "src/renderer/src/atoms/SegmentedControl/SegmentedControl.module.css",
     "base": "seg",
@@ -106,6 +151,124 @@
       "padding": "0 var(--space-4)",
       "fontSize": "var(--text-13)",
       "fontWeight": "var(--weight-medium)",
+      "radius": "var(--radius-full)"
+    }
+  },
+  "8 \u00b7 Spinner": {
+    "cssPath": "src/renderer/src/atoms/Spinner/Spinner.module.css",
+    "base": "spinner",
+    "variants": [
+      "sm",
+      "md"
+    ],
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "\u25e0",
+      "height": "20px",
+      "padding": "0 6px",
+      "fontSize": "var(--text-13)",
+      "fontWeight": "var(--weight-regular)",
+      "radius": "var(--radius-full)"
+    }
+  },
+  "9 \u00b7 Divider": {
+    "cssPath": "src/renderer/src/atoms/Divider/Divider.module.css",
+    "base": "divider",
+    "variants": [
+      null
+    ],
+    "baseLabel": "divider",
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014",
+      "height": "20px",
+      "padding": "0",
+      "fontSize": "var(--text-11)",
+      "fontWeight": "var(--weight-regular)",
+      "radius": "0"
+    }
+  },
+  "10 \u00b7 Panel": {
+    "cssPath": "src/renderer/src/atoms/Panel/Panel.module.css",
+    "base": "panel",
+    "variants": [
+      null
+    ],
+    "baseLabel": "panel",
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "Panel surface",
+      "height": "44px",
+      "padding": "0 var(--space-4)",
+      "fontSize": "var(--text-13)",
+      "fontWeight": "var(--weight-regular)",
+      "radius": "var(--radius-lg)"
+    }
+  },
+  "11 \u00b7 EditableName": {
+    "cssPath": "src/renderer/src/atoms/EditableName/EditableName.module.css",
+    "base": "field",
+    "variants": [
+      null
+    ],
+    "baseLabel": "field",
+    "states": [
+      null,
+      "focus-visible"
+    ],
+    "chip": {
+      "label": "Coral Blush",
+      "height": "28px",
+      "padding": "0 var(--space-2)",
+      "fontSize": "var(--text-14)",
+      "fontWeight": "var(--weight-semibold)",
+      "radius": "var(--radius-sm)"
+    }
+  },
+  "12 \u00b7 Tooltip": {
+    "cssPath": "src/renderer/src/atoms/Tooltip/Tooltip.module.css",
+    "base": "bubble",
+    "variants": [
+      null
+    ],
+    "baseLabel": "bubble",
+    "states": [
+      null
+    ],
+    "chip": {
+      "label": "Copy hex",
+      "height": "24px",
+      "padding": "0 var(--space-2)",
+      "fontSize": "var(--text-11)",
+      "fontWeight": "var(--weight-medium)",
+      "radius": "var(--radius-sm)"
+    }
+  },
+  "13 \u00b7 TriggerPill": {
+    "cssPath": "src/renderer/src/atoms/TriggerPill/TriggerPill.module.css",
+    "base": "trigger",
+    "variants": [
+      null,
+      "block"
+    ],
+    "baseLabel": "pill",
+    "states": [
+      null,
+      "hover",
+      "focus-visible"
+    ],
+    "chip": {
+      "label": "Filters",
+      "height": "var(--control-height-lg)",
+      "padding": "0 var(--space-4)",
+      "fontSize": "var(--text-13)",
+      "fontWeight": "var(--weight-semibold)",
       "radius": "var(--radius-full)"
     }
   },
