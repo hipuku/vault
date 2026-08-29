@@ -20,11 +20,25 @@ interface FontDrawerProps {
 }
 
 const WEIGHT_NAMES: Record<string, string> = {
-  '100': 'Thin', '200': 'ExtraLight', '300': 'Light', '400': 'Regular',
-  '500': 'Medium', '600': 'SemiBold', '700': 'Bold', '800': 'ExtraBold', '900': 'Black',
+  '100': 'Thin',
+  '200': 'ExtraLight',
+  '300': 'Light',
+  '400': 'Regular',
+  '500': 'Medium',
+  '600': 'SemiBold',
+  '700': 'Bold',
+  '800': 'ExtraBold',
+  '900': 'Black',
 }
 
-export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFavourite, onDelete }: FontDrawerProps): React.ReactElement {
+export function FontDrawer({
+  font,
+  previewText,
+  previewSize,
+  onClose,
+  onToggleFavourite,
+  onDelete,
+}: FontDrawerProps): React.ReactElement {
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [assigned, setAssigned] = useState<Set<number>>(new Set())
   const [tagModalOpen, setTagModalOpen] = useState(false)
@@ -39,14 +53,20 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
       setAllTags(tags)
       setAssigned(new Set(mine.map(t => t.id)))
     })
-    return () => { live = false }
+    return () => {
+      live = false
+    }
   }, [font])
 
   async function toggleTag(tag: Tag): Promise<void> {
     if (!font) return
     if (assigned.has(tag.id)) {
       await window.api.tag.remove('font', font.id, tag.id)
-      setAssigned(prev => { const n = new Set(prev); n.delete(tag.id); return n })
+      setAssigned(prev => {
+        const n = new Set(prev)
+        n.delete(tag.id)
+        return n
+      })
     } else {
       await window.api.tag.assign('font', font.id, tag.id)
       setAssigned(prev => new Set(prev).add(tag.id))
@@ -65,16 +85,16 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
   const weights = font ? parseWeights(font.weights) : []
   const stack = font ? fontStack(font) : ''
   const fontFamilyCss = font ? `font-family: ${stack};` : ''
-  const importCss = font && font.source === 'google'
-    ? `@import url('${googleCssUrl(font.family, weights)}');`
-    : ''
+  const importCss = font && font.source === 'google' ? `@import url('${googleCssUrl(font.family, weights)}');` : ''
 
   return (
     <Drawer open={font !== null} onClose={onClose}>
       {font && (
         <div className={styles.content}>
           <div className={styles.head}>
-            <span className={styles.bigName} style={{ fontFamily: stack }}>{font.family}</span>
+            <span className={styles.bigName} style={{ fontFamily: stack }}>
+              {font.family}
+            </span>
             <button
               type="button"
               className={['icon-btn', styles.star, font.favourite ? 'icon-btn--star' : ''].filter(Boolean).join(' ')}
@@ -84,13 +104,20 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
               <FontAwesomeIcon icon={faStar} />
             </button>
           </div>
-          <p className={styles.sub}>{font.category} · {font.source === 'google' ? 'Google Fonts' : 'Local file'}</p>
+          <p className={styles.sub}>
+            {font.category} · {font.source === 'google' ? 'Google Fonts' : 'Local file'}
+          </p>
 
           {/* Each weight is its own titled block (eyebrow heading + specimen). */}
           {weights.map(w => (
             <div key={w} className={styles.group}>
-              <h3 className="eyebrow">{WEIGHT_NAMES[w] ?? w} {w}</h3>
-              <span className={styles.specimen} style={{ fontFamily: stack, fontWeight: Number(w), fontSize: previewSize }}>
+              <h3 className="eyebrow">
+                {WEIGHT_NAMES[w] ?? w} {w}
+              </h3>
+              <span
+                className={styles.specimen}
+                style={{ fontFamily: stack, fontWeight: Number(w), fontSize: previewSize }}
+              >
                 {previewText || 'The quick brown fox'}
               </span>
             </div>
@@ -108,16 +135,35 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
             <h3 className="eyebrow">File</h3>
             {font.source === 'local' ? (
               <span className={styles.fileActions}>
-                <Button variant="secondary" size="md" onClick={() => { const p = localFontPaths(font)[0]; if (p) window.api.font.reveal(p) }}>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => {
+                    const p = localFontPaths(font)[0]
+                    if (p) window.api.font.reveal(p)
+                  }}
+                >
                   <FontAwesomeIcon icon={faFolderOpen} /> Show in Finder
                 </Button>
               </span>
             ) : (
               <span className={styles.fileActions}>
-                <Button variant="secondary" size="md" onClick={() => { void window.api.font.downloadGoogle(font.family, weights) }}>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => {
+                    void window.api.font.downloadGoogle(font.family, weights)
+                  }}
+                >
                   <FontAwesomeIcon icon={faDownload} /> Download font file
                 </Button>
-                <Button variant="ghost" size="md" onClick={() => window.open(`https://fonts.google.com/specimen/${font.family.replace(/ /g, '+')}`, '_blank')}>
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={() =>
+                    window.open(`https://fonts.google.com/specimen/${font.family.replace(/ /g, '+')}`, '_blank')
+                  }
+                >
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} /> View on Google Fonts
                 </Button>
               </span>
@@ -126,7 +172,15 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
 
           <div className={styles.group}>
             <h3 className="eyebrow">Projects</h3>
-            <TagSelect allTags={allTags} selectedIds={assigned} onToggle={toggleTag} onCreateNew={(label) => { setNewTagLabel(label); setTagModalOpen(true) }} />
+            <TagSelect
+              allTags={allTags}
+              selectedIds={assigned}
+              onToggle={toggleTag}
+              onCreateNew={label => {
+                setNewTagLabel(label)
+                setTagModalOpen(true)
+              }}
+            />
           </div>
 
           <div className={styles.footer}>
@@ -138,7 +192,13 @@ export function FontDrawer({ font, previewText, previewSize, onClose, onToggleFa
         </div>
       )}
 
-      <TagModal open={tagModalOpen} mode="create" initial={{ label: newTagLabel }} onSubmit={createTag} onClose={() => setTagModalOpen(false)} />
+      <TagModal
+        open={tagModalOpen}
+        mode="create"
+        initial={{ label: newTagLabel }}
+        onSubmit={createTag}
+        onClose={() => setTagModalOpen(false)}
+      />
     </Drawer>
   )
 }

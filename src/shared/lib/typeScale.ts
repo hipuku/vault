@@ -14,26 +14,26 @@ interface StepDef {
 
 /** Product/semantic roles — Display→Label, like Material and most design systems. */
 const SEMANTIC_STEPS: StepDef[] = [
-  { name: 'Display',    exponent: 5.25, weight: 700, lineHeight: '1.1',  letterSpacing: '-0.02em', heading: true },
-  { name: 'Headline',   exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
-  { name: 'Title',      exponent: 2.82, weight: 600, lineHeight: '1.2',  letterSpacing: '-0.01em', heading: true },
-  { name: 'Body Large', exponent: 0.41, weight: 400, lineHeight: '1.6',  letterSpacing: '0',       heading: false },
-  { name: 'Body',       exponent: 0,    weight: 400, lineHeight: '1.6',  letterSpacing: '0',       heading: false },
-  { name: 'Body Small', exponent: -0.46, weight: 400, lineHeight: '1.5', letterSpacing: '0',       heading: false },
-  { name: 'Caption',    exponent: -1,   weight: 400, lineHeight: '1.5',  letterSpacing: '0.02em',  heading: false },
-  { name: 'Label',      exponent: -1.3, weight: 500, lineHeight: '1.4',  letterSpacing: '0.08em',  heading: false },
+  { name: 'Display', exponent: 5.25, weight: 700, lineHeight: '1.1', letterSpacing: '-0.02em', heading: true },
+  { name: 'Headline', exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
+  { name: 'Title', exponent: 2.82, weight: 600, lineHeight: '1.2', letterSpacing: '-0.01em', heading: true },
+  { name: 'Body Large', exponent: 0.41, weight: 400, lineHeight: '1.6', letterSpacing: '0', heading: false },
+  { name: 'Body', exponent: 0, weight: 400, lineHeight: '1.6', letterSpacing: '0', heading: false },
+  { name: 'Body Small', exponent: -0.46, weight: 400, lineHeight: '1.5', letterSpacing: '0', heading: false },
+  { name: 'Caption', exponent: -1, weight: 400, lineHeight: '1.5', letterSpacing: '0.02em', heading: false },
+  { name: 'Label', exponent: -1.3, weight: 500, lineHeight: '1.4', letterSpacing: '0.08em', heading: false },
 ]
 
 /** HTML markup — h1–h6 + paragraph + small, mapping 1:1 to web-document tags. */
 const MARKUP_STEPS: StepDef[] = [
-  { name: 'H1',        exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
-  { name: 'H2',        exponent: 2.82, weight: 700, lineHeight: '1.2',  letterSpacing: '-0.01em', heading: true },
-  { name: 'H3',        exponent: 1.95, weight: 600, lineHeight: '1.25', letterSpacing: '0',       heading: true },
-  { name: 'H4',        exponent: 1.11, weight: 600, lineHeight: '1.3',  letterSpacing: '0',       heading: true },
-  { name: 'H5',        exponent: 0.41, weight: 600, lineHeight: '1.35', letterSpacing: '0',       heading: true },
-  { name: 'H6',        exponent: 0,    weight: 600, lineHeight: '1.4',  letterSpacing: '0',       heading: true },
-  { name: 'Paragraph', exponent: 0,    weight: 400, lineHeight: '1.6',  letterSpacing: '0',       heading: false },
-  { name: 'Small',     exponent: -0.46, weight: 400, lineHeight: '1.5', letterSpacing: '0',       heading: false },
+  { name: 'H1', exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
+  { name: 'H2', exponent: 2.82, weight: 700, lineHeight: '1.2', letterSpacing: '-0.01em', heading: true },
+  { name: 'H3', exponent: 1.95, weight: 600, lineHeight: '1.25', letterSpacing: '0', heading: true },
+  { name: 'H4', exponent: 1.11, weight: 600, lineHeight: '1.3', letterSpacing: '0', heading: true },
+  { name: 'H5', exponent: 0.41, weight: 600, lineHeight: '1.35', letterSpacing: '0', heading: true },
+  { name: 'H6', exponent: 0, weight: 600, lineHeight: '1.4', letterSpacing: '0', heading: true },
+  { name: 'Paragraph', exponent: 0, weight: 400, lineHeight: '1.6', letterSpacing: '0', heading: false },
+  { name: 'Small', exponent: -0.46, weight: 400, lineHeight: '1.5', letterSpacing: '0', heading: false },
 ]
 
 export const STEP_PRESETS: Record<TypeScaleKind, StepDef[]> = {
@@ -48,7 +48,7 @@ export const KIND_LABELS: Record<TypeScaleKind, string> = {
 
 /** Every step name that renders in the heading font, across all presets. */
 const HEADING_STEPS = new Set<TypeScaleStepName>(
-  Object.values(STEP_PRESETS).flatMap(steps => steps.filter(s => s.heading).map(s => s.name))
+  Object.values(STEP_PRESETS).flatMap(steps => steps.filter(s => s.heading).map(s => s.name)),
 )
 
 /** Which steps render in the heading font vs the body font by default. */
@@ -77,12 +77,21 @@ export function isCustomScale(steps: StepMetrics[], baseSize: number, ratio: num
   if (generated.length !== steps.length) return true
   return steps.some(s => {
     const g = generated.find(x => x.step_name === s.step_name)
-    return !g || g.size !== s.size || g.weight !== s.weight
-      || g.line_height !== s.line_height || g.letter_spacing !== s.letter_spacing
+    return (
+      !g ||
+      g.size !== s.size ||
+      g.weight !== s.weight ||
+      g.line_height !== s.line_height ||
+      g.letter_spacing !== s.letter_spacing
+    )
   })
 }
 
-export function generateTypeScaleSteps(baseSize: number, ratio: number, kind: TypeScaleKind = 'semantic'): TypeScaleStepInput[] {
+export function generateTypeScaleSteps(
+  baseSize: number,
+  ratio: number,
+  kind: TypeScaleKind = 'semantic',
+): TypeScaleStepInput[] {
   return STEP_PRESETS[kind].map((s, i) => ({
     step_name: s.name,
     size: Math.round(baseSize * Math.pow(ratio, s.exponent)),

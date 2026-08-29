@@ -12,9 +12,13 @@
   font: inherit;
   transition: box-shadow var(--duration-normal) var(--ease-move);
 }
-.card:hover { box-shadow: var(--shadow-md); }
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
 
-.previewWrap { position: relative; }
+.previewWrap {
+  position: relative;
+}
 
 .preview {
   display: flex;
@@ -47,7 +51,9 @@
   opacity: 0;
   transition: opacity var(--duration-normal) var(--ease-move);
 }
-.card:hover .edit { opacity: 1; }
+.card:hover .edit {
+  opacity: 1;
+}
 
 .body {
   display: flex;

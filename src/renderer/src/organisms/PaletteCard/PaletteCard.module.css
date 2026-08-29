@@ -13,7 +13,9 @@
   transition: box-shadow var(--duration-normal) var(--ease-move);
 }
 
-.card:hover { box-shadow: var(--shadow-md); }
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
 
 /* ── Preview (fixed height, matches ColorCard) ───────────────────────────── */
 
@@ -53,7 +55,9 @@
   flex-direction: column;
 }
 
-.expSwatch { flex: 1; }
+.expSwatch {
+  flex: 1;
+}
 
 /* ── Overlay affordances (mirrors ColorCard) ─────────────────────────────── */
 
@@ -86,7 +90,9 @@
   transition: opacity var(--duration-normal) var(--ease-move);
 }
 
-.card:hover .edit { opacity: 0.9; }
+.card:hover .edit {
+  opacity: 0.9;
+}
 
 /* ── Body ────────────────────────────────────────────────────────────────── */
 

@@ -26,12 +26,7 @@ export function ColorFilters({
 
   return (
     <div className={styles.root} ref={ref}>
-      <TriggerPill
-        
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        onClick={toggle}
-      >
+      <TriggerPill aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
         <FontAwesomeIcon icon={faFilter} className={styles.triggerIcon} />
         Filters
       </TriggerPill>

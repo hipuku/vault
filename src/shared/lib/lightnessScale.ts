@@ -12,10 +12,7 @@ export interface LightnessScaleOptions {
  * maxL→minL, chroma eases toward the mid-tones, hue held. Shared by the main
  * process (persisting palettes) and the renderer (live creation preview).
  */
-export function generateLightnessScale(
-  hex: string,
-  options: LightnessScaleOptions = {}
-): string[] {
+export function generateLightnessScale(hex: string, options: LightnessScaleOptions = {}): string[] {
   const { steps = 10, minL = 8, maxL = 97 } = options
   const base = chroma(hex)
   const [, c, h] = base.lch()

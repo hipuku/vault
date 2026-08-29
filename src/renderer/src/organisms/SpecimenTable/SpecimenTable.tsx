@@ -40,7 +40,12 @@ function Head({ icon, label, unit }: { icon: IconDefinition; label: string; unit
 }
 
 export function SpecimenTable({
-  steps, headingStack, bodyStack, previewText, units, renderTrailing,
+  steps,
+  headingStack,
+  bodyStack,
+  previewText,
+  units,
+  renderTrailing,
 }: SpecimenTableProps): React.ReactElement {
   return (
     <div className={styles.table}>

@@ -23,7 +23,12 @@ interface TypeScalesPageProps {
   onCreateConsumed?: () => void
 }
 
-export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSignal, onCreateConsumed }: TypeScalesPageProps): React.ReactElement | null {
+export function TypeScalesPage({
+  activeTagId,
+  embedded,
+  openCreate: openCreateSignal,
+  onCreateConsumed,
+}: TypeScalesPageProps): React.ReactElement | null {
   const { scales, stepsByScale, create, rename, remove, refresh, loadError } = useTypeScales()
   const { fonts } = useFonts()
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
@@ -32,27 +37,45 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
   const confirm = useConfirm()
 
   const openCreate = useCallback((): void => setView('create'), [])
-  const openView = useCallback((s: TypeScale): void => { setViewId(s.id); setView('view') }, [])
-  const backToList = useCallback((): void => { setView('list'); setViewId(null); refresh() }, [refresh])
+  const openView = useCallback((s: TypeScale): void => {
+    setViewId(s.id)
+    setView('view')
+  }, [])
+  const backToList = useCallback((): void => {
+    setView('list')
+    setViewId(null)
+    refresh()
+  }, [refresh])
 
   // Opened from the command palette (⌘K → "New type scale").
   useEffect(() => {
-    if (openCreateSignal) { openCreate(); onCreateConsumed?.() }
+    if (openCreateSignal) {
+      openCreate()
+      onCreateConsumed?.()
+    }
   }, [openCreateSignal, onCreateConsumed, openCreate])
 
   useEffect(() => {
-    if (activeTagId == null) { setTagIds(null); return }
+    if (activeTagId == null) {
+      setTagIds(null)
+      return
+    }
     let live = true
-    window.api.tag.listAssetIds('type_scale', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
-    return () => { live = false }
+    window.api.tag.listAssetIds('type_scale', activeTagId).then(ids => {
+      if (live) setTagIds(new Set(ids))
+    })
+    return () => {
+      live = false
+    }
   }, [activeTagId, view])
 
   const filtered = useMemo(
-    () => scales.filter(s => {
-      if (tagIds && !tagIds.has(s.id)) return false
-      return true
-    }),
-    [scales, tagIds]
+    () =>
+      scales.filter(s => {
+        if (tagIds && !tagIds.has(s.id)) return false
+        return true
+      }),
+    [scales, tagIds],
   )
 
   async function handleDelete(scale: TypeScale): Promise<void> {
@@ -63,7 +86,8 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
     })
     if (ok) {
       await remove(scale.id)
-      setView('list'); setViewId(null)
+      setView('list')
+      setViewId(null)
     }
   }
 
@@ -97,7 +121,9 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
     if (filtered.length === 0) return null
     return (
       <>
-        <TagGroup title={embedded.title} count={filtered.length}>{grid}</TagGroup>
+        <TagGroup title={embedded.title} count={filtered.length}>
+          {grid}
+        </TagGroup>
         {overlays}
       </>
     )
@@ -109,7 +135,8 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
         fonts={fonts}
         onCancel={backToList}
         onCreate={(name, headingFontId, bodyFontId, baseSize, ratio, steps) =>
-          create(name, headingFontId, bodyFontId, baseSize, ratio, steps)}
+          create(name, headingFontId, bodyFontId, baseSize, ratio, steps)
+        }
       />
     )
   }
@@ -150,22 +177,23 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
       />
       <div className="scroll-area">
         {loadError ? (
-          <EmptyState
-            title="Couldn’t open your library"
-            description={loadError}
-          />
+          <EmptyState title="Couldn’t open your library" description={loadError} />
         ) : scales.length === 0 ? (
           <EmptyState
             title="Pick a font from your library to start"
             description="Generate a Product or Web/Markup scale with a ratio preset, then fine-tune each step."
-            action={<Button variant="primary" size="md" onClick={openCreate}><FontAwesomeIcon icon={faPlus} />New type scale</Button>}
+            action={
+              <Button variant="primary" size="md" onClick={openCreate}>
+                <FontAwesomeIcon icon={faPlus} />
+                New type scale
+              </Button>
+            }
           />
         ) : filtered.length === 0 ? (
-          <EmptyState
-            title="No type scales match this filter"
-            description="No scales in this project yet."
-          />
-        ) : grid}
+          <EmptyState title="No type scales match this filter" description="No scales in this project yet." />
+        ) : (
+          grid
+        )}
       </div>
       {overlays}
     </>

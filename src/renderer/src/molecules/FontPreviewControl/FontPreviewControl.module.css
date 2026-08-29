@@ -1,13 +1,17 @@
 /* The floating panel comes from Popover. */
 
-.root { position: relative; }
+.root {
+  position: relative;
+}
 
 .aa {
   font-family: var(--font-serif, Georgia, serif);
   font-size: var(--text-16, 1rem);
   line-height: 1;
 }
-.size { color: var(--color-ink-tertiary); }
+.size {
+  color: var(--color-ink-tertiary);
+}
 
 .textInput {
   width: 100%;
@@ -20,9 +24,14 @@
   border: var(--border-width) solid var(--color-border-default);
   border-radius: var(--radius-md);
   outline: none;
-  transition: border-color var(--duration-fast) var(--ease-move), box-shadow var(--duration-fast) var(--ease-move);
+  transition:
+    border-color var(--duration-fast) var(--ease-move),
+    box-shadow var(--duration-fast) var(--ease-move);
 }
-.textInput:focus-visible { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.textInput:focus-visible {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
 
 .sizeRow {
   display: flex;
@@ -34,7 +43,10 @@
   font-weight: var(--weight-medium);
   color: var(--color-ink-tertiary);
 }
-.slider { flex: 1; accent-color: var(--color-primary-default); }
+.slider {
+  flex: 1;
+  accent-color: var(--color-primary-default);
+}
 .sizeVal {
   min-width: 38px;
   text-align: right;

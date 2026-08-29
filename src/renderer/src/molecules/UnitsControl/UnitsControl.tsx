@@ -2,9 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { Select } from '../../molecules/Select/Select'
-import type {
-  TypeUnits, SizeUnit, WeightDisplay, LineHeightUnit, TrackingUnit,
-} from '../../lib/typeUnits'
+import type { TypeUnits, SizeUnit, WeightDisplay, LineHeightUnit, TrackingUnit } from '../../lib/typeUnits'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
 import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
@@ -16,16 +14,23 @@ interface UnitsControlProps {
 }
 
 const SIZE_OPTS: Array<{ key: SizeUnit; label: string }> = [
-  { key: 'px', label: 'px' }, { key: 'rem', label: 'rem' }, { key: 'pt', label: 'pt' },
+  { key: 'px', label: 'px' },
+  { key: 'rem', label: 'rem' },
+  { key: 'pt', label: 'pt' },
 ]
 const WEIGHT_OPTS: Array<{ key: WeightDisplay; label: string }> = [
-  { key: 'number', label: 'Number (400)' }, { key: 'name', label: 'Name (Regular)' },
+  { key: 'number', label: 'Number (400)' },
+  { key: 'name', label: 'Name (Regular)' },
 ]
 const LH_OPTS: Array<{ key: LineHeightUnit; label: string }> = [
-  { key: 'unitless', label: 'unitless' }, { key: 'px', label: 'px' }, { key: '%', label: '%' },
+  { key: 'unitless', label: 'unitless' },
+  { key: 'px', label: 'px' },
+  { key: '%', label: '%' },
 ]
 const TRACKING_OPTS: Array<{ key: TrackingUnit; label: string }> = [
-  { key: 'em', label: 'em' }, { key: 'px', label: 'px' }, { key: '%', label: '%' },
+  { key: 'em', label: 'em' },
+  { key: 'px', label: 'px' },
+  { key: '%', label: '%' },
 ]
 
 /** Compact popover that sets the table's display units — mirrors FontPreviewControl. */
@@ -34,37 +39,54 @@ export function UnitsControl({ units, onChange }: UnitsControlProps): React.Reac
 
   return (
     <div className={styles.root} ref={ref}>
-      <TriggerPill
-        
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        onClick={toggle}
-      >
+      <TriggerPill aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
         <FontAwesomeIcon icon={faSliders} />
-        <span className={styles.summary}>{units.size} · {units.tracking}</span>
+        <span className={styles.summary}>
+          {units.size} · {units.tracking}
+        </span>
       </TriggerPill>
 
       {open && (
         <Popover align="right" width="md" column role="dialog" ariaLabel="Display units">
           <div className={styles.row}>
             <span className={styles.label}>Size</span>
-            <Select block ariaLabel="Size unit" value={units.size} options={SIZE_OPTS}
-              onChange={size => onChange({ ...units, size })} />
+            <Select
+              block
+              ariaLabel="Size unit"
+              value={units.size}
+              options={SIZE_OPTS}
+              onChange={size => onChange({ ...units, size })}
+            />
           </div>
           <div className={styles.row}>
             <span className={styles.label}>Weight</span>
-            <Select block ariaLabel="Weight display" value={units.weight} options={WEIGHT_OPTS}
-              onChange={weight => onChange({ ...units, weight })} />
+            <Select
+              block
+              ariaLabel="Weight display"
+              value={units.weight}
+              options={WEIGHT_OPTS}
+              onChange={weight => onChange({ ...units, weight })}
+            />
           </div>
           <div className={styles.row}>
             <span className={styles.label}>Line height</span>
-            <Select block ariaLabel="Line-height unit" value={units.lineHeight} options={LH_OPTS}
-              onChange={lineHeight => onChange({ ...units, lineHeight })} />
+            <Select
+              block
+              ariaLabel="Line-height unit"
+              value={units.lineHeight}
+              options={LH_OPTS}
+              onChange={lineHeight => onChange({ ...units, lineHeight })}
+            />
           </div>
           <div className={styles.row}>
             <span className={styles.label}>Tracking</span>
-            <Select block ariaLabel="Tracking unit" value={units.tracking} options={TRACKING_OPTS}
-              onChange={tracking => onChange({ ...units, tracking })} />
+            <Select
+              block
+              ariaLabel="Tracking unit"
+              value={units.tracking}
+              options={TRACKING_OPTS}
+              onChange={tracking => onChange({ ...units, tracking })}
+            />
           </div>
         </Popover>
       )}

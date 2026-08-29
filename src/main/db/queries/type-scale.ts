@@ -7,7 +7,7 @@ export function createTypeScale(
   bodyFontId: number | null,
   baseSize: number,
   ratio: string,
-  steps: TypeScaleStepInput[]
+  steps: TypeScaleStepInput[],
 ): TypeScale {
   const db = getDb()
   const insertScale = db.prepare(`
@@ -37,9 +37,7 @@ export function createTypeScale(
 }
 
 export function listTypeScales(): TypeScale[] {
-  return getDb()
-    .prepare('SELECT * FROM type_scales ORDER BY created_at DESC')
-    .all() as TypeScale[]
+  return getDb().prepare('SELECT * FROM type_scales ORDER BY created_at DESC').all() as TypeScale[]
 }
 
 export function updateTypeScaleName(id: number, name: string): void {

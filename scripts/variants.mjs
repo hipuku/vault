@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-const SKIP = new Set(['className','children','style','key','ref','id','ariaLabel','aria-label'])
-const SKIP_RE = /ClassName$|^aria|^data-/   // styling hooks are not Figma properties
+const SKIP = new Set(['className', 'children', 'style', 'key', 'ref', 'id', 'ariaLabel', 'aria-label'])
+const SKIP_RE = /ClassName$|^aria|^data-/ // styling hooks are not Figma properties
 
 /** Pull the props interface out of a component and classify each prop. */
 export function variantsOf(tsxPath) {
@@ -10,9 +10,7 @@ export function variantsOf(tsxPath) {
   const name = path.basename(tsxPath, '.tsx')
 
   // the interface / type that the component's own props are declared in
-  const m = src.match(
-    new RegExp(`(?:interface|type)\\s+${name}Props[^{]*\\{([\\s\\S]*?)\\n\\}`, 'm'),
-  )
+  const m = src.match(new RegExp(`(?:interface|type)\\s+${name}Props[^{]*\\{([\\s\\S]*?)\\n\\}`, 'm'))
   if (!m) return { name, extends: null, props: [] }
 
   const ext = (src.match(new RegExp(`${name}Props[^{]*?extends\\s+([^{]+)\\{`)) || [])[1]?.trim() || null
@@ -37,17 +35,23 @@ export function variantsOf(tsxPath) {
     const type = rawType.replace(/\s+/g, ' ').trim()
     let kind, values
     if (/^'.*'(\s*\|\s*'.*')*$/.test(type)) {
-      kind = 'variant'; values = type.split('|').map(v => v.trim().replace(/'/g, ''))
+      kind = 'variant'
+      values = type.split('|').map(v => v.trim().replace(/'/g, ''))
     } else if (type === 'boolean') {
-      kind = 'boolean'; values = ['true', 'false']
+      kind = 'boolean'
+      values = ['true', 'false']
     } else if (type === 'string') {
-      kind = 'text'; values = null
+      kind = 'text'
+      values = null
     } else if (/React\.ReactNode|ReactNode|IconDefinition/.test(type)) {
-      kind = 'slot'; values = null
+      kind = 'slot'
+      values = null
     } else if (/=>/.test(type)) {
-      kind = 'event'; values = null
+      kind = 'event'
+      values = null
     } else {
-      kind = 'other'; values = null
+      kind = 'other'
+      values = null
     }
     props.push({ prop, optional: !!optional, kind, type, values, default: defaults[prop] ?? null })
   }
@@ -67,8 +71,7 @@ export function statesOf(cssPath) {
 
 /** Every Figma frame the component set needs = product of its variant axes. */
 export function frameCount(props, states) {
-  const axes = props.filter(p => p.kind === 'variant' || p.kind === 'boolean')
-    .map(p => p.values.length)
+  const axes = props.filter(p => p.kind === 'variant' || p.kind === 'boolean').map(p => p.values.length)
   const n = axes.reduce((a, b) => a * b, 1)
   return n * Math.max(1, states.length + 1)
 }

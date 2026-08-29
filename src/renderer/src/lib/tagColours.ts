@@ -8,5 +8,5 @@ const LIGHTNESS = 0.64
 const CHROMA = 0.11
 
 export const TAG_COLOURS: string[] = Array.from({ length: COUNT }, (_, i) =>
-  chroma.oklch(LIGHTNESS, CHROMA, (i * 360) / COUNT).hex()
+  chroma.oklch(LIGHTNESS, CHROMA, (i * 360) / COUNT).hex(),
 )

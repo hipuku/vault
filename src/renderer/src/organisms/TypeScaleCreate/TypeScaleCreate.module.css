@@ -6,7 +6,9 @@
   gap: var(--space-3);
 }
 
-.req { color: var(--color-error-default); }
+.req {
+  color: var(--color-error-default);
+}
 
 .error {
   font-size: var(--text-12);
@@ -35,7 +37,11 @@
   border-right: var(--border-width) solid var(--color-border-subtle);
 }
 
-.field { display: flex; flex-direction: column; gap: var(--space-2); }
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
 
 .label {
   font-size: var(--type-label-sm-size);
@@ -61,7 +67,10 @@
   border: var(--border-width) solid var(--color-border-default);
   border-radius: var(--radius-md);
 }
-.sizeInput:focus-within { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.sizeInput:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
 .numInput {
   flex: 1;
   min-width: 0;
@@ -97,9 +106,13 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   text-align: left;
-  transition: border-color var(--duration-fast) var(--ease-move), background var(--duration-fast) var(--ease-move);
+  transition:
+    border-color var(--duration-fast) var(--ease-move),
+    background var(--duration-fast) var(--ease-move);
 }
-.ratio:hover { background: var(--color-surface-subtle); }
+.ratio:hover {
+  background: var(--color-surface-subtle);
+}
 .ratioOn {
   border-color: var(--color-primary-default);
   background: var(--color-primary-subtle);
@@ -112,8 +125,13 @@
   font-weight: var(--weight-medium);
   color: var(--color-ink-primary);
 }
-.ratioOn .ratioName { color: var(--color-primary-default); }
-.rec { color: var(--color-primary-default); font-size: var(--text-11); }
+.ratioOn .ratioName {
+  color: var(--color-primary-default);
+}
+.rec {
+  color: var(--color-primary-default);
+  font-size: var(--text-11);
+}
 .ratioVal {
   font-family: var(--font-mono);
   font-size: var(--text-11);

@@ -51,7 +51,9 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
       size="md"
       footer={
         <>
-          <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
+          <Button variant="ghost" size="md" onClick={onClose}>
+            Cancel
+          </Button>
           <Button variant="primary" size="md" onClick={submit} disabled={!label.trim() || busy}>
             {mode === 'create' ? 'Add project' : 'Save'}
           </Button>
@@ -59,33 +61,44 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
       }
     >
       <div className={styles.body}>
-          <Input
-            autoFocus
-            value={label}
-            error={!!error}
-            onChange={e => { setLabel(e.target.value); setError(null) }}
-            placeholder="Project name"
-            onKeyDown={e => { if (e.key === 'Enter') submit() }}
-          />
-          {error && <p className={styles.error}>{error}</p>}
+        <Input
+          autoFocus
+          value={label}
+          error={!!error}
+          onChange={e => {
+            setLabel(e.target.value)
+            setError(null)
+          }}
+          placeholder="Project name"
+          onKeyDown={e => {
+            if (e.key === 'Enter') submit()
+          }}
+        />
+        {error && <p className={styles.error}>{error}</p>}
 
-          <div className={styles.swatches}>
-            {TAG_COLOURS.map(c => {
-              const on = c === colour
-              return (
-                <button
-                  key={c}
-                  type="button"
-                  className={[styles.swatch, on ? styles.swatchOn : ''].filter(Boolean).join(' ')}
-                  style={{ background: c }}
-                  aria-label={`Colour ${c}`}
-                  onClick={() => setColour(c)}
-                >
-                  {on && <FontAwesomeIcon icon={faCheck} className={styles.check} style={{ color: prefersDarkText(c) ? '#000' : '#fff' }} />}
-                </button>
-              )
-            })}
-          </div>
+        <div className={styles.swatches}>
+          {TAG_COLOURS.map(c => {
+            const on = c === colour
+            return (
+              <button
+                key={c}
+                type="button"
+                className={[styles.swatch, on ? styles.swatchOn : ''].filter(Boolean).join(' ')}
+                style={{ background: c }}
+                aria-label={`Colour ${c}`}
+                onClick={() => setColour(c)}
+              >
+                {on && (
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    className={styles.check}
+                    style={{ color: prefersDarkText(c) ? '#000' : '#fff' }}
+                  />
+                )}
+              </button>
+            )
+          })}
+        </div>
       </div>
     </Modal>
   )

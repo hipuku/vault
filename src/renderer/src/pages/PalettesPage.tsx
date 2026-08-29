@@ -21,11 +21,23 @@ interface PalettesPageProps {
   onCreateConsumed?: () => void
 }
 
-export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSignal, onCreateConsumed }: PalettesPageProps): React.ReactElement | null {
+export function PalettesPage({
+  activeTagId,
+  embedded,
+  openCreate: openCreateSignal,
+  onCreateConsumed,
+}: PalettesPageProps): React.ReactElement | null {
   const {
-    palettes, swatchesByPalette,
-    createTonal, createExpressive,
-    rename, remove, promoteSwatch, refresh, loadError } = usePalettes()
+    palettes,
+    swatchesByPalette,
+    createTonal,
+    createExpressive,
+    rename,
+    remove,
+    promoteSwatch,
+    refresh,
+    loadError,
+  } = usePalettes()
 
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [view, setView] = useState<'list' | 'create' | 'view'>('list')
@@ -33,34 +45,54 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
   const [library, setLibrary] = useState<Colour[]>([])
   const confirm = useConfirm()
 
-  useEffect(() => { window.api.colour.list().then(setLibrary) }, [])
+  useEffect(() => {
+    window.api.colour.list().then(setLibrary)
+  }, [])
 
   const openCreate = useCallback((): void => {
     window.api.colour.list().then(setLibrary)
     setView('create')
   }, [])
 
-  const openView = useCallback((p: Palette): void => { setViewId(p.id); setView('view') }, [])
-  const backToList = useCallback((): void => { setView('list'); setViewId(null); refresh() }, [refresh])
+  const openView = useCallback((p: Palette): void => {
+    setViewId(p.id)
+    setView('view')
+  }, [])
+  const backToList = useCallback((): void => {
+    setView('list')
+    setViewId(null)
+    refresh()
+  }, [refresh])
 
   // Opened from the command palette (⌘K → "New palette").
   useEffect(() => {
-    if (openCreateSignal) { openCreate(); onCreateConsumed?.() }
+    if (openCreateSignal) {
+      openCreate()
+      onCreateConsumed?.()
+    }
   }, [openCreateSignal, onCreateConsumed, openCreate])
 
   useEffect(() => {
-    if (activeTagId == null) { setTagIds(null); return }
+    if (activeTagId == null) {
+      setTagIds(null)
+      return
+    }
     let live = true
-    window.api.tag.listAssetIds('palette', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
-    return () => { live = false }
+    window.api.tag.listAssetIds('palette', activeTagId).then(ids => {
+      if (live) setTagIds(new Set(ids))
+    })
+    return () => {
+      live = false
+    }
   }, [activeTagId, view])
 
   const filtered = useMemo(
-    () => palettes.filter(p => {
-      if (tagIds && !tagIds.has(p.id)) return false
-      return true
-    }),
-    [palettes, tagIds]
+    () =>
+      palettes.filter(p => {
+        if (tagIds && !tagIds.has(p.id)) return false
+        return true
+      }),
+    [palettes, tagIds],
   )
 
   async function handleDelete(palette: Palette): Promise<void> {
@@ -71,13 +103,19 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
     })
     if (ok) {
       await remove(palette.id)
-      setView('list'); setViewId(null)
+      setView('list')
+      setViewId(null)
     }
   }
 
-  const handlePromote = useCallback(async (paletteId: number, swatchId: number, name: string): Promise<unknown> => {
-    return promoteSwatch(paletteId, swatchId, name, () => { window.api.colour.list().then(setLibrary) })
-  }, [promoteSwatch])
+  const handlePromote = useCallback(
+    async (paletteId: number, swatchId: number, name: string): Promise<unknown> => {
+      return promoteSwatch(paletteId, swatchId, name, () => {
+        window.api.colour.list().then(setLibrary)
+      })
+    },
+    [promoteSwatch],
+  )
 
   const grid = (
     <SectionGrid>
@@ -107,7 +145,9 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
     if (filtered.length === 0) return null
     return (
       <>
-        <TagGroup title={embedded.title} count={filtered.length}>{grid}</TagGroup>
+        <TagGroup title={embedded.title} count={filtered.length}>
+          {grid}
+        </TagGroup>
         {overlays}
       </>
     )
@@ -157,22 +197,23 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
       />
       <div className="scroll-area">
         {loadError ? (
-          <EmptyState
-            title="Couldn’t open your library"
-            description={loadError}
-          />
+          <EmptyState title="Couldn’t open your library" description={loadError} />
         ) : palettes.length === 0 ? (
           <EmptyState
             title="Build a tonal system or expressive set"
             description="Generate a 10-step perceptual ramp, or compose multi-hue palettes from your library colours."
-            action={<Button variant="primary" size="md" onClick={openCreate}><FontAwesomeIcon icon={faPlus} />New palette</Button>}
+            action={
+              <Button variant="primary" size="md" onClick={openCreate}>
+                <FontAwesomeIcon icon={faPlus} />
+                New palette
+              </Button>
+            }
           />
         ) : filtered.length === 0 ? (
-          <EmptyState
-            title="No palettes match this filter"
-            description="No palettes in this project yet."
-          />
-        ) : grid}
+          <EmptyState title="No palettes match this filter" description="No palettes in this project yet." />
+        ) : (
+          grid
+        )}
       </div>
       {overlays}
     </>

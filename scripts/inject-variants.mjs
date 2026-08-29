@@ -28,16 +28,24 @@ const KIND = { variant: 'variant', boolean: 'boolean', text: 'text', slot: 'inst
 
 let done = 0
 for (const [heading, base] of Object.entries(map)) {
-  const tsx = `${base}.tsx`, css = `${base}.module.css`
-  if (!fs.existsSync(tsx)) { console.log('  no tsx:', heading); continue }
+  const tsx = `${base}.tsx`,
+    css = `${base}.module.css`
+  if (!fs.existsSync(tsx)) {
+    console.log('  no tsx:', heading)
+    continue
+  }
   const { props } = variantsOf(tsx)
   const states = statesOf(css)
   const rows = props.filter(p => p.kind !== 'event' && p.kind !== 'other')
 
-  let t = '      <table class="vartbl"><thead><tr><th>Property</th><th>Type</th><th>Values</th><th>Default</th></tr></thead><tbody>\n'
+  let t =
+    '      <table class="vartbl"><thead><tr><th>Property</th><th>Type</th><th>Values</th><th>Default</th></tr></thead><tbody>\n'
   for (const p of rows) {
-    const vals = p.values ? p.values.map(v => `<code>${v}</code>`).join('')
-      : p.kind === 'slot' ? '<i>any component</i>' : '<i>free text</i>'
+    const vals = p.values
+      ? p.values.map(v => `<code>${v}</code>`).join('')
+      : p.kind === 'slot'
+        ? '<i>any component</i>'
+        : '<i>free text</i>'
     t += `        <tr><td class="k">${p.prop}</td><td class="kind">${KIND[p.kind]}</td><td class="vals">${vals}</td><td class="def">${p.default ?? '—'}</td></tr>\n`
   }
   if (states.length)
@@ -49,9 +57,15 @@ for (const [heading, base] of Object.entries(map)) {
   const block = `    <div class="vars">\n      <h3>Figma component set — every variant</h3>\n${t}      <p class="frames">Up to ${n} frame${n === 1 ? '' : 's'} — the axes multiplied. Where a state matrix follows, it shows how many actually differ.</p>\n    </div>\n  `
 
   const i = html.indexOf(`<h2>${heading}`)
-  if (i === -1) { console.log('  no heading:', heading); continue }
+  if (i === -1) {
+    console.log('  no heading:', heading)
+    continue
+  }
   const secEnd = html.indexOf('</section>', i)
-  if (html.slice(i, secEnd).includes('class="vars"')) { console.log('  already:', heading); continue }
+  if (html.slice(i, secEnd).includes('class="vars"')) {
+    console.log('  already:', heading)
+    continue
+  }
   html = html.slice(0, secEnd) + block + html.slice(secEnd)
   done++
 }

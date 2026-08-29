@@ -113,8 +113,13 @@
   transition: color var(--duration-normal) var(--ease-move);
 }
 
-.tagItem:hover .tagSelect { color: var(--color-ink-secondary); }
-.tagItemActive .tagSelect { color: var(--color-ink-primary); font-weight: var(--weight-semibold); }
+.tagItem:hover .tagSelect {
+  color: var(--color-ink-secondary);
+}
+.tagItemActive .tagSelect {
+  color: var(--color-ink-primary);
+  font-weight: var(--weight-semibold);
+}
 
 .tagDot {
   width: 9px;
@@ -147,7 +152,6 @@
   opacity: 1;
   padding-right: var(--space-1);
 }
-
 
 /* ── Add tag footer ──────────────────────────────────────────────────────── */
 

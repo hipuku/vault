@@ -6,3 +6,7 @@ package-lock.json
 *.icns
 *.png
 *.woff2
+
+# Vendored data, not source. Prettier turns this 764KB single-line map into 31,903
+# lines, which bloats the repo and makes every future diff on it unreadable.
+src/renderer/src/lib/colornames.json

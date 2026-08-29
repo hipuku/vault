@@ -28,10 +28,23 @@ interface ExportModalProps {
 }
 
 function fileSlug(s: string): string {
-  return s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'export'
+  return (
+    s
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'export'
+  )
 }
 
-export function ExportModal({ open, onClose, title, formats, generate, filenameBase }: ExportModalProps): React.ReactElement | null {
+export function ExportModal({
+  open,
+  onClose,
+  title,
+  formats,
+  generate,
+  filenameBase,
+}: ExportModalProps): React.ReactElement | null {
   const [formatId, setFormatId] = useState(formats[0]?.id ?? '')
   const { copy, copied } = useCopy()
 
@@ -68,15 +81,17 @@ export function ExportModal({ open, onClose, title, formats, generate, filenameB
       }
     >
       <div className={styles.formats}>
-          <SegmentedControl
-            ariaLabel="Export format"
-            options={formats.map(f => ({ id: f.id, label: f.label }))}
-            value={formatId}
-            onChange={setFormatId}
-          />
-        </div>
+        <SegmentedControl
+          ariaLabel="Export format"
+          options={formats.map(f => ({ id: f.id, label: f.label }))}
+          value={formatId}
+          onChange={setFormatId}
+        />
+      </div>
 
-      <pre className={styles.code}><code>{code}</code></pre>
+      <pre className={styles.code}>
+        <code>{code}</code>
+      </pre>
     </Modal>
   )
 }

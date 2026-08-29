@@ -10,18 +10,26 @@ export function useFonts(): {
   setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
   removeFont: (id: number) => Promise<void>
   refresh: () => Promise<void>
-  loadError: string | null} {
+  loadError: string | null
+} {
   const { loadError, guard } = useLoadState()
   const [fonts, setFonts] = useState<Font[]>([])
 
   const refresh = useCallback(async (): Promise<void> => {
-    await guard(() => window.api.font.list(), list => {
-      setFonts(list)
-      list.forEach(f => { void ensureFontLoaded(f) })
-    })
+    await guard(
+      () => window.api.font.list(),
+      list => {
+        setFonts(list)
+        list.forEach(f => {
+          void ensureFontLoaded(f)
+        })
+      },
+    )
   }, [guard])
 
-  useEffect(() => { refresh() }, [refresh])
+  useEffect(() => {
+    refresh()
+  }, [refresh])
 
   const addGoogle = useCallback(async (meta: GoogleFontMeta): Promise<Font> => {
     const f = await window.api.font.addGoogle(meta.family, meta.category, JSON.stringify(meta.weights))

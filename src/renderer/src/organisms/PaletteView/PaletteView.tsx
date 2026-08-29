@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faChevronLeft, faTrash, faArrowUpFromBracket, faCircleCheck,
-  faFileExport, faBarsStaggered, faTableColumns,
+  faChevronLeft,
+  faTrash,
+  faArrowUpFromBracket,
+  faCircleCheck,
+  faFileExport,
+  faBarsStaggered,
+  faTableColumns,
 } from '@fortawesome/free-solid-svg-icons'
 import type { Palette, Swatch, Tag, Colour } from '@shared/types'
 import { Toolbar } from '../../molecules/Toolbar/Toolbar'
@@ -18,7 +23,11 @@ import { EXPORT_FORMATS, exportPalette, type ExportFormat } from '../../lib/pale
 import { nearestNames } from '../../lib/colour'
 import { TONAL_STOP_LABELS } from '@shared/lib/tonalSystem'
 import {
-  analyseHueArc, analyseChroma, analyseLightness, findNearIdentical, analyseRamp,
+  analyseHueArc,
+  analyseChroma,
+  analyseLightness,
+  findNearIdentical,
+  analyseRamp,
   type QualityRating,
 } from '@shared/lib/paletteAnalyser'
 
@@ -27,8 +36,11 @@ const ratingVariant = (r: QualityRating): 'success' | 'warning' | 'error' =>
 import styles from './PaletteView.module.css'
 
 const RAMP_LABEL: Record<string, string> = {
-  primary: 'Primary', neutral: 'Neutral',
-  success: 'Success', warning: 'Warning', error: 'Error',
+  primary: 'Primary',
+  neutral: 'Neutral',
+  success: 'Success',
+  warning: 'Warning',
+  error: 'Error',
 }
 
 interface PaletteViewProps {
@@ -55,9 +67,17 @@ function Stop({ swatch, label, onPromoteClick }: StopProps): React.ReactElement 
       <div className={styles.swatchWrap}>
         <span className={styles.swatch} style={{ background: swatch.hex }} title={swatch.hex} />
         {inLibrary ? (
-          <span className={styles.inLib} title="In library"><FontAwesomeIcon icon={faCircleCheck} /></span>
+          <span className={styles.inLib} title="In library">
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </span>
         ) : (
-          <button type="button" className={styles.promote} onClick={() => onPromoteClick(swatch)} aria-label="Save to library" title="Save to library">
+          <button
+            type="button"
+            className={styles.promote}
+            onClick={() => onPromoteClick(swatch)}
+            aria-label="Save to library"
+            title="Save to library"
+          >
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
           </button>
         )}
@@ -69,7 +89,14 @@ function Stop({ swatch, label, onPromoteClick }: StopProps): React.ReactElement 
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 
-export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onPromote }: PaletteViewProps): React.ReactElement {
+export function PaletteView({
+  palette,
+  swatches,
+  onBack,
+  onRename,
+  onDelete,
+  onPromote,
+}: PaletteViewProps): React.ReactElement {
   const [library, setLibrary] = useState<Colour[]>([])
   const [project, setProject] = useState<Tag | null>(null)
   const [exportOpen, setExportOpen] = useState(false)
@@ -77,21 +104,25 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
 
   useEffect(() => {
     let live = true
-    Promise.all([
-      window.api.tag.listForAsset('palette', palette.id),
-      window.api.colour.list(),
-    ]).then(([mine, colours]) => {
-      if (!live) return
-      setProject(mine[0] ?? null)   // palettes belong to exactly one project
-      setLibrary(colours)
-    })
-    return () => { live = false }
+    Promise.all([window.api.tag.listForAsset('palette', palette.id), window.api.colour.list()]).then(
+      ([mine, colours]) => {
+        if (!live) return
+        setProject(mine[0] ?? null) // palettes belong to exactly one project
+        setLibrary(colours)
+      },
+    )
+    return () => {
+      live = false
+    }
   }, [palette.id])
 
-  const handlePromote = useCallback(async (swatchId: number, name: string): Promise<void> => {
-    await onPromote(palette.id, swatchId, name)
-    setLibrary(await window.api.colour.list())
-  }, [palette.id, onPromote])
+  const handlePromote = useCallback(
+    async (swatchId: number, name: string): Promise<void> => {
+      await onPromote(palette.id, swatchId, name)
+      setLibrary(await window.api.colour.list())
+    },
+    [palette.id, onPromote],
+  )
 
   const groups = useMemo(() => {
     const map = new Map<string, Swatch[]>()
@@ -99,19 +130,22 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
       if (!map.has(s.group_key)) map.set(s.group_key, [])
       map.get(s.group_key)!.push(s)
     }
-    return Array.from(map.entries()).sort(([, a], [, b]) =>
-      Math.min(...a.map(s => s.sort_order)) - Math.min(...b.map(s => s.sort_order))
+    return Array.from(map.entries()).sort(
+      ([, a], [, b]) => Math.min(...a.map(s => s.sort_order)) - Math.min(...b.map(s => s.sort_order)),
     )
   }, [swatches])
 
-  const nameForGroup = useCallback((gs: Swatch[]): string => {
-    const mid = gs.find(s => s.label === '') ?? gs[Math.floor(gs.length / 2)]
-    if (mid?.colour_id != null) {
-      const linked = library.find(c => c.id === mid.colour_id)
-      if (linked) return linked.name
-    }
-    return nearestNames(mid?.hex ?? '#888888', 1).best.name
-  }, [library])
+  const nameForGroup = useCallback(
+    (gs: Swatch[]): string => {
+      const mid = gs.find(s => s.label === '') ?? gs[Math.floor(gs.length / 2)]
+      if (mid?.colour_id != null) {
+        const linked = library.find(c => c.id === mid.colour_id)
+        if (linked) return linked.name
+      }
+      return nearestNames(mid?.hex ?? '#888888', 1).best.name
+    },
+    [library],
+  )
 
   const isTonal = palette.kind === 'tonal'
 
@@ -150,8 +184,10 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
       <Toolbar
         title={
           <span className={styles.titleRow}>
-            <IconButton label="Back to palettes" onClick={onBack}><FontAwesomeIcon icon={faChevronLeft} /></IconButton>
-            <EditableName value={palette.name} onCommit={(n) => onRename(palette.id, n)} ariaLabel="palette name" />
+            <IconButton label="Back to palettes" onClick={onBack}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </IconButton>
+            <EditableName value={palette.name} onCommit={n => onRename(palette.id, n)} ariaLabel="palette name" />
           </span>
         }
         actions={
@@ -171,7 +207,9 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
           {/* Hero */}
           <div className={styles.hero}>
             <div className={styles.heroStrip}>
-              {swatches.map(s => <span key={s.id} className={styles.heroSwatch} style={{ background: s.hex }} />)}
+              {swatches.map(s => (
+                <span key={s.id} className={styles.heroSwatch} style={{ background: s.hex }} />
+              ))}
             </div>
             <div className={styles.heroMeta}>
               <Pill icon={kindMeta.icon} label={kindMeta.label} />
@@ -212,7 +250,11 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
                       {gs.map((s, i) => {
                         const label = isTonal
                           ? TONAL_STOP_LABELS[i]
-                          : (i === 0 ? 'Light' : i === gs.length - 1 ? 'Dark' : 'Default')
+                          : i === 0
+                            ? 'Light'
+                            : i === gs.length - 1
+                              ? 'Dark'
+                              : 'Default'
                         return <Stop key={s.id} swatch={s} label={label} onPromoteClick={setPromoting} />
                       })}
                     </div>
@@ -230,7 +272,7 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
         title={palette.name}
         filenameBase={palette.name}
         formats={EXPORT_FORMATS}
-        generate={(f) => exportPalette(f as ExportFormat, palette, swatches, groupNames)}
+        generate={f => exportPalette(f as ExportFormat, palette, swatches, groupNames)}
       />
 
       {promoting && (
@@ -240,7 +282,10 @@ export function PaletteView({ palette, swatches, onBack, onRename, onDelete, onP
           library={library}
           fixedHex={promoting.hex}
           submitLabel="Save to library"
-          onAdd={(_hex, name) => { handlePromote(promoting.id, name); setPromoting(null) }}
+          onAdd={(_hex, name) => {
+            handlePromote(promoting.id, name)
+            setPromoting(null)
+          }}
           onAddMany={() => {}}
         />
       )}

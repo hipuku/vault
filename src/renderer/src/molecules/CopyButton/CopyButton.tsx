@@ -21,7 +21,15 @@ export function CopyButton({ value, label, mono, block, className }: CopyButtonP
   return (
     <button
       type="button"
-      className={[styles.chip, copied ? styles.copied : '', mono ? styles.mono : '', block ? styles.block : '', className].filter(Boolean).join(' ')}
+      className={[
+        styles.chip,
+        copied ? styles.copied : '',
+        mono ? styles.mono : '',
+        block ? styles.block : '',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       onClick={() => copy(value)}
       aria-label={`Copy ${text}`}
       title={text}

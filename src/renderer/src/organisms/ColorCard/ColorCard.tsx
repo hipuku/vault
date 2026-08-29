@@ -29,7 +29,9 @@ export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElemen
             />
           ))}
         </div>
-        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
+        <span className={styles.edit}>
+          <FontAwesomeIcon icon={faPen} />
+        </span>
       </div>
 
       <div className={styles.body}>

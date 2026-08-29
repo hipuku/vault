@@ -4,25 +4,43 @@ import { buildTokenTree, exportPalette, EXPORT_FORMATS } from '@renderer/lib/pal
 
 function palette(kind: Palette['kind']): Palette {
   return {
-    id: 1, name: 'Test', kind, base_hex: '#aa1155', gen_params: '{}',
-    favourite: 0, created_at: '', updated_at: '',
+    id: 1,
+    name: 'Test',
+    kind,
+    base_hex: '#aa1155',
+    gen_params: '{}',
+    favourite: 0,
+    created_at: '',
+    updated_at: '',
   }
 }
 
 function swatch(p: Partial<Swatch>): Swatch {
   return {
-    id: 1, palette_id: 1, hex: '#000000', label: '', group_key: '',
-    colour_id: null, sort_order: 0, locked: 0, created_at: '', ...p,
+    id: 1,
+    palette_id: 1,
+    hex: '#000000',
+    label: '',
+    group_key: '',
+    colour_id: null,
+    sort_order: 0,
+    locked: 0,
+    created_at: '',
+    ...p,
   }
 }
 
 describe('buildTokenTree — tonal', () => {
   it('groups by ramp key and keys by stop label', () => {
-    const tree = buildTokenTree(palette('tonal'), [
-      swatch({ group_key: 'primary', label: '500', hex: '#aa1155' }),
-      swatch({ group_key: 'primary', label: '700', hex: '#880044' }),
-      swatch({ group_key: 'neutral', label: '500', hex: '#777777' }),
-    ], {})
+    const tree = buildTokenTree(
+      palette('tonal'),
+      [
+        swatch({ group_key: 'primary', label: '500', hex: '#aa1155' }),
+        swatch({ group_key: 'primary', label: '700', hex: '#880044' }),
+        swatch({ group_key: 'neutral', label: '500', hex: '#777777' }),
+      ],
+      {},
+    )
     expect(tree).toEqual({
       primary: { '500': '#aa1155', '700': '#880044' },
       neutral: { '500': '#777777' },
@@ -30,26 +48,30 @@ describe('buildTokenTree — tonal', () => {
   })
 
   it('falls back to "ramp"/"0" for empty group/label', () => {
-    const tree = buildTokenTree(palette('tonal'), [
-      swatch({ group_key: '', label: '', hex: '#123456' }),
-    ], {})
+    const tree = buildTokenTree(palette('tonal'), [swatch({ group_key: '', label: '', hex: '#123456' })], {})
     expect(tree).toEqual({ ramp: { '0': '#123456' } })
   })
 })
 
 describe('buildTokenTree — expressive', () => {
   it('maps group keys through the supplied names and defaults blank labels', () => {
-    const tree = buildTokenTree(palette('expressive'), [
-      swatch({ group_key: 'g1', label: '', hex: '#aa1155' }),
-      swatch({ group_key: 'g1', label: 'dark', hex: '#660033' }),
-    ], { g1: 'Brand' })
+    const tree = buildTokenTree(
+      palette('expressive'),
+      [
+        swatch({ group_key: 'g1', label: '', hex: '#aa1155' }),
+        swatch({ group_key: 'g1', label: 'dark', hex: '#660033' }),
+      ],
+      { g1: 'Brand' },
+    )
     expect(tree).toEqual({ brand: { default: '#aa1155', dark: '#660033' } })
   })
 
   it('falls back to "hue" when a group has no name', () => {
-    const tree = buildTokenTree(palette('expressive'), [
-      swatch({ group_key: 'gX', label: 'light', hex: '#ffeeff' }),
-    ], {})
+    const tree = buildTokenTree(
+      palette('expressive'),
+      [swatch({ group_key: 'gX', label: 'light', hex: '#ffeeff' })],
+      {},
+    )
     expect(tree).toEqual({ hue: { light: '#ffeeff' } })
   })
 })

@@ -15,9 +15,9 @@ export interface NameMatch {
 }
 
 export interface ConfidenceBands {
-  veryClose: number   // ΔE < 3 — "same name" zone
+  veryClose: number // ΔE < 3 — "same name" zone
   approximate: number // ΔE 3–10
-  distant: number     // ΔE ≥ 10 (within scan radius)
+  distant: number // ΔE ≥ 10 (within scan radius)
 }
 
 export interface NameResult {
@@ -26,7 +26,13 @@ export interface NameResult {
   confidence: ConfidenceBands
 }
 
-interface Entry { hex: string; name: string; L: number; a: number; b: number }
+interface Entry {
+  hex: string
+  name: string
+  L: number
+  a: number
+  b: number
+}
 
 let _entries: Entry[] | null = null
 
@@ -52,7 +58,11 @@ const CIE76_RADIUS = 28
 
 export function nearestNames(hex: string, count = 6): NameResult {
   // deltaE NaN, not 0: an unparseable hex has no match, and 0 would render as an exact one.
-  const empty: NameResult = { best: { name: '', hex, deltaE: NaN }, runners: [], confidence: { veryClose: 0, approximate: 0, distant: 0 } }
+  const empty: NameResult = {
+    best: { name: '', hex, deltaE: NaN },
+    runners: [],
+    confidence: { veryClose: 0, approximate: 0, distant: 0 },
+  }
   const lab = toLab(hex)
   if (!lab) return empty
 

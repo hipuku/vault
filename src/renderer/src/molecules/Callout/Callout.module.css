@@ -24,11 +24,23 @@
   color: var(--color-ink-primary);
 }
 
-.info { background: var(--color-info-subtle); }
-.info .icon { color: var(--color-info-default); }
+.info {
+  background: var(--color-info-subtle);
+}
+.info .icon {
+  color: var(--color-info-default);
+}
 
-.warning { background: var(--color-warning-subtle); }
-.warning .icon { color: var(--color-warning-default); }
+.warning {
+  background: var(--color-warning-subtle);
+}
+.warning .icon {
+  color: var(--color-warning-default);
+}
 
-.error { background: var(--color-error-subtle); }
-.error .icon { color: var(--color-error-default); }
+.error {
+  background: var(--color-error-subtle);
+}
+.error .icon {
+  color: var(--color-error-default);
+}

@@ -28,7 +28,14 @@ interface FontsPageProps {
   onItemOpened?: () => void
 }
 
-export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: FontsPageProps): React.ReactElement | null {
+export function FontsPage({
+  activeTagId,
+  embedded,
+  openCreate,
+  onCreateConsumed,
+  openItemId,
+  onItemOpened,
+}: FontsPageProps): React.ReactElement | null {
   const { fonts, addGoogle, addLocal, setFavourite, removeFont, loadError } = useFonts()
   const [previewText, setPreviewText] = useState(DEFAULT_PREVIEW)
   const [previewSize, setPreviewSize] = useState(20)
@@ -40,7 +47,10 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
 
   // Opened from the command palette (⌘K → "Add font").
   useEffect(() => {
-    if (openCreate) { setAdderOpen(true); onCreateConsumed?.() }
+    if (openCreate) {
+      setAdderOpen(true)
+      onCreateConsumed?.()
+    }
   }, [openCreate, onCreateConsumed])
 
   // Selected a specific font in the command palette → open its drawer.
@@ -52,19 +62,27 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
   }, [openItemId, fonts, onItemOpened, drawer])
 
   useEffect(() => {
-    if (activeTagId == null) { setTagIds(null); return }
+    if (activeTagId == null) {
+      setTagIds(null)
+      return
+    }
     let live = true
-    window.api.tag.listAssetIds('font', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
-    return () => { live = false }
+    window.api.tag.listAssetIds('font', activeTagId).then(ids => {
+      if (live) setTagIds(new Set(ids))
+    })
+    return () => {
+      live = false
+    }
   }, [activeTagId, drawer.open])
 
   const filtered = useMemo(
-    () => fonts.filter(f => {
-      if (favOnly && !f.favourite) return false
-      if (tagIds && !tagIds.has(f.id)) return false
-      return true
-    }),
-    [fonts, favOnly, tagIds]
+    () =>
+      fonts.filter(f => {
+        if (favOnly && !f.favourite) return false
+        if (tagIds && !tagIds.has(f.id)) return false
+        return true
+      }),
+    [fonts, favOnly, tagIds],
   )
 
   const existingFamilies = useMemo(() => new Set(fonts.map(f => f.family)), [fonts])
@@ -90,7 +108,7 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
     }
   }
 
-  const drawerFont = drawer.item ? fonts.find(f => f.id === drawer.item!.id) ?? null : null
+  const drawerFont = drawer.item ? (fonts.find(f => f.id === drawer.item!.id) ?? null) : null
 
   const grid = (
     <SectionGrid>
@@ -108,7 +126,14 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
 
   const overlays = (
     <>
-      <FontDrawer font={drawerFont} previewText={previewText} previewSize={previewSize} onClose={drawer.closeDrawer} onToggleFavourite={setFavourite} onDelete={handleDelete} />
+      <FontDrawer
+        font={drawerFont}
+        previewText={previewText}
+        previewSize={previewSize}
+        onClose={drawer.closeDrawer}
+        onToggleFavourite={setFavourite}
+        onDelete={handleDelete}
+      />
       <FontAdder
         open={adderOpen}
         onClose={() => setAdderOpen(false)}
@@ -131,7 +156,9 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
     if (filtered.length === 0) return null
     return (
       <>
-        <TagGroup title={embedded.title} count={filtered.length}>{grid}</TagGroup>
+        <TagGroup title={embedded.title} count={filtered.length}>
+          {grid}
+        </TagGroup>
         {overlays}
       </>
     )
@@ -143,7 +170,12 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
         title="Fonts"
         actions={
           <>
-            <FontPreviewControl text={previewText} size={previewSize} onTextChange={setPreviewText} onSizeChange={setPreviewSize} />
+            <FontPreviewControl
+              text={previewText}
+              size={previewSize}
+              onTextChange={setPreviewText}
+              onSizeChange={setPreviewSize}
+            />
             <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
             <Button variant="primary" size="md" onClick={() => setAdderOpen(true)}>
               <FontAwesomeIcon icon={faPlus} />
@@ -155,22 +187,26 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
 
       <div className="scroll-area">
         {loadError ? (
-          <EmptyState
-            title="Couldn’t open your library"
-            description={loadError}
-          />
+          <EmptyState title="Couldn’t open your library" description={loadError} />
         ) : fonts.length === 0 ? (
           <EmptyState
             title="Add a font from Google Fonts or a local file"
             description="Preview at any size, then save it to your library."
-            action={<Button variant="primary" size="md" onClick={() => setAdderOpen(true)}><FontAwesomeIcon icon={faPlus} />Add font</Button>}
+            action={
+              <Button variant="primary" size="md" onClick={() => setAdderOpen(true)}>
+                <FontAwesomeIcon icon={faPlus} />
+                Add font
+              </Button>
+            }
           />
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No fonts match this filter"
             description={favOnly ? 'No favourites yet — star a font to see it here.' : 'No fonts in this project yet.'}
           />
-        ) : grid}
+        ) : (
+          grid
+        )}
       </div>
       {overlays}
     </>

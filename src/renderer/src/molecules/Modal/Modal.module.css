@@ -11,10 +11,15 @@
   padding: var(--space-6);
 }
 
-.center { align-items: center; }
+.center {
+  align-items: center;
+}
 /* Search-led surfaces sit high, so the list grows downward into stable space
    rather than pushing the input around as results change. */
-.top { align-items: flex-start; padding-top: 14vh; }
+.top {
+  align-items: flex-start;
+  padding-top: 14vh;
+}
 
 .panel {
   background: var(--color-surface-default);
@@ -29,10 +34,18 @@
   overflow: hidden;
 }
 
-.sm { --modal-width: var(--modal-width-sm); }
-.md { --modal-width: var(--modal-width-md); }
-.lg { --modal-width: var(--modal-width-lg); }
-.xl { --modal-width: var(--modal-width-xl); }
+.sm {
+  --modal-width: var(--modal-width-sm);
+}
+.md {
+  --modal-width: var(--modal-width-md);
+}
+.lg {
+  --modal-width: var(--modal-width-lg);
+}
+.xl {
+  --modal-width: var(--modal-width-xl);
+}
 
 /* Padded rather than scrolling: for a short dialog the body is the whole panel. */
 .plain {

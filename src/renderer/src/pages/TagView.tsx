@@ -19,14 +19,20 @@ export function TagView({ tagId }: { tagId: number }): React.ReactElement {
 
   useEffect(() => {
     let live = true
-    window.api.tag.list().then(tags => { if (live) setTag(tags.find(t => t.id === tagId) ?? null) })
+    window.api.tag.list().then(tags => {
+      if (live) setTag(tags.find(t => t.id === tagId) ?? null)
+    })
     Promise.all([
       window.api.tag.listAssetIds('colour', tagId),
       window.api.tag.listAssetIds('font', tagId),
       window.api.tag.listAssetIds('palette', tagId),
       window.api.tag.listAssetIds('type_scale', tagId),
-    ]).then(lists => { if (live) setTotal(lists.reduce((n, l) => n + l.length, 0)) })
-    return () => { live = false }
+    ]).then(lists => {
+      if (live) setTotal(lists.reduce((n, l) => n + l.length, 0))
+    })
+    return () => {
+      live = false
+    }
   }, [tagId])
 
   return (

@@ -29,7 +29,14 @@ interface ColorsPageProps {
   onItemOpened?: () => void
 }
 
-export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: ColorsPageProps): React.ReactElement | null {
+export function ColorsPage({
+  activeTagId,
+  embedded,
+  openCreate,
+  onCreateConsumed,
+  openItemId,
+  onItemOpened,
+}: ColorsPageProps): React.ReactElement | null {
   const { colours, addColour, renameColour, setFavourite, removeColour, loadError } = useColours()
   const [favOnly, setFavOnly] = useState(false)
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
@@ -39,11 +46,16 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
   const drawer = useDrawer<Colour>()
   const confirm = useConfirm()
 
-  useEffect(() => { warmColourNames() }, [])
+  useEffect(() => {
+    warmColourNames()
+  }, [])
 
   // Opened from the command palette (⌘K → "Add colour").
   useEffect(() => {
-    if (openCreate) { setAddOpen(true); onCreateConsumed?.() }
+    if (openCreate) {
+      setAddOpen(true)
+      onCreateConsumed?.()
+    }
   }, [openCreate, onCreateConsumed])
 
   // Selected a specific colour in the command palette → open its drawer.
@@ -60,25 +72,30 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
 
   // Sidebar tag (cross-section TagView / embedded) → constrains to one tag.
   useEffect(() => {
-    if (activeTagId == null) { setTagIds(null); return }
+    if (activeTagId == null) {
+      setTagIds(null)
+      return
+    }
     let live = true
-    window.api.tag.listAssetIds('colour', activeTagId).then(ids => { if (live) setTagIds(new Set(ids)) })
-    return () => { live = false }
+    window.api.tag.listAssetIds('colour', activeTagId).then(ids => {
+      if (live) setTagIds(new Set(ids))
+    })
+    return () => {
+      live = false
+    }
   }, [activeTagId, drawer.open])
 
   const filtered = useMemo(
-    () => colours.filter(c => {
-      if (favOnly && !c.favourite) return false
-      if (tagIds && !tagIds.has(c.id)) return false
-      return true
-    }),
-    [colours, favOnly, tagIds]
+    () =>
+      colours.filter(c => {
+        if (favOnly && !c.favourite) return false
+        if (tagIds && !tagIds.has(c.id)) return false
+        return true
+      }),
+    [colours, favOnly, tagIds],
   )
 
-  const groups = useMemo(
-    () => groupColours(sortColours(filtered, sortKey), groupKey),
-    [filtered, sortKey, groupKey]
-  )
+  const groups = useMemo(() => groupColours(sortColours(filtered, sortKey), groupKey), [filtered, sortKey, groupKey])
 
   async function handleDelete(colour: Colour): Promise<void> {
     const using = await window.api.colour.palettesUsing(colour.id)
@@ -95,23 +112,28 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
       message: 'This colour will be removed from your library. This can’t be undone.',
       confirmLabel: 'Delete colour',
     })
-    if (ok) { await removeColour(colour.id); drawer.closeDrawer() }
+    if (ok) {
+      await removeColour(colour.id)
+      drawer.closeDrawer()
+    }
   }
 
-  const drawerColour = drawer.item ? colours.find(c => c.id === drawer.item!.id) ?? null : null
+  const drawerColour = drawer.item ? (colours.find(c => c.id === drawer.item!.id) ?? null) : null
 
   const card = (colour: Colour): React.ReactElement => (
     <ColorCard key={colour.id} colour={colour} onOpen={drawer.openDrawer} />
   )
 
   const grids =
-    groupKey === 'none'
-      ? <SectionGrid>{groups[0]?.colours.map(card)}</SectionGrid>
-      : groups.map(g => (
-          <TagGroup key={g.title} title={g.title} count={g.colours.length}>
-            <SectionGrid>{g.colours.map(card)}</SectionGrid>
-          </TagGroup>
-        ))
+    groupKey === 'none' ? (
+      <SectionGrid>{groups[0]?.colours.map(card)}</SectionGrid>
+    ) : (
+      groups.map(g => (
+        <TagGroup key={g.title} title={g.title} count={g.colours.length}>
+          <SectionGrid>{g.colours.map(card)}</SectionGrid>
+        </TagGroup>
+      ))
+    )
 
   const overlays = (
     <>
@@ -159,12 +181,7 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
         title="Colors"
         actions={
           <>
-            <ColorFilters
-              sortKey={sortKey}
-              onSortChange={setSortKey}
-              groupKey={groupKey}
-              onGroupChange={setGroupKey}
-            />
+            <ColorFilters sortKey={sortKey} onSortChange={setSortKey} groupKey={groupKey} onGroupChange={setGroupKey} />
             <FavouriteToggle active={favOnly} onToggle={() => setFavOnly(v => !v)} />
             <Button variant="primary" size="md" onClick={() => setAddOpen(true)}>
               <FontAwesomeIcon icon={faPlus} />
@@ -175,20 +192,24 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
       />
       <div className="scroll-area">
         {loadError ? (
-          <EmptyState
-            title="Couldn’t open your library"
-            description={loadError}
-          />
+          <EmptyState title="Couldn’t open your library" description={loadError} />
         ) : colours.length === 0 ? (
           <EmptyState
             title="Add your first colour"
             description="Add by hex or extract from an image. We’ll suggest a name, check WCAG contrast, and flag near-duplicates."
-            action={<Button variant="primary" size="md" onClick={() => setAddOpen(true)}><FontAwesomeIcon icon={faPlus} />Add colour</Button>}
+            action={
+              <Button variant="primary" size="md" onClick={() => setAddOpen(true)}>
+                <FontAwesomeIcon icon={faPlus} />
+                Add colour
+              </Button>
+            }
           />
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No colours match this filter"
-            description={favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours in this project yet.'}
+            description={
+              favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours in this project yet.'
+            }
           />
         ) : (
           <div className={styles.groups}>{grids}</div>

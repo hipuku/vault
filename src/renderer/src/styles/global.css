@@ -1,12 +1,16 @@
 @import './tokens.css';
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   overflow: hidden;
 }
@@ -26,7 +30,9 @@ body {
 /* Inputs inherit the app font; every placeholder shares one muted token so they
    read identically across the app (raw <input>s otherwise fall back to the
    browser default grey, and Firefox/Chrome dim placeholders differently). */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
 }
 
@@ -123,8 +129,16 @@ textarea::placeholder {
 }
 
 /* Sizes */
-.icon-btn--sm { width: 24px; height: 24px; font-size: var(--text-12); }
-.icon-btn--xs { width: 20px; height: 20px; font-size: var(--text-11); }
+.icon-btn--sm {
+  width: 24px;
+  height: 24px;
+  font-size: var(--text-12);
+}
+.icon-btn--xs {
+  width: 20px;
+  height: 20px;
+  font-size: var(--text-11);
+}
 
 /* Tones (hover tint + colour) */
 .icon-btn--primary:hover:not(:disabled) {
@@ -137,7 +151,9 @@ textarea::placeholder {
 }
 
 /* Favourite "on" state — gold icon, holds through hover */
-.icon-btn--star { color: var(--amber-500); }
+.icon-btn--star {
+  color: var(--amber-500);
+}
 .icon-btn--star:hover:not(:disabled) {
   background: var(--color-surface-subtle);
   color: var(--amber-500);
@@ -156,7 +172,9 @@ textarea::placeholder {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }

@@ -17,9 +17,15 @@
   opacity: 0;
   transition: opacity var(--duration-normal) var(--ease-move);
 }
-.block:hover .blockShades { opacity: 1; }
+.block:hover .blockShades {
+  opacity: 1;
+}
 
-.blockShade { position: relative; flex: 1; height: 100%; }
+.blockShade {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
 
 /* "you are here" pin on the strip the colour's lightness maps to */
 .blockShadeActive::after {
@@ -61,7 +67,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-input.name { cursor: text; }
+input.name {
+  cursor: text;
+}
 .name:focus,
 .name:focus-visible {
   outline: none;
@@ -84,7 +92,9 @@ input.name { cursor: text; }
   opacity: 1;
 }
 
-.star { margin-left: auto; }
+.star {
+  margin-left: auto;
+}
 
 .copyGrid {
   display: grid;
@@ -100,8 +110,6 @@ input.name { cursor: text; }
   padding: var(--space-4) var(--space-5);
   border-top: var(--border-width) solid var(--color-border-subtle);
 }
-
-
 
 .groupHead {
   display: flex;
@@ -132,7 +140,10 @@ input.name { cursor: text; }
   transition: background var(--duration-normal) var(--ease-move);
 }
 
-.nameRow:hover { background: var(--color-surface-subtle); color: var(--color-ink-primary); }
+.nameRow:hover {
+  background: var(--color-surface-subtle);
+  color: var(--color-ink-primary);
+}
 
 .nameSwatch {
   width: var(--dot-lg);

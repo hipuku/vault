@@ -18,7 +18,9 @@ export function useColours(): {
     await guard(() => window.api.colour.list(), setColours)
   }, [guard])
 
-  useEffect(() => { refresh() }, [refresh])
+  useEffect(() => {
+    refresh()
+  }, [refresh])
 
   const addColour = useCallback(async (hex: string, name: string): Promise<Colour> => {
     const c = await window.api.colour.create(hex, name)

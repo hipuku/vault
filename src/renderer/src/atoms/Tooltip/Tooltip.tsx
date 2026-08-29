@@ -56,17 +56,19 @@ export function Tooltip({ label, children, side = 'top', align = 'center' }: Too
       onBlurCapture={() => setOpen(false)}
     >
       {React.cloneElement(children, { 'aria-describedby': open ? id : undefined })}
-      {open && pos && createPortal(
-        <span
-          role="tooltip"
-          id={id}
-          className={styles.bubble}
-          style={{ top: pos.top, left: pos.left, transform: `translate(${tx}, ${ty})` }}
-        >
-          {label}
-        </span>,
-        document.body,
-      )}
+      {open &&
+        pos &&
+        createPortal(
+          <span
+            role="tooltip"
+            id={id}
+            className={styles.bubble}
+            style={{ top: pos.top, left: pos.left, transform: `translate(${tx}, ${ty})` }}
+          >
+            {label}
+          </span>,
+          document.body,
+        )}
     </span>
   )
 }

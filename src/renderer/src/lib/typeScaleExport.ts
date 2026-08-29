@@ -10,7 +10,10 @@ interface StepLike {
 }
 
 function slug(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 export type TypeExportFormat = 'css' | 'scss' | 'tokens' | 'tailwind'
@@ -18,13 +21,24 @@ export type TypeExportFormat = 'css' | 'scss' | 'tokens' | 'tailwind'
 export const TYPE_EXPORT_FORMATS: ExportFormatDef[] = [
   { id: 'css', label: 'CSS', ext: 'css' },
   { id: 'scss', label: 'SCSS', ext: 'scss' },
-  { id: 'tokens', label: 'Design Tokens', ext: 'tokens.json', hint: 'W3C typography tokens — import via Tokens Studio in Figma.' },
+  {
+    id: 'tokens',
+    label: 'Design Tokens',
+    ext: 'tokens.json',
+    hint: 'W3C typography tokens — import via Tokens Studio in Figma.',
+  },
   { id: 'tailwind', label: 'Tailwind', ext: 'js' },
 ]
 
 // Each step's values formatted in the table's currently-selected units. Weight
 // stays numeric (a CSS/token weight is always a number).
-interface Formatted { key: string; size: string; weight: number; leading: string; tracking: string }
+interface Formatted {
+  key: string
+  size: string
+  weight: number
+  leading: string
+  tracking: string
+}
 
 function formatRows(steps: StepLike[], units: TypeUnits): Formatted[] {
   return steps.map(s => ({
@@ -47,12 +61,14 @@ function toCss(rows: Formatted[]): string {
 }
 
 function toScss(rows: Formatted[]): string {
-  return rows.flatMap(r => [
-    `$type-${r.key}-size: ${r.size};`,
-    `$type-${r.key}-weight: ${r.weight};`,
-    `$type-${r.key}-leading: ${r.leading};`,
-    `$type-${r.key}-tracking: ${r.tracking};`,
-  ]).join('\n')
+  return rows
+    .flatMap(r => [
+      `$type-${r.key}-size: ${r.size};`,
+      `$type-${r.key}-weight: ${r.weight};`,
+      `$type-${r.key}-leading: ${r.leading};`,
+      `$type-${r.key}-tracking: ${r.tracking};`,
+    ])
+    .join('\n')
 }
 
 function toDesignTokens(rows: Formatted[]): string {
@@ -67,8 +83,9 @@ function toDesignTokens(rows: Formatted[]): string {
 }
 
 function toTailwind(rows: Formatted[]): string {
-  const entries = rows.map(r =>
-    `        '${r.key}': ['${r.size}', { lineHeight: '${r.leading}', letterSpacing: '${r.tracking}', fontWeight: '${r.weight}' }],`
+  const entries = rows.map(
+    r =>
+      `        '${r.key}': ['${r.size}', { lineHeight: '${r.leading}', letterSpacing: '${r.tracking}', fontWeight: '${r.weight}' }],`,
   )
   return [
     `/** @type {import('tailwindcss').Config} */`,
@@ -87,10 +104,15 @@ function toTailwind(rows: Formatted[]): string {
 export function exportTypeScale(format: string, steps: StepLike[], units: TypeUnits): string {
   const rows = formatRows(steps, units)
   switch (format) {
-    case 'css':      return toCss(rows)
-    case 'scss':     return toScss(rows)
-    case 'tokens':   return toDesignTokens(rows)
-    case 'tailwind': return toTailwind(rows)
-    default:         return ''
+    case 'css':
+      return toCss(rows)
+    case 'scss':
+      return toScss(rows)
+    case 'tokens':
+      return toDesignTokens(rows)
+    case 'tailwind':
+      return toTailwind(rows)
+    default:
+      return ''
   }
 }

@@ -34,4 +34,6 @@
   opacity: 0;
   transition: opacity var(--duration-fast) var(--ease-move);
 }
-.root:hover .pen { opacity: 1; }
+.root:hover .pen {
+  opacity: 1;
+}

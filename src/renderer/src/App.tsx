@@ -2,7 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import {
-  faPalette, faFont, faSwatchbook, faTextHeight, faPlus, faPen, faTrash, faFolderOpen, faCircle,
+  faPalette,
+  faFont,
+  faSwatchbook,
+  faTextHeight,
+  faPlus,
+  faPen,
+  faTrash,
+  faFolderOpen,
+  faCircle,
 } from '@fortawesome/free-solid-svg-icons'
 import type { Section, TagWithCount, Colour, Font } from '@shared/types'
 import { useTags } from './hooks/useTags'
@@ -23,9 +31,9 @@ import styles from './App.module.css'
 // ── Sidebar ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: Array<{ section: Section; label: string; icon: IconDefinition }> = [
-  { section: 'colours',     label: 'Colors',     icon: faPalette    },
-  { section: 'fonts',       label: 'Fonts',      icon: faFont       },
-  { section: 'palettes',    label: 'Palettes',   icon: faSwatchbook },
+  { section: 'colours', label: 'Colors', icon: faPalette },
+  { section: 'fonts', label: 'Fonts', icon: faFont },
+  { section: 'palettes', label: 'Palettes', icon: faSwatchbook },
   { section: 'type_scales', label: 'Type Scales', icon: faTextHeight },
 ]
 
@@ -102,7 +110,9 @@ function Sidebar({
             {tags.map(tag => (
               <div
                 key={tag.id}
-                className={[styles.tagItem, activeTagId === tag.id ? styles.tagItemActive : ''].filter(Boolean).join(' ')}
+                className={[styles.tagItem, activeTagId === tag.id ? styles.tagItemActive : '']
+                  .filter(Boolean)
+                  .join(' ')}
               >
                 <button
                   type="button"
@@ -113,10 +123,20 @@ function Sidebar({
                   <span className={styles.tagLabel}>{tag.label}</span>
                 </button>
                 <div className={styles.tagItemActions}>
-                  <button type="button" className="icon-btn icon-btn--xs" aria-label={`Edit project ${tag.label}`} onClick={() => setModal({ mode: 'edit', tag })}>
+                  <button
+                    type="button"
+                    className="icon-btn icon-btn--xs"
+                    aria-label={`Edit project ${tag.label}`}
+                    onClick={() => setModal({ mode: 'edit', tag })}
+                  >
                     <FontAwesomeIcon icon={faPen} />
                   </button>
-                  <button type="button" className="icon-btn icon-btn--xs icon-btn--danger" aria-label={`Delete project ${tag.label}`} onClick={() => handleDelete(tag)}>
+                  <button
+                    type="button"
+                    className="icon-btn icon-btn--xs icon-btn--danger"
+                    aria-label={`Delete project ${tag.label}`}
+                    onClick={() => handleDelete(tag)}
+                  >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </div>
@@ -173,10 +193,14 @@ function ActivePage({
   const create = { openCreate, onCreateConsumed }
   const openItem = { openItemId, onItemOpened }
   switch (section) {
-    case 'colours':     return <ColorsPage activeTagId={activeTagId} {...create} {...openItem} />
-    case 'fonts':       return <FontsPage activeTagId={activeTagId} {...create} {...openItem} />
-    case 'palettes':    return <PalettesPage activeTagId={activeTagId} {...create} />
-    case 'type_scales': return <TypeScalesPage activeTagId={activeTagId} {...create} />
+    case 'colours':
+      return <ColorsPage activeTagId={activeTagId} {...create} {...openItem} />
+    case 'fonts':
+      return <FontsPage activeTagId={activeTagId} {...create} {...openItem} />
+    case 'palettes':
+      return <PalettesPage activeTagId={activeTagId} {...create} />
+    case 'type_scales':
+      return <TypeScalesPage activeTagId={activeTagId} {...create} />
   }
 }
 
@@ -218,9 +242,20 @@ export default function App(): React.ReactElement {
   }, [paletteOpen])
 
   const commands: Command[] = useMemo(() => {
-    const goTo = (section: Section): void => { setActiveSection(section); setActiveTagId(null) }
-    const create = (section: Section): void => { setActiveSection(section); setActiveTagId(null); setPendingCreate(section) }
-    const openItem = (section: Section, id: number): void => { setActiveSection(section); setActiveTagId(null); setPendingOpen({ section, id }) }
+    const goTo = (section: Section): void => {
+      setActiveSection(section)
+      setActiveTagId(null)
+    }
+    const create = (section: Section): void => {
+      setActiveSection(section)
+      setActiveTagId(null)
+      setPendingCreate(section)
+    }
+    const openItem = (section: Section, id: number): void => {
+      setActiveSection(section)
+      setActiveTagId(null)
+      setPendingOpen({ section, id })
+    }
 
     const nav: Command[] = NAV_ITEMS.map(n => ({
       id: `nav-${n.section}`,
@@ -231,10 +266,38 @@ export default function App(): React.ReactElement {
       run: () => goTo(n.section),
     }))
     const creates: Command[] = [
-      { id: 'create-colour', label: 'Add colour', hint: 'Create', icon: faPlus, keywords: 'new colour color hex', run: () => create('colours') },
-      { id: 'create-font', label: 'Add font', hint: 'Create', icon: faPlus, keywords: 'new font typeface', run: () => create('fonts') },
-      { id: 'create-palette', label: 'New palette', hint: 'Create', icon: faPlus, keywords: 'create palette tonal expressive', run: () => create('palettes') },
-      { id: 'create-type-scale', label: 'New type scale', hint: 'Create', icon: faPlus, keywords: 'create type scale typography', run: () => create('type_scales') },
+      {
+        id: 'create-colour',
+        label: 'Add colour',
+        hint: 'Create',
+        icon: faPlus,
+        keywords: 'new colour color hex',
+        run: () => create('colours'),
+      },
+      {
+        id: 'create-font',
+        label: 'Add font',
+        hint: 'Create',
+        icon: faPlus,
+        keywords: 'new font typeface',
+        run: () => create('fonts'),
+      },
+      {
+        id: 'create-palette',
+        label: 'New palette',
+        hint: 'Create',
+        icon: faPlus,
+        keywords: 'create palette tonal expressive',
+        run: () => create('palettes'),
+      },
+      {
+        id: 'create-type-scale',
+        label: 'New type scale',
+        hint: 'Create',
+        icon: faPlus,
+        keywords: 'create type scale typography',
+        run: () => create('type_scales'),
+      },
     ]
     const projects: Command[] = tags.map(t => ({
       id: `project-${t.id}`,
@@ -284,16 +347,18 @@ export default function App(): React.ReactElement {
       />
       <main className="main">
         <div className="titlebar-inset" />
-        {inTagView
-          ? <TagView tagId={activeTagId!} />
-          : <ActivePage
-              section={activeSection}
-              activeTagId={null}
-              openCreate={pendingCreate === activeSection}
-              onCreateConsumed={() => setPendingCreate(null)}
-              openItemId={pendingOpen?.section === activeSection ? pendingOpen.id : null}
-              onItemOpened={() => setPendingOpen(null)}
-            />}
+        {inTagView ? (
+          <TagView tagId={activeTagId!} />
+        ) : (
+          <ActivePage
+            section={activeSection}
+            activeTagId={null}
+            openCreate={pendingCreate === activeSection}
+            onCreateConsumed={() => setPendingCreate(null)}
+            openItemId={pendingOpen?.section === activeSection ? pendingOpen.id : null}
+            onItemOpened={() => setPendingOpen(null)}
+          />
+        )}
       </main>
       <CommandPalette open={paletteOpen} commands={commands} onClose={() => setPaletteOpen(false)} />
     </div>

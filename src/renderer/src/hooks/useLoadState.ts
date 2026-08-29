@@ -15,7 +15,7 @@ export interface LoadState {
 export function useLoadState(): LoadState {
   const [loadError, setLoadError] = useState<string | null>(null)
 
-  const guard = useCallback(async <T,>(load: () => Promise<T>, onOk: (value: T) => void): Promise<void> => {
+  const guard = useCallback(async <T>(load: () => Promise<T>, onOk: (value: T) => void): Promise<void> => {
     try {
       onOk(await load())
       setLoadError(null)

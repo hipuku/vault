@@ -6,7 +6,10 @@ export const MAX_HUE_GROUPS = 8
 
 const STOP_L = { light: 88, mid: 60, dark: 28 }
 
-interface Seed { hex: string; colourId: number | null }
+interface Seed {
+  hex: string
+  colourId: number | null
+}
 
 interface HueGroup {
   H: number
@@ -45,7 +48,10 @@ function fillCohesiveDistinct(seeds: Seed[], target: number): HueGroup[] {
     for (const H of candidates) {
       const hex = lchToGamutHex(midL, env.Cmean, H)
       const minDist = Math.min(...chosenHexes.map(c => chroma.deltaE(hex, c)))
-      if (minDist > bestScore) { bestScore = minDist; bestHue = H }
+      if (minDist > bestScore) {
+        bestScore = minDist
+        bestHue = H
+      }
     }
     const midHex = lchToGamutHex(midL, env.Cmean, bestHue)
     groups.push({ H: bestHue, C: env.Cmean, midHex, colourId: null })
@@ -66,13 +72,19 @@ function fillInterpolate(seeds: Seed[], target: number): HueGroup[] {
   const extra = target - sorted.length
   const result = [...sorted]
   for (let i = 0; i < extra; i++) {
-    let gapIdx = 0, gapSize = -1
+    let gapIdx = 0,
+      gapSize = -1
     for (let j = 0; j < result.length; j++) {
-      const a = result[j], b = result[(j + 1) % result.length]
-      const span = ((b.H - a.H) % 360 + 360) % 360
-      if (span > gapSize) { gapSize = span; gapIdx = j }
+      const a = result[j],
+        b = result[(j + 1) % result.length]
+      const span = (((b.H - a.H) % 360) + 360) % 360
+      if (span > gapSize) {
+        gapSize = span
+        gapIdx = j
+      }
     }
-    const a = result[gapIdx], b = result[(gapIdx + 1) % result.length]
+    const a = result[gapIdx],
+      b = result[(gapIdx + 1) % result.length]
     const H = (a.H + gapSize / 2) % 360
     const C = (a.C + b.C) / 2
     const midHex = lchToGamutHex(midL, C, H)
@@ -115,26 +127,22 @@ function expand(groups: HueGroup[]): SwatchInput[] {
     const lightL = Math.max(midL, Math.min(97, Math.max(STOP_L.light, midL + 6)))
     const darkL = Math.min(midL, Math.max(3, Math.min(STOP_L.dark, midL - 6)))
     const light = lchToGamutHex(lightL, g.C * 0.55, g.H)
-    const dark  = lchToGamutHex(darkL,  g.C * 0.70, g.H)
-    out.push({ hex: light,    label: 'light', group_key: groupKey, colour_id: null,       sort_order: gi * 3 + 0 })
-    out.push({ hex: g.midHex, label: '',      group_key: groupKey, colour_id: g.colourId, sort_order: gi * 3 + 1 })
-    out.push({ hex: dark,     label: 'dark',  group_key: groupKey, colour_id: null,       sort_order: gi * 3 + 2 })
+    const dark = lchToGamutHex(darkL, g.C * 0.7, g.H)
+    out.push({ hex: light, label: 'light', group_key: groupKey, colour_id: null, sort_order: gi * 3 + 0 })
+    out.push({ hex: g.midHex, label: '', group_key: groupKey, colour_id: g.colourId, sort_order: gi * 3 + 1 })
+    out.push({ hex: dark, label: 'dark', group_key: groupKey, colour_id: null, sort_order: gi * 3 + 2 })
   })
   return out
 }
 
-export function generateExpressiveSet(
-  seeds: Seed[],
-  targetCount: number,
-  strategy: FillStrategy,
-): SwatchInput[] {
+export function generateExpressiveSet(seeds: Seed[], targetCount: number, strategy: FillStrategy): SwatchInput[] {
   // Without this the three strategies fail three different ways on an empty list:
   // two produce NaN hexes, one throws a TypeError on seeds[0].
   if (seeds.length === 0) throw new Error('An expressive palette needs at least one seed colour.')
   const target = Math.max(seeds.length, Math.min(targetCount, MAX_HUE_GROUPS))
   let groups: HueGroup[]
-  if (strategy === 'interpolate')   groups = fillInterpolate(seeds, target)
-  else if (strategy === 'harmony')  groups = fillHarmony(seeds, target)
-  else                              groups = fillCohesiveDistinct(seeds, target)
+  if (strategy === 'interpolate') groups = fillInterpolate(seeds, target)
+  else if (strategy === 'harmony') groups = fillHarmony(seeds, target)
+  else groups = fillCohesiveDistinct(seeds, target)
   return expand(groups)
 }

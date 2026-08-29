@@ -18,10 +18,23 @@
   font-weight: var(--weight-medium);
   color: var(--color-ink-tertiary);
   white-space: nowrap;
-  transition: background var(--duration-fast) var(--ease-move), color var(--duration-fast) var(--ease-move);
+  transition:
+    background var(--duration-fast) var(--ease-move),
+    color var(--duration-fast) var(--ease-move);
 }
 
-.seg:hover { color: var(--color-ink-secondary); background: var(--color-surface-subtle); }
-.segOn, .segOn:hover { background: var(--color-primary-subtle); color: var(--color-primary-default); }
+.seg:hover {
+  color: var(--color-ink-secondary);
+  background: var(--color-surface-subtle);
+}
+.segOn,
+.segOn:hover {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary-default);
+}
 
-.sm { height: var(--control-height-sm); font-size: var(--text-12); padding: 0 var(--space-2); }
+.sm {
+  height: var(--control-height-sm);
+  font-size: var(--text-12);
+  padding: 0 var(--space-2);
+}

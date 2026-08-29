@@ -10,7 +10,7 @@ export const TONAL_STOP_LABELS = ['10', '20', '30', '40', '50', '60', '70', '80'
 const SEMANTIC_HUE: Record<'success' | 'warning' | 'error', number> = {
   success: 145,
   warning: 75,
-  error:   30,
+  error: 30,
 }
 
 /** The floor is deliberate: a success/warning/error ramp has to read as green/amber/red
@@ -32,11 +32,16 @@ function toNeutral(seedHex: string): string {
 
 function rampHexes(name: RampName, seedHex: string): string[] {
   switch (name) {
-    case 'primary': return generateLightnessScale(seedHex, { steps: STEPS })
-    case 'neutral': return generateLightnessScale(toNeutral(seedHex), { steps: STEPS })
-    case 'success': return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.success, 0.85), { steps: STEPS })
-    case 'warning': return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.warning, 0.90), { steps: STEPS })
-    case 'error':   return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.error,   0.90), { steps: STEPS })
+    case 'primary':
+      return generateLightnessScale(seedHex, { steps: STEPS })
+    case 'neutral':
+      return generateLightnessScale(toNeutral(seedHex), { steps: STEPS })
+    case 'success':
+      return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.success, 0.85), { steps: STEPS })
+    case 'warning':
+      return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.warning, 0.9), { steps: STEPS })
+    case 'error':
+      return generateLightnessScale(rotateHue(seedHex, SEMANTIC_HUE.error, 0.9), { steps: STEPS })
   }
 }
 
@@ -55,7 +60,10 @@ export function generateTonalSystem(
       let best = Infinity
       hexes.forEach((h, i) => {
         const d = Math.abs(chroma(h).lch()[0] - seedL)
-        if (d < best) { best = d; anchorIdx = i }
+        if (d < best) {
+          best = d
+          anchorIdx = i
+        }
       })
     }
     hexes.forEach((hex, stopIndex) => {

@@ -43,7 +43,7 @@ export interface Font {
   category: string
   source: 'google' | 'local'
   source_url: string
-  weights: string  // JSON-encoded string[]
+  weights: string // JSON-encoded string[]
   favourite: 0 | 1
   created_at: string
 }
@@ -99,10 +99,23 @@ export interface Swatch {
 // Step names span both presets — `markup` (HTML tags) and `semantic` (product roles).
 export type TypeScaleStepName =
   // markup
-  | 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6' | 'Paragraph' | 'Small'
+  | 'H1'
+  | 'H2'
+  | 'H3'
+  | 'H4'
+  | 'H5'
+  | 'H6'
+  | 'Paragraph'
+  | 'Small'
   // semantic
-  | 'Display' | 'Headline' | 'Title'
-  | 'Body Large' | 'Body' | 'Body Small' | 'Caption' | 'Label'
+  | 'Display'
+  | 'Headline'
+  | 'Title'
+  | 'Body Large'
+  | 'Body'
+  | 'Body Small'
+  | 'Caption'
+  | 'Label'
 
 export type TypeScaleKind = 'markup' | 'semantic'
 
@@ -155,58 +168,70 @@ export type CopyFormat = 'hex' | 'rgb' | 'hsl' | 'css-var'
 // Derived API surface — source of truth for both preload and window.api typings
 export interface VaultApi {
   colour: {
-    create:           (hex: string, name: string) => Promise<Colour>
-    list:             () => Promise<Colour[]>
-    updateName:       (id: number, name: string) => Promise<void>
-    updateFavourite:  (id: number, favourite: 0 | 1) => Promise<void>
-    palettesUsing:    (id: number) => Promise<Array<{ id: number; name: string }>>
-    delete:           (id: number) => Promise<void>
+    create: (hex: string, name: string) => Promise<Colour>
+    list: () => Promise<Colour[]>
+    updateName: (id: number, name: string) => Promise<void>
+    updateFavourite: (id: number, favourite: 0 | 1) => Promise<void>
+    palettesUsing: (id: number) => Promise<Array<{ id: number; name: string }>>
+    delete: (id: number) => Promise<void>
   }
   font: {
-    addGoogle:        (family: string, category: string, weights: string) => Promise<Font>
-    addLocal:         (family: string, files: LocalFontFile[]) => Promise<Font>
-    list:             () => Promise<Font[]>
-    updateFavourite:  (id: number, favourite: 0 | 1) => Promise<void>
-    scalesUsing:      (id: number) => Promise<Array<{ id: number; name: string }>>
-    delete:           (id: number) => Promise<void>
-    googleList:       () => Promise<GoogleFontMeta[]>
-    listInstalled:    () => Promise<InstalledFamily[]>
-    reveal:           (path: string) => Promise<void>
-    downloadGoogle:   (family: string, weights: string[]) => Promise<boolean>
-    readFile:         (path: string) => Promise<Uint8Array>
+    addGoogle: (family: string, category: string, weights: string) => Promise<Font>
+    addLocal: (family: string, files: LocalFontFile[]) => Promise<Font>
+    list: () => Promise<Font[]>
+    updateFavourite: (id: number, favourite: 0 | 1) => Promise<void>
+    scalesUsing: (id: number) => Promise<Array<{ id: number; name: string }>>
+    delete: (id: number) => Promise<void>
+    googleList: () => Promise<GoogleFontMeta[]>
+    listInstalled: () => Promise<InstalledFamily[]>
+    reveal: (path: string) => Promise<void>
+    downloadGoogle: (family: string, weights: string[]) => Promise<boolean>
+    readFile: (path: string) => Promise<Uint8Array>
   }
   /** Resolve a dropped/selected File to its absolute path (Electron 33+ via webUtils). */
   getPathForFile: (file: File) => string
   palette: {
-    createTonal:      (name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => Promise<Palette>
-    createExpressive: (name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy) => Promise<Palette>
-    list:             () => Promise<Palette[]>
-    updateName:       (id: number, name: string) => Promise<void>
-    delete:           (id: number) => Promise<void>
+    createTonal: (name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => Promise<Palette>
+    createExpressive: (
+      name: string,
+      seeds: Array<{ hex: string; colourId: number | null }>,
+      targetCount: number,
+      strategy: FillStrategy,
+    ) => Promise<Palette>
+    list: () => Promise<Palette[]>
+    updateName: (id: number, name: string) => Promise<void>
+    delete: (id: number) => Promise<void>
   }
   swatch: {
-    list:    (paletteId: number) => Promise<Swatch[]>
+    list: (paletteId: number) => Promise<Swatch[]>
     promote: (id: number, name: string) => Promise<Colour>
   }
   typeScale: {
-    create:           (name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]) => Promise<TypeScale>
-    list:             () => Promise<TypeScale[]>
-    updateName:       (id: number, name: string) => Promise<void>
-    delete:           (id: number) => Promise<void>
+    create: (
+      name: string,
+      headingFontId: number | null,
+      bodyFontId: number | null,
+      baseSize: number,
+      ratio: string,
+      steps: TypeScaleStepInput[],
+    ) => Promise<TypeScale>
+    list: () => Promise<TypeScale[]>
+    updateName: (id: number, name: string) => Promise<void>
+    delete: (id: number) => Promise<void>
   }
   typeScaleStep: {
-    list:   (typeScaleId: number) => Promise<TypeScaleStep[]>
+    list: (typeScaleId: number) => Promise<TypeScaleStep[]>
   }
   tag: {
-    create:         (label: string, colour: string) => Promise<TagWithCount>
-    update:         (id: number, label: string, colour: string) => Promise<void>
-    list:           () => Promise<TagWithCount[]>
-    delete:         (id: number) => Promise<void>
-    assign:         (assetType: AssetType, assetId: number, tagId: number) => Promise<void>
-    remove:         (assetType: AssetType, assetId: number, tagId: number) => Promise<void>
-    listForAsset:   (assetType: AssetType, assetId: number) => Promise<Tag[]>
+    create: (label: string, colour: string) => Promise<TagWithCount>
+    update: (id: number, label: string, colour: string) => Promise<void>
+    list: () => Promise<TagWithCount[]>
+    delete: (id: number) => Promise<void>
+    assign: (assetType: AssetType, assetId: number, tagId: number) => Promise<void>
+    remove: (assetType: AssetType, assetId: number, tagId: number) => Promise<void>
+    listForAsset: (assetType: AssetType, assetId: number) => Promise<Tag[]>
     listForSection: (assetType: AssetType) => Promise<Tag[]>
-    listAssetIds:   (assetType: AssetType, tagId: number) => Promise<number[]>
+    listAssetIds: (assetType: AssetType, tagId: number) => Promise<number[]>
   }
   clipboard: {
     write: (text: string) => Promise<void>

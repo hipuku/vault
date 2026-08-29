@@ -23,7 +23,9 @@ export function IconButton({
     tone === 'primary' ? 'icon-btn--primary' : '',
     tone === 'danger' ? 'icon-btn--danger' : '',
     className,
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
   return (
     <button aria-label={label} className={classes} {...rest}>
       {children}

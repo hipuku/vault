@@ -15,7 +15,9 @@ export function ContrastChip({ hex, bg }: ContrastChipProps): React.ReactElement
 
   return (
     <div className={styles.row}>
-      <span className={styles.tile} style={{ background: against, color: hex }}>Aa</span>
+      <span className={styles.tile} style={{ background: against, color: hex }}>
+        Aa
+      </span>
       <span className={styles.label}>on {bg}</span>
       <span className={styles.ratio}>{ratio.toFixed(2)}:1</span>
       <span className={[styles.badge, aa ? styles.pass : styles.fail].join(' ')}>AA</span>

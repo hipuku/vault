@@ -21,7 +21,13 @@ function ratioLabel(ratio: string): string {
   return RATIO_PRESETS.find(p => p.value === v)?.name ?? ratio
 }
 
-export function TypeScaleCard({ scale, steps, headingStack, bodyStack, onOpen }: TypeScaleCardProps): React.ReactElement {
+export function TypeScaleCard({
+  scale,
+  steps,
+  headingStack,
+  bodyStack,
+  onOpen,
+}: TypeScaleCardProps): React.ReactElement {
   const get = (...names: string[]): TypeScaleStep | undefined => steps.find(s => names.includes(s.step_name))
   // Preset-agnostic: works for both the product (Display/Body/Caption) and
   // markup (H1/Paragraph/Small) presets.
@@ -33,11 +39,39 @@ export function TypeScaleCard({ scale, steps, headingStack, bodyStack, onOpen }:
     <button type="button" className={styles.card} onClick={() => onOpen(scale)} aria-label={`Open ${scale.name}`}>
       <div className={styles.previewWrap}>
         <div className={styles.preview}>
-          {heading && <span style={{ fontFamily: headingStack, fontSize: Math.min(heading.size, 28), fontWeight: heading.weight, lineHeight: 1.1 }}>{PREVIEW}</span>}
-          {body && <span style={{ fontFamily: bodyStack, fontSize: 15, fontWeight: body.weight, lineHeight: 1.4 }}>{PREVIEW} jumps over</span>}
-          {caption && caption !== body && <span style={{ fontFamily: bodyStack, fontSize: 12, fontWeight: caption.weight, color: 'var(--color-ink-tertiary)' }}>{PREVIEW}</span>}
+          {heading && (
+            <span
+              style={{
+                fontFamily: headingStack,
+                fontSize: Math.min(heading.size, 28),
+                fontWeight: heading.weight,
+                lineHeight: 1.1,
+              }}
+            >
+              {PREVIEW}
+            </span>
+          )}
+          {body && (
+            <span style={{ fontFamily: bodyStack, fontSize: 15, fontWeight: body.weight, lineHeight: 1.4 }}>
+              {PREVIEW} jumps over
+            </span>
+          )}
+          {caption && caption !== body && (
+            <span
+              style={{
+                fontFamily: bodyStack,
+                fontSize: 12,
+                fontWeight: caption.weight,
+                color: 'var(--color-ink-tertiary)',
+              }}
+            >
+              {PREVIEW}
+            </span>
+          )}
         </div>
-        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
+        <span className={styles.edit}>
+          <FontAwesomeIcon icon={faPen} />
+        </span>
       </div>
 
       <div className={styles.body}>

@@ -48,8 +48,12 @@
   background: var(--color-primary-default);
   color: var(--color-ink-inverse);
 }
-.primary:hover:not(:disabled) { background: var(--color-primary-hover); }
-.primary:active:not(:disabled) { background: var(--color-primary-pressed); }
+.primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+.primary:active:not(:disabled) {
+  background: var(--color-primary-pressed);
+}
 
 /* Secondary = true outline: transparent fill, real border, ink text. */
 .secondary {

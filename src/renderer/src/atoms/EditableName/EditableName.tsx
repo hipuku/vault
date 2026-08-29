@@ -18,7 +18,10 @@ export function EditableName({ value, onCommit, ariaLabel, textClassName }: Edit
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(value)
 
-  useEffect(() => { setDraft(value); setEditing(false) }, [value])
+  useEffect(() => {
+    setDraft(value)
+    setEditing(false)
+  }, [value])
 
   function commit(): void {
     setEditing(false)
@@ -41,14 +44,24 @@ export function EditableName({ value, onCommit, ariaLabel, textClassName }: Edit
           onFocus={e => e.target.select()}
           onKeyDown={e => {
             if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
-            if (e.key === 'Escape') { setDraft(value); setEditing(false) }
+            if (e.key === 'Escape') {
+              setDraft(value)
+              setEditing(false)
+            }
           }}
           aria-label={ariaLabel}
         />
       ) : (
         <>
-          <span className={fieldCls} title={value}>{value}</span>
-          <button type="button" className={['icon-btn', 'icon-btn--xs', styles.pen].join(' ')} onClick={() => setEditing(true)} aria-label={`Rename ${ariaLabel}`}>
+          <span className={fieldCls} title={value}>
+            {value}
+          </span>
+          <button
+            type="button"
+            className={['icon-btn', 'icon-btn--xs', styles.pen].join(' ')}
+            onClick={() => setEditing(true)}
+            aria-label={`Rename ${ariaLabel}`}
+          >
             <FontAwesomeIcon icon={faPen} />
           </button>
         </>

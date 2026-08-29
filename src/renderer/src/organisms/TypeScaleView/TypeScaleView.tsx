@@ -34,7 +34,17 @@ const UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const LOWER = 'abcdefghijklmnopqrstuvwxyz'
 const DIGITS = '0123456789'
 
-export function TypeScaleView({ scale, steps, headingStack, bodyStack, headingFamily, bodyFamily, onBack, onRename, onDelete }: TypeScaleViewProps): React.ReactElement {
+export function TypeScaleView({
+  scale,
+  steps,
+  headingStack,
+  bodyStack,
+  headingFamily,
+  bodyFamily,
+  onBack,
+  onRename,
+  onDelete,
+}: TypeScaleViewProps): React.ReactElement {
   const [project, setProject] = useState<Tag | null>(null)
   const [exportOpen, setExportOpen] = useState(false)
   const [preview, setPreview] = useState('The quick brown fox jumps over the lazy dog')
@@ -43,19 +53,21 @@ export function TypeScaleView({ scale, steps, headingStack, bodyStack, headingFa
   useEffect(() => {
     let live = true
     window.api.tag.listForAsset('type_scale', scale.id).then(mine => {
-      if (live) setProject(mine[0] ?? null)   // type scales belong to exactly one project
+      if (live) setProject(mine[0] ?? null) // type scales belong to exactly one project
     })
-    return () => { live = false }
+    return () => {
+      live = false
+    }
   }, [scale.id])
 
   // A hand-tuned scale no longer maps to a named ratio — show "Custom" instead.
   const custom = useMemo(
     () => isCustomScale(steps, scale.base_size, parseFloat(scale.ratio)),
-    [steps, scale.base_size, scale.ratio]
+    [steps, scale.base_size, scale.ratio],
   )
   const ratioName = useMemo(
     () => RATIO_PRESETS.find(p => String(p.value) === scale.ratio)?.name ?? scale.ratio,
-    [scale.ratio]
+    [scale.ratio],
   )
 
   // Hero specimen — the family (or both families) shown as a glyph specimen.
@@ -85,8 +97,10 @@ export function TypeScaleView({ scale, steps, headingStack, bodyStack, headingFa
       <Toolbar
         title={
           <span className={styles.titleRow}>
-            <IconButton label="Back to type scales" onClick={onBack}><FontAwesomeIcon icon={faChevronLeft} /></IconButton>
-            <EditableName value={scale.name} onCommit={(n) => onRename(scale.id, n)} ariaLabel="type scale name" />
+            <IconButton label="Back to type scales" onClick={onBack}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </IconButton>
+            <EditableName value={scale.name} onCommit={n => onRename(scale.id, n)} ariaLabel="type scale name" />
           </span>
         }
         actions={
@@ -112,10 +126,18 @@ export function TypeScaleView({ scale, steps, headingStack, bodyStack, headingFa
               {specimenFonts.map((f, i) => (
                 <div key={i} className={styles.specimenCol}>
                   {f.role && <span className={styles.specimenRole}>{f.role}</span>}
-                  <span className={styles.specimenFamily} style={{ fontFamily: f.stack }}>{f.family}</span>
-                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>{UPPER}</span>
-                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>{LOWER}</span>
-                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>{DIGITS}</span>
+                  <span className={styles.specimenFamily} style={{ fontFamily: f.stack }}>
+                    {f.family}
+                  </span>
+                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>
+                    {UPPER}
+                  </span>
+                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>
+                    {LOWER}
+                  </span>
+                  <span className={styles.specimenGlyphs} style={{ fontFamily: f.stack }}>
+                    {DIGITS}
+                  </span>
                 </div>
               ))}
             </div>
@@ -169,7 +191,7 @@ export function TypeScaleView({ scale, steps, headingStack, bodyStack, headingFa
         title={scale.name}
         filenameBase={scale.name}
         formats={TYPE_EXPORT_FORMATS}
-        generate={(f) => exportTypeScale(f, steps, units)}
+        generate={f => exportTypeScale(f, steps, units)}
       />
     </>
   )

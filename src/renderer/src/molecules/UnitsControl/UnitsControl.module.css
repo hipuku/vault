@@ -1,6 +1,8 @@
 /* The floating panel comes from Popover. */
 
-.root { position: relative; }
+.root {
+  position: relative;
+}
 
 .summary {
   font-family: var(--font-mono);

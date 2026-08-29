@@ -65,7 +65,10 @@ export function Select<K extends string>({
               aria-selected={o.key === value}
               label={o.label}
               selected={o.key === value}
-              onClick={() => { setOpen(false); onChange(o.key) }}
+              onClick={() => {
+                setOpen(false)
+                onChange(o.key)
+              }}
             />
           ))}
         </Popover>

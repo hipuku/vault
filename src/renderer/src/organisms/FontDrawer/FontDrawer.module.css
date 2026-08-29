@@ -34,8 +34,9 @@
   border-top: var(--border-width) solid var(--color-border-subtle);
 }
 
-.group:first-of-type { border-top: none; }
-
+.group:first-of-type {
+  border-top: none;
+}
 
 .specimen {
   font-size: var(--text-20);

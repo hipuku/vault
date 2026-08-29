@@ -4,10 +4,12 @@ import type { Font, LocalFontFile } from '../../../shared/types'
 export function addGoogleFont(family: string, category: string, weights: string): Font {
   const db = getDb()
   const { lastInsertRowid } = db
-    .prepare(`
+    .prepare(
+      `
       INSERT INTO fonts (family, category, source, source_url, weights)
       VALUES (?, ?, 'google', '', ?)
-    `)
+    `,
+    )
     .run(family, category, weights)
   return db.prepare('SELECT * FROM fonts WHERE id = ?').get(Number(lastInsertRowid)) as Font
 }
@@ -19,10 +21,12 @@ export function addLocalFont(family: string, files: LocalFontFile[]): Font {
   const weights = JSON.stringify([...new Set(files.map(f => String(f.weight)))].sort((a, b) => Number(a) - Number(b)))
   const sourceUrl = JSON.stringify(files)
   const { lastInsertRowid } = db
-    .prepare(`
+    .prepare(
+      `
       INSERT INTO fonts (family, category, source, source_url, weights)
       VALUES (?, 'Local', 'local', ?, ?)
-    `)
+    `,
+    )
     .run(family, sourceUrl, weights)
   return db.prepare('SELECT * FROM fonts WHERE id = ?').get(Number(lastInsertRowid)) as Font
 }
@@ -36,12 +40,14 @@ export function updateFontFavourite(id: number, favourite: 0 | 1): void {
 }
 
 export function typeScalesUsingFont(id: number): Array<{ id: number; name: string }> {
-  return getDb().prepare(
-    `SELECT DISTINCT id, name
+  return getDb()
+    .prepare(
+      `SELECT DISTINCT id, name
        FROM type_scales
       WHERE heading_font_id = ? OR body_font_id = ?
-      ORDER BY name`
-  ).all(id, id) as Array<{ id: number; name: string }>
+      ORDER BY name`,
+    )
+    .all(id, id) as Array<{ id: number; name: string }>
 }
 
 /** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
@@ -60,7 +66,7 @@ export function deleteFont(id: number): string[] {
       try {
         paths = (JSON.parse(row.source_url) as LocalFontFile[]).map(f => f.path)
       } catch {
-        paths = []   // a malformed row should not block the delete
+        paths = [] // a malformed row should not block the delete
       }
     }
     db.prepare(`DELETE FROM asset_tags WHERE asset_type = 'font' AND asset_id = ?`).run(id)

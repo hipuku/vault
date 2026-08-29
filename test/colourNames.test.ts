@@ -32,8 +32,14 @@ describe('nearestNames', () => {
      entry, so none of them is a trivial exact hit. Verified: no disagreement across
      500 random colours. If this ever fails, the radius is the thing to widen. */
   it.each([
-    '#0000ff', '#ffee00',   // the two where CIE76 and CIEDE2000 diverge most
-    '#deea13', '#34e411', '#8e3376', '#923c16', '#4b7314', '#722cd3',
+    '#0000ff',
+    '#ffee00', // the two where CIE76 and CIEDE2000 diverge most
+    '#deea13',
+    '#34e411',
+    '#8e3376',
+    '#923c16',
+    '#4b7314',
+    '#722cd3',
   ])('agrees with an exhaustive scan for %s', hex => {
     expect(nearestNames(hex).best.name).toBe(trueNearest(hex).name)
   })

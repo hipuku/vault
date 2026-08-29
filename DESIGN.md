@@ -11,7 +11,7 @@ Vault is an **offline, single-user desktop app for capturing and shaping design 
 colours, fonts, palettes, and type scales. Two jobs:
 
 1. **A library** — capture anything you see in the wild (a hex, a typeface). No project required.
-2. **A studio** — gather a project's colours and fonts, then *generate* a palette and a type
+2. **A studio** — gather a project's colours and fonts, then _generate_ a palette and a type
    scale from them.
 
 It's deliberately personal software: no accounts, no cloud, no crowd metrics. The library lives
@@ -184,6 +184,7 @@ flowchart TD
 
 Solid arrows are the level ladder; dashed are the shortcuts a level is allowed to take past the
 one below it. Nothing points upward.
+
 - **CSS Modules, not Tailwind or inline styles.** Co-located `.module.css` keeps the token
   vocabulary visible and the markup readable, with no runtime styling cost.
 - **The same patterns repeat across sections.** Card =
@@ -202,6 +203,7 @@ one below it. Nothing points upward.
 ## Decisions worth recording
 
 ### Platform & stack
+
 - **Electron over Tauri.** Mature native APIs (Font Book access, dialogs, dock) and a single
   language across processes mattered more than binary size for a personal desktop tool.
 - **better-sqlite3 over an ORM.** Synchronous, zero-ceremony, and the schema is small enough
@@ -211,14 +213,15 @@ one below it. Nothing points upward.
   parallel surface to maintain.
 
 ### Visual & brand
-- **Deep ruby as the *only* accent.** One memorable colour, not a rainbow of UI states.
+
+- **Deep ruby as the _only_ accent.** One memorable colour, not a rainbow of UI states.
   Ruby (anchored on `#AA1155` / `#880044`, built as an OKLCH ramp) is reserved for the
   wordmark, primary actions, focus rings, and the active nav item; everything else is calm
   neutral (the `onyx` greys), so the accent reliably means "act here".
 - **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
   via `@fontsource-variable/manrope` rather than the Google CDN — a local-first app can't depend
   on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400
-  only, which flattens the UI's weight hierarchy *and* breaks the type-scale tool, whose entire
+  only, which flattens the UI's weight hierarchy _and_ breaks the type-scale tool, whose entire
   job is demonstrating weight steps.
 - **Full-radius pill geometry.** Buttons, nav items, and tags are fully rounded — a soft,
   friendly identity, distinct from the sharp-cornered "devtool" default, applied consistently
@@ -227,17 +230,19 @@ one below it. Nothing points upward.
   more consistent optical weight next to Manrope, and the SVG-React packages tree-shake to only
   the icons used — no icon-font FOUT.
 - **Light mode only, on purpose.** A calm, paper-like single theme keeps attention on the
-  *content* — the colours and type you're collecting — and concentrated the design work on one
+  _content_ — the colours and type you're collecting — and concentrated the design work on one
   surface. The two-tier token layer means a dark theme is mostly a matter of overriding the
   semantic aliases: deferred rather than ruled out.
 
 ### Colour
+
 - **Perceptual maths (LCH, ΔE2000).** Ramps and "nearest name" run in a perceptual space so
   steps look even and matches read as a human would judge them — not naive RGB distance.
-- **Two palette models.** *Tonal* (one seed → semantic ramps) and *Expressive* (several seeds →
+- **Two palette models.** _Tonal_ (one seed → semantic ramps) and _Expressive_ (several seeds →
   a multi-hue set). Same two-pane create flow, different generator.
 
 ### Fonts & type
+
 - **Three sources; two of them app-owned bytes.** **Installed** (enumerated via
   `system_profiler`, the Font Book set) and **file upload** copy the bytes into app storage on
   import, so a moved or deleted original never breaks the vault, and the file stays shareable
@@ -245,7 +250,7 @@ one below it. Nothing points upward.
   and weights only, and previews render from Google's CDN over a stylesheet link. `Download`
   fetches the `.woff2` on demand and saves it where you choose. Copying Google bytes into the
   vault on add would make the library genuinely offline — it is the obvious next change here.
-- **Type-scale presets, not free-form.** *Product* (Display→Label) and *Web/Markup* (h1–h6 +
+- **Type-scale presets, not free-form.** _Product_ (Display→Label) and _Web/Markup_ (h1–h6 +
   paragraph/small) — chosen at creation like tonal/expressive. The chosen ramp is materialised
   into rows, so there's no schema cost and the "kind" is recoverable from the step names.
 - **Units are a reading concern, decoupled from storage.** Sizes persist in px, line-heights as
@@ -255,11 +260,12 @@ one below it. Nothing points upward.
   `-0.02em`. The viewer keeps the percentage because that is how type is discussed.
 
 ### Interaction
+
 - **Four sections, not tabs.** Colours / Fonts / Palettes / Type scales are peers in a sidebar,
   plus an aggregated per-project view.
 - **"Projects", not "tags".** Underneath, the schema is a generic `tags` / `asset_tags` join —
   any asset, many tags — because that's the flexible data model. But users don't think in tags;
-  they think in the project they're working on. So the UI says *Projects* while the generic join
+  they think in the project they're working on. So the UI says _Projects_ while the generic join
   stays underneath.
 - **Drawer for vault items, page for generated artifacts.** A colour or font is a quick glance
   (drawer); a palette or type scale is a worked object (full page with export).

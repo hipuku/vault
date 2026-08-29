@@ -3,9 +3,7 @@ import type { Tag, TagWithCount, AssetType } from '../../../shared/types'
 
 export function createTag(label: string, colour: string): TagWithCount {
   const db = getDb()
-  const { lastInsertRowid } = db
-    .prepare('INSERT INTO tags (label, colour) VALUES (?, ?)')
-    .run(label, colour)
+  const { lastInsertRowid } = db.prepare('INSERT INTO tags (label, colour) VALUES (?, ?)').run(label, colour)
   const tag = db.prepare('SELECT * FROM tags WHERE id = ?').get(Number(lastInsertRowid)) as Tag
   return { ...tag, count: 0 }
 }
@@ -16,13 +14,15 @@ export function updateTag(id: number, label: string, colour: string): void {
 
 export function listTags(): TagWithCount[] {
   return getDb()
-    .prepare(`
+    .prepare(
+      `
       SELECT t.*, COUNT(a.tag_id) AS count
       FROM tags t
       LEFT JOIN asset_tags a ON a.tag_id = t.id
       GROUP BY t.id
       ORDER BY t.label
-    `)
+    `,
+    )
     .all() as TagWithCount[]
 }
 
@@ -44,12 +44,14 @@ export function removeTag(assetType: AssetType, assetId: number, tagId: number):
 
 export function listTagsForAsset(assetType: AssetType, assetId: number): Tag[] {
   return getDb()
-    .prepare(`
+    .prepare(
+      `
       SELECT t.* FROM tags t
       JOIN asset_tags a ON a.tag_id = t.id
       WHERE a.asset_type = ? AND a.asset_id = ?
       ORDER BY t.label
-    `)
+    `,
+    )
     .all(assetType, assetId) as Tag[]
 }
 
@@ -62,11 +64,13 @@ export function listAssetIdsForTag(assetType: AssetType, tagId: number): number[
 
 export function listTagsForSection(assetType: AssetType): Tag[] {
   return getDb()
-    .prepare(`
+    .prepare(
+      `
       SELECT DISTINCT t.* FROM tags t
       JOIN asset_tags a ON a.tag_id = t.id
       WHERE a.asset_type = ?
       ORDER BY t.label
-    `)
+    `,
+    )
     .all(assetType) as Tag[]
 }

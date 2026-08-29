@@ -12,19 +12,39 @@
 }
 
 /* Alignment against the trigger. */
-.left { left: 0; }
-.right { right: 0; }
+.left {
+  left: 0;
+}
+.right {
+  right: 0;
+}
 /* Menus match the trigger's width rather than sizing to content. */
-.stretch { left: 0; right: 0; min-width: 100%; }
+.stretch {
+  left: 0;
+  right: 0;
+  min-width: 100%;
+}
 
-.sm { width: var(--popover-width-sm); }
-.md { width: var(--popover-width-md); }
-.lg { width: var(--popover-width-lg); }
+.sm {
+  width: var(--popover-width-sm);
+}
+.md {
+  width: var(--popover-width-md);
+}
+.lg {
+  width: var(--popover-width-lg);
+}
 
 /* Menus pad the panel, not the rows — the rows carry their own hit area. */
-.tight { padding: var(--space-1); }
-.default { padding: var(--space-4); }
-.roomy { padding: var(--space-3) var(--space-4); }
+.tight {
+  padding: var(--space-1);
+}
+.default {
+  padding: var(--space-4);
+}
+.roomy {
+  padding: var(--space-3) var(--space-4);
+}
 
 /* Stacked controls, the common case for a settings popover. */
 .column {

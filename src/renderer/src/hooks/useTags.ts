@@ -18,7 +18,9 @@ export function useTags(): {
     setTags(await window.api.tag.list())
   }, [])
 
-  useEffect(() => { refresh() }, [refresh])
+  useEffect(() => {
+    refresh()
+  }, [refresh])
 
   // Create/update may reject on the UNIQUE(label) constraint — callers catch
   // the rejection to show inline "tag already exists" feedback.
@@ -30,9 +32,7 @@ export function useTags(): {
 
   const updateTag = useCallback(async (id: number, label: string, colour: string): Promise<void> => {
     await window.api.tag.update(id, label, colour)
-    setTags(prev =>
-      prev.map(t => (t.id === id ? { ...t, label, colour } : t)).sort(bySortLabel)
-    )
+    setTags(prev => prev.map(t => (t.id === id ? { ...t, label, colour } : t)).sort(bySortLabel))
   }, [])
 
   const deleteTag = useCallback(async (id: number): Promise<void> => {

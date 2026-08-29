@@ -1,8 +1,7 @@
 import React from 'react'
 import styles from './TriggerPill.module.css'
 
-export interface TriggerPillProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface TriggerPillProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Fill the available width, for a pill used as a form field. */
   block?: boolean
 }

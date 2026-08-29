@@ -40,7 +40,9 @@ export function Popover({
         width === 'auto' ? '' : styles[width],
         styles[pad],
         column ? styles.column : '',
-      ].filter(Boolean).join(' ')}
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
       {children}
     </div>

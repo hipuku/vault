@@ -48,7 +48,12 @@ export function toHslString(hex: string): string {
 
 /** A CSS custom-property declaration from a name + hex, e.g. `--color-ocean: #4a90d9;`. */
 export function toCssVar(name: string, hex: string): string {
-  const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'colour'
+  const slug =
+    name
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'colour'
   return `--color-${slug}: ${hex};`
 }
 
@@ -80,7 +85,10 @@ export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): n
   let bestDelta = Infinity
   shades.forEach((s, i) => {
     const delta = Math.abs((toOklch(s)?.l ?? 0) - l)
-    if (delta < bestDelta) { bestDelta = delta; best = i }
+    if (delta < bestDelta) {
+      bestDelta = delta
+      best = i
+    }
   })
   return best
 }
@@ -118,7 +126,7 @@ export interface SimilarMatch {
 export function findSimilar(
   hex: string,
   library: ReadonlyArray<{ id: number; name: string; hex: string }>,
-  threshold = 3
+  threshold = 3,
 ): SimilarMatch | null {
   let best: SimilarMatch | null = null
   for (const c of library) {

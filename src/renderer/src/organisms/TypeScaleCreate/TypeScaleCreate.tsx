@@ -1,7 +1,15 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faCode, faShapes } from '@fortawesome/free-solid-svg-icons'
-import type { Font, Tag, TagWithCount, TypeScale, TypeScaleStepInput, TypeScaleStepName, TypeScaleKind } from '@shared/types'
+import type {
+  Font,
+  Tag,
+  TagWithCount,
+  TypeScale,
+  TypeScaleStepInput,
+  TypeScaleStepName,
+  TypeScaleKind,
+} from '@shared/types'
 import { generateTypeScaleSteps, RATIO_PRESETS, KIND_LABELS } from '@shared/lib/typeScale'
 import { fontStackById } from '../../lib/fontLoader'
 import { TAG_COLOURS } from '../../lib/tagColours'
@@ -60,23 +68,34 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
   const [error, setError] = useState<string | null>(null)
 
   // Load projects (tags) once.
-  useEffect(() => { window.api.tag.list().then(setProjects) }, [])
+  useEffect(() => {
+    window.api.tag.list().then(setProjects)
+  }, [])
 
   // Load the chosen project's font membership.
   useEffect(() => {
-    if (projectId == null) { setProjectFontIds(null); return }
+    if (projectId == null) {
+      setProjectFontIds(null)
+      return
+    }
     let live = true
-    window.api.tag.listAssetIds('font', projectId).then(ids => { if (live) setProjectFontIds(new Set(ids)) })
-    return () => { live = false }
+    window.api.tag.listAssetIds('font', projectId).then(ids => {
+      if (live) setProjectFontIds(new Set(ids))
+    })
+    return () => {
+      live = false
+    }
   }, [projectId])
 
   // Regenerate the scale whenever base size, ratio, or preset kind changes.
-  useEffect(() => { setSteps(generateTypeScaleSteps(baseSize, ratio, kind)) }, [baseSize, ratio, kind])
+  useEffect(() => {
+    setSteps(generateTypeScaleSteps(baseSize, ratio, kind))
+  }, [baseSize, ratio, kind])
 
   // Fonts scoped to the selected project.
   const scopedFonts = useMemo(
     () => (projectFontIds ? fonts.filter(f => projectFontIds.has(f.id)) : []),
-    [fonts, projectFontIds]
+    [fonts, projectFontIds],
   )
 
   // Keep the heading/body selections valid as the scope changes.
@@ -99,8 +118,18 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
   const bodyStack = useMemo(() => fontStackById(bodyFontId ?? headingFontId, fonts), [bodyFontId, headingFontId, fonts])
 
   // Per-step tuning (hover-edit in the preview). Deviating from the ramp makes it "Custom".
-  function editStep(name: TypeScaleStepName, size: number, weight: number, lineHeight: string, letterSpacing: string): void {
-    setSteps(prev => prev.map(s => (s.step_name === name ? { ...s, size, weight, line_height: lineHeight, letter_spacing: letterSpacing } : s)))
+  function editStep(
+    name: TypeScaleStepName,
+    size: number,
+    weight: number,
+    lineHeight: string,
+    letterSpacing: string,
+  ): void {
+    setSteps(prev =>
+      prev.map(s =>
+        s.step_name === name ? { ...s, size, weight, line_height: lineHeight, letter_spacing: letterSpacing } : s,
+      ),
+    )
   }
 
   const canCreate = name.trim().length > 0 && headingFontId != null
@@ -135,8 +164,14 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
         }
         actions={
           <>
-            {error && <span className={styles.error} title={error}>{error}</span>}
-            <Button variant="ghost" size="md" onClick={onCancel}>Cancel</Button>
+            {error && (
+              <span className={styles.error} title={error}>
+                {error}
+              </span>
+            )}
+            <Button variant="ghost" size="md" onClick={onCancel}>
+              Cancel
+            </Button>
             <Button variant="primary" size="md" onClick={create} disabled={!canCreate || creating}>
               {creating ? 'Creating…' : 'Create type scale'}
             </Button>
@@ -149,7 +184,9 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
         <div className={styles.controls}>
           {/* 1 — Name */}
           <div className={styles.field}>
-            <label className={styles.label}>Name <span className={styles.req}>*</span></label>
+            <label className={styles.label}>
+              Name <span className={styles.req}>*</span>
+            </label>
             <Input value={name} onChange={e => setName(e.target.value)} placeholder="Type scale name" autoFocus />
           </div>
 
@@ -195,7 +232,10 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
                   block
                   ariaLabel="Body font"
                   value={bodyFontId != null ? String(bodyFontId) : ''}
-                  options={[{ key: '', label: 'Same as heading' }, ...scopedFonts.map(f => ({ key: String(f.id), label: f.family }))]}
+                  options={[
+                    { key: '', label: 'Same as heading' },
+                    ...scopedFonts.map(f => ({ key: String(f.id), label: f.family })),
+                  ]}
                   onChange={k => setBodyFontId(k ? Number(k) : null)}
                 />
               </div>
@@ -229,7 +269,10 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
                   className={[styles.ratio, ratio === p.value ? styles.ratioOn : ''].filter(Boolean).join(' ')}
                   onClick={() => setRatio(p.value)}
                 >
-                  <span className={styles.ratioName}>{p.name}{p.recommended && <span className={styles.rec}>★</span>}</span>
+                  <span className={styles.ratioName}>
+                    {p.name}
+                    {p.recommended && <span className={styles.rec}>★</span>}
+                  </span>
                   <span className={styles.ratioVal}>{p.value}</span>
                 </button>
               ))}

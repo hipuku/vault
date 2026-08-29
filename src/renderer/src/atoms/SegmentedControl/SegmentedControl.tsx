@@ -21,7 +21,12 @@ interface SegmentedControlProps<T extends string> {
 /** The standard pill-tab / segmented control: one active segment tinted with the
  *  primary surface, the rest muted. Replaces the hand-rolled tab rows. */
 export function SegmentedControl<T extends string>({
-  options, value, onChange, size = 'md', ariaLabel, className,
+  options,
+  value,
+  onChange,
+  size = 'md',
+  ariaLabel,
+  className,
 }: SegmentedControlProps<T>): React.ReactElement {
   return (
     <div className={[styles.root, className].filter(Boolean).join(' ')} role="tablist" aria-label={ariaLabel}>
@@ -31,7 +36,9 @@ export function SegmentedControl<T extends string>({
           type="button"
           role="tab"
           aria-selected={value === o.id}
-          className={[styles.seg, size === 'sm' ? styles.sm : '', value === o.id ? styles.segOn : ''].filter(Boolean).join(' ')}
+          className={[styles.seg, size === 'sm' ? styles.sm : '', value === o.id ? styles.segOn : '']
+            .filter(Boolean)
+            .join(' ')}
           onClick={() => onChange(o.id)}
         >
           {o.icon && <FontAwesomeIcon icon={o.icon} />}

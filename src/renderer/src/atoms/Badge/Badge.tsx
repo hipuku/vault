@@ -7,16 +7,6 @@ interface BadgeProps {
   className?: string
 }
 
-export function Badge({
-  label,
-  variant = 'neutral',
-  className,
-}: BadgeProps): React.ReactElement {
-  return (
-    <span
-      className={[styles.badge, styles[variant], className].filter(Boolean).join(' ')}
-    >
-      {label}
-    </span>
-  )
+export function Badge({ label, variant = 'neutral', className }: BadgeProps): React.ReactElement {
+  return <span className={[styles.badge, styles[variant], className].filter(Boolean).join(' ')}>{label}</span>
 }

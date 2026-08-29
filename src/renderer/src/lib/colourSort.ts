@@ -32,9 +32,11 @@ function chroma(hex: string): number {
 export function sortColours(colours: Colour[], key: SortKey): Colour[] {
   const arr = [...colours]
   switch (key) {
-    case 'name':    return arr.sort((a, b) => a.name.localeCompare(b.name))
+    case 'name':
+      return arr.sort((a, b) => a.name.localeCompare(b.name))
     case 'recent':
-    default:        return arr.sort((a, b) => b.created_at.localeCompare(a.created_at) || b.id - a.id)
+    default:
+      return arr.sort((a, b) => b.created_at.localeCompare(a.created_at) || b.id - a.id)
   }
 }
 
@@ -70,16 +72,16 @@ export function hueFamily(hex: string): string {
 
 /** Quantitative OKLCH lightness bands (L × 100), 10-unit steps, brightest first. */
 const LIGHTNESS_BANDS: Array<{ title: string; min: number }> = [
-  { title: 'L 90–100', min: 0.90 },
-  { title: 'L 80–89',  min: 0.80 },
-  { title: 'L 70–79',  min: 0.70 },
-  { title: 'L 60–69',  min: 0.60 },
-  { title: 'L 50–59',  min: 0.50 },
-  { title: 'L 40–49',  min: 0.40 },
-  { title: 'L 30–39',  min: 0.30 },
-  { title: 'L 20–29',  min: 0.20 },
-  { title: 'L 10–19',  min: 0.10 },
-  { title: 'L 0–9',    min: 0 },
+  { title: 'L 90–100', min: 0.9 },
+  { title: 'L 80–89', min: 0.8 },
+  { title: 'L 70–79', min: 0.7 },
+  { title: 'L 60–69', min: 0.6 },
+  { title: 'L 50–59', min: 0.5 },
+  { title: 'L 40–49', min: 0.4 },
+  { title: 'L 30–39', min: 0.3 },
+  { title: 'L 20–29', min: 0.2 },
+  { title: 'L 10–19', min: 0.1 },
+  { title: 'L 0–9', min: 0 },
 ]
 
 function lightnessBand(hex: string): string {
@@ -97,9 +99,7 @@ function bucketBy(colours: Colour[], keyOf: (hex: string) => string, order: stri
     if (arr) arr.push(c)
     else map.set(k, [c])
   }
-  return order
-    .map(title => ({ title, colours: map.get(title) ?? [] }))
-    .filter(g => g.colours.length > 0)
+  return order.map(title => ({ title, colours: map.get(title) ?? [] })).filter(g => g.colours.length > 0)
 }
 
 export function groupColours(colours: Colour[], key: GroupKey): ColourGroup[] {
@@ -109,7 +109,11 @@ export function groupColours(colours: Colour[], key: GroupKey): ColourGroup[] {
     case 'hue':
       return bucketBy(colours, hueFamily, [...HUE_FAMILIES.map(f => f.title), 'Neutral'])
     case 'lightness':
-      return bucketBy(colours, lightnessBand, LIGHTNESS_BANDS.map(b => b.title))
+      return bucketBy(
+        colours,
+        lightnessBand,
+        LIGHTNESS_BANDS.map(b => b.title),
+      )
     case 'contrast': {
       const light: Colour[] = []
       const dark: Colour[] = []

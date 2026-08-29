@@ -6,37 +6,21 @@
     "axes": [
       {
         "prop": "variant",
-        "values": [
-          "primary",
-          "secondary",
-          "ghost",
-          "danger"
-        ],
+        "values": ["primary", "secondary", "ghost", "danger"],
         "asClass": true
       },
       {
         "prop": "size",
-        "values": [
-          "sm",
-          "md"
-        ],
+        "values": ["sm", "md"],
         "asClass": true
       },
       {
         "prop": "icon",
-        "values": [
-          false,
-          true
-        ],
+        "values": [false, true],
         "asClass": false
       }
     ],
-    "states": [
-      null,
-      "hover",
-      "active",
-      "disabled"
-    ],
+    "states": [null, "hover", "active", "disabled"],
     "labels": {
       "false": "no icon",
       "true": "icon"
@@ -49,29 +33,16 @@
     "axes": [
       {
         "prop": "tone",
-        "values": [
-          null,
-          "icon-btn--primary",
-          "icon-btn--danger",
-          "icon-btn--star"
-        ],
+        "values": [null, "icon-btn--primary", "icon-btn--danger", "icon-btn--star"],
         "asClass": true
       },
       {
         "prop": "size",
-        "values": [
-          null,
-          "icon-btn--sm",
-          "icon-btn--xs"
-        ],
+        "values": [null, "icon-btn--sm", "icon-btn--xs"],
         "asClass": true
       }
     ],
-    "states": [
-      null,
-      "hover",
-      "disabled"
-    ],
+    "states": [null, "hover", "disabled"],
     "labels": {
       "tone:null": "neutral",
       "size:null": "md",
@@ -90,18 +61,11 @@
     "axes": [
       {
         "prop": "error",
-        "values": [
-          null,
-          "error"
-        ],
+        "values": [null, "error"],
         "asClass": true
       }
     ],
-    "states": [
-      null,
-      "focus-visible",
-      "disabled"
-    ],
+    "states": [null, "focus-visible", "disabled"],
     "labels": {
       "error:null": "default",
       "error": "error"
@@ -114,18 +78,11 @@
     "axes": [
       {
         "prop": "variant",
-        "values": [
-          "success",
-          "warning",
-          "error",
-          "neutral"
-        ],
+        "values": ["success", "warning", "error", "neutral"],
         "asClass": true
       }
     ],
-    "states": [
-      null
-    ]
+    "states": [null]
   },
   "6 \u00b7 Pill": {
     "cssPath": "src/renderer/src/atoms/Pill/Pill.module.css",
@@ -134,16 +91,11 @@
     "axes": [
       {
         "prop": "icon",
-        "values": [
-          false,
-          true
-        ],
+        "values": [false, true],
         "asClass": false
       }
     ],
-    "states": [
-      null
-    ],
+    "states": [null],
     "labels": {
       "false": "no icon",
       "true": "icon"
@@ -156,25 +108,16 @@
     "axes": [
       {
         "prop": "selected",
-        "values": [
-          null,
-          "segOn"
-        ],
+        "values": [null, "segOn"],
         "asClass": true
       },
       {
         "prop": "size",
-        "values": [
-          null,
-          "sm"
-        ],
+        "values": [null, "sm"],
         "asClass": true
       }
     ],
-    "states": [
-      null,
-      "hover"
-    ],
+    "states": [null, "hover"],
     "labels": {
       "selected:null": "off",
       "segOn": "on",
@@ -189,16 +132,11 @@
     "axes": [
       {
         "prop": "size",
-        "values": [
-          "sm",
-          "md"
-        ],
+        "values": ["sm", "md"],
         "asClass": true
       }
     ],
-    "states": [
-      null
-    ],
+    "states": [null],
     "glyph": "always"
   },
   "9 \u00b7 Divider": {
@@ -208,15 +146,11 @@
     "axes": [
       {
         "prop": "variant",
-        "values": [
-          null
-        ],
+        "values": [null],
         "asClass": true
       }
     ],
-    "states": [
-      null
-    ],
+    "states": [null],
     "labels": {
       "variant:null": "divider"
     }
@@ -228,16 +162,11 @@
     "axes": [
       {
         "prop": "actions",
-        "values": [
-          false,
-          true
-        ],
+        "values": [false, true],
         "asClass": false
       }
     ],
-    "states": [
-      null
-    ],
+    "states": [null],
     "labels": {
       "false": "no actions",
       "true": "with actions"
@@ -250,15 +179,11 @@
     "axes": [
       {
         "prop": "variant",
-        "values": [
-          null
-        ],
+        "values": [null],
         "asClass": true
       }
     ],
-    "states": [
-      null
-    ],
+    "states": [null],
     "labels": {
       "variant:null": "bubble"
     }
@@ -270,18 +195,11 @@
     "axes": [
       {
         "prop": "block",
-        "values": [
-          null,
-          "block"
-        ],
+        "values": [null, "block"],
         "asClass": true
       }
     ],
-    "states": [
-      null,
-      "hover",
-      "focus-visible"
-    ],
+    "states": [null, "hover", "focus-visible"],
     "labels": {
       "block:null": "pill",
       "block": "block"
@@ -294,17 +212,11 @@
     "axes": [
       {
         "prop": "leading",
-        "values": [
-          false,
-          true
-        ],
+        "values": [false, true],
         "asClass": false
       }
     ],
-    "states": [
-      null,
-      "hover"
-    ],
+    "states": [null, "hover"],
     "labels": {
       "false": "no dot",
       "true": "dot"

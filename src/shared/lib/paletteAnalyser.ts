@@ -45,7 +45,7 @@ export function analyseHueArc(midHexes: string[]): HueArcResult {
   let maxGap = 0
   for (let i = 0; i < sorted.length; i++) {
     const next = sorted[(i + 1) % sorted.length]
-    const gap = ((next - sorted[i]) % 360 + 360) % 360
+    const gap = (((next - sorted[i]) % 360) + 360) % 360
     if (gap > maxGap) maxGap = gap
   }
   const totalAngle = Math.round(360 - maxGap)
@@ -83,7 +83,7 @@ export function analyseLightness(midHexes: string[]): LightnessResult {
 }
 
 export interface RampResult {
-  span: number              // lightness range covered (0–100)
+  span: number // lightness range covered (0–100)
   rangeRating: QualityRating
   evenRating: QualityRating // perceptual evenness of the steps
 }
@@ -111,7 +111,13 @@ export function findNearIdentical(midHexes: string[], threshold = 2.5): NearIden
     for (let j = i + 1; j < midHexes.length; j++) {
       const deltaE = chroma.deltaE(midHexes[i], midHexes[j])
       if (deltaE < threshold) {
-        pairs.push({ indexA: i, indexB: j, hexA: midHexes[i], hexB: midHexes[j], deltaE: Math.round(deltaE * 100) / 100 })
+        pairs.push({
+          indexA: i,
+          indexB: j,
+          hexA: midHexes[i],
+          hexB: midHexes[j],
+          deltaE: Math.round(deltaE * 100) / 100,
+        })
       }
     }
   }

@@ -84,15 +84,11 @@ function createWindow(): void {
 
 // ── Colours ───────────────────────────────────────────────────────────────────
 
-ipcMain.handle('colour:create', (_e, hex: string, name: string) =>
-  colourQueries.createColour(hex, name)
-)
+ipcMain.handle('colour:create', (_e, hex: string, name: string) => colourQueries.createColour(hex, name))
 ipcMain.handle('colour:list', () => colourQueries.listColours())
-ipcMain.handle('colour:update-name', (_e, id: number, name: string) =>
-  colourQueries.updateColourName(id, name)
-)
+ipcMain.handle('colour:update-name', (_e, id: number, name: string) => colourQueries.updateColourName(id, name))
 ipcMain.handle('colour:update-favourite', (_e, id: number, favourite: 0 | 1) =>
-  colourQueries.updateColourFavourite(id, favourite)
+  colourQueries.updateColourFavourite(id, favourite),
 )
 ipcMain.handle('colour:palettes-using', (_e, id: number) => colourQueries.palettesUsingColour(id))
 ipcMain.handle('colour:delete', (_e, id: number) => {
@@ -107,7 +103,7 @@ ipcMain.handle('colour:delete', (_e, id: number) => {
 // ── Fonts ─────────────────────────────────────────────────────────────────────
 
 ipcMain.handle('font:add-google', (_e, family: string, category: string, weights: string) =>
-  fontQueries.addGoogleFont(family, category, weights)
+  fontQueries.addGoogleFont(family, category, weights),
 )
 ipcMain.handle('font:add-local', async (_e, family: string, files: LocalFontFile[]) => {
   // Copy the bytes into app storage so the vault owns them (no broken paths).
@@ -121,7 +117,8 @@ ipcMain.handle('font:download-google', async (_e, family: string, weights: strin
   const wght = [...new Set(weights)].sort((a, b) => Number(a) - Number(b)).join(';')
   const cssUrl = `https://fonts.googleapis.com/css2?family=${fam}:wght@${wght}&display=swap`
   // A desktop UA makes Google serve woff2 (and emit the file URL we want).
-  const ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  const ua =
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   const cssRes = await fetch(cssUrl, {
     headers: { 'User-Agent': ua },
     signal: AbortSignal.timeout(15_000),
@@ -144,7 +141,7 @@ ipcMain.handle('font:download-google', async (_e, family: string, weights: strin
 })
 ipcMain.handle('font:list', () => fontQueries.listFonts())
 ipcMain.handle('font:update-favourite', (_e, id: number, favourite: 0 | 1) =>
-  fontQueries.updateFontFavourite(id, favourite)
+  fontQueries.updateFontFavourite(id, favourite),
 )
 ipcMain.handle('font:scales-using', (_e, id: number) => fontQueries.typeScalesUsingFont(id))
 ipcMain.handle('font:delete', (_e, id: number) => {
@@ -172,69 +169,74 @@ ipcMain.handle('font:read-file', async (_e, path: string) => {
 
 // ── Palettes ──────────────────────────────────────────────────────────────────
 
-ipcMain.handle('palette:create-tonal', (_e, name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => {
-  const swatches = generateTonalSystem(seedHex, ramps, seedColourId)
-  return paletteQueries.createTonalPalette(name, seedHex, seedColourId, ramps, swatches)
-})
-ipcMain.handle('palette:create-expressive', (_e, name: string, seeds: Array<{ hex: string; colourId: number | null }>, targetCount: number, strategy: FillStrategy) => {
-  const swatches = generateExpressiveSet(seeds, targetCount, strategy)
-  return paletteQueries.createExpressivePalette(name, { kind: 'expressive', seeds, targetCount, strategy }, swatches)
-})
-ipcMain.handle('palette:list', () => paletteQueries.listPalettes())
-ipcMain.handle('palette:update-name', (_e, id: number, name: string) =>
-  paletteQueries.updatePaletteName(id, name)
+ipcMain.handle(
+  'palette:create-tonal',
+  (_e, name: string, seedHex: string, seedColourId: number | null, ramps: RampName[]) => {
+    const swatches = generateTonalSystem(seedHex, ramps, seedColourId)
+    return paletteQueries.createTonalPalette(name, seedHex, seedColourId, ramps, swatches)
+  },
 )
+ipcMain.handle(
+  'palette:create-expressive',
+  (
+    _e,
+    name: string,
+    seeds: Array<{ hex: string; colourId: number | null }>,
+    targetCount: number,
+    strategy: FillStrategy,
+  ) => {
+    const swatches = generateExpressiveSet(seeds, targetCount, strategy)
+    return paletteQueries.createExpressivePalette(name, { kind: 'expressive', seeds, targetCount, strategy }, swatches)
+  },
+)
+ipcMain.handle('palette:list', () => paletteQueries.listPalettes())
+ipcMain.handle('palette:update-name', (_e, id: number, name: string) => paletteQueries.updatePaletteName(id, name))
 ipcMain.handle('palette:delete', (_e, id: number) => paletteQueries.deletePalette(id))
 
 // ── Swatches ──────────────────────────────────────────────────────────────────
 
-ipcMain.handle('swatch:list', (_e, paletteId: number) =>
-  paletteQueries.listSwatches(paletteId)
-)
-ipcMain.handle('swatch:promote', (_e, id: number, name: string) =>
-  paletteQueries.promoteSwatch(id, name)
-)
+ipcMain.handle('swatch:list', (_e, paletteId: number) => paletteQueries.listSwatches(paletteId))
+ipcMain.handle('swatch:promote', (_e, id: number, name: string) => paletteQueries.promoteSwatch(id, name))
 
 // ── Type Scales ───────────────────────────────────────────────────────────────
 
 ipcMain.handle(
   'type-scale:create',
-  (_e, name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]) =>
-    typeScaleQueries.createTypeScale(name, headingFontId, bodyFontId, baseSize, ratio, steps)
+  (
+    _e,
+    name: string,
+    headingFontId: number | null,
+    bodyFontId: number | null,
+    baseSize: number,
+    ratio: string,
+    steps: TypeScaleStepInput[],
+  ) => typeScaleQueries.createTypeScale(name, headingFontId, bodyFontId, baseSize, ratio, steps),
 )
 ipcMain.handle('type-scale:list', () => typeScaleQueries.listTypeScales())
 ipcMain.handle('type-scale:update-name', (_e, id: number, name: string) =>
-  typeScaleQueries.updateTypeScaleName(id, name)
+  typeScaleQueries.updateTypeScaleName(id, name),
 )
 ipcMain.handle('type-scale:delete', (_e, id: number) => typeScaleQueries.deleteTypeScale(id))
-ipcMain.handle('type-scale-step:list', (_e, typeScaleId: number) =>
-  typeScaleQueries.listTypeScaleSteps(typeScaleId)
-)
+ipcMain.handle('type-scale-step:list', (_e, typeScaleId: number) => typeScaleQueries.listTypeScaleSteps(typeScaleId))
 
 // ── Tags ──────────────────────────────────────────────────────────────────────
 
-ipcMain.handle('tag:create', (_e, label: string, colour: string) =>
-  tagQueries.createTag(label, colour)
-)
-ipcMain.handle('tag:update', (_e, id: number, label: string, colour: string) =>
-  tagQueries.updateTag(id, label, colour)
-)
+ipcMain.handle('tag:create', (_e, label: string, colour: string) => tagQueries.createTag(label, colour))
+ipcMain.handle('tag:update', (_e, id: number, label: string, colour: string) => tagQueries.updateTag(id, label, colour))
 ipcMain.handle('tag:list', () => tagQueries.listTags())
 ipcMain.handle('tag:delete', (_e, id: number) => tagQueries.deleteTag(id))
 ipcMain.handle('tag:assign', (_e, assetType: AssetType, assetId: number, tagId: number) =>
-  tagQueries.assignTag(assetType, assetId, tagId)
+  tagQueries.assignTag(assetType, assetId, tagId),
 )
 ipcMain.handle('tag:remove', (_e, assetType: AssetType, assetId: number, tagId: number) =>
-  tagQueries.removeTag(assetType, assetId, tagId)
+  tagQueries.removeTag(assetType, assetId, tagId),
 )
 ipcMain.handle('tag:list-for-asset', (_e, assetType: AssetType, assetId: number) =>
-  tagQueries.listTagsForAsset(assetType, assetId)
+  tagQueries.listTagsForAsset(assetType, assetId),
 )
-ipcMain.handle('tag:list-for-section', (_e, assetType: AssetType) =>
-  tagQueries.listTagsForSection(assetType)
-)
+ipcMain.handle('tag:list-for-section', (_e, assetType: AssetType) => tagQueries.listTagsForSection(assetType))
 ipcMain.handle('tag:list-asset-ids', (_e, assetType: AssetType, tagId: number) =>
-  tagQueries.listAssetIdsForTag(assetType, tagId)
+  tagQueries.listAssetIdsForTag(assetType, tagId),
 )
 
 // ── Clipboard ─────────────────────────────────────────────────────────────────

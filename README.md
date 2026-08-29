@@ -39,7 +39,7 @@ leaves your machine.
   not RGB distance.
 - **Typed IPC boundary.** A context-isolated renderer (no `nodeIntegration`) reaches Node only
   through a single typed `window.api` (`VaultApi`) surface; all database and filesystem work lives in main. Font previews are the one
-  exception — see *Outbound traffic* below.
+  exception — see _Outbound traffic_ below.
 - **Tested logic, gated in CI.** 99 Vitest unit tests over the pure `lib/` functions — the
   exporters, the colour maths, the type-scale units and the command filter — run alongside
   lint + typecheck on every push. The palette generators are not yet covered.
@@ -111,10 +111,10 @@ than across the process boundary.
 **Outbound traffic is Google Fonts and nothing else.** Three requests, across three hosts, none
 of which runs unless you go looking for a font:
 
-| Request | Where from | Host |
-|---|---|---|
-| The family metadata catalogue (`getGoogleFonts`) | main | `fonts.google.com` |
-| A family's CSS, then its `.woff2` bytes (`font:download-google`) | main | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+| Request                                                               | Where from   | Host                                             |
+| --------------------------------------------------------------------- | ------------ | ------------------------------------------------ |
+| The family metadata catalogue (`getGoogleFonts`)                      | main         | `fonts.google.com`                               |
+| A family's CSS, then its `.woff2` bytes (`font:download-google`)      | main         | `fonts.googleapis.com`, then `fonts.gstatic.com` |
 | The stylesheet that renders a Google font in a preview (`fontLoader`) | **renderer** | `fonts.googleapis.com`, then `fonts.gstatic.com` |
 
 The third is the exception to the boundary above: previewing a Google-sourced font appends a
@@ -152,16 +152,16 @@ npm run dev      # launch the app with HMR
 
 ## Scripts
 
-| Command | Does |
-|---|---|
-| `npm run dev` | Run the app (electron-vite, HMR) |
-| `npm run typecheck` | `tsc --noEmit` across main + renderer |
-| `npm run test` | Vitest (watch) over the pure `lib/` logic |
-| `npm run test:run` | Vitest once (CI) |
-| `npm run lint` | ESLint (typescript-eslint + react-hooks) |
-| `npm run format` | Prettier write |
-| `npm run build` | Production build |
-| `npm run dist:mac` | Unsigned `.dmg` (arm64 + Intel) |
+| Command             | Does                                      |
+| ------------------- | ----------------------------------------- |
+| `npm run dev`       | Run the app (electron-vite, HMR)          |
+| `npm run typecheck` | `tsc --noEmit` across main + renderer     |
+| `npm run test`      | Vitest (watch) over the pure `lib/` logic |
+| `npm run test:run`  | Vitest once (CI)                          |
+| `npm run lint`      | ESLint (typescript-eslint + react-hooks)  |
+| `npm run format`    | Prettier write                            |
+| `npm run build`     | Production build                          |
+| `npm run dist:mac`  | Unsigned `.dmg` (arm64 + Intel)           |
 
 ## More
 

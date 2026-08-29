@@ -3,9 +3,7 @@ import type { Colour } from '../../../shared/types'
 
 export function createColour(hex: string, name: string): Colour {
   const db = getDb()
-  const { lastInsertRowid } = db
-    .prepare('INSERT INTO colours (hex, name) VALUES (?, ?)')
-    .run(hex, name)
+  const { lastInsertRowid } = db.prepare('INSERT INTO colours (hex, name) VALUES (?, ?)').run(hex, name)
   return db.prepare('SELECT * FROM colours WHERE id = ?').get(Number(lastInsertRowid)) as Colour
 }
 
@@ -24,13 +22,15 @@ export function updateColourFavourite(id: number, favourite: 0 | 1): void {
 /** Palettes that reference this colour (via an anchored swatch). A colour in use
  *  cannot be deleted. */
 export function palettesUsingColour(id: number): Array<{ id: number; name: string }> {
-  return getDb().prepare(
-    `SELECT DISTINCT p.id, p.name
+  return getDb()
+    .prepare(
+      `SELECT DISTINCT p.id, p.name
        FROM swatches s
        JOIN palettes p ON p.id = s.palette_id
       WHERE s.colour_id = ?
-      ORDER BY p.name`
-  ).all(id) as Array<{ id: number; name: string }>
+      ORDER BY p.name`,
+    )
+    .all(id) as Array<{ id: number; name: string }>
 }
 
 /** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves

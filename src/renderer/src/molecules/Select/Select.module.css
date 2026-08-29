@@ -4,15 +4,23 @@
   position: relative;
   display: inline-flex;
 }
-.block { display: flex; width: 100%; }
+.block {
+  display: flex;
+  width: 100%;
+}
 
 /* Form variant: full-width, input-styled (matches the Input atom) */
-.label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prefix { color: var(--color-ink-tertiary); }
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prefix {
+  color: var(--color-ink-tertiary);
+}
 
 .caret {
   width: 11px;
   flex-shrink: 0;
   color: var(--color-ink-tertiary);
 }
-

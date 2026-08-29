@@ -45,14 +45,13 @@ describe('generateTypeScaleSteps', () => {
 
   it('produces the markup preset with h1–h6', () => {
     const steps = generateTypeScaleSteps(16, 1.333, 'markup')
-    expect(steps.map(s => s.step_name)).toEqual(
-      expect.arrayContaining(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']),
-    )
+    expect(steps.map(s => s.step_name)).toEqual(expect.arrayContaining(['H1', 'H2', 'H3', 'H4', 'H5', 'H6']))
   })
 
   it('defaults to the semantic preset', () => {
-    expect(generateTypeScaleSteps(16, 1.333).map(s => s.step_name))
-      .toEqual(generateTypeScaleSteps(16, 1.333, 'semantic').map(s => s.step_name))
+    expect(generateTypeScaleSteps(16, 1.333).map(s => s.step_name)).toEqual(
+      generateTypeScaleSteps(16, 1.333, 'semantic').map(s => s.step_name),
+    )
   })
 })
 

@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import {
-  formatSize,
-  formatLineHeight,
-  formatTracking,
-  formatWeight,
-} from '@renderer/lib/typeUnits'
+import { formatSize, formatLineHeight, formatTracking, formatWeight } from '@renderer/lib/typeUnits'
 
 describe('formatSize', () => {
   it('renders px verbatim', () => {

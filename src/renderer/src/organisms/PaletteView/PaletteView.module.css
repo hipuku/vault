@@ -27,7 +27,9 @@
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
-.heroSwatch { flex: 1; }
+.heroSwatch {
+  flex: 1;
+}
 
 .heroMeta {
   display: flex;
@@ -82,9 +84,16 @@
   color: var(--color-ink-primary);
 }
 
-.stops { display: flex; gap: var(--space-2); }
-.stopsTonal .swatch { height: 44px; }
-.stopsExpressive .swatch { height: 56px; }
+.stops {
+  display: flex;
+  gap: var(--space-2);
+}
+.stopsTonal .swatch {
+  height: 44px;
+}
+.stopsExpressive .swatch {
+  height: 56px;
+}
 
 .stop {
   flex: 1;
@@ -94,9 +103,18 @@
   gap: var(--space-1);
 }
 
-.swatchWrap { position: relative; }
-.swatch { display: block; width: 100%; border-radius: var(--radius-sm); }
-.stopLabel { font-size: var(--text-12); color: var(--color-ink-tertiary); }
+.swatchWrap {
+  position: relative;
+}
+.swatch {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-sm);
+}
+.stopLabel {
+  font-size: var(--text-12);
+  color: var(--color-ink-tertiary);
+}
 
 /* Swatch overlay actions — scrim so they read on any colour + a clear hover. */
 .promote,
@@ -118,10 +136,16 @@
   cursor: pointer;
   font-size: var(--text-12);
   opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-move), background var(--duration-fast) var(--ease-move);
+  transition:
+    opacity var(--duration-fast) var(--ease-move),
+    background var(--duration-fast) var(--ease-move);
 }
-.swatchWrap:hover .promote { opacity: 1; }
-.promote:hover { background: rgb(0 0 0 / 0.65); }
+.swatchWrap:hover .promote {
+  opacity: 1;
+}
+.promote:hover {
+  background: rgb(0 0 0 / 0.65);
+}
 .inLib {
   font-size: var(--text-14);
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5));

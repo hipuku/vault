@@ -5,8 +5,10 @@ import type { FillStrategy } from '@shared/types'
 
 const STRATEGIES: FillStrategy[] = ['interpolate', 'harmony', 'cohesive-distinct']
 const L = (hex: string): number => chroma(hex).lch()[0]
-const seed = (hex: string, colourId: number | null = null): { hex: string; colourId: number | null } =>
-  ({ hex, colourId })
+const seed = (hex: string, colourId: number | null = null): { hex: string; colourId: number | null } => ({
+  hex,
+  colourId,
+})
 
 /** Group the flat swatch list back into its {light, mid, dark} triples. */
 function groups(out: ReturnType<typeof generateExpressiveSet>) {
@@ -21,9 +23,7 @@ describe('generateExpressiveSet', () => {
     const g = groups(out)
     expect(g).toHaveLength(4)
     expect(g.every(t => t.length === 3)).toBe(true)
-    expect(out.map(s => s.group_key)).toEqual(
-      [0, 1, 2, 3].flatMap(i => Array(3).fill(`hue-${i}`)),
-    )
+    expect(out.map(s => s.group_key)).toEqual([0, 1, 2, 3].flatMap(i => Array(3).fill(`hue-${i}`)))
     const orders = out.map(s => s.sort_order)
     expect(new Set(orders).size).toBe(orders.length)
   })
@@ -60,9 +60,7 @@ describe('generateExpressiveSet', () => {
   })
 
   it('never returns fewer groups than seeds, even when targetCount is smaller', () => {
-    const out = generateExpressiveSet(
-      [seed('#aa1155'), seed('#3366cc'), seed('#22aa66')], 2, 'interpolate',
-    )
+    const out = generateExpressiveSet([seed('#aa1155'), seed('#3366cc'), seed('#22aa66')], 2, 'interpolate')
     expect(groups(out)).toHaveLength(3)
   })
 

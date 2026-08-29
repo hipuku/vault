@@ -13,14 +13,7 @@ export function Button({
   children,
   ...rest
 }: ButtonProps): React.ReactElement {
-  const cls = [
-    styles.button,
-    styles[variant],
-    styles[size],
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const cls = [styles.button, styles[variant], styles[size], className].filter(Boolean).join(' ')
 
   return (
     <button className={cls} {...rest}>

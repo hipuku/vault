@@ -4,8 +4,15 @@ import type { InstalledFamily } from '../../shared/types'
 
 const exec = promisify(execFile)
 
-interface Typeface { family?: string; style?: string; valid?: string }
-interface FontFileItem { path?: string; typefaces?: Typeface[] }
+interface Typeface {
+  family?: string
+  style?: string
+  valid?: string
+}
+interface FontFileItem {
+  path?: string
+  typefaces?: Typeface[]
+}
 
 /** Enumerate fonts installed on the Mac (Font Book) via system_profiler, grouped
  *  by family with one face per distinct style. Hidden system fonts (leading dot)

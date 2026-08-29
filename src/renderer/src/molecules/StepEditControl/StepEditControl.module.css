@@ -39,7 +39,10 @@
   border-radius: var(--radius-md);
   outline: none;
 }
-.control:focus-visible { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.control:focus-visible {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
 
 /* Size field — value + a px suffix that always hugs the number. */
 .unitField {
@@ -50,7 +53,10 @@
   border: var(--border-width) solid var(--color-border-default);
   border-radius: var(--radius-md);
 }
-.unitField:focus-within { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.unitField:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
 .unitInput {
   flex: 1;
   min-width: 0;
@@ -71,4 +77,6 @@
 }
 
 /* The Weight Select (block) fills the control box. */
-.controlBox > * { width: 100%; }
+.controlBox > * {
+  width: 100%;
+}

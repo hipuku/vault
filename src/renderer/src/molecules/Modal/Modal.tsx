@@ -54,12 +54,17 @@ export default function Modal({
   return (
     <div
       className={[styles.overlay, styles[align]].join(' ')}
-      onMouseDown={dismissOnBackdrop ? e => { if (e.target === e.currentTarget) onClose() } : undefined}
+      onMouseDown={
+        dismissOnBackdrop
+          ? e => {
+              if (e.target === e.currentTarget) onClose()
+            }
+          : undefined
+      }
     >
       <div
         ref={panelRef}
-        className={[styles.panel, styles[size], chrome === 'plain' ? styles.plain : styles.chromed]
-          .join(' ')}
+        className={[styles.panel, styles[size], chrome === 'plain' ? styles.plain : styles.chromed].join(' ')}
         role="dialog"
         aria-modal
         {...(header ? { 'aria-label': title } : { 'aria-labelledby': titleId })}
@@ -68,7 +73,11 @@ export default function Modal({
         {chrome === 'header' ? (
           <>
             <div className={styles.header}>
-              {header ?? <h2 id={titleId} className={styles.title}>{title}</h2>}
+              {header ?? (
+                <h2 id={titleId} className={styles.title}>
+                  {title}
+                </h2>
+              )}
               <IconButton label="Close" onClick={onClose}>
                 <FontAwesomeIcon icon={faXmark} />
               </IconButton>
@@ -78,7 +87,9 @@ export default function Modal({
           </>
         ) : (
           <>
-            <h2 id={titleId} className={styles.title}>{title}</h2>
+            <h2 id={titleId} className={styles.title}>
+              {title}
+            </h2>
             {children}
             {footer ? <div className={styles.footer}>{footer}</div> : null}
           </>

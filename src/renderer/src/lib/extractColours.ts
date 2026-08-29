@@ -11,7 +11,12 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   })
 }
 
-interface Bucket { r: number; g: number; b: number; n: number }
+interface Bucket {
+  r: number
+  g: number
+  b: number
+  n: number
+}
 
 /**
  * Extracts up to `count` dominant colours from an image data URL using the
@@ -38,11 +43,17 @@ export async function extractDominantColours(dataUrl: string, count = 8): Promis
   const buckets = new Map<string, Bucket>()
   for (let i = 0; i < data.length; i += 4) {
     if (data[i + 3] < 125) continue // skip mostly-transparent pixels
-    const r = data[i], g = data[i + 1], b = data[i + 2]
+    const r = data[i],
+      g = data[i + 1],
+      b = data[i + 2]
     const key = `${r >> 4}-${g >> 4}-${b >> 4}` // 4 bits/channel → 4096 cells
     const e = buckets.get(key)
-    if (e) { e.r += r; e.g += g; e.b += b; e.n++ }
-    else buckets.set(key, { r, g, b, n: 1 })
+    if (e) {
+      e.r += r
+      e.g += g
+      e.b += b
+      e.n++
+    } else buckets.set(key, { r, g, b, n: 1 })
   }
 
   const sorted = [...buckets.values()].sort((a, b) => b.n - a.n)

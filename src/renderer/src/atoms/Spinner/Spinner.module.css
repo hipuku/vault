@@ -7,9 +7,17 @@
   flex-shrink: 0;
 }
 
-.sm { width: 14px; height: 14px; }
-.md { width: 20px; height: 20px; }
+.sm {
+  width: 14px;
+  height: 14px;
+}
+.md {
+  width: 20px;
+  height: 20px;
+}
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }

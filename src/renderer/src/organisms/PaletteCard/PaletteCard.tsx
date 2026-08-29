@@ -19,15 +19,16 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
       if (!map.has(s.group_key)) map.set(s.group_key, [])
       map.get(s.group_key)!.push(s)
     }
-    return Array.from(map.entries()).sort(([, a], [, b]) =>
-      Math.min(...a.map(s => s.sort_order)) - Math.min(...b.map(s => s.sort_order))
+    return Array.from(map.entries()).sort(
+      ([, a], [, b]) => Math.min(...a.map(s => s.sort_order)) - Math.min(...b.map(s => s.sort_order)),
     )
   }, [swatches])
 
   const count = groups.length
-  const meta = palette.kind === 'expressive'
-    ? { icon: faTableColumns, label: 'Expressive', value: `${count} ${count === 1 ? 'hue' : 'hues'}` }
-    : { icon: faBarsStaggered, label: 'Tonal', value: `${count} ${count === 1 ? 'ramp' : 'ramps'}` }
+  const meta =
+    palette.kind === 'expressive'
+      ? { icon: faTableColumns, label: 'Expressive', value: `${count} ${count === 1 ? 'hue' : 'hues'}` }
+      : { icon: faBarsStaggered, label: 'Tonal', value: `${count} ${count === 1 ? 'ramp' : 'ramps'}` }
 
   return (
     <button type="button" className={styles.card} onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
@@ -36,7 +37,9 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
           <div className={styles.expGrid}>
             {groups.map(([key, gs]) => (
               <div key={key} className={styles.expCol}>
-                {gs.map(s => <span key={s.id} className={styles.expSwatch} style={{ background: s.hex }} />)}
+                {gs.map(s => (
+                  <span key={s.id} className={styles.expSwatch} style={{ background: s.hex }} />
+                ))}
               </div>
             ))}
           </div>
@@ -44,12 +47,16 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
           <div className={styles.tonalRows}>
             {groups.map(([key, gs]) => (
               <div key={key} className={styles.tonalRow}>
-                {gs.map(s => <span key={s.id} className={styles.swatch} style={{ background: s.hex }} />)}
+                {gs.map(s => (
+                  <span key={s.id} className={styles.swatch} style={{ background: s.hex }} />
+                ))}
               </div>
             ))}
           </div>
         )}
-        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
+        <span className={styles.edit}>
+          <FontAwesomeIcon icon={faPen} />
+        </span>
       </div>
 
       <div className={styles.body}>

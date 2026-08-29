@@ -67,7 +67,10 @@ export function loadGoogleFont(family: string, weights: string[] = ['400']): voi
 /** Load one local file as a FontFace under `family` with explicit weight/style,
  *  so a family can carry several files (Regular, Bold, Italic, …). */
 export async function loadLocalFontFace(
-  family: string, bytes: Uint8Array, weight: number, style: 'normal' | 'italic',
+  family: string,
+  bytes: Uint8Array,
+  weight: number,
+  style: 'normal' | 'italic',
 ): Promise<boolean> {
   const key = `l:${family}:${weight}:${style}`
   if (loaded.has(key)) return true
@@ -123,13 +126,20 @@ export function familyFromFilename(filename: string): string {
   const base = filename.replace(/\.(ttf|otf|woff2?|woff)$/i, '')
   const cleaned = base
     .replace(/[-_]+/g, ' ')
-    .replace(/\b(thin|extralight|ultralight|light|regular|normal|book|medium|semibold|demibold|bold|extrabold|ultrabold|black|heavy|italic|oblique|variable|vf)\b/gi, '')
+    .replace(
+      /\b(thin|extralight|ultralight|light|regular|normal|book|medium|semibold|demibold|bold|extrabold|ultrabold|black|heavy|italic|oblique|variable|vf)\b/gi,
+      '',
+    )
     .replace(/\s+/g, ' ')
     .trim()
   return cleaned || base
 }
 
-interface LocalSource { path: string; weight: number; style: 'normal' | 'italic' }
+interface LocalSource {
+  path: string
+  weight: number
+  style: 'normal' | 'italic'
+}
 
 /** Parse the local file map from `source_url` (JSON), falling back to a single
  *  legacy path stored as a plain string. */
@@ -138,7 +148,9 @@ function parseLocalSources(font: Font): LocalSource[] {
   try {
     const parsed = JSON.parse(font.source_url)
     if (Array.isArray(parsed)) return parsed as LocalSource[]
-  } catch { /* legacy single-path local font */ }
+  } catch {
+    /* legacy single-path local font */
+  }
   return [{ path: font.source_url, weight: 400, style: 'normal' }]
 }
 

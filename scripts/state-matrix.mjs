@@ -51,8 +51,10 @@ const ALL = [...PAINT, ...LAYOUT]
 
 /** Cartesian product of the declared axes. */
 function combos(axes) {
-  return axes.reduce((acc, ax) =>
-    acc.flatMap(row => ax.values.map(v => [...row, { prop: ax.prop, value: v, asClass: ax.asClass }])), [[]])
+  return axes.reduce(
+    (acc, ax) => acc.flatMap(row => ax.values.map(v => [...row, { prop: ax.prop, value: v, asClass: ax.asClass }])),
+    [[]],
+  )
 }
 
 /**

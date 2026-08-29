@@ -33,11 +33,16 @@
     box-shadow var(--duration-normal) var(--ease-move);
 }
 
-.swatch:hover { transform: scale(1.1); }
-
-.swatchOn {
-  box-shadow: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-ink-primary);
+.swatch:hover {
+  transform: scale(1.1);
 }
 
-.check { width: 12px; }
+.swatchOn {
+  box-shadow:
+    0 0 0 2px var(--color-surface-default),
+    0 0 0 4px var(--color-ink-primary);
+}
 
+.check {
+  width: 12px;
+}

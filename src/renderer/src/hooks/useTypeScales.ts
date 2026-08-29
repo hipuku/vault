@@ -5,11 +5,19 @@ import type { TypeScale, TypeScaleStep, TypeScaleStepInput } from '@shared/types
 export function useTypeScales(): {
   scales: TypeScale[]
   stepsByScale: Record<number, TypeScaleStep[]>
-  create: (name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]) => Promise<TypeScale>
+  create: (
+    name: string,
+    headingFontId: number | null,
+    bodyFontId: number | null,
+    baseSize: number,
+    ratio: string,
+    steps: TypeScaleStepInput[],
+  ) => Promise<TypeScale>
   rename: (id: number, name: string) => Promise<void>
   remove: (id: number) => Promise<void>
   refresh: () => Promise<void>
-  loadError: string | null} {
+  loadError: string | null
+} {
   const { loadError, guard } = useLoadState()
   const [scales, setScales] = useState<TypeScale[]>([])
   const [stepsByScale, setStepsByScale] = useState<Record<number, TypeScaleStep[]>>({})
@@ -19,7 +27,7 @@ export function useTypeScales(): {
       async () => {
         const list = await window.api.typeScale.list()
         const entries = await Promise.all(
-          list.map(async s => [s.id, await window.api.typeScaleStep.list(s.id)] as const)
+          list.map(async s => [s.id, await window.api.typeScaleStep.list(s.id)] as const),
         )
         return { list, entries }
       },
@@ -30,13 +38,25 @@ export function useTypeScales(): {
     )
   }, [guard])
 
-  useEffect(() => { refresh() }, [refresh])
-
-  const create = useCallback(async (name: string, headingFontId: number | null, bodyFontId: number | null, baseSize: number, ratio: string, steps: TypeScaleStepInput[]): Promise<TypeScale> => {
-    const ts = await window.api.typeScale.create(name, headingFontId, bodyFontId, baseSize, ratio, steps)
-    await refresh()
-    return ts
+  useEffect(() => {
+    refresh()
   }, [refresh])
+
+  const create = useCallback(
+    async (
+      name: string,
+      headingFontId: number | null,
+      bodyFontId: number | null,
+      baseSize: number,
+      ratio: string,
+      steps: TypeScaleStepInput[],
+    ): Promise<TypeScale> => {
+      const ts = await window.api.typeScale.create(name, headingFontId, bodyFontId, baseSize, ratio, steps)
+      await refresh()
+      return ts
+    },
+    [refresh],
+  )
 
   const rename = useCallback(async (id: number, name: string): Promise<void> => {
     await window.api.typeScale.updateName(id, name)

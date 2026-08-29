@@ -23,7 +23,9 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
         <div className={styles.preview} style={{ fontFamily: stack, fontSize: `${previewSize}px` }}>
           {previewText || 'The quick brown fox'}
         </div>
-        <span className={styles.edit}><FontAwesomeIcon icon={faPen} /></span>
+        <span className={styles.edit}>
+          <FontAwesomeIcon icon={faPen} />
+        </span>
       </div>
 
       <div className={styles.body}>
@@ -33,7 +35,9 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
         </div>
         <div className={styles.meta}>
           <Pill label={categoryLabel(font.category)} />
-          <span className={styles.value}>{weights.length} weight{weights.length === 1 ? '' : 's'}</span>
+          <span className={styles.value}>
+            {weights.length} weight{weights.length === 1 ? '' : 's'}
+          </span>
         </div>
       </div>
     </button>

@@ -8,7 +8,11 @@ import { Spinner } from '../../atoms/Spinner/Spinner'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import { Select } from '../../molecules/Select/Select'
 import {
-  loadGoogleFont, loadPreviewFont, familyFromFilename, categoryGeneric, detectWeightStyle,
+  loadGoogleFont,
+  loadPreviewFont,
+  familyFromFilename,
+  categoryGeneric,
+  detectWeightStyle,
 } from '../../lib/fontLoader'
 import Modal from '../../molecules/Modal/Modal'
 import styles from './FontAdder.module.css'
@@ -36,10 +40,14 @@ const CATEGORIES: Array<{ id: CategoryId; label: string }> = [
 ]
 
 const WEIGHTS: Array<{ value: number; label: string }> = [
-  { value: 100, label: 'Thin 100' }, { value: 200, label: 'ExtraLight 200' },
-  { value: 300, label: 'Light 300' }, { value: 400, label: 'Regular 400' },
-  { value: 500, label: 'Medium 500' }, { value: 600, label: 'SemiBold 600' },
-  { value: 700, label: 'Bold 700' }, { value: 800, label: 'ExtraBold 800' },
+  { value: 100, label: 'Thin 100' },
+  { value: 200, label: 'ExtraLight 200' },
+  { value: 300, label: 'Light 300' },
+  { value: 400, label: 'Regular 400' },
+  { value: 500, label: 'Medium 500' },
+  { value: 600, label: 'SemiBold 600' },
+  { value: 700, label: 'Bold 700' },
+  { value: 800, label: 'ExtraBold 800' },
   { value: 900, label: 'Black 900' },
 ]
 
@@ -67,26 +75,51 @@ function facesToLocal(fam: InstalledFamily): LocalFontFile[] {
   return out
 }
 
-function GoogleResult({ meta, added, onAdd }: { meta: GoogleFontMeta; added: boolean; onAdd: () => void }): React.ReactElement {
-  useEffect(() => { loadGoogleFont(meta.family, ['400']) }, [meta.family])
+function GoogleResult({
+  meta,
+  added,
+  onAdd,
+}: {
+  meta: GoogleFontMeta
+  added: boolean
+  onAdd: () => void
+}): React.ReactElement {
+  useEffect(() => {
+    loadGoogleFont(meta.family, ['400'])
+  }, [meta.family])
   return (
     <div className={styles.result}>
       <div className={styles.resultMain}>
-        <span className={styles.resultName} style={{ fontFamily: `'${meta.family}', ${categoryGeneric(meta.category)}` }}>
+        <span
+          className={styles.resultName}
+          style={{ fontFamily: `'${meta.family}', ${categoryGeneric(meta.category)}` }}
+        >
           {meta.family}
         </span>
-        <span className={styles.resultMeta}>{meta.category} · {meta.weights.length} weight{meta.weights.length === 1 ? '' : 's'}</span>
+        <span className={styles.resultMeta}>
+          {meta.category} · {meta.weights.length} weight{meta.weights.length === 1 ? '' : 's'}
+        </span>
       </div>
       {added ? (
-        <span className={styles.added}><FontAwesomeIcon icon={faCheck} /> Added</span>
+        <span className={styles.added}>
+          <FontAwesomeIcon icon={faCheck} /> Added
+        </span>
       ) : (
-        <Button size="md" variant="secondary" onClick={onAdd}>Add</Button>
+        <Button size="md" variant="secondary" onClick={onAdd}>
+          Add
+        </Button>
       )}
     </div>
   )
 }
 
-export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: FontAdderProps): React.ReactElement | null {
+export function FontAdder({
+  open,
+  onClose,
+  existing,
+  onAddGoogle,
+  onAddLocal,
+}: FontAdderProps): React.ReactElement | null {
   const [busy, setBusy] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -124,16 +157,38 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
 
   useEffect(() => {
     if (!open || list) return
-    window.api.font.googleList().then(g => { googleCache = g; setList(g) }).catch(() => setLoadErr(true))
+    window.api.font
+      .googleList()
+      .then(g => {
+        googleCache = g
+        setList(g)
+      })
+      .catch(() => setLoadErr(true))
   }, [open, list])
 
   useEffect(() => {
     if (!open || tab !== 'installed' || installed) return
-    window.api.font.listInstalled().then(f => { installedCache = f; setInstalled(f) }).catch(() => setInstalledErr(true))
+    window.api.font
+      .listInstalled()
+      .then(f => {
+        installedCache = f
+        setInstalled(f)
+      })
+      .catch(() => setInstalledErr(true))
   }, [open, tab, installed])
 
   useEffect(() => {
-    if (!open) { setBusy(false); setSaveError(null); setTab('google'); setQuery(''); setCategory('all'); setInstalledQuery(''); setLocalRows([]); setLocalFamily(''); setDragOver(false) }
+    if (!open) {
+      setBusy(false)
+      setSaveError(null)
+      setTab('google')
+      setQuery('')
+      setCategory('all')
+      setInstalledQuery('')
+      setLocalRows([])
+      setLocalFamily('')
+      setDragOver(false)
+    }
   }, [open])
 
   const installedResults = useMemo(() => {
@@ -151,9 +206,8 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
   const results = useMemo(() => {
     if (!list) return []
     const q = query.trim().toLowerCase()
-    const pool = list.filter(f =>
-      (category === 'all' || f.category.toLowerCase() === category) &&
-      (!q || f.family.toLowerCase().includes(q))
+    const pool = list.filter(
+      f => (category === 'all' || f.category.toLowerCase() === category) && (!q || f.family.toLowerCase().includes(q)),
     )
     return [...pool].sort((a, b) => a.popularity - b.popularity).slice(0, 50)
   }, [list, query, category])
@@ -196,131 +250,229 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
         />
       }
     >
-        {tab === 'google' ? (
-          <div className={styles.googleBody}>
-            <Input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Search Google Fonts…" />
-            <SegmentedControl ariaLabel="Category" size="sm" value={category} onChange={setCategory} options={CATEGORIES} />
-            <div className={styles.results}>
-              {loadErr ? (
-                <p className={styles.empty}>Couldn't reach Google Fonts. Check your connection.</p>
-              ) : !list ? (
-                <div className={styles.loading}><Spinner /> Loading catalogue…</div>
-              ) : results.length === 0 ? (
-                <p className={styles.empty}>No families match your filters.</p>
-              ) : (
-                results.map(meta => (
-                  <GoogleResult key={meta.family} meta={meta} added={existing.has(meta.family)} onAdd={() => run(() => onAddGoogle(meta), false)} />
-                ))
-              )}
-            </div>
-          </div>
-        ) : tab === 'installed' ? (
-          <div className={styles.googleBody}>
-            <Input autoFocus value={installedQuery} onChange={e => setInstalledQuery(e.target.value)} placeholder="Search installed fonts…" />
-            <div className={styles.results}>
-              {installedErr ? (
-                <p className={styles.empty}>Couldn’t read your installed fonts.</p>
-              ) : !installed ? (
-                <div className={styles.loading}><Spinner /> Reading Font Book…</div>
-              ) : installedResults.length === 0 ? (
-                <p className={styles.empty}>No installed families match.</p>
-              ) : (
-                installedResults.map(fam => (
-                  <div key={fam.family} className={styles.result}>
-                    <div className={styles.resultMain}>
-                      <span className={styles.resultName} style={{ fontFamily: `'${fam.family}'` }}>{fam.family}</span>
-                      <span className={styles.resultMeta}>{fam.faces.length} style{fam.faces.length === 1 ? '' : 's'}</span>
-                    </div>
-                    {existing.has(fam.family) ? (
-                      <span className={styles.added}><FontAwesomeIcon icon={faCheck} /> Added</span>
-                    ) : (
-                      <Button size="md" variant="secondary" onClick={() => run(() => onAddLocal(fam.family, facesToLocal(fam)), false)}>Add</Button>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className={styles.localBody}>
-            {localRows.length === 0 ? (
-              <div
-                className={[styles.dropzone, dragOver ? styles.dropzoneActive : ''].filter(Boolean).join(' ')}
-                onClick={() => fileRef.current?.click()}
-                onDragOver={e => { e.preventDefault(); setDragOver(true) }}
-                onDragLeave={() => setDragOver(false)}
-                onDrop={e => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files) }}
-              >
-                <FontAwesomeIcon icon={faUpload} className={styles.dropIcon} />
-                <p className={styles.dropText}>Drop font files, or click to choose</p>
-                <p className={styles.dropHint}>One family at a time — add every weight & italic. .ttf · .otf · .woff · .woff2</p>
-                <input ref={fileRef} type="file" multiple accept=".ttf,.otf,.woff,.woff2" className={styles.fileInput}
-                  onChange={e => { if (e.target.files) handleFiles(e.target.files); e.target.value = '' }} />
+      {tab === 'google' ? (
+        <div className={styles.googleBody}>
+          <Input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Search Google Fonts…" />
+          <SegmentedControl
+            ariaLabel="Category"
+            size="sm"
+            value={category}
+            onChange={setCategory}
+            options={CATEGORIES}
+          />
+          <div className={styles.results}>
+            {loadErr ? (
+              <p className={styles.empty}>Couldn't reach Google Fonts. Check your connection.</p>
+            ) : !list ? (
+              <div className={styles.loading}>
+                <Spinner /> Loading catalogue…
               </div>
+            ) : results.length === 0 ? (
+              <p className={styles.empty}>No families match your filters.</p>
             ) : (
-              <>
-                <label className={styles.field}>
-                  <span className={styles.fieldLabel}>Family name</span>
-                  <Input value={localFamily} onChange={e => setLocalFamily(e.target.value)} placeholder="e.g. Inter" />
-                  {localDup && <span className={styles.dupWarn}>“{localFamily.trim()}” is already in your library — this adds a duplicate.</span>}
-                </label>
-                <div className={styles.fileRows}>
-                  {localRows.map((row, i) => (
-                    <div key={row.path + i} className={styles.fileRow}>
-                      <span className={styles.fileSpecimen} style={row.previewFamily ? { fontFamily: `'${row.previewFamily}'` } : undefined}>Ag</span>
-                      <span className={styles.fileName} title={row.filename}>{row.filename}</span>
-                      <span className={styles.weightCell}>
-                        <Select
-                          block
-                          ariaLabel="Weight"
-                          align="right"
-                          value={String(row.weight)}
-                          onChange={k => setRow(i, { weight: Number(k) })}
-                          options={WEIGHTS.map(w => ({ key: String(w.value), label: w.label }))}
-                        />
-                      </span>
-                      <span className={styles.styleCell}>
-                        <Select
-                          block
-                          ariaLabel="Style"
-                          align="right"
-                          value={row.style}
-                          onChange={k => setRow(i, { style: k as 'normal' | 'italic' })}
-                          options={[{ key: 'normal', label: 'Normal' }, { key: 'italic', label: 'Italic' }]}
-                        />
-                      </span>
-                      <button type="button" className={['icon-btn', 'icon-btn--xs'].join(' ')} onClick={() => setLocalRows(prev => prev.filter((_, idx) => idx !== i))} aria-label="Remove file">
-                        <FontAwesomeIcon icon={faXmark} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <span className={styles.addMoreWrap}>
-                  <Button variant="secondary" size="md" onClick={() => fileRef.current?.click()}>
-                    <FontAwesomeIcon icon={faUpload} /> Add more files
-                  </Button>
-                </span>
-                <input ref={fileRef} type="file" multiple accept=".ttf,.otf,.woff,.woff2" className={styles.fileInput}
-                  onChange={e => { if (e.target.files) handleFiles(e.target.files); e.target.value = '' }} />
-              </>
+              results.map(meta => (
+                <GoogleResult
+                  key={meta.family}
+                  meta={meta}
+                  added={existing.has(meta.family)}
+                  onAdd={() => run(() => onAddGoogle(meta), false)}
+                />
+              ))
             )}
           </div>
-        )}
-
-        {tab === 'local' && localRows.length > 0 && (
-          <div className={styles.footer}>
-            {saveError && <span className={styles.saveError} title={saveError}>{saveError}</span>}
-            <Button variant="ghost" size="md" onClick={() => { setLocalRows([]); setLocalFamily('') }}>Clear</Button>
-            <Button
-              variant="primary"
-              size="md"
-              disabled={!localFamily.trim()}
-              onClick={() => run(() => onAddLocal(localFamily.trim(), localRows.map(r => ({ path: r.path, weight: r.weight, style: r.style }))))}
-            >
-              Add font · {localRows.length} file{localRows.length === 1 ? '' : 's'}
-            </Button>
+        </div>
+      ) : tab === 'installed' ? (
+        <div className={styles.googleBody}>
+          <Input
+            autoFocus
+            value={installedQuery}
+            onChange={e => setInstalledQuery(e.target.value)}
+            placeholder="Search installed fonts…"
+          />
+          <div className={styles.results}>
+            {installedErr ? (
+              <p className={styles.empty}>Couldn’t read your installed fonts.</p>
+            ) : !installed ? (
+              <div className={styles.loading}>
+                <Spinner /> Reading Font Book…
+              </div>
+            ) : installedResults.length === 0 ? (
+              <p className={styles.empty}>No installed families match.</p>
+            ) : (
+              installedResults.map(fam => (
+                <div key={fam.family} className={styles.result}>
+                  <div className={styles.resultMain}>
+                    <span className={styles.resultName} style={{ fontFamily: `'${fam.family}'` }}>
+                      {fam.family}
+                    </span>
+                    <span className={styles.resultMeta}>
+                      {fam.faces.length} style{fam.faces.length === 1 ? '' : 's'}
+                    </span>
+                  </div>
+                  {existing.has(fam.family) ? (
+                    <span className={styles.added}>
+                      <FontAwesomeIcon icon={faCheck} /> Added
+                    </span>
+                  ) : (
+                    <Button
+                      size="md"
+                      variant="secondary"
+                      onClick={() => run(() => onAddLocal(fam.family, facesToLocal(fam)), false)}
+                    >
+                      Add
+                    </Button>
+                  )}
+                </div>
+              ))
+            )}
           </div>
-        )}
+        </div>
+      ) : (
+        <div className={styles.localBody}>
+          {localRows.length === 0 ? (
+            <div
+              className={[styles.dropzone, dragOver ? styles.dropzoneActive : ''].filter(Boolean).join(' ')}
+              onClick={() => fileRef.current?.click()}
+              onDragOver={e => {
+                e.preventDefault()
+                setDragOver(true)
+              }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={e => {
+                e.preventDefault()
+                setDragOver(false)
+                handleFiles(e.dataTransfer.files)
+              }}
+            >
+              <FontAwesomeIcon icon={faUpload} className={styles.dropIcon} />
+              <p className={styles.dropText}>Drop font files, or click to choose</p>
+              <p className={styles.dropHint}>
+                One family at a time — add every weight & italic. .ttf · .otf · .woff · .woff2
+              </p>
+              <input
+                ref={fileRef}
+                type="file"
+                multiple
+                accept=".ttf,.otf,.woff,.woff2"
+                className={styles.fileInput}
+                onChange={e => {
+                  if (e.target.files) handleFiles(e.target.files)
+                  e.target.value = ''
+                }}
+              />
+            </div>
+          ) : (
+            <>
+              <label className={styles.field}>
+                <span className={styles.fieldLabel}>Family name</span>
+                <Input value={localFamily} onChange={e => setLocalFamily(e.target.value)} placeholder="e.g. Inter" />
+                {localDup && (
+                  <span className={styles.dupWarn}>
+                    “{localFamily.trim()}” is already in your library — this adds a duplicate.
+                  </span>
+                )}
+              </label>
+              <div className={styles.fileRows}>
+                {localRows.map((row, i) => (
+                  <div key={row.path + i} className={styles.fileRow}>
+                    <span
+                      className={styles.fileSpecimen}
+                      style={row.previewFamily ? { fontFamily: `'${row.previewFamily}'` } : undefined}
+                    >
+                      Ag
+                    </span>
+                    <span className={styles.fileName} title={row.filename}>
+                      {row.filename}
+                    </span>
+                    <span className={styles.weightCell}>
+                      <Select
+                        block
+                        ariaLabel="Weight"
+                        align="right"
+                        value={String(row.weight)}
+                        onChange={k => setRow(i, { weight: Number(k) })}
+                        options={WEIGHTS.map(w => ({ key: String(w.value), label: w.label }))}
+                      />
+                    </span>
+                    <span className={styles.styleCell}>
+                      <Select
+                        block
+                        ariaLabel="Style"
+                        align="right"
+                        value={row.style}
+                        onChange={k => setRow(i, { style: k as 'normal' | 'italic' })}
+                        options={[
+                          { key: 'normal', label: 'Normal' },
+                          { key: 'italic', label: 'Italic' },
+                        ]}
+                      />
+                    </span>
+                    <button
+                      type="button"
+                      className={['icon-btn', 'icon-btn--xs'].join(' ')}
+                      onClick={() => setLocalRows(prev => prev.filter((_, idx) => idx !== i))}
+                      aria-label="Remove file"
+                    >
+                      <FontAwesomeIcon icon={faXmark} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <span className={styles.addMoreWrap}>
+                <Button variant="secondary" size="md" onClick={() => fileRef.current?.click()}>
+                  <FontAwesomeIcon icon={faUpload} /> Add more files
+                </Button>
+              </span>
+              <input
+                ref={fileRef}
+                type="file"
+                multiple
+                accept=".ttf,.otf,.woff,.woff2"
+                className={styles.fileInput}
+                onChange={e => {
+                  if (e.target.files) handleFiles(e.target.files)
+                  e.target.value = ''
+                }}
+              />
+            </>
+          )}
+        </div>
+      )}
+
+      {tab === 'local' && localRows.length > 0 && (
+        <div className={styles.footer}>
+          {saveError && (
+            <span className={styles.saveError} title={saveError}>
+              {saveError}
+            </span>
+          )}
+          <Button
+            variant="ghost"
+            size="md"
+            onClick={() => {
+              setLocalRows([])
+              setLocalFamily('')
+            }}
+          >
+            Clear
+          </Button>
+          <Button
+            variant="primary"
+            size="md"
+            disabled={!localFamily.trim()}
+            onClick={() =>
+              run(() =>
+                onAddLocal(
+                  localFamily.trim(),
+                  localRows.map(r => ({ path: r.path, weight: r.weight, style: r.style })),
+                ),
+              )
+            }
+          >
+            Add font · {localRows.length} file{localRows.length === 1 ? '' : 's'}
+          </Button>
+        </div>
+      )}
     </Modal>
   )
 }

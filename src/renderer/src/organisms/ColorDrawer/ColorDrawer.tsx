@@ -10,7 +10,13 @@ import { CopyButton } from '../../molecules/CopyButton/CopyButton'
 import { TagSelect } from '../../molecules/TagSelect/TagSelect'
 import { TagModal } from '../../organisms/TagModal/TagModal'
 import {
-  toRgbString, toHslString, toCssVar, nearestNames, confidenceLabel, formatDeltaE, nearestShadeIndex,
+  toRgbString,
+  toHslString,
+  toCssVar,
+  nearestNames,
+  confidenceLabel,
+  formatDeltaE,
+  nearestShadeIndex,
 } from '../../lib/colour'
 import { ContrastChip } from '../../molecules/ContrastChip/ContrastChip'
 import styles from './ColorDrawer.module.css'
@@ -25,7 +31,14 @@ interface ColorDrawerProps {
   onDelete: (colour: Colour) => void
 }
 
-export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavourite, onDelete }: ColorDrawerProps): React.ReactElement {
+export function ColorDrawer({
+  colour,
+  library,
+  onClose,
+  onRename,
+  onToggleFavourite,
+  onDelete,
+}: ColorDrawerProps): React.ReactElement {
   const [name, setName] = useState('')
   const [editing, setEditing] = useState(false)
   const [allTags, setAllTags] = useState<Tag[]>([])
@@ -43,7 +56,9 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
       setAllTags(tags)
       setAssigned(new Set(mine.map(t => t.id)))
     })
-    return () => { live = false }
+    return () => {
+      live = false
+    }
   }, [colour])
 
   const naming = useMemo(() => (colour ? nearestNames(colour.hex, 6) : null), [colour])
@@ -69,7 +84,11 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
     if (!colour) return
     if (assigned.has(tag.id)) {
       await window.api.tag.remove('colour', colour.id, tag.id)
-      setAssigned(prev => { const n = new Set(prev); n.delete(tag.id); return n })
+      setAssigned(prev => {
+        const n = new Set(prev)
+        n.delete(tag.id)
+        return n
+      })
     } else {
       await window.api.tag.assign('colour', colour.id, tag.id)
       setAssigned(prev => new Set(prev).add(tag.id))
@@ -94,7 +113,9 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
               {shades.map((s, i) => (
                 <span
                   key={i}
-                  className={[styles.blockShade, i === activeShade ? styles.blockShadeActive : ''].filter(Boolean).join(' ')}
+                  className={[styles.blockShade, i === activeShade ? styles.blockShadeActive : '']
+                    .filter(Boolean)
+                    .join(' ')}
                   style={{ background: s }}
                 />
               ))}
@@ -112,16 +133,26 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
                 onFocus={e => e.target.select()}
                 onKeyDown={e => {
                   if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
-                  if (e.key === 'Escape') { setName(colour.name); setEditing(false) }
+                  if (e.key === 'Escape') {
+                    setName(colour.name)
+                    setEditing(false)
+                  }
                 }}
                 aria-label="Colour name"
               />
             ) : (
-              <span className={styles.name} title={name}>{name}</span>
+              <span className={styles.name} title={name}>
+                {name}
+              </span>
             )}
             {!editing && (
               <div className={styles.nameActions}>
-                <button type="button" className="icon-btn icon-btn--xs" onClick={() => setEditing(true)} aria-label="Rename">
+                <button
+                  type="button"
+                  className="icon-btn icon-btn--xs"
+                  onClick={() => setEditing(true)}
+                  aria-label="Rename"
+                >
                   <FontAwesomeIcon icon={faPen} />
                 </button>
               </div>
@@ -160,41 +191,49 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
                   .filter(m => m.name.toLowerCase() !== colour.name.toLowerCase())
                   .slice(0, 3)
                   .map(m => {
-                  const taken = takenNames.has(m.name.toLowerCase())
-                  return (
-                    <div key={m.name + m.hex} className={styles.nameRow}>
-                      <span className={styles.nameSwatch} style={{ background: m.hex }} />
-                      <span className={styles.nameMain}>
-                        <span className={styles.nameText}>{m.name}</span>
-                        {taken && (
-                          <Tooltip label={`You already have a colour named “${m.name}”`} align="start">
-                            <span className={styles.nameWarn}>
-                              <FontAwesomeIcon icon={faTriangleExclamation} />
-                            </span>
-                          </Tooltip>
-                        )}
-                      </span>
-                      <span className={styles.nameDelta}>ΔE {formatDeltaE(m.deltaE)}</span>
-                      <div className={styles.nameActions}>
-                        <button
-                          type="button"
-                          className="icon-btn icon-btn--sm icon-btn--primary"
-                          onClick={() => onRename(colour.id, m.name)}
-                          aria-label={`Use “${m.name}”`}
-                        >
-                          <FontAwesomeIcon icon={faRightLeft} />
-                        </button>
+                    const taken = takenNames.has(m.name.toLowerCase())
+                    return (
+                      <div key={m.name + m.hex} className={styles.nameRow}>
+                        <span className={styles.nameSwatch} style={{ background: m.hex }} />
+                        <span className={styles.nameMain}>
+                          <span className={styles.nameText}>{m.name}</span>
+                          {taken && (
+                            <Tooltip label={`You already have a colour named “${m.name}”`} align="start">
+                              <span className={styles.nameWarn}>
+                                <FontAwesomeIcon icon={faTriangleExclamation} />
+                              </span>
+                            </Tooltip>
+                          )}
+                        </span>
+                        <span className={styles.nameDelta}>ΔE {formatDeltaE(m.deltaE)}</span>
+                        <div className={styles.nameActions}>
+                          <button
+                            type="button"
+                            className="icon-btn icon-btn--sm icon-btn--primary"
+                            onClick={() => onRename(colour.id, m.name)}
+                            aria-label={`Use “${m.name}”`}
+                          >
+                            <FontAwesomeIcon icon={faRightLeft} />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
               </div>
             </div>
           )}
 
           <div className={styles.group}>
             <h3 className="eyebrow">Projects</h3>
-            <TagSelect allTags={allTags} selectedIds={assigned} onToggle={toggleTag} onCreateNew={(label) => { setNewTagLabel(label); setTagModalOpen(true) }} />
+            <TagSelect
+              allTags={allTags}
+              selectedIds={assigned}
+              onToggle={toggleTag}
+              onCreateNew={label => {
+                setNewTagLabel(label)
+                setTagModalOpen(true)
+              }}
+            />
           </div>
 
           <div className={styles.footer}>
@@ -206,7 +245,13 @@ export function ColorDrawer({ colour, library, onClose, onRename, onToggleFavour
         </div>
       )}
 
-      <TagModal open={tagModalOpen} mode="create" initial={{ label: newTagLabel }} onSubmit={createTag} onClose={() => setTagModalOpen(false)} />
+      <TagModal
+        open={tagModalOpen}
+        mode="create"
+        initial={{ label: newTagLabel }}
+        onSubmit={createTag}
+        onClose={() => setTagModalOpen(false)}
+      />
     </Drawer>
   )
 }

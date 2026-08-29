@@ -5,7 +5,9 @@
   display: inline-flex;
 }
 
-.triggerIcon { width: 12px; }
+.triggerIcon {
+  width: 12px;
+}
 
 .section {
   margin: 0;
@@ -41,7 +43,9 @@
   color: var(--color-ink-secondary);
 }
 
-.radio:hover { color: var(--color-ink-primary); }
+.radio:hover {
+  color: var(--color-ink-primary);
+}
 
 .radio input {
   width: 15px;

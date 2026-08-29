@@ -31,9 +31,12 @@ const block = new RegExp(`\\n?/\\* ${MARK}[\\s\\S]*?/\\* END ${MARK} \\*/`, 'g')
 html = html.replace(block, '')
 html = html.replace('</style>', `${STYLE}/* END ${MARK} */\n</style>`)
 
-const PLUS = '<svg viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>'
-const PEN = '<svg viewBox="0 0 512 512"><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L301.5 89.8l-11.3 11.3-22.6 22.6L58.6 332.6c-10.4 10.4-18 23.3-22.2 37.4L1 488.5c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l118.5-35.4c14.1-4.2 27-11.8 37.4-22.2L414.4 253.7 410.3 231z"/></svg>'
-const TRASH = '<svg viewBox="0 0 448 512"><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>'
+const PLUS =
+  '<svg viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>'
+const PEN =
+  '<svg viewBox="0 0 512 512"><path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L301.5 89.8l-11.3 11.3-22.6 22.6L58.6 332.6c-10.4 10.4-18 23.3-22.2 37.4L1 488.5c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l118.5-35.4c14.1-4.2 27-11.8 37.4-22.2L414.4 253.7 410.3 231z"/></svg>'
+const TRASH =
+  '<svg viewBox="0 0 448 512"><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>'
 const DOT = '<span style="width:12px;height:12px;border-radius:999px;background:#aa1055;flex:0 0 auto"></span>'
 
 let done = 0
@@ -52,7 +55,7 @@ for (const [heading, spec] of Object.entries(specs)) {
     t += `        <tr><td class="rowh">${row.label}</td>`
     for (const cell of row.cells) {
       const v = cell.values
-      const px = k => v[k] !== undefined ? pretty(v[k]) : null
+      const px = k => (v[k] !== undefined ? pretty(v[k]) : null)
       const style = [
         `background:${px('background') ?? px('background-color') ?? 'transparent'}`,
         `color:${px('color') ?? 'inherit'}`,
@@ -66,9 +69,12 @@ for (const [heading, spec] of Object.entries(specs)) {
         `font-family:var(--font-sans)`,
         v.opacity ? `opacity:${pretty(v.opacity)}` : '',
         v['box-shadow'] ? `box-shadow:${pretty(v['box-shadow'])}` : '',
-      ].filter(Boolean).join(';')
+      ]
+        .filter(Boolean)
+        .join(';')
       const vals = PAINT.filter(k => v[k] !== undefined && k !== 'border')
-        .map(k => `<b>${k}</b> ${pretty(v[k])}`).join('<br>')
+        .map(k => `<b>${k}</b> ${pretty(v[k])}`)
+        .join('<br>')
       const same = !cell.differs ? '<div class="mxsame">same as default — no frame needed</div>' : ''
       const lead = wantsLead ? DOT : ''
       const actions = wantsActions ? `<span class="slot">${PEN}${TRASH}</span>` : ''
@@ -84,9 +90,15 @@ for (const [heading, spec] of Object.entries(specs)) {
   const block = `    <div class="mx">\n      <h3>Every variant × state, rendered</h3>\n${t}${note}    </div>\n  `
 
   const i = html.indexOf(`<h2>${heading}`)
-  if (i === -1) { console.log('  no heading:', heading); continue }
+  if (i === -1) {
+    console.log('  no heading:', heading)
+    continue
+  }
   const secEnd = html.indexOf('</section>', i)
-  if (html.slice(i, secEnd).includes('class="mx"')) { console.log('  already:', heading); continue }
+  if (html.slice(i, secEnd).includes('class="mx"')) {
+    console.log('  already:', heading)
+    continue
+  }
   html = html.slice(0, secEnd) + block + html.slice(secEnd)
   done++
 }

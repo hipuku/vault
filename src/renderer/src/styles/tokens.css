@@ -7,22 +7,22 @@
     /* Brand: deep ruby. Anchored on #AA1155 (-500) and #880044 (-700),
        built as a perceptual OKLCH ramp (hue ~358-3, chroma peaks mid-tone). */
     --ruby-100: oklch(96.5% 0.016 3);
-    --ruby-200: oklch(91%   0.044 3);
-    --ruby-300: oklch(82%   0.082 3);
-    --ruby-400: oklch(64%   0.150 3);
+    --ruby-200: oklch(91% 0.044 3);
+    --ruby-300: oklch(82% 0.082 3);
+    --ruby-400: oklch(64% 0.15 3);
     --ruby-500: oklch(48.2% 0.186 2.5);
-    --ruby-600: oklch(44%   0.176 1.7);
+    --ruby-600: oklch(44% 0.176 1.7);
     --ruby-700: oklch(40.5% 0.164 0.9);
-    --ruby-800: oklch(33%   0.116 0);
-    --ruby-900: oklch(23%   0.090 358);
-    --ruby-950: oklch(15%   0.056 356);
+    --ruby-800: oklch(33% 0.116 0);
+    --ruby-900: oklch(23% 0.09 358);
+    --ruby-950: oklch(15% 0.056 356);
 
-    --onyx-0:   oklch(100% 0 0);
-    --onyx-50:  oklch(99% 0.003 290);
+    --onyx-0: oklch(100% 0 0);
+    --onyx-50: oklch(99% 0.003 290);
     --onyx-100: oklch(97% 0.006 290);
     --onyx-200: oklch(93% 0.008 290);
-    --onyx-300: oklch(86% 0.010 290);
-    --onyx-400: oklch(74% 0.010 290);
+    --onyx-300: oklch(86% 0.01 290);
+    --onyx-400: oklch(74% 0.01 290);
     --onyx-500: oklch(60% 0.008 290);
     --onyx-600: oklch(48% 0.007 290);
     --onyx-700: oklch(37% 0.006 290);
@@ -30,23 +30,23 @@
     --onyx-900: oklch(18% 0.003 290);
     --onyx-950: oklch(11% 0.002 290);
 
-    --sapphire-100: oklch(97% 0.020 265);
-    --sapphire-200: oklch(93% 0.040 265);
-    --sapphire-400: oklch(74% 0.160 265);
-    --sapphire-500: oklch(55% 0.200 265);
-    --sapphire-700: oklch(42% 0.160 265);
-    --sapphire-900: oklch(30% 0.120 265);
+    --sapphire-100: oklch(97% 0.02 265);
+    --sapphire-200: oklch(93% 0.04 265);
+    --sapphire-400: oklch(74% 0.16 265);
+    --sapphire-500: oklch(55% 0.2 265);
+    --sapphire-700: oklch(42% 0.16 265);
+    --sapphire-900: oklch(30% 0.12 265);
 
-    --emerald-100: oklch(97% 0.030 148);
+    --emerald-100: oklch(97% 0.03 148);
     --emerald-500: oklch(58% 0.185 148);
-    --emerald-700: oklch(45% 0.150 148);
+    --emerald-700: oklch(45% 0.15 148);
 
     --amber-100: oklch(97% 0.025 65);
     --amber-500: oklch(60% 0.175 65);
     --amber-700: oklch(47% 0.142 65);
 
-    --garnet-100: oklch(97% 0.030 27);
-    --garnet-500: oklch(58% 0.200 27);
+    --garnet-100: oklch(97% 0.03 27);
+    --garnet-500: oklch(58% 0.2 27);
     --garnet-700: oklch(44% 0.168 27);
 
     --font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
@@ -63,31 +63,31 @@
     --text-24: 1.5rem;
     --text-28: 1.75rem;
 
-    --weight-regular:  400;
-    --weight-medium:   500;
+    --weight-regular: 400;
+    --weight-medium: 500;
     --weight-semibold: 600;
-    --weight-bold:     700;
+    --weight-bold: 700;
 
-    --leading-tight:   1.15;
-    --leading-snug:    1.25;
+    --leading-tight: 1.15;
+    --leading-snug: 1.25;
     --leading-compact: 1.3;
-    --leading-normal:  1.4;
+    --leading-normal: 1.4;
     --leading-relaxed: 1.5;
     /* Above the text scale: used by the pill-geometry atoms, where the line box sets
        the control height rather than the text. */
-    --leading-loose:   1.6;
+    --leading-loose: 1.6;
 
-    --tracking-tight:  -0.01em;
-    --tracking-normal:  0em;
-    --tracking-wide:    0.02em;
+    --tracking-tight: -0.01em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.02em;
 
-    --space-1:  0.25rem;
-    --space-2:  0.5rem;
-    --space-3:  0.75rem;
-    --space-4:  1rem;
-    --space-5:  1.25rem;
-    --space-6:  1.5rem;
-    --space-8:  2rem;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
     --space-10: 2.5rem;
     --space-12: 3rem;
 
@@ -95,61 +95,61 @@
        Every interactive height was a raw px literal: 40 (×12), 32, 28 and 24 form the
        intended 8px ladder, and eight strays sat off it (26, 30, 34, 36, 44, 48). These
        four are the ladder; anything else needs a reason.                               */
-    --control-height-xs: 1.5rem;    /* 24px — icon button, small */
-    --control-height-sm: 1.75rem;   /* 28px — icon button */
-    --control-height-md: 2rem;      /* 32px — segmented control, compact button */
-    --control-height-lg: 2.5rem;    /* 40px — default button, input, trigger pill */
+    --control-height-xs: 1.5rem; /* 24px — icon button, small */
+    --control-height-sm: 1.75rem; /* 28px — icon button */
+    --control-height-md: 2rem; /* 32px — segmented control, compact button */
+    --control-height-lg: 2.5rem; /* 40px — default button, input, trigger pill */
 
     /* ── Dot / swatch chips ───────────────────────────────────────────────────
        The same small round indicator appeared at nine sizes across the app.          */
-    --dot-xs: 0.5rem;      /* 8px  — inline hue marker */
-    --dot-sm: 0.75rem;     /* 12px — project chip */
-    --dot-md: 1rem;        /* 16px — swatch in a row */
-    --dot-lg: 1.125rem;    /* 18px — swatch in a drawer header */
+    --dot-xs: 0.5rem; /* 8px  — inline hue marker */
+    --dot-sm: 0.75rem; /* 12px — project chip */
+    --dot-md: 1rem; /* 16px — swatch in a row */
+    --dot-lg: 1.125rem; /* 18px — swatch in a drawer header */
 
     /* ── Overlay widths ───────────────────────────────────────────────────────
        Six hand-built modals had drifted to six widths. Four steps carry them; the two
        that sit off the scale (FontAdder 520, CommandPalette 560) keep an explicit
        override so the exception stays visible.                                        */
-    --modal-width-sm: 22.5rem;   /* 360px — confirm */
-    --modal-width-md: 26.25rem;  /* 420px — short form */
-    --modal-width-lg: 30rem;     /* 480px — form with a preview */
-    --modal-width-xl: 37.5rem;   /* 600px — code / table */
+    --modal-width-sm: 22.5rem; /* 360px — confirm */
+    --modal-width-md: 26.25rem; /* 420px — short form */
+    --modal-width-lg: 30rem; /* 480px — form with a preview */
+    --modal-width-xl: 37.5rem; /* 600px — code / table */
 
     /* ── Popover widths ───────────────────────────────────────────────────────
        Seven floating panels had six widths. Three steps carry them; 248 rounds to
        240, which is a popover, not a layout.                                        */
-    --popover-width-sm: 15rem;    /* 240px — filters, step editor */
-    --popover-width-md: 17.5rem;  /* 280px — unit settings */
-    --popover-width-lg: 20rem;    /* 320px — preview settings */
+    --popover-width-sm: 15rem; /* 240px — filters, step editor */
+    --popover-width-md: 17.5rem; /* 280px — unit settings */
+    --popover-width-lg: 20rem; /* 320px — preview settings */
 
-    --radius-sm:   0.25rem;
-    --radius-md:   0.5rem;
-    --radius-lg:   0.75rem;
-    --radius-xl:   1rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
     --radius-full: 9999px;
 
     --shadow-sm: 0 1px 2px oklch(18% 0.003 290 / 0.06);
-    --shadow-md: 0 4px 6px -1px oklch(18% 0.003 290 / 0.10), 0 2px 4px -2px oklch(18% 0.003 290 / 0.10);
-    --shadow-lg: 0 10px 15px -3px oklch(18% 0.003 290 / 0.10), 0 4px 6px -4px oklch(18% 0.003 290 / 0.07);
+    --shadow-md: 0 4px 6px -1px oklch(18% 0.003 290 / 0.1), 0 2px 4px -2px oklch(18% 0.003 290 / 0.1);
+    --shadow-lg: 0 10px 15px -3px oklch(18% 0.003 290 / 0.1), 0 4px 6px -4px oklch(18% 0.003 290 / 0.07);
 
     --z-dropdown: 100;
-    --z-modal:    400;
-    --z-toast:    500;
-    --z-tooltip:  600;
+    --z-modal: 400;
+    --z-toast: 500;
+    --z-tooltip: 600;
 
     --border-width: 1px;
     --opacity-disabled: 0.4;
 
     /* ── Durations ────────────────────────────────────────────────────────── */
-    --duration-fast:     100ms;
-    --duration-normal:   200ms;
+    --duration-fast: 100ms;
+    --duration-normal: 200ms;
     --duration-moderate: 300ms;
 
-    --ease-enter:  cubic-bezier(0.00, 0.00, 0.20, 1.00);
-    --ease-exit:   cubic-bezier(0.40, 0.00, 1.00, 1.00);
-    --ease-move:   cubic-bezier(0.40, 0.00, 0.20, 1.00);
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1.00);
+    --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    --ease-move: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 }
 
@@ -161,83 +161,83 @@
   :root {
     color-scheme: light;
 
-    --color-surface-default:  var(--onyx-0);
-    --color-surface-subtle:   var(--onyx-100);
-    --color-surface-raised:   var(--onyx-0);
-    --color-surface-overlay:  var(--onyx-50);
-    --color-surface-sunken:   var(--onyx-200);
-    --color-surface-inverse:  var(--onyx-900);
+    --color-surface-default: var(--onyx-0);
+    --color-surface-subtle: var(--onyx-100);
+    --color-surface-raised: var(--onyx-0);
+    --color-surface-overlay: var(--onyx-50);
+    --color-surface-sunken: var(--onyx-200);
+    --color-surface-inverse: var(--onyx-900);
     --color-surface-disabled: var(--onyx-100);
 
-    --color-ink-primary:   var(--onyx-900);
+    --color-ink-primary: var(--onyx-900);
     --color-ink-secondary: var(--onyx-700);
-    --color-ink-tertiary:  var(--onyx-500);
-    --color-ink-disabled:  var(--onyx-400);
-    --color-ink-inverse:   var(--onyx-0);
+    --color-ink-tertiary: var(--onyx-500);
+    --color-ink-disabled: var(--onyx-400);
+    --color-ink-inverse: var(--onyx-0);
 
-    --color-border-subtle:   var(--onyx-100);
-    --color-border-default:  var(--onyx-200);
-    --color-border-strong:   var(--onyx-300);
-    --color-border-focus:    var(--ruby-500);
+    --color-border-subtle: var(--onyx-100);
+    --color-border-default: var(--onyx-200);
+    --color-border-strong: var(--onyx-300);
+    --color-border-focus: var(--ruby-500);
     --color-border-disabled: var(--onyx-200);
 
-    --color-primary-default:  var(--ruby-500);
-    --color-primary-hover:    var(--ruby-600);
-    --color-primary-pressed:  var(--ruby-700);
-    --color-primary-subtle:   var(--ruby-100);
+    --color-primary-default: var(--ruby-500);
+    --color-primary-hover: var(--ruby-600);
+    --color-primary-pressed: var(--ruby-700);
+    --color-primary-subtle: var(--ruby-100);
     --color-primary-disabled: var(--onyx-200);
 
-    --color-success-subtle:  var(--emerald-100);
+    --color-success-subtle: var(--emerald-100);
     --color-success-default: var(--emerald-500);
-    --color-success-solid:   var(--emerald-700);
+    --color-success-solid: var(--emerald-700);
 
-    --color-error-subtle:  var(--garnet-100);
+    --color-error-subtle: var(--garnet-100);
     --color-error-default: var(--garnet-500);
 
-    --color-warning-subtle:  var(--amber-100);
+    --color-warning-subtle: var(--amber-100);
     --color-warning-default: var(--amber-700);
 
-    --color-info-subtle:  var(--sapphire-100);
+    --color-info-subtle: var(--sapphire-100);
     --color-info-default: var(--sapphire-700);
 
     --color-backdrop: oklch(from var(--onyx-950) l c h / 0.6);
 
     /* A single soft accent halo — paired with an accent border on focus reads as
        one cohesive focus state, not a hard double ring. */
-    --shadow-focus:       0 0 0 3px oklch(from var(--color-primary-default) l c h / 0.20);
-    --shadow-focus-error: 0 0 0 3px oklch(from var(--color-error-default) l c h / 0.20);
+    --shadow-focus: 0 0 0 3px oklch(from var(--color-primary-default) l c h / 0.2);
+    --shadow-focus-error: 0 0 0 3px oklch(from var(--color-error-default) l c h / 0.2);
 
-    --type-label-xs-size:    var(--text-11);
-    --type-label-xs-weight:  var(--weight-medium);
+    --type-label-xs-size: var(--text-11);
+    --type-label-xs-weight: var(--weight-medium);
     --type-label-xs-tracking: var(--tracking-wide);
 
-    --type-label-sm-size:    var(--text-12);
-    --type-label-sm-weight:  var(--weight-medium);
+    --type-label-sm-size: var(--text-12);
+    --type-label-sm-weight: var(--weight-medium);
     --type-label-sm-tracking: var(--tracking-wide);
 
-    --type-label-size:       var(--text-13);
-    --type-label-weight:     var(--weight-medium);
-    --type-label-tracking:   var(--tracking-normal);
+    --type-label-size: var(--text-13);
+    --type-label-weight: var(--weight-medium);
+    --type-label-tracking: var(--tracking-normal);
 
-    --type-body-sm-size:     var(--text-13);
-    --type-body-sm-weight:   var(--weight-regular);
-    --type-body-sm-leading:  var(--leading-relaxed);
+    --type-body-sm-size: var(--text-13);
+    --type-body-sm-weight: var(--weight-regular);
+    --type-body-sm-leading: var(--leading-relaxed);
 
-    --type-body-size:        var(--text-14);
-    --type-body-weight:      var(--weight-regular);
-    --type-body-leading:     var(--leading-relaxed);
+    --type-body-size: var(--text-14);
+    --type-body-weight: var(--weight-regular);
+    --type-body-leading: var(--leading-relaxed);
 
-    --type-heading-sm-size:    var(--text-16);
-    --type-heading-sm-weight:  var(--weight-semibold);
+    --type-heading-sm-size: var(--text-16);
+    --type-heading-sm-weight: var(--weight-semibold);
     --type-heading-sm-tracking: var(--tracking-tight);
 
-    --type-heading-size:       var(--text-20);
-    --type-heading-weight:     var(--weight-bold);
-    --type-heading-tracking:   var(--tracking-tight);
+    --type-heading-size: var(--text-20);
+    --type-heading-weight: var(--weight-bold);
+    --type-heading-tracking: var(--tracking-tight);
 
     /* Page/section titles — a step above headings. */
-    --type-title-size:         var(--text-24);
-    --type-title-weight:       var(--weight-bold);
-    --type-title-tracking:     var(--tracking-tight);
+    --type-title-size: var(--text-24);
+    --type-title-weight: var(--weight-bold);
+    --type-title-tracking: var(--tracking-tight);
   }
 }

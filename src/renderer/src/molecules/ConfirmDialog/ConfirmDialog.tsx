@@ -35,8 +35,12 @@ export function ConfirmDialog({
       chrome="plain"
       footer={
         <>
-          <Button variant="ghost" size="md" onClick={onCancel}>Cancel</Button>
-          <Button variant="danger" size="md" onClick={onConfirm}>{confirmLabel}</Button>
+          <Button variant="ghost" size="md" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="danger" size="md" onClick={onConfirm}>
+            {confirmLabel}
+          </Button>
         </>
       }
     >
