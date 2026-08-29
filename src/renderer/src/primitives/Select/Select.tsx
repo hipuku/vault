@@ -1,9 +1,10 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../Popover/Popover'
 import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
+import { MenuOption } from '../../atoms/MenuOption/MenuOption'
 import styles from './Select.module.css'
 
 export interface SelectOption<K extends string> {
@@ -58,17 +59,14 @@ export function Select<K extends string>({
       {open && (
         <Popover align={align === 'right' ? 'right' : 'stretch'} pad="tight" role="listbox">
           {options.map(o => (
-            <button
+            <MenuOption
               key={o.key}
-              type="button"
               role="option"
               aria-selected={o.key === value}
-              className={styles.option}
+              label={o.label}
+              selected={o.key === value}
               onClick={() => { setOpen(false); onChange(o.key) }}
-            >
-              <span className={styles.optionLabel}>{o.label}</span>
-              {o.key === value && <FontAwesomeIcon icon={faCheck} className={styles.optionCheck} />}
-            </button>
+            />
           ))}
         </Popover>
       )}

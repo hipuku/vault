@@ -1,9 +1,10 @@
 import React, { useState, useRef, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import type { Tag } from '@shared/types'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../primitives/Popover/Popover'
+import { MenuOption } from '../../atoms/MenuOption/MenuOption'
 import styles from './TagSelect.module.css'
 
 interface TagSelectProps {
@@ -92,11 +93,13 @@ export function TagSelect({ allTags, selectedIds, onToggle, onCreateNew, single 
         <Popover align="stretch" pad="tight">
           <div className={styles.list}>
             {filtered.map(t => (
-              <button key={t.id} type="button" className={styles.option} onMouseDown={e => { e.preventDefault(); pick(t) }}>
-                <span className={styles.dot} style={{ background: t.colour }} />
-                <span className={styles.optionLabel}>{t.label}</span>
-                {selectedIds.has(t.id) && <FontAwesomeIcon icon={faCheck} className={styles.optionCheck} />}
-              </button>
+              <MenuOption
+                key={t.id}
+                label={t.label}
+                selected={selectedIds.has(t.id)}
+                leading={<span className={styles.dot} style={{ background: t.colour }} />}
+                onMouseDown={e => { e.preventDefault(); pick(t) }}
+              />
             ))}
             {filtered.length === 0 && (
               <p className={styles.noMatch}>No projects{q ? ` starting with “${query.trim()}”` : ''}.</p>
