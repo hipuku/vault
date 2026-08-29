@@ -37,7 +37,10 @@ export function analyseHueArc(midHexes: string[]): HueArcResult {
   })
   if (hues.length <= 1) return { totalAngle: 0, hues }
 
+  // All hues equal means every gap is 0, and 360 - 0 would report a monochrome
+  // palette as covering the whole wheel — the inverse of the truth.
   const sorted = [...hues].sort((a, b) => a - b)
+  if (sorted[0] === sorted[sorted.length - 1]) return { totalAngle: 0, hues }
   // largest gap in the circle determines coverage
   let maxGap = 0
   for (let i = 0; i < sorted.length; i++) {
@@ -51,6 +54,8 @@ export function analyseHueArc(midHexes: string[]): HueArcResult {
 
 /** Analyse the chroma distribution across the mid hexes. */
 export function analyseChroma(midHexes: string[]): ChromaResult {
+  // An empty list gave mean NaN and spread -Infinity, which then scored 'fair'.
+  if (midHexes.length === 0) return { rating: 'poor', mean: 0, min: 0, max: 0 }
   const chromas = midHexes.map(h => chroma(h).lch()[1])
   const mean = chromas.reduce((a, b) => a + b, 0) / chromas.length
   const min = Math.min(...chromas)

@@ -105,8 +105,17 @@ function expand(groups: HueGroup[]): SwatchInput[] {
   const out: SwatchInput[] = []
   groups.forEach((g, gi) => {
     const groupKey = `hue-${gi}`
-    const light = lchToGamutHex(STOP_L.light, g.C * 0.55, g.H)
-    const dark  = lchToGamutHex(STOP_L.dark,  g.C * 0.70, g.H)
+    // The mid stop is the seed verbatim, so the light/dark targets have to bracket it
+    // rather than sit at fixed lightnesses: a seed above L 88 (e.g. #fff2cc at 95.6)
+    // otherwise produced a "light" swatch darker than the default one.
+    const midL = chroma(g.midHex).lch()[0]
+    // Clamped to the mid at the extremes: a seed at L 100 has no lighter stop and one
+    // at L 0 has no darker one, so the triple is non-increasing rather than strictly
+    // decreasing there. Everywhere else the ±6 keeps the three visibly apart.
+    const lightL = Math.max(midL, Math.min(97, Math.max(STOP_L.light, midL + 6)))
+    const darkL = Math.min(midL, Math.max(3, Math.min(STOP_L.dark, midL - 6)))
+    const light = lchToGamutHex(lightL, g.C * 0.55, g.H)
+    const dark  = lchToGamutHex(darkL,  g.C * 0.70, g.H)
     out.push({ hex: light,    label: 'light', group_key: groupKey, colour_id: null,       sort_order: gi * 3 + 0 })
     out.push({ hex: g.midHex, label: '',      group_key: groupKey, colour_id: g.colourId, sort_order: gi * 3 + 1 })
     out.push({ hex: dark,     label: 'dark',  group_key: groupKey, colour_id: null,       sort_order: gi * 3 + 2 })
@@ -119,6 +128,9 @@ export function generateExpressiveSet(
   targetCount: number,
   strategy: FillStrategy,
 ): SwatchInput[] {
+  // Without this the three strategies fail three different ways on an empty list:
+  // two produce NaN hexes, one throws a TypeError on seeds[0].
+  if (seeds.length === 0) throw new Error('An expressive palette needs at least one seed colour.')
   const target = Math.max(seeds.length, Math.min(targetCount, MAX_HUE_GROUPS))
   let groups: HueGroup[]
   if (strategy === 'interpolate')   groups = fillInterpolate(seeds, target)

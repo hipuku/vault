@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import { lchToGamutHex } from './gamut'
 
 export interface LightnessScaleOptions {
   steps?: number
@@ -20,14 +21,15 @@ export function generateLightnessScale(
   const [, c, h] = base.lch()
 
   return Array.from({ length: steps }, (_, i) => {
-    const t = i / (steps - 1)
+    // steps === 1 would divide by zero, and NaN reaches chroma.lch as black.
+    const t = steps === 1 ? 0 : i / (steps - 1)
     const L = maxL - t * (maxL - minL)
     const cScale = 1 - Math.abs(t - 0.5) * 0.9
     const C = c * cScale
-    try {
-      return chroma.lch(L, C, isNaN(h) ? 0 : h).hex()
-    } catch {
-      return chroma.lch(L, 0, 0).hex()
-    }
+    // Via lchToGamutHex, not chroma.lch directly: chroma clamps RGB channels for an
+    // out-of-gamut request, which moves lightness as well as chroma and cost the light
+    // end of a saturated ramp ~5 L*. It never throws, so the try/catch this replaced
+    // was dead code.
+    return lchToGamutHex(L, C, h)
   })
 }

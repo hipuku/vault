@@ -1,5 +1,6 @@
 import chroma from 'chroma-js'
 import { generateLightnessScale } from './lightnessScale'
+import { lchToGamutHex } from './gamut'
 import type { RampName, SwatchInput } from '../types'
 
 const STEPS = 10
@@ -12,15 +13,21 @@ const SEMANTIC_HUE: Record<'success' | 'warning' | 'error', number> = {
   error:   30,
 }
 
+/** The floor is deliberate: a success/warning/error ramp has to read as green/amber/red
+ *  even when the seed is muted, so chroma is scaled from the seed but never allowed below
+ *  45. The consequence is that a near-grey seed yields saturated semantic ramps that do
+ *  not visibly derive from it — only `primary` and `neutral` track a grey seed closely. */
+const SEMANTIC_CHROMA_FLOOR = 45
+
 function rotateHue(seedHex: string, targetHue: number, chromaScale: number): string {
   const [L, C] = chroma(seedHex).lch()
-  const usableC = Math.max(C * chromaScale, 45)
-  return chroma.lch(L, usableC, targetHue).hex()
+  const usableC = Math.max(C * chromaScale, SEMANTIC_CHROMA_FLOOR)
+  return lchToGamutHex(L, usableC, targetHue)
 }
 
 function toNeutral(seedHex: string): string {
   const [L, , H] = chroma(seedHex).lch()
-  return chroma.lch(L, 6, isNaN(H) ? 0 : H).hex()
+  return lchToGamutHex(L, 6, H)
 }
 
 function rampHexes(name: RampName, seedHex: string): string[] {
