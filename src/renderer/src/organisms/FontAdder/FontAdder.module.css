@@ -198,3 +198,14 @@
   font-size: var(--text-12);
   color: var(--color-warning-default);
 }
+
+/* Adds used to close the dialog whether or not the write succeeded. */
+.saveError {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--type-body-sm-size);
+  color: var(--color-error-default);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -257,3 +257,14 @@
   color: var(--color-ink-tertiary);
   flex-shrink: 0;
 }
+
+/* A failed write used to close the dialog silently. */
+.saveError {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--type-body-sm-size);
+  color: var(--color-error-default);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

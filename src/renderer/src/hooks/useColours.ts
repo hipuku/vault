@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLoadState } from './useLoadState'
 import type { Colour } from '@shared/types'
 
 export function useColours(): {
@@ -8,12 +9,14 @@ export function useColours(): {
   setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
   removeColour: (id: number) => Promise<void>
   refresh: () => Promise<void>
+  loadError: string | null
 } {
+  const { loadError, guard } = useLoadState()
   const [colours, setColours] = useState<Colour[]>([])
 
   const refresh = useCallback(async (): Promise<void> => {
-    setColours(await window.api.colour.list())
-  }, [])
+    await guard(() => window.api.colour.list(), setColours)
+  }, [guard])
 
   useEffect(() => { refresh() }, [refresh])
 
@@ -38,5 +41,5 @@ export function useColours(): {
     setColours(prev => prev.filter(c => c.id !== id))
   }, [])
 
-  return { colours, addColour, renameColour, setFavourite, removeColour, refresh }
+  return { colours, addColour, renameColour, setFavourite, removeColour, refresh, loadError }
 }

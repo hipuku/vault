@@ -30,7 +30,7 @@ interface ColorsPageProps {
 }
 
 export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: ColorsPageProps): React.ReactElement | null {
-  const { colours, addColour, renameColour, setFavourite, removeColour } = useColours()
+  const { colours, addColour, renameColour, setFavourite, removeColour, loadError } = useColours()
   const [favOnly, setFavOnly] = useState(false)
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [addOpen, setAddOpen] = useState(false)
@@ -174,7 +174,12 @@ export function ColorsPage({ activeTagId, embedded, openCreate, onCreateConsumed
         }
       />
       <div className="scroll-area">
-        {colours.length === 0 ? (
+        {loadError ? (
+          <EmptyState
+            title="Couldn’t open your library"
+            description={loadError}
+          />
+        ) : colours.length === 0 ? (
           <EmptyState
             title="Add your first colour"
             description="Add by hex or extract from an image. We’ll suggest a name, check WCAG contrast, and flag near-duplicates."

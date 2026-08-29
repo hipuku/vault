@@ -21,8 +21,9 @@ interface AddColorModalProps {
   open: boolean
   onClose: () => void
   library: Colour[]
-  onAdd: (hex: string, name: string) => void
-  onAddMany: (list: Array<{ hex: string; name: string }>) => void
+  /** May be async — the modal awaits it and only closes once the write succeeds. */
+  onAdd: (hex: string, name: string) => unknown
+  onAddMany: (list: Array<{ hex: string; name: string }>) => unknown
   /** Locks the colour to a fixed hex (no picker, no image tab) — e.g. promoting a
    *  palette swatch to the library. */
   fixedHex?: string
@@ -46,6 +47,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
   const [rows, setRows] = useState<ImageRow[]>([])
   const [editingHex, setEditingHex] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  // The write can fail — a duplicate name, a locked database. Closing on the next line
+  // meant the colour silently never appeared.
+  const [busy, setBusy] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -61,6 +66,7 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
     if (!open) {
       setTab('hex'); setText(''); setChosenName(null); closePicker()
       setPreview(null); setRows([]); setEditingHex(null); setLoading(false); setDragOver(false)
+      setBusy(false); setSaveError(null)
     } else if (fixedHex) {
       setTab('hex'); setText(fixedHex)
     }
@@ -69,10 +75,18 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
   const dupName = chosenName ? existingNames.has(chosenName.toLowerCase()) : false
   const suggestion = result && dupName ? firstUnusedName(result, existingNames) : null
 
-  function addHex(): void {
-    if (!hex || !chosenName) return
-    onAdd(hex, chosenName)
-    onClose()
+  async function addHex(): Promise<void> {
+    if (!hex || !chosenName || busy) return
+    setBusy(true)
+    setSaveError(null)
+    try {
+      await onAdd(hex, chosenName)
+      onClose()
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setBusy(false)
+    }
   }
 
   async function handleFile(file: File): Promise<void> {
@@ -97,9 +111,18 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
     setRows(prev => prev.map(r => r.hex === hex ? { ...r, name } : r))
   }
 
-  function addImage(): void {
-    onAddMany(rows.filter(r => r.included).map(r => ({ hex: r.hex, name: r.name })))
-    onClose()
+  async function addImage(): Promise<void> {
+    if (busy) return
+    setBusy(true)
+    setSaveError(null)
+    try {
+      await onAddMany(rows.filter(r => r.included).map(r => ({ hex: r.hex, name: r.name })))
+      onClose()
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setBusy(false)
+    }
   }
 
   const includedCount = rows.filter(r => r.included).length
@@ -200,7 +223,10 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
 
             <div className={styles.footer}>
               <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
-              <Button variant="primary" size="md" onClick={addHex} disabled={!hex}>{submitLabel ?? 'Add colour'}</Button>
+              {saveError && <span className={styles.saveError} title={saveError}>{saveError}</span>}
+              <Button variant="primary" size="md" onClick={addHex} disabled={!hex || busy}>
+                {busy ? 'Saving…' : (submitLabel ?? 'Add colour')}
+              </Button>
             </div>
           </div>
         ) : (
@@ -291,7 +317,8 @@ export function AddColorModal({ open, onClose, library, onAdd, onAddMany, fixedH
               {preview && <Button variant="secondary" size="md" onClick={() => { setPreview(null); setRows([]) }}>Choose another</Button>}
               <div className={styles.footerRight}>
                 <Button variant="ghost" size="md" onClick={onClose}>Cancel</Button>
-                <Button variant="primary" size="md" onClick={addImage} disabled={includedCount === 0}>
+                {saveError && <span className={styles.saveError} title={saveError}>{saveError}</span>}
+                <Button variant="primary" size="md" onClick={addImage} disabled={includedCount === 0 || busy}>
                   Add {includedCount > 0 ? includedCount : ''} colour{includedCount === 1 ? '' : 's'}
                 </Button>
               </div>

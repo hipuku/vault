@@ -29,7 +29,7 @@ interface FontsPageProps {
 }
 
 export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed, openItemId, onItemOpened }: FontsPageProps): React.ReactElement | null {
-  const { fonts, addGoogle, addLocal, setFavourite, removeFont } = useFonts()
+  const { fonts, addGoogle, addLocal, setFavourite, removeFont, loadError } = useFonts()
   const [previewText, setPreviewText] = useState(DEFAULT_PREVIEW)
   const [previewSize, setPreviewSize] = useState(20)
   const [favOnly, setFavOnly] = useState(false)
@@ -154,7 +154,12 @@ export function FontsPage({ activeTagId, embedded, openCreate, onCreateConsumed,
       />
 
       <div className="scroll-area">
-        {fonts.length === 0 ? (
+        {loadError ? (
+          <EmptyState
+            title="Couldn’t open your library"
+            description={loadError}
+          />
+        ) : fonts.length === 0 ? (
           <EmptyState
             title="Add a font from Google Fonts or a local file"
             description="Preview at any size, then save it to your library."

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLoadState } from './useLoadState'
 import type { TypeScale, TypeScaleStep, TypeScaleStepInput } from '@shared/types'
 
 export function useTypeScales(): {
@@ -8,18 +9,26 @@ export function useTypeScales(): {
   rename: (id: number, name: string) => Promise<void>
   remove: (id: number) => Promise<void>
   refresh: () => Promise<void>
-} {
+  loadError: string | null} {
+  const { loadError, guard } = useLoadState()
   const [scales, setScales] = useState<TypeScale[]>([])
   const [stepsByScale, setStepsByScale] = useState<Record<number, TypeScaleStep[]>>({})
 
   const refresh = useCallback(async (): Promise<void> => {
-    const list = await window.api.typeScale.list()
-    setScales(list)
-    const entries = await Promise.all(
-      list.map(async s => [s.id, await window.api.typeScaleStep.list(s.id)] as const)
+    await guard(
+      async () => {
+        const list = await window.api.typeScale.list()
+        const entries = await Promise.all(
+          list.map(async s => [s.id, await window.api.typeScaleStep.list(s.id)] as const)
+        )
+        return { list, entries }
+      },
+      ({ list, entries }) => {
+        setScales(list)
+        setStepsByScale(Object.fromEntries(entries))
+      },
     )
-    setStepsByScale(Object.fromEntries(entries))
-  }, [])
+  }, [guard])
 
   useEffect(() => { refresh() }, [refresh])
 
@@ -39,5 +48,5 @@ export function useTypeScales(): {
     setScales(prev => prev.filter(s => s.id !== id))
   }, [])
 
-  return { scales, stepsByScale, create, rename, remove, refresh }
+  return { scales, stepsByScale, create, rename, remove, refresh, loadError }
 }

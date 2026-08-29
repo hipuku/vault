@@ -24,7 +24,7 @@ interface TypeScalesPageProps {
 }
 
 export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSignal, onCreateConsumed }: TypeScalesPageProps): React.ReactElement | null {
-  const { scales, stepsByScale, create, rename, remove, refresh } = useTypeScales()
+  const { scales, stepsByScale, create, rename, remove, refresh, loadError } = useTypeScales()
   const { fonts } = useFonts()
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [view, setView] = useState<'list' | 'create' | 'view'>('list')
@@ -149,7 +149,12 @@ export function TypeScalesPage({ activeTagId, embedded, openCreate: openCreateSi
         }
       />
       <div className="scroll-area">
-        {scales.length === 0 ? (
+        {loadError ? (
+          <EmptyState
+            title="Couldn’t open your library"
+            description={loadError}
+          />
+        ) : scales.length === 0 ? (
           <EmptyState
             title="Pick a font from your library to start"
             description="Generate a Product or Web/Markup scale with a ratio preset, then fine-tune each step."

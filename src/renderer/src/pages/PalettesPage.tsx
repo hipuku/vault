@@ -25,8 +25,7 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
   const {
     palettes, swatchesByPalette,
     createTonal, createExpressive,
-    rename, remove, promoteSwatch, refresh,
-  } = usePalettes()
+    rename, remove, promoteSwatch, refresh, loadError } = usePalettes()
 
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [view, setView] = useState<'list' | 'create' | 'view'>('list')
@@ -157,7 +156,12 @@ export function PalettesPage({ activeTagId, embedded, openCreate: openCreateSign
         }
       />
       <div className="scroll-area">
-        {palettes.length === 0 ? (
+        {loadError ? (
+          <EmptyState
+            title="Couldn’t open your library"
+            description={loadError}
+          />
+        ) : palettes.length === 0 ? (
           <EmptyState
             title="Build a tonal system or expressive set"
             description="Generate a 10-step perceptual ramp, or compose multi-hue palettes from your library colours."

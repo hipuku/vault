@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLoadState } from './useLoadState'
 import type { Colour, Palette, RampName, FillStrategy, Swatch, Tag } from '@shared/types'
 
 interface PaletteData {
@@ -14,21 +15,29 @@ export function usePalettes(): PaletteData & {
   remove: (id: number) => Promise<void>
   promoteSwatch: (paletteId: number, swatchId: number, name: string, onColoursRefresh?: () => void) => Promise<Colour>
   refresh: () => Promise<void>
-} {
+  loadError: string | null} {
+  const { loadError, guard } = useLoadState()
   const [palettes, setPalettes] = useState<Palette[]>([])
   const [swatchesByPalette, setSwatches] = useState<Record<number, Swatch[]>>({})
   const [tagsByPalette, setTags] = useState<Record<number, Tag[]>>({})
 
   const refresh = useCallback(async (): Promise<void> => {
-    const list = await window.api.palette.list()
-    setPalettes(list)
-    const [sw, tg] = await Promise.all([
-      Promise.all(list.map(async p => [p.id, await window.api.swatch.list(p.id)] as const)),
-      Promise.all(list.map(async p => [p.id, await window.api.tag.listForAsset('palette', p.id)] as const)),
-    ])
-    setSwatches(Object.fromEntries(sw))
-    setTags(Object.fromEntries(tg))
-  }, [])
+    await guard(
+      async () => {
+        const list = await window.api.palette.list()
+        const [sw, tg] = await Promise.all([
+          Promise.all(list.map(async p => [p.id, await window.api.swatch.list(p.id)] as const)),
+          Promise.all(list.map(async p => [p.id, await window.api.tag.listForAsset('palette', p.id)] as const)),
+        ])
+        return { list, sw, tg }
+      },
+      ({ list, sw, tg }) => {
+        setPalettes(list)
+        setSwatches(Object.fromEntries(sw))
+        setTags(Object.fromEntries(tg))
+      },
+    )
+  }, [guard])
 
   useEffect(() => { refresh() }, [refresh])
 
@@ -66,6 +75,6 @@ export function usePalettes(): PaletteData & {
 
   return {
     palettes, swatchesByPalette, tagsByPalette,
-    createTonal, createExpressive, rename, remove, promoteSwatch, refresh,
+    createTonal, createExpressive, rename, remove, promoteSwatch, refresh, loadError,
   }
 }

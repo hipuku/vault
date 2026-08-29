@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLoadState } from './useLoadState'
 import type { Font, GoogleFontMeta, LocalFontFile } from '@shared/types'
 import { ensureFontLoaded } from '../lib/fontLoader'
 
@@ -9,14 +10,16 @@ export function useFonts(): {
   setFavourite: (id: number, favourite: 0 | 1) => Promise<void>
   removeFont: (id: number) => Promise<void>
   refresh: () => Promise<void>
-} {
+  loadError: string | null} {
+  const { loadError, guard } = useLoadState()
   const [fonts, setFonts] = useState<Font[]>([])
 
   const refresh = useCallback(async (): Promise<void> => {
-    const list = await window.api.font.list()
-    setFonts(list)
-    list.forEach(f => { void ensureFontLoaded(f) })
-  }, [])
+    await guard(() => window.api.font.list(), list => {
+      setFonts(list)
+      list.forEach(f => { void ensureFontLoaded(f) })
+    })
+  }, [guard])
 
   useEffect(() => { refresh() }, [refresh])
 
@@ -44,5 +47,5 @@ export function useFonts(): {
     setFonts(prev => prev.filter(f => f.id !== id))
   }, [])
 
-  return { fonts, addGoogle, addLocal, setFavourite, removeFont, refresh }
+  return { fonts, addGoogle, addLocal, setFavourite, removeFont, refresh, loadError }
 }

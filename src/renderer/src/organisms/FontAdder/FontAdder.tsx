@@ -17,8 +17,10 @@ interface FontAdderProps {
   open: boolean
   onClose: () => void
   existing: Set<string>
-  onAddGoogle: (meta: GoogleFontMeta) => void
-  onAddLocal: (family: string, files: LocalFontFile[]) => void
+  /** Both may be async — the adder awaits them and surfaces a failure rather than
+   *  closing as though it worked. */
+  onAddGoogle: (meta: GoogleFontMeta) => unknown
+  onAddLocal: (family: string, files: LocalFontFile[]) => unknown
 }
 
 let googleCache: GoogleFontMeta[] | null = null
@@ -85,6 +87,24 @@ function GoogleResult({ meta, added, onAdd }: { meta: GoogleFontMeta; added: boo
 }
 
 export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: FontAdderProps): React.ReactElement | null {
+  const [busy, setBusy] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+
+  /** Every add goes through here: await it, close only on success, show why on failure. */
+  async function run(write: () => unknown, closeAfter = true): Promise<void> {
+    if (busy) return
+    setBusy(true)
+    setSaveError(null)
+    try {
+      await write()
+      if (closeAfter) onClose()
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   const [tab, setTab] = useState<'google' | 'installed' | 'local'>('google')
   const [list, setList] = useState<GoogleFontMeta[] | null>(googleCache)
   const [query, setQuery] = useState('')
@@ -113,7 +133,7 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
   }, [open, tab, installed])
 
   useEffect(() => {
-    if (!open) { setTab('google'); setQuery(''); setCategory('all'); setInstalledQuery(''); setLocalRows([]); setLocalFamily(''); setDragOver(false) }
+    if (!open) { setBusy(false); setSaveError(null); setTab('google'); setQuery(''); setCategory('all'); setInstalledQuery(''); setLocalRows([]); setLocalFamily(''); setDragOver(false) }
   }, [open])
 
   const installedResults = useMemo(() => {
@@ -189,7 +209,7 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
                 <p className={styles.empty}>No families match your filters.</p>
               ) : (
                 results.map(meta => (
-                  <GoogleResult key={meta.family} meta={meta} added={existing.has(meta.family)} onAdd={() => onAddGoogle(meta)} />
+                  <GoogleResult key={meta.family} meta={meta} added={existing.has(meta.family)} onAdd={() => run(() => onAddGoogle(meta), false)} />
                 ))
               )}
             </div>
@@ -214,7 +234,7 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
                     {existing.has(fam.family) ? (
                       <span className={styles.added}><FontAwesomeIcon icon={faCheck} /> Added</span>
                     ) : (
-                      <Button size="md" variant="secondary" onClick={() => onAddLocal(fam.family, facesToLocal(fam))}>Add</Button>
+                      <Button size="md" variant="secondary" onClick={() => run(() => onAddLocal(fam.family, facesToLocal(fam)), false)}>Add</Button>
                     )}
                   </div>
                 ))
@@ -289,12 +309,13 @@ export function FontAdder({ open, onClose, existing, onAddGoogle, onAddLocal }: 
 
         {tab === 'local' && localRows.length > 0 && (
           <div className={styles.footer}>
+            {saveError && <span className={styles.saveError} title={saveError}>{saveError}</span>}
             <Button variant="ghost" size="md" onClick={() => { setLocalRows([]); setLocalFamily('') }}>Clear</Button>
             <Button
               variant="primary"
               size="md"
               disabled={!localFamily.trim()}
-              onClick={() => { onAddLocal(localFamily.trim(), localRows.map(r => ({ path: r.path, weight: r.weight, style: r.style }))); onClose() }}
+              onClick={() => run(() => onAddLocal(localFamily.trim(), localRows.map(r => ({ path: r.path, weight: r.weight, style: r.style }))))}
             >
               Add font · {localRows.length} file{localRows.length === 1 ? '' : 's'}
             </Button>
