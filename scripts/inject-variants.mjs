@@ -43,7 +43,7 @@ for (const [heading, base] of Object.entries(map)) {
   if (!rows.length && !states.length) t = '      <p class="desc"><i>No variants — a single frame.</i></p>\n'
 
   const n = frameCount(props, states)
-  const block = `    <div class="vars">\n      <h3>Figma component set — every variant</h3>\n${t}      <p class="frames">${n} frame${n === 1 ? '' : 's'} in the set.</p>\n    </div>\n  `
+  const block = `    <div class="vars">\n      <h3>Figma component set — every variant</h3>\n${t}      <p class="frames">Up to ${n} frame${n === 1 ? '' : 's'} — the axes multiplied. Where a state matrix follows, it shows how many actually differ.</p>\n    </div>\n  `
 
   const i = html.indexOf(`<h2>${heading}`)
   if (i === -1) { console.log('  no heading:', heading); continue }

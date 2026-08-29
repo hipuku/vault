@@ -17,3 +17,20 @@ drift from the code — add a `variant` and the table grows a column on its own.
 
 Re-running is safe: a section that already carries a matrix is skipped, so clear the old blocks
 first if you want them rebuilt.
+
+## `inject-matrix.mjs` — every variant × state, rendered
+
+The variant table names the axes; it does not tell you what `secondary + hover` looks like.
+This walks the stylesheet's cascade for each combination and writes a grid: a rendered chip
+carrying the real values, the values themselves, and a note where a state is identical to the
+default and therefore needs no frame of its own.
+
+```bash
+REF=../vault-figma-reference node scripts/inject-matrix.mjs atoms.html spec.json
+```
+
+Two things it gets right that a naive read does not. It sorts matched rules by **specificity**
+before source order, so `.trigger:focus-visible` correctly beats a later `.block` — without that
+the matrix showed a focus ring the browser never renders. And it marks combinations that do not
+differ from the default: Button multiplies out to 32 frames but only **13** are distinct, because
+`active` is styled for `primary` alone.
