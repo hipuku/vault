@@ -9,16 +9,20 @@ function insertPalette(
   swatches: SwatchInput[],
 ): Palette {
   const db = getDb()
-  const { lastInsertRowid } = db
-    .prepare('INSERT INTO palettes (name, kind, base_hex, gen_params) VALUES (?, ?, ?, ?)')
-    .run(name, kind, baseHex, JSON.stringify(genParams))
-  const id = Number(lastInsertRowid)
+  const insertPaletteRow = db.prepare(
+    'INSERT INTO palettes (name, kind, base_hex, gen_params) VALUES (?, ?, ?, ?)',
+  )
   const ins = db.prepare(
     `INSERT INTO swatches (palette_id, hex, label, group_key, colour_id, sort_order)
      VALUES (?, ?, ?, ?, ?, ?)`
   )
-  db.transaction((list: SwatchInput[]) => {
-    for (const s of list) ins.run(id, s.hex, s.label, s.group_key, s.colour_id, s.sort_order)
+
+  // Palette row and swatches in one transaction — see the note in type-scale.ts.
+  const id = db.transaction((list: SwatchInput[]) => {
+    const { lastInsertRowid } = insertPaletteRow.run(name, kind, baseHex, JSON.stringify(genParams))
+    const paletteId = Number(lastInsertRowid)
+    for (const s of list) ins.run(paletteId, s.hex, s.label, s.group_key, s.colour_id, s.sort_order)
+    return paletteId
   })(swatches)
   return db.prepare('SELECT * FROM palettes WHERE id = ?').get(id) as Palette
 }
@@ -64,10 +68,17 @@ export function listSwatches(paletteId: number): Swatch[] {
 
 export function promoteSwatch(swatchId: number, name: string): Colour {
   const db = getDb()
-  const sw = db.prepare('SELECT * FROM swatches WHERE id = ?').get(swatchId) as Swatch
-  const { lastInsertRowid } = db
-    .prepare('INSERT INTO colours (hex, name) VALUES (?, ?)').run(sw.hex, name)
-  const colourId = Number(lastInsertRowid)
-  db.prepare('UPDATE swatches SET colour_id = ? WHERE id = ?').run(colourId, swatchId)
+  // One transaction, and a real check on the swatch: an unknown id used to reach the
+  // INSERT as `undefined.hex` and surface a TypeError to the user, and a failure
+  // between the insert and the update left an orphan colour no swatch pointed at.
+  const colourId = db.transaction(() => {
+    const sw = db.prepare('SELECT * FROM swatches WHERE id = ?').get(swatchId) as Swatch | undefined
+    if (!sw) throw new Error(`No swatch with id ${swatchId}.`)
+    const { lastInsertRowid } = db
+      .prepare('INSERT INTO colours (hex, name) VALUES (?, ?)').run(sw.hex, name)
+    const id = Number(lastInsertRowid)
+    db.prepare('UPDATE swatches SET colour_id = ? WHERE id = ?').run(id, swatchId)
+    return id
+  })()
   return db.prepare('SELECT * FROM colours WHERE id = ?').get(colourId) as Colour
 }

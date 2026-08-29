@@ -10,24 +10,28 @@ export function createTypeScale(
   steps: TypeScaleStepInput[]
 ): TypeScale {
   const db = getDb()
-  const { lastInsertRowid } = db
-    .prepare(`
-      INSERT INTO type_scales (name, heading_font_id, body_font_id, base_size, ratio)
-      VALUES (?, ?, ?, ?, ?)
-    `)
-    .run(name, headingFontId, bodyFontId, baseSize, ratio)
-  const id = Number(lastInsertRowid)
-
+  const insertScale = db.prepare(`
+    INSERT INTO type_scales (name, heading_font_id, body_font_id, base_size, ratio)
+    VALUES (?, ?, ?, ?, ?)
+  `)
   const insertStep = db.prepare(`
     INSERT INTO type_scale_steps
       (type_scale_id, step_name, size, weight, line_height, letter_spacing, sort_order)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `)
-  db.transaction(() => {
-    steps.forEach(s => {
-      insertStep.run(id, s.step_name, s.size, s.weight, s.line_height, s.letter_spacing, s.sort_order)
-    })
-  })()
+
+  // The scale row and its steps go in one transaction. Inserting the parent first and
+  // wrapping only the children left a committed scale with zero steps whenever a step
+  // violated a constraint — and there is no update handler, so the user could not
+  // repair it.
+  const id = db.transaction((list: TypeScaleStepInput[]) => {
+    const { lastInsertRowid } = insertScale.run(name, headingFontId, bodyFontId, baseSize, ratio)
+    const scaleId = Number(lastInsertRowid)
+    for (const s of list) {
+      insertStep.run(scaleId, s.step_name, s.size, s.weight, s.line_height, s.letter_spacing, s.sort_order)
+    }
+    return scaleId
+  })(steps)
 
   return db.prepare('SELECT * FROM type_scales WHERE id = ?').get(id) as TypeScale
 }
