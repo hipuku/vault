@@ -1,19 +1,19 @@
 # scripts
 
-## `inject-specs.mjs` — resolved values for the Figma reference
+## `inject-variants.mjs` — the variant matrix for the Figma reference
 
-The reference pages in `vault-figma-reference/` list which tokens a component uses. That is not
-enough to build it in Figma, where you type actual numbers. These scripts read the real
-stylesheets and emit a table of **property · token · resolved value** per rule.
-
-Values are resolved through the whole `var()` chain, `rem` is converted to px at a 16px root, and
-OKLCH becomes hex — or `rgba()` where the colour carries alpha, since Figma takes opacity
-separately. Relative colour syntax (`oklch(from … l c h / .2)`, used by the focus ring) is
-resolved too.
+Reads each component's props interface and stylesheet, and writes a table into the reference
+page: every property, its type, its possible values and its default — plus a `state` axis built
+from the pseudo-classes the CSS actually styles, and a count of how many frames the component set
+needs.
 
 ```bash
-REF=../vault-figma-reference node scripts/inject-specs.mjs atoms.html '{"1 · Button":"src/renderer/src/atoms/Button/Button.module.css"}'
+REF=../vault-figma-reference node scripts/inject-variants.mjs atoms.html \
+  '{"1 · Button":"src/renderer/src/atoms/Button/Button"}'
 ```
 
-Re-run it after a token change and the reference stops drifting from the code — which is the
-whole reason it exists.
+The value is that it is generated. Re-run it after changing a prop union and the reference cannot
+drift from the code — add a `variant` and the table grows a column on its own.
+
+Re-running is safe: a section that already carries a matrix is skipped, so clear the old blocks
+first if you want them rebuilt.

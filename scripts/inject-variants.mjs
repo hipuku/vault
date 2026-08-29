@@ -1,0 +1,56 @@
+import fs from 'fs'
+import { variantsOf, statesOf, frameCount } from './variants.mjs'
+
+const REF = process.env.REF
+const page = process.argv[2]
+const map = JSON.parse(process.argv[3])
+let html = fs.readFileSync(`${REF}/${page}`, 'utf8')
+
+const STYLE = `
+/* ── variant matrix ────────────────────────────────────────────────────── */
+.vars { margin-top: var(--space-4); border-top: 1px dashed var(--color-border-default); padding-top: var(--space-4); }
+.vars > h3 { font-size: var(--text-11); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-tertiary); margin: 0 0 var(--space-2); }
+.vartbl { width: 100%; border-collapse: collapse; font-size: var(--text-12); }
+.vartbl th { text-align: left; font-size: var(--text-11); text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-ink-tertiary); font-weight: var(--weight-semibold); padding: 0 8px 4px 0; border-bottom: 1px solid var(--color-border-default); }
+.vartbl td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+.vartbl td.k { font-family: var(--font-mono); font-size: var(--text-11); color: var(--color-primary-default); white-space: nowrap; }
+.vartbl td.kind { color: var(--color-ink-tertiary); font-size: var(--text-11); white-space: nowrap; }
+.vartbl td.vals code { background: var(--color-surface-sunken); padding: 1px 6px; border-radius: var(--radius-sm); margin-right: 4px; display: inline-block; font-size: var(--text-11); }
+.vartbl td.def { font-family: var(--font-mono); font-size: var(--text-11); color: var(--color-ink-secondary); white-space: nowrap; }
+.frames { margin-top: var(--space-2); font-size: var(--text-11); color: var(--color-ink-tertiary); }
+`
+if (!html.includes('variant matrix')) html = html.replace('</style>', STYLE + '</style>')
+
+const KIND = { variant: 'variant', boolean: 'boolean', text: 'text', slot: 'instance swap', event: '—', other: '—' }
+
+let done = 0
+for (const [heading, base] of Object.entries(map)) {
+  const tsx = `${base}.tsx`, css = `${base}.module.css`
+  if (!fs.existsSync(tsx)) { console.log('  no tsx:', heading); continue }
+  const { props } = variantsOf(tsx)
+  const states = statesOf(css)
+  const rows = props.filter(p => p.kind !== 'event' && p.kind !== 'other')
+
+  let t = '      <table class="vartbl"><thead><tr><th>Property</th><th>Type</th><th>Values</th><th>Default</th></tr></thead><tbody>\n'
+  for (const p of rows) {
+    const vals = p.values ? p.values.map(v => `<code>${v}</code>`).join('')
+      : p.kind === 'slot' ? '<i>any component</i>' : '<i>free text</i>'
+    t += `        <tr><td class="k">${p.prop}</td><td class="kind">${KIND[p.kind]}</td><td class="vals">${vals}</td><td class="def">${p.default ?? '—'}</td></tr>\n`
+  }
+  if (states.length)
+    t += `        <tr><td class="k">state</td><td class="kind">variant</td><td class="vals"><code>default</code>${states.map(s => `<code>${s}</code>`).join('')}</td><td class="def">default</td></tr>\n`
+  t += '      </tbody></table>\n'
+  if (!rows.length && !states.length) t = '      <p class="desc"><i>No variants — a single frame.</i></p>\n'
+
+  const n = frameCount(props, states)
+  const block = `    <div class="vars">\n      <h3>Figma component set — every variant</h3>\n${t}      <p class="frames">${n} frame${n === 1 ? '' : 's'} in the set.</p>\n    </div>\n  `
+
+  const i = html.indexOf(`<h2>${heading}`)
+  if (i === -1) { console.log('  no heading:', heading); continue }
+  const secEnd = html.indexOf('</section>', i)
+  if (html.slice(i, secEnd).includes('class="vars"')) { console.log('  already:', heading); continue }
+  html = html.slice(0, secEnd) + block + html.slice(secEnd)
+  done++
+}
+fs.writeFileSync(`${REF}/${page}`, html)
+console.log(`${done} sections given a variant matrix`)
