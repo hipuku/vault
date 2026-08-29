@@ -250,7 +250,9 @@ one below it. Nothing points upward.
   into rows, so there's no schema cost and the "kind" is recoverable from the step names.
 - **Units are a reading concern, decoupled from storage.** Sizes persist in px, line-heights as
   unitless multipliers, tracking in em; the viewer converts live (px/rem/pt · unitless/px/% ·
-  em/px/%) via one popover, and export captures whatever's selected.
+  em/px/%) via one popover, and export captures whatever's selected — with one exception:
+  `letter-spacing` takes no percentage in CSS, so a tracking reading of `-2%` exports as
+  `-0.02em`. The viewer keeps the percentage because that is how type is discussed.
 
 ### Interaction
 - **Four sections, not tabs.** Colours / Fonts / Palettes / Type scales are peers in a sidebar,

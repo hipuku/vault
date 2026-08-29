@@ -52,12 +52,25 @@ export function formatLineHeight(value: string, sizePx: number, unit: LineHeight
   }
 }
 
-export function formatTracking(value: string, sizePx: number, unit: TrackingUnit): string {
+/**
+ * @param forCss  emit something a stylesheet accepts. `letter-spacing` takes no
+ *                percentage, so the % reading — which is how type is discussed, and
+ *                what Figma shows — is converted back to em on the way out. Without
+ *                this the exports carried `letter-spacing: 8%`, which every browser
+ *                silently drops.
+ */
+export function formatTracking(
+  value: string,
+  sizePx: number,
+  unit: TrackingUnit,
+  forCss = false,
+): string {
   const em = parseFloat(value) || 0 // '-0.02em' → -0.02, '0' → 0
+  if (em === 0) return '0'
   switch (unit) {
-    case 'em': return em === 0 ? '0' : `${trim(em)}em`
-    case 'px': return em === 0 ? '0' : `${trim(em * sizePx)}px`
-    case '%':  return em === 0 ? '0' : `${trim(em * 100)}%`
+    case 'em': return `${trim(em)}em`
+    case 'px': return `${trim(em * sizePx)}px`
+    case '%':  return forCss ? `${trim(em)}em` : `${trim(em * 100)}%`
   }
 }
 

@@ -32,7 +32,7 @@ function formatRows(steps: StepLike[], units: TypeUnits): Formatted[] {
     size: formatSize(s.size, units.size),
     weight: s.weight,
     leading: formatLineHeight(s.line_height, s.size, units.lineHeight),
-    tracking: formatTracking(s.letter_spacing, s.size, units.tracking),
+    tracking: formatTracking(s.letter_spacing, s.size, units.tracking, true),
   }))
 }
 

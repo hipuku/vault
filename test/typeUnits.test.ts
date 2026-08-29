@@ -83,3 +83,23 @@ describe('formatWeight', () => {
     expect(formatWeight(450, 'name')).toBe('450')
   })
 })
+
+describe('formatTracking — CSS safety', () => {
+  /* letter-spacing takes no percentage. The viewer shows % because that is how type is
+     discussed; the exports must not carry it, or the declaration is dropped silently. */
+  it('emits % for reading', () => {
+    expect(formatTracking('-0.02em', 16, '%')).toBe('-2%')
+  })
+
+  it('converts % back to em for a stylesheet', () => {
+    expect(formatTracking('-0.02em', 16, '%', true)).toBe('-0.02em')
+  })
+
+  it.each(['em', 'px'] as const)('leaves %s alone in both modes', unit => {
+    expect(formatTracking('-0.02em', 16, unit, true)).toBe(formatTracking('-0.02em', 16, unit))
+  })
+
+  it('keeps zero as a bare 0 in both modes', () => {
+    expect(formatTracking('0', 16, '%', true)).toBe('0')
+  })
+})
