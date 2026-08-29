@@ -14,9 +14,21 @@ interface RawFamily {
 export async function getGoogleFonts(): Promise<GoogleFontMeta[]> {
   if (cache) return cache
 
-  const res = await fetch('https://fonts.google.com/metadata/fonts')
+  const res = await fetch('https://fonts.google.com/metadata/fonts', {
+    signal: AbortSignal.timeout(15_000),
+  })
+  // Without these, a 429 or an outage arrived as a JSON parse error, and the user was
+  // told the catalogue was empty.
+  if (!res.ok) {
+    throw new Error(`Google Fonts is not responding (${res.status}). Try again shortly.`)
+  }
   const text = await res.text()
-  const json = JSON.parse(text.replace(/^\)\]\}'\n?/, '')) as { familyMetadataList?: RawFamily[] }
+  let json: { familyMetadataList?: RawFamily[] }
+  try {
+    json = JSON.parse(text.replace(/^\)\]\}'\n?/, ''))
+  } catch {
+    throw new Error('Google Fonts returned something unreadable.')
+  }
   const list = json.familyMetadataList ?? []
 
   cache = list.map(f => {

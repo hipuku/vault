@@ -56,8 +56,14 @@ export function updatePaletteName(id: number, name: string): void {
   getDb().prepare("UPDATE palettes SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
+/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+ *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
 export function deletePalette(id: number): void {
-  getDb().prepare('DELETE FROM palettes WHERE id = ?').run(id)
+  const db = getDb()
+  db.transaction(() => {
+    db.prepare(`DELETE FROM asset_tags WHERE asset_type = 'palette' AND asset_id = ?`).run(id)
+    db.prepare('DELETE FROM palettes WHERE id = ?').run(id)
+  })()
 }
 
 export function listSwatches(paletteId: number): Swatch[] {

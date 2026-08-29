@@ -11,10 +11,21 @@ interface FontFileItem { path?: string; typefaces?: Typeface[] }
  *  by family with one face per distinct style. Hidden system fonts (leading dot)
  *  are skipped. */
 export async function listInstalledFonts(): Promise<InstalledFamily[]> {
-  const { stdout } = await exec('system_profiler', ['SPFontsDataType', '-json'], {
-    maxBuffer: 128 * 1024 * 1024,
-  })
-  const data = JSON.parse(stdout) as { SPFontsDataType?: FontFileItem[] }
+  // system_profiler is macOS-only, can take seconds on a large Font Book, and can
+  // return something other than JSON. All three used to surface as a crash.
+  if (process.platform !== 'darwin') return []
+  let data: { SPFontsDataType?: FontFileItem[] }
+  try {
+    const { stdout } = await exec('system_profiler', ['SPFontsDataType', '-json'], {
+      maxBuffer: 128 * 1024 * 1024,
+      timeout: 30_000,
+    })
+    data = JSON.parse(stdout)
+  } catch {
+    // An empty list reads in the UI as "no installed fonts found", which is the
+    // honest outcome — better than the picker failing to open at all.
+    return []
+  }
   const byFamily = new Map<string, Array<{ path: string; style: string }>>()
 
   for (const item of data.SPFontsDataType ?? []) {

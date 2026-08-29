@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, clipboard, shell, dialog, nativeImage } from 'electron'
 import { join, resolve, relative, isAbsolute } from 'path'
 import { readFile, writeFile } from 'fs/promises'
+import { unlinkSync } from 'fs'
 import { is } from '@electron-toolkit/utils'
 import * as colourQueries from './db/queries/colour'
 import * as fontQueries from './db/queries/font'
@@ -116,15 +117,26 @@ ipcMain.handle('font:add-local', async (_e, family: string, files: LocalFontFile
 ipcMain.handle('font:list-installed', () => listInstalledFonts())
 ipcMain.handle('font:reveal', (_e, path: string) => shell.showItemInFolder(ownedFontPath(path)))
 ipcMain.handle('font:download-google', async (_e, family: string, weights: string[]) => {
-  const fam = family.trim().replace(/\s+/g, '+')
+  const fam = encodeURIComponent(family.trim()).replace(/%20/g, '+')
   const wght = [...new Set(weights)].sort((a, b) => Number(a) - Number(b)).join(';')
   const cssUrl = `https://fonts.googleapis.com/css2?family=${fam}:wght@${wght}&display=swap`
   // A desktop UA makes Google serve woff2 (and emit the file URL we want).
   const ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  const css = await (await fetch(cssUrl, { headers: { 'User-Agent': ua } })).text()
+  const cssRes = await fetch(cssUrl, {
+    headers: { 'User-Agent': ua },
+    signal: AbortSignal.timeout(15_000),
+  })
+  // A 429 used to surface as "No downloadable file found for this font", which sent
+  // the user looking for the wrong problem.
+  if (!cssRes.ok) {
+    throw new Error(`Google Fonts is not responding (${cssRes.status}). Try again shortly.`)
+  }
+  const css = await cssRes.text()
   const match = css.match(/url\((https:[^)]+\.woff2)\)/)
   if (!match) throw new Error('No downloadable file found for this font.')
-  const bytes = Buffer.from(await (await fetch(match[1])).arrayBuffer())
+  const fileRes = await fetch(match[1], { signal: AbortSignal.timeout(30_000) })
+  if (!fileRes.ok) throw new Error(`Could not download the font file (${fileRes.status}).`)
+  const bytes = Buffer.from(await fileRes.arrayBuffer())
   const { canceled, filePath } = await dialog.showSaveDialog({ defaultPath: `${fam.replace(/\+/g, '')}.woff2` })
   if (canceled || !filePath) return false
   await writeFile(filePath, bytes)
@@ -141,7 +153,16 @@ ipcMain.handle('font:delete', (_e, id: number) => {
   if (using.length > 0) {
     throw new Error(`In use by ${using.length} type scale${using.length === 1 ? '' : 's'}`)
   }
-  return fontQueries.deleteFont(id)
+  const files = fontQueries.deleteFont(id)
+  // Best effort: the row is already gone, so a failure here leaks a file rather than
+  // leaving the library inconsistent.
+  for (const f of files) {
+    try {
+      unlinkSync(ownedFontPath(f))
+    } catch {
+      /* already gone, or outside the managed directory */
+    }
+  }
 })
 ipcMain.handle('font:google-list', () => getGoogleFonts())
 ipcMain.handle('font:read-file', async (_e, path: string) => {

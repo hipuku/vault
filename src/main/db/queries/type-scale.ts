@@ -46,8 +46,14 @@ export function updateTypeScaleName(id: number, name: string): void {
   getDb().prepare("UPDATE type_scales SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
+/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+ *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
 export function deleteTypeScale(id: number): void {
-  getDb().prepare('DELETE FROM type_scales WHERE id = ?').run(id)
+  const db = getDb()
+  db.transaction(() => {
+    db.prepare(`DELETE FROM asset_tags WHERE asset_type = 'type_scale' AND asset_id = ?`).run(id)
+    db.prepare('DELETE FROM type_scales WHERE id = ?').run(id)
+  })()
 }
 
 export function listTypeScaleSteps(typeScaleId: number): TypeScaleStep[] {
