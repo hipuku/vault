@@ -72,7 +72,7 @@
 
 .preview {
   width: 40px;
-  height: 40px;
+  height: var(--control-height-lg);
   border-radius: var(--radius-full);
   border: var(--border-width) solid var(--color-border-default);
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
@@ -94,7 +94,7 @@
 
 .hexInput {
   flex: 1;
-  height: 40px;
+  height: var(--control-height-lg);
   padding: 0 var(--space-4);
   font-family: var(--font-mono);
   font-size: var(--type-body-sm-size);
@@ -106,7 +106,7 @@
   transition: border-color var(--duration-normal) var(--ease-move), box-shadow var(--duration-fast) var(--ease-move);
 }
 .hexInput::placeholder { font-family: var(--font-sans); color: var(--color-ink-disabled); }
-.hexInput:focus { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
+.hexInput:focus-visible { border-color: var(--color-border-focus); box-shadow: var(--shadow-focus); }
 
 .section { display: flex; flex-direction: column; gap: var(--space-2); }
 
@@ -248,7 +248,7 @@
 
 .extractSwatch {
   width: 28px;
-  height: 28px;
+  height: var(--control-height-sm);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;

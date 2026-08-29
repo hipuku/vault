@@ -52,7 +52,7 @@
 /* Base size — value + a px suffix that hugs the number (matches StepEditControl). */
 .sizeInput {
   width: 120px;
-  height: 40px;
+  height: var(--control-height-lg);
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;

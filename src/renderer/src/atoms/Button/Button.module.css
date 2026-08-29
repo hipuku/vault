@@ -29,14 +29,14 @@
 /* ── Sizes (boxier — more vertical presence, pill radius kept) ─────────────── */
 
 .sm {
-  height: 32px;
+  height: var(--control-height-md);
   padding: 0 var(--space-4);
   font-size: var(--text-13);
   border-radius: var(--radius-full);
 }
 
 .md {
-  height: 40px;
+  height: var(--control-height-lg);
   padding: 0 var(--space-5);
   font-size: var(--text-14);
   border-radius: var(--radius-full);

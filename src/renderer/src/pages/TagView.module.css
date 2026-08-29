@@ -5,8 +5,8 @@
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: var(--dot-sm);
+  height: var(--dot-sm);
   border-radius: var(--radius-full);
   flex-shrink: 0;
 }

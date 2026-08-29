@@ -1,5 +1,5 @@
 .input {
-  height: 40px;
+  height: var(--control-height-lg);
   padding: 0 var(--space-4);
   font-family: var(--font-sans);
   font-size: var(--type-body-sm-size);
@@ -19,7 +19,7 @@
 }
 
 /* Focus: accent border + one soft halo (no hard double ring). */
-.input:focus {
+.input:focus-visible {
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
 }
@@ -28,7 +28,7 @@
 .error {
   border-color: var(--color-error-default);
 }
-.error:focus {
+.error:focus-visible {
   border-color: var(--color-error-default);
   box-shadow: var(--shadow-focus-error);
 }

@@ -89,8 +89,8 @@
   white-space: nowrap;
 }
 .projectDot {
-  width: 8px;
-  height: 8px;
+  width: var(--dot-xs);
+  height: var(--dot-xs);
   border-radius: 50%;
   flex-shrink: 0;
 }

@@ -38,7 +38,7 @@
   top: var(--space-2);
   right: var(--space-2);
   width: 24px;
-  height: 24px;
+  height: var(--control-height-xs);
   display: flex;
   align-items: center;
   justify-content: center;

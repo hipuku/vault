@@ -135,8 +135,8 @@ input.name { cursor: text; }
 .nameRow:hover { background: var(--color-surface-subtle); color: var(--color-ink-primary); }
 
 .nameSwatch {
-  width: 18px;
-  height: 18px;
+  width: var(--dot-lg);
+  height: var(--dot-lg);
   border-radius: var(--radius-sm);
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   flex-shrink: 0;

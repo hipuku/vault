@@ -19,8 +19,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 18px;
+  min-width: var(--dot-lg);
+  height: var(--dot-lg);
   padding: 0 var(--space-1);
   border-radius: var(--radius-full);
   background: var(--color-surface-sunken);
