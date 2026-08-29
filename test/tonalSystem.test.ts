@@ -38,19 +38,29 @@ describe('generateTonalSystem', () => {
   )
 
   /* The semantic ramps are defined by their hue. Routing through lchToGamutHex keeps
-     it; chroma.lch's RGB clamp did not. */
+     it; chroma.lch's RGB clamp did not.
+
+     Only stops with real chroma are measured. A ramp's outermost stops are nearly
+     white or nearly black, and there hue is atan2 over two values near zero, so 8-bit
+     quantisation alone swings it: the lightest error stop sits at C 1.8 and reads 10°
+     off a hue nobody can see in it. Above C 10 the whole set holds within 2.5°. */
+  const PERCEPTIBLE_CHROMA = 10
+
   it.each([
     ['success', 145],
     ['warning', 75],
     ['error', 30],
-  ] as const)('keeps %s on hue %i', (ramp, hue) => {
+  ] as const)('keeps %s on hue %i wherever the hue is visible', (ramp, hue) => {
+    let checked = 0
     for (const seed of ['#fff8e7', '#aa1155', '#123456', '#00ff00']) {
       for (const s of generateTonalSystem(seed, [ramp])) {
-        const H = lch(s.hex)[2]
-        if (isNaN(H)) continue // achromatic stop at the very top/bottom of the ramp
-        expect(Math.abs(H - hue)).toBeLessThan(4)
+        const [, C, H] = lch(s.hex)
+        if (isNaN(H) || C < PERCEPTIBLE_CHROMA) continue
+        checked++
+        expect(Math.abs(H - hue)).toBeLessThan(3)
       }
     }
+    expect(checked).toBeGreaterThan(10) // so the filter above cannot make this vacuous
   })
 
   it('anchors the seed colour to exactly one stop, in the primary ramp', () => {
