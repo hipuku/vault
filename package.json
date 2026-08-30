@@ -29,7 +29,7 @@
     "chroma-js": "^3.2.0",
     "culori": "^4.0.2",
     "haus-colour-names": "^0.1.0",
-    "haus-colour-utils": "^0.2.1",
+    "haus-colour-utils": "^0.3.0",
     "react-colorful": "^5.8.0"
   },
   "devDependencies": {

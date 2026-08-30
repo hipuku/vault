@@ -303,7 +303,11 @@ one below it. Nothing points upward.
   shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red is OKLCH hue
   29, not 0, so every family sat about one bin anticlockwise of where it belonged and 17 of 27
   canonical colours were misnamed. The bins are a shared decision, so they live in one place
-  and vault reads them.
+  and vault reads them, which is also how the second correction arrived without any work
+  here: 0.3.0 refits the boundaries to 4,275 human-named colours, because the midpoints
+  between eight anchor colours assumed a family is centred on the colour it is named after.
+  Fourteen of the swatches in a real library change family, all of them toward what the eye
+  reads.
 - **The name dataset comes from `haus-colour-names`.** 31,900 names, previously a 764KB
   `colornames.json` committed here and a second copy in hexicon.
 - **The naming search stays here.** `haus-colour-utils` has the same two passes in

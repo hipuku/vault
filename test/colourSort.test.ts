@@ -23,7 +23,13 @@ describe('hueFamily', () => {
     expect(hueFamily('#ff0000')).toBe('Red') // hue ~29
     expect(hueFamily('#0000ff')).toBe('Blue') // hue ~264
     expect(hueFamily('#00cc00')).toBe('Green') // hue ~142
-    expect(hueFamily('#0891b2')).toBe('Cyan') // hue ~222
+    expect(hueFamily('#008080')).toBe('Cyan') // hue ~195, CSS teal
+    // Tailwind calls #0891b2 cyan-600 and this test used to take that as the
+    // answer. At OKLCH hue 222 human naming does not agree: of the 59 colours
+    // in haus-colour-names between hue 220 and 225 whose name ends in a family
+    // word, 54 are called blue and 5 cyan. A palette's own vocabulary is not
+    // evidence about perception.
+    expect(hueFamily('#0891b2')).toBe('Blue') // hue ~222
     expect(hueFamily('#e0115f')).toBe('Pink') // hue ~9
   })
 
@@ -75,7 +81,7 @@ describe('groupColours', () => {
   it('drops empty hue buckets and keeps family order', () => {
     const groups = groupColours(
       [
-        colour({ id: 1, hex: '#0891b2' }), // Cyan (OKLCH hue ~222)
+        colour({ id: 1, hex: '#008080' }), // Cyan (OKLCH hue ~195)
         colour({ id: 2, hex: '#ff0000' }), // Red (OKLCH hue ~29)
       ],
       'hue',
