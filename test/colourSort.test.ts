@@ -15,11 +15,16 @@ function colour(p: Partial<Colour>): Colour {
 
 describe('hueFamily', () => {
   it('classifies saturated colours into named OKLCH families', () => {
-    // NB: OKLCH hue ≠ sRGB intuition. sRGB #ff0000 lands in Orange (hue ~29).
-    expect(hueFamily('#e0115f')).toBe('Red') // hue ~9
-    expect(hueFamily('#ff0000')).toBe('Orange') // hue ~29
+    // The bins are placed for the OKLCH wheel, where sRGB red is hue 29 rather
+    // than 0. An earlier version of this test asserted #ff0000 was Orange and
+    // explained it as OKLCH being counterintuitive. It was the bins that were
+    // wrong: they were an HSL wheel's boundaries read as OKLCH ones, which put
+    // every family about one bin anticlockwise of where it belonged.
+    expect(hueFamily('#ff0000')).toBe('Red') // hue ~29
+    expect(hueFamily('#0000ff')).toBe('Blue') // hue ~264
     expect(hueFamily('#00cc00')).toBe('Green') // hue ~142
-    expect(hueFamily('#0891b2')).toBe('Blue') // hue ~222
+    expect(hueFamily('#0891b2')).toBe('Cyan') // hue ~222
+    expect(hueFamily('#e0115f')).toBe('Pink') // hue ~9
   })
 
   it('calls near-achromatic colours Neutral', () => {
@@ -70,16 +75,16 @@ describe('groupColours', () => {
   it('drops empty hue buckets and keeps family order', () => {
     const groups = groupColours(
       [
-        colour({ id: 1, hex: '#0891b2' }), // Blue (OKLCH hue ~222)
-        colour({ id: 2, hex: '#e0115f' }), // Red (OKLCH hue ~9)
+        colour({ id: 1, hex: '#0891b2' }), // Cyan (OKLCH hue ~222)
+        colour({ id: 2, hex: '#ff0000' }), // Red (OKLCH hue ~29)
       ],
       'hue',
     )
     const titles = groups.map(g => g.title)
     expect(titles).toContain('Red')
-    expect(titles).toContain('Blue')
+    expect(titles).toContain('Cyan')
     expect(titles).not.toContain('Green')
-    expect(titles.indexOf('Red')).toBeLessThan(titles.indexOf('Blue'))
+    expect(titles.indexOf('Red')).toBeLessThan(titles.indexOf('Cyan'))
   })
 
   it('splits by contrast into light- and dark-text buckets', () => {

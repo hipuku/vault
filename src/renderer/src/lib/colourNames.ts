@@ -1,9 +1,20 @@
 import { converter, differenceCiede2000 } from 'culori'
-import namesRaw from './colornames.json'
+import { colourNameEntries } from 'haus-colour-names'
 
-// Ported from hexicon: name any hex against the meodai dataset (31,900 names)
-// with a two-pass match: a fast CIE76 coarse scan narrows the field, then
-// CIEDE2000 re-scores the candidates for an accurate ranking + confidence.
+// Name any hex against the meodai dataset (31,900 names) with a two-pass match:
+// a fast CIE76 coarse scan narrows the field, then CIEDE2000 re-scores the
+// candidates for an accurate ranking + confidence.
+//
+// The dataset was a 764KB colornames.json committed here and a second copy in
+// hexicon. It is haus-colour-names now, one file for both.
+//
+// The search stays here rather than moving to createNamedColourMatcher in
+// haus-colour-utils, which does the same two passes. That matcher returns a
+// ranked top-N; this needs the confidence bands, which count every candidate
+// inside the scan radius by distance band, and the de-duplication by name that
+// makes the runner list read as alternatives rather than near-identical hexes.
+// Asking the shared matcher for the whole pool and re-deriving those here would
+// be the same code with an extra hop.
 
 const toLab = converter('lab')
 const deltaE = differenceCiede2000()
@@ -39,11 +50,10 @@ let _entries: Entry[] | null = null
 function getEntries(): Entry[] {
   if (_entries) return _entries
   const out: Entry[] = []
-  for (const [hexRaw, name] of Object.entries(namesRaw)) {
-    const h = hexRaw.length === 6 ? hexRaw : hexRaw.padStart(6, '0')
-    const lab = toLab(`#${h}`)
+  for (const { hex, name } of colourNameEntries()) {
+    const lab = toLab(hex)
     if (!lab) continue
-    out.push({ hex: `#${h.toLowerCase()}`, name, L: lab.l, a: lab.a, b: lab.b })
+    out.push({ hex, name, L: lab.l, a: lab.a, b: lab.b })
   }
   _entries = out
   return out

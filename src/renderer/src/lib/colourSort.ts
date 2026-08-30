@@ -1,4 +1,5 @@
 import { converter } from 'culori'
+import { HUE_FAMILIES, hueFamily as hausHueFamily } from 'haus-colour-utils'
 import type { Colour } from '@shared/types'
 import { prefersDarkText } from './colour'
 
@@ -22,12 +23,6 @@ export const GROUP_OPTIONS: Array<{ key: GroupKey; label: string }> = [
 function lightness(hex: string): number {
   return toOklch(hex)?.l ?? 0
 }
-function hue(hex: string): number {
-  return toOklch(hex)?.h ?? 0
-}
-function chroma(hex: string): number {
-  return toOklch(hex)?.c ?? 0
-}
 
 export function sortColours(colours: Colour[], key: SortKey): Colour[] {
   const arr = [...colours]
@@ -45,29 +40,19 @@ export interface ColourGroup {
   colours: Colour[]
 }
 
-/** Named OKLCH hue families (achromatic colours fall into "Neutral"). Bins are
- *  ordered round the wheel starting at red; ranges that wrap 360 are handled. */
-const HUE_FAMILIES: Array<{ title: string; min: number; max: number }> = [
-  { title: 'Red', min: 345, max: 15 },
-  { title: 'Orange', min: 15, max: 45 },
-  { title: 'Yellow', min: 45, max: 90 },
-  { title: 'Green', min: 90, max: 165 },
-  { title: 'Cyan', min: 165, max: 200 },
-  { title: 'Blue', min: 200, max: 255 },
-  { title: 'Purple', min: 255, max: 300 },
-  { title: 'Pink', min: 300, max: 345 },
-]
-
 /** Named OKLCH hue family for a colour: the single source of truth shared by the
- *  Colors-page grouping and the card pill. */
+ *  Colors-page grouping and the card pill.
+ *
+ *  The bins live in haus-colour-utils. vault carried its own copy with the same
+ *  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red
+ *  is OKLCH hue 29, not 0, so every bin sat roughly one family anticlockwise of
+ *  where it belonged. 16 of 27 canonical colours came out wrong, red among them.
+ *
+ *  Returns null only for a hex that will not parse, which cannot reach here from
+ *  the library, so an unparseable value falls back to Neutral rather than
+ *  throwing in a render. */
 export function hueFamily(hex: string): string {
-  if (chroma(hex) < 0.03) return 'Neutral'
-  const h = hue(hex)
-  for (const f of HUE_FAMILIES) {
-    const inBin = f.min > f.max ? h >= f.min || h < f.max : h >= f.min && h < f.max
-    if (inBin) return f.title
-  }
-  return 'Red'
+  return hausHueFamily(hex) ?? 'Neutral'
 }
 
 /** Quantitative OKLCH lightness bands (L × 100), 10-unit steps, brightest first. */
@@ -107,7 +92,7 @@ export function groupColours(colours: Colour[], key: GroupKey): ColourGroup[] {
     case 'none':
       return [{ title: '', colours }]
     case 'hue':
-      return bucketBy(colours, hueFamily, [...HUE_FAMILIES.map(f => f.title), 'Neutral'])
+      return bucketBy(colours, hueFamily, [...HUE_FAMILIES.map(f => f.name), 'Neutral'])
     case 'lightness':
       return bucketBy(
         colours,

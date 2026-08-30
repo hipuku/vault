@@ -1,20 +1,31 @@
 import { describe, it, expect } from 'vitest'
 import { differenceCiede2000 } from 'culori'
 import { nearestNames } from '@renderer/lib/colourNames'
-import namesRaw from '@renderer/lib/colornames.json'
+import { colourNameEntries, COLOUR_NAME_COUNT } from 'haus-colour-names'
 
 const deltaE = differenceCiede2000()
-const entries = Object.entries(namesRaw as Record<string, string>)
+const entries = colourNameEntries()
 
 /** The honest answer: an exhaustive CIEDE2000 scan over the whole dataset. */
 function trueNearest(hex: string): { name: string; deltaE: number } {
   let best: { name: string; deltaE: number } | null = null
-  for (const [h, name] of entries) {
-    const d = deltaE(hex, `#${h}`)
+  for (const { hex: h, name } of entries) {
+    const d = deltaE(hex, h)
     if (best === null || d < best.deltaE) best = { name, deltaE: d }
   }
   return best!
 }
+
+describe('the shared dataset', () => {
+  it('is the same 31,900 names vault used to carry itself', () => {
+    expect(COLOUR_NAME_COUNT).toBe(31900)
+    expect(entries).toHaveLength(31900)
+  })
+
+  it('normalises every hex, including the ones with a leading zero', () => {
+    for (const { hex } of entries) expect(hex).toMatch(/^#[0-9a-f]{6}$/)
+  })
+})
 
 describe('nearestNames', () => {
   /* These two are regressions. Both were named by a match that was not the nearest,

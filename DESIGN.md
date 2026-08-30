@@ -118,9 +118,11 @@ event. Arbitrary renderer input never reaches it.
 - **Runtime floor.** Electron 44 and better-sqlite3 13 both require Node 22, recorded in
   `engines` and `.nvmrc`. The SQLite driver ships N-API prebuilds, so nothing rebuilds it at
   install time; electron-builder still rebuilds at package time through its own copy.
-- **Production tree.** Thirteen packages reach the shipped app. React and its scheduler, the
-  SQLite driver and its addon API, chroma-js, culori, react-colorful, the icon set, and the
-  typeface.
+- **Production tree.** Fifteen packages reach the shipped app. React and its scheduler, the
+  SQLite driver and its addon API, chroma-js, culori, react-colorful, the icon set, the
+  typeface, and two from the haus design system: `haus-colour-utils` for the hue bins and
+  `haus-colour-names` for the 31,900-name dataset. Neither adds a transitive dependency;
+  `haus-colour-utils` runs on the chroma-js that was already here.
 
 ### Data model
 
@@ -297,6 +299,18 @@ one below it. Nothing points upward.
 - **Perceptual maths (LCH, ΔE2000).** Ramps and "nearest name" run in a perceptual space so
   steps look even and matches read as a human would judge them. RGB distance puts colours close
   together that do not look alike.
+- **The hue bins come from `haus-colour-utils`.** vault carried its own copy with the same
+  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red is OKLCH hue
+  29, not 0, so every family sat about one bin anticlockwise of where it belonged and 16 of 27
+  canonical colours were misnamed. The bins are a shared decision, so they live in one place
+  and vault reads them.
+- **The name dataset comes from `haus-colour-names`.** 31,900 names, previously a 764KB
+  `colornames.json` committed here and a second copy in hexicon.
+- **The naming search stays here.** `haus-colour-utils` has the same two passes in
+  `createNamedColourMatcher`, but it returns a ranked top-N, and this needs the confidence
+  bands, which count every candidate inside the scan radius by distance band, and the
+  de-duplication by name that makes the runner list read as alternatives. Delegating would mean
+  asking for the whole pool and re-deriving both here.
 - **Two palette models.** _Tonal_ (one seed → semantic ramps) and _Expressive_ (several seeds →
   a multi-hue set). Same two-pane create flow, different generator.
 
