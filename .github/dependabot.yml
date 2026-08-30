@@ -16,8 +16,12 @@ updates:
         patterns: ['electron', 'electron-*', '@electron/*', '@electron-toolkit/*', 'vite', '@vitejs/*']
       react:
         patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      # The test runner and its environments are their own group. Grouped with the
+      # linters, one vitest major holds an eslint patch hostage.
+      test:
+        patterns: ['vitest', '@vitest/*', 'jsdom', 'happy-dom', '@testing-library/*']
       tooling:
-        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'vitest']
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*']
     commit-message:
       prefix: 'deps'
     ignore:
@@ -25,6 +29,11 @@ updates:
       # that CI installs — currently 22 — not the newest release line. Taking a major here
       # type-checks the app against APIs the binary does not have.
       - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 7 is the native rewrite, deferred across every repo here so they
+      # move together. Recorded rather than closed: a closed pull request comes back
+      # on the next run and says nothing about why it was refused.
+      - dependency-name: 'typescript'
         update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
