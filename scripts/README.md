@@ -15,8 +15,10 @@ REF=../vault-figma-reference node scripts/inject-variants.mjs atoms.html \
 The value is that it is generated. Re-run it after changing a prop union and the reference cannot
 drift from the code: add a `variant` and the table grows a column on its own.
 
-Re-running is safe: a section that already carries a matrix is skipped, so clear the old blocks
-first if you want them rebuilt.
+Re-running does not update: a section that already carries a matrix is skipped, so the first
+run wins and a later change to a prop union is silently not written. Clear the old blocks by
+hand first. This is the presence-check pattern rather than a delimited block that is rewritten
+every run, and it should be the latter.
 
 ## `inject-matrix.mjs`: every variant × state, rendered
 
@@ -26,7 +28,7 @@ carrying the real values, the values themselves, and a note where a state is ide
 default and therefore needs no frame of its own.
 
 ```bash
-REF=../vault-figma-reference node scripts/inject-matrix.mjs atoms.html spec.json
+REF=../vault-figma-reference node scripts/inject-matrix.mjs atoms.html scripts/matrix.atoms.json
 ```
 
 Two things it gets right that a naive read does not. It sorts matched rules by **specificity**
