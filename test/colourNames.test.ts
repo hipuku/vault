@@ -74,7 +74,7 @@ describe('nearestNames', () => {
 
   it('every returned hex is a real entry in the dataset', () => {
     const { best, runners } = nearestNames('#123456', 6)
-    const known = new Set(entries.map(([h]) => `#${h}`))
+    const known = new Set(entries.map(e => e.hex))
     for (const m of [best, ...runners]) expect(known.has(m.hex)).toBe(true)
   })
 
