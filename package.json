@@ -30,7 +30,7 @@
     "culori": "^4.0.2",
     "haus-colour-names": "^0.1.0",
     "haus-colour-utils": "^0.2.1",
-    "react-colorful": "^5.7.0"
+    "react-colorful": "^5.8.0"
   },
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.1",
