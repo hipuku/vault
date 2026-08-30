@@ -301,7 +301,7 @@ one below it. Nothing points upward.
   together that do not look alike.
 - **The hue bins come from `haus-colour-utils`.** vault carried its own copy with the same
   shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red is OKLCH hue
-  29, not 0, so every family sat about one bin anticlockwise of where it belonged and 16 of 27
+  29, not 0, so every family sat about one bin anticlockwise of where it belonged and 17 of 27
   canonical colours were misnamed. The bins are a shared decision, so they live in one place
   and vault reads them.
 - **The name dataset comes from `haus-colour-names`.** 31,900 names, previously a 764KB

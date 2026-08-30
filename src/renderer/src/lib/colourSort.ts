@@ -46,7 +46,7 @@ export interface ColourGroup {
  *  The bins live in haus-colour-utils. vault carried its own copy with the same
  *  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red
  *  is OKLCH hue 29, not 0, so every bin sat roughly one family anticlockwise of
- *  where it belonged. 16 of 27 canonical colours came out wrong, red among them.
+ *  where it belonged. 17 of 27 canonical colours came out wrong, red among them.
  *
  *  Returns null only for a hex that will not parse, which cannot reach here from
  *  the library, so an unparseable value falls back to Neutral rather than
