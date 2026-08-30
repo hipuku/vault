@@ -50,9 +50,9 @@ export function typeScalesUsingFont(id: number): Array<{ id: number; name: strin
     .all(id, id) as Array<{ id: number; name: string }>
 }
 
-/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+/** asset_tags is polymorphic, so SQLite cannot cascade it: deleting the asset leaves
  *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
-/** Returns the managed file paths the row owned, so the caller can remove them —
+/** Returns the managed file paths the row owned, so the caller can remove them:
  *  deleting the row alone left the copied bytes in userData/fonts forever, with
  *  nothing left pointing at them. */
 export function deleteFont(id: number): string[] {

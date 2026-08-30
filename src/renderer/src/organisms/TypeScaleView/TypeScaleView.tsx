@@ -60,7 +60,7 @@ export function TypeScaleView({
     }
   }, [scale.id])
 
-  // A hand-tuned scale no longer maps to a named ratio — show "Custom" instead.
+  // A hand-tuned scale no longer maps to a named ratio, so it shows "Custom".
   const custom = useMemo(
     () => isCustomScale(steps, scale.base_size, parseFloat(scale.ratio)),
     [steps, scale.base_size, scale.ratio],
@@ -70,7 +70,7 @@ export function TypeScaleView({
     [scale.ratio],
   )
 
-  // Hero specimen — the family (or both families) shown as a glyph specimen.
+  // Hero specimen: the family (or both families) shown as a glyph specimen.
   const specimenFonts = useMemo(() => {
     const head = { role: 'Heading', family: headingFamily ?? 'System', stack: headingStack }
     if (bodyFamily && bodyFamily !== headingFamily) {
@@ -79,7 +79,7 @@ export function TypeScaleView({
     return [{ role: null, family: headingFamily ?? 'System', stack: headingStack }]
   }, [headingFamily, bodyFamily, headingStack, bodyStack])
 
-  // Quality signals (§5.4) — legibility checks on the body step (preset-agnostic).
+  // Quality signals (§5.4): legibility checks on the body step (preset-agnostic).
   const quality = useMemo(() => {
     const body = steps.find(s => s.step_name === 'Body' || s.step_name === 'Paragraph')
     if (!body) return null
@@ -117,7 +117,7 @@ export function TypeScaleView({
 
       <div className="scroll-area">
         <div className={styles.page}>
-          {/* Hero — font specimen */}
+          {/* Hero: font specimen */}
           <div className={styles.hero}>
             <div
               className={styles.heroBanner}

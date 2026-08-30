@@ -26,7 +26,7 @@ describe('fuzzyScore', () => {
   })
 
   it('rewards word-boundary matches', () => {
-    // Same length, same match positions (0 and 3) — the only difference is that
+    // Same length, same match positions (0 and 3), so the only difference is that
     // the second char sits after a space (word boundary) in the first string.
     const boundary = fuzzyScore('ab cd', 'ac')!
     const midword = fuzzyScore('abzcd', 'ac')!

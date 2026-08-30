@@ -307,7 +307,7 @@ export default function App(): React.ReactElement {
       icon: faFolderOpen,
       run: () => setActiveTagId(t.id),
     }))
-    // Library items — surfaced only while searching (searchOnly), so the default
+    // Library items, surfaced only while searching (searchOnly), so the default
     // view stays a short list of actions rather than the whole library.
     const colours: Command[] = libColours.map(c => ({
       id: `colour-${c.id}`,

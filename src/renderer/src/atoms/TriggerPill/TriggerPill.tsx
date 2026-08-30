@@ -7,7 +7,7 @@ export interface TriggerPillProps extends React.ButtonHTMLAttributes<HTMLButtonE
 }
 
 /**
- * The pill-shaped button that opens a popover — Select, ColorFilters, UnitsControl
+ * The pill-shaped button that opens a popover: Select, ColorFilters, UnitsControl
  * and FontPreviewControl all drew their own copy of it.
  *
  * It carries no popover state of its own: the caller owns `open` and passes the

@@ -161,7 +161,7 @@ export function TypeScalesPage({
         </>
       )
     }
-    // scale no longer exists (e.g. deleted) — fall back to the list
+    // scale no longer exists (e.g. deleted), so fall back to the list
   }
 
   return (

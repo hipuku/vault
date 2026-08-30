@@ -33,7 +33,7 @@ const TRACKING_OPTS: Array<{ key: TrackingUnit; label: string }> = [
   { key: '%', label: '%' },
 ]
 
-/** Compact popover that sets the table's display units — mirrors FontPreviewControl. */
+/** Compact popover that sets the table's display units, mirroring FontPreviewControl. */
 export function UnitsControl({ units, onChange }: UnitsControlProps): React.ReactElement {
   const { open, toggle, ref } = usePopover()
 

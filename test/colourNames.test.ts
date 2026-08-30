@@ -25,7 +25,7 @@ describe('nearestNames', () => {
     expect(nearestNames(hex).best.name).toBe(trueNearest(hex).name)
   })
 
-  /* The prefilter is a CIE76 radius of 28, which is not provably safe — CIEDE2000
+  /* The prefilter is a CIE76 radius of 28, which is not provably safe, since CIEDE2000
      compresses high-chroma differences, so in principle it can discard the true
      winner. This asserts it does not, across the gamut extremes where the two
      metrics diverge most. Every probe below sits at least 1.5 ΔE from its nearest
@@ -67,7 +67,7 @@ describe('nearestNames', () => {
     for (const m of [best, ...runners]) expect(known.has(m.hex)).toBe(true)
   })
 
-  /* An unparseable hex has no match. deltaE must not be 0 — the UI renders that
+  /* An unparseable hex has no match. deltaE must not be 0, because the UI renders that
      as an exact match. */
   it('does not claim a perfect match for an unparseable hex', () => {
     const { best, runners, confidence } = nearestNames('not-a-colour')

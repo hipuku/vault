@@ -58,7 +58,7 @@ export function variantsOf(tsxPath) {
   return { name, extends: ext, props }
 }
 
-/** Interaction states a component actually styles — these are variant axes in Figma. */
+/** Interaction states a component actually styles. These are variant axes in Figma. */
 export function statesOf(cssPath) {
   if (!fs.existsSync(cssPath)) return []
   const css = fs.readFileSync(cssPath, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')

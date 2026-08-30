@@ -63,7 +63,7 @@ export const EXPORT_FORMATS: Array<{ id: ExportFormat; label: string; ext: strin
     id: 'tokens',
     label: 'Design Tokens',
     ext: 'tokens.json',
-    hint: 'W3C design tokens — import via Tokens Studio in Figma.',
+    hint: 'W3C design tokens. Import via Tokens Studio in Figma.',
   },
   { id: 'tailwind', label: 'Tailwind', ext: 'js' },
 ]

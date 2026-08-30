@@ -6,7 +6,7 @@ import { CREATE_TABLES, CURRENT_SCHEMA_VERSION } from './schema'
 
 let db: Database.Database
 
-/** True if the file holds anything worth keeping — a fresh install has tables but no rows. */
+/** True if the file holds anything worth keeping. A fresh install has tables but no rows. */
 function isPopulated(handle: Database.Database): boolean {
   const tables = handle
     .prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'`)
@@ -43,7 +43,7 @@ export function getDb(): Database.Database {
     }
 
     if (version < CURRENT_SCHEMA_VERSION) {
-      // The recreate below is destructive — it drops every table. Keep a copy of the
+      // The recreate below is destructive: it drops every table. Keep a copy of the
       // file first so a schema bump can never be the reason someone loses a library
       // they spent months building. There are no migrations yet; when there are, they
       // replace this branch and the backup becomes the fallback rather than the plan.

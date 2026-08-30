@@ -77,7 +77,7 @@ export function prefersDarkText(hex: string): boolean {
   return wcagContrast(hex, BLACK) >= wcagContrast(hex, WHITE)
 }
 
-/** Index of the shade whose OKLCH lightness is closest to `hex` — i.e. where the
+/** Index of the shade whose OKLCH lightness is closest to `hex`, i.e. where the
  *  colour "falls" on a lightness ramp. */
 export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): number {
   const l = toOklch(hex)?.l ?? 0
@@ -93,7 +93,7 @@ export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): n
   return best
 }
 
-// ── Nearest name (meodai dataset, two-pass — see colourNames.ts) ───────────────
+// ── Nearest name (meodai dataset, two-pass: see colourNames.ts) ───────────────
 
 export interface NameSuggestion {
   name: string

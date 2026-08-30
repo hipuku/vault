@@ -81,12 +81,12 @@ export async function loadLocalFontFace(
     loaded.add(key)
     return true
   } catch {
-    return false // unreadable/invalid font file — card falls back
+    return false // unreadable/invalid font file, so the card falls back
   }
 }
 
 // Load a dropped font under a throwaway family for previewing during the add
-// flow — decoupled from the (editable) name that will actually be saved.
+// flow, decoupled from the (editable) name that will actually be saved.
 let previewCounter = 0
 export async function loadPreviewFont(bytes: Uint8Array): Promise<string | null> {
   const family = `__vault_preview_${++previewCounter}`
@@ -170,7 +170,7 @@ export async function ensureFontLoaded(font: Font): Promise<void> {
       const bytes = await window.api.font.readFile(s.path)
       await loadLocalFontFace(font.family, bytes, s.weight, s.style)
     } catch {
-      /* file moved or deleted — handled as a missing-font state in the UI */
+      /* file moved or deleted, handled as a missing-font state in the UI */
     }
   }
 }

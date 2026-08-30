@@ -181,7 +181,7 @@ export function PalettesPage({
         </>
       )
     }
-    // palette no longer exists (e.g. deleted) — fall back to the list
+    // palette no longer exists (e.g. deleted), so fall back to the list
   }
 
   return (

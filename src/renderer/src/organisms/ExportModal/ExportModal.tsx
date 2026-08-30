@@ -18,7 +18,7 @@ export interface ExportFormatDef {
 interface ExportModalProps {
   open: boolean
   onClose: () => void
-  /** Shown in the title — usually the artifact name. */
+  /** Shown in the title, usually the artifact name. */
   title: string
   formats: ExportFormatDef[]
   /** Produce the export string for a given format id. */

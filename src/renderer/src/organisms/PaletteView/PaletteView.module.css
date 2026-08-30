@@ -116,7 +116,7 @@
   color: var(--color-ink-tertiary);
 }
 
-/* Swatch overlay actions — scrim so they read on any colour + a clear hover. */
+/* Swatch overlay actions: a scrim so they read on any colour, plus a clear hover. */
 .promote,
 .inLib {
   position: absolute;

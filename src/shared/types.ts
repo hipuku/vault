@@ -96,7 +96,7 @@ export interface Swatch {
   created_at: string
 }
 
-// Step names span both presets — `markup` (HTML tags) and `semantic` (product roles).
+// Step names span both presets: `markup` (HTML tags) and `semantic` (product roles).
 export type TypeScaleStepName =
   // markup
   | 'H1'
@@ -165,7 +165,7 @@ export interface TagWithCount extends Tag {
 
 export type CopyFormat = 'hex' | 'rgb' | 'hsl' | 'css-var'
 
-// Derived API surface — source of truth for both preload and window.api typings
+// Derived API surface: the source of truth for both preload and window.api typings
 export interface VaultApi {
   colour: {
     create: (hex: string, name: string) => Promise<Colour>

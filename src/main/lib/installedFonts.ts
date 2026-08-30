@@ -30,7 +30,7 @@ export async function listInstalledFonts(): Promise<InstalledFamily[]> {
     data = JSON.parse(stdout)
   } catch {
     // An empty list reads in the UI as "no installed fonts found", which is the
-    // honest outcome — better than the picker failing to open at all.
+    // honest outcome, and better than the picker failing to open at all.
     return []
   }
   const byFamily = new Map<string, Array<{ path: string; style: string }>>()

@@ -25,7 +25,7 @@ export const TYPE_EXPORT_FORMATS: ExportFormatDef[] = [
     id: 'tokens',
     label: 'Design Tokens',
     ext: 'tokens.json',
-    hint: 'W3C typography tokens — import via Tokens Studio in Figma.',
+    hint: 'W3C typography tokens. Import via Tokens Studio in Figma.',
   },
   { id: 'tailwind', label: 'Tailwind', ext: 'js' },
 ]

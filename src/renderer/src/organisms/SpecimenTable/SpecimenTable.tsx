@@ -26,7 +26,7 @@ interface SpecimenTableProps {
 }
 
 /** Sizes at/above this clamp to 2 lines so the giant steps don't run tall; the
- *  rest wrap to 3 lines — enough to actually read the line-height. */
+ *  rest wrap to 3 lines, enough to actually read the line-height. */
 const LARGE_PX = 32
 
 function Head({ icon, label, unit }: { icon: IconDefinition; label: string; unit?: string }): React.ReactElement {
@@ -60,7 +60,7 @@ export function SpecimenTable({
         </div>
       </div>
 
-      {/* Steps — specimen-forward, metrics in a footer aligned under the headers. */}
+      {/* Steps: specimen-forward, metrics in a footer aligned under the headers. */}
       {steps.map((step, i) => (
         <div key={step.step_name} className={styles.row}>
           <span className={styles.stepName}>{step.step_name}</span>

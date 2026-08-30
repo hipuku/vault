@@ -10,7 +10,7 @@ interface PanelProps {
   children: React.ReactNode
 }
 
-/** A contained surface section — the standard grouping container for object pages. */
+/** A contained surface section: the standard grouping container for object pages. */
 export function Panel({ title, actions, className, children }: PanelProps): React.ReactElement {
   return (
     <section className={[styles.panel, className].filter(Boolean).join(' ')}>

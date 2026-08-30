@@ -30,7 +30,7 @@
   box-shadow: var(--shadow-focus);
 }
 
-/* Used as a form field rather than a pill: full width, squared off, and quieter —
+/* Used as a form field rather than a pill: full width, squared off, and quieter,
    it sits in a stack of inputs rather than acting as a standalone control. The hover
    only firms the border instead of pulling the whole thing to ink-primary. */
 .block {

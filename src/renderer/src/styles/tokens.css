@@ -51,7 +51,7 @@
 
     --font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
     --font-mono: 'Fira Code', ui-monospace, monospace;
-    /* Specimen previews only — a serif sample next to the sans UI. Not a UI face. */
+    /* Specimen previews only: a serif sample next to the sans UI. Not a UI face. */
     --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
 
     --text-11: 0.6875rem;
@@ -95,33 +95,33 @@
        Every interactive height was a raw px literal: 40 (×12), 32, 28 and 24 form the
        intended 8px ladder, and eight strays sat off it (26, 30, 34, 36, 44, 48). These
        four are the ladder; anything else needs a reason.                               */
-    --control-height-xs: 1.5rem; /* 24px — icon button, small */
-    --control-height-sm: 1.75rem; /* 28px — icon button */
-    --control-height-md: 2rem; /* 32px — segmented control, compact button */
-    --control-height-lg: 2.5rem; /* 40px — default button, input, trigger pill */
+    --control-height-xs: 1.5rem; /* 24px: icon button, small */
+    --control-height-sm: 1.75rem; /* 28px: icon button */
+    --control-height-md: 2rem; /* 32px: segmented control, compact button */
+    --control-height-lg: 2.5rem; /* 40px: default button, input, trigger pill */
 
     /* ── Dot / swatch chips ───────────────────────────────────────────────────
        The same small round indicator appeared at nine sizes across the app.          */
-    --dot-xs: 0.5rem; /* 8px  — inline hue marker */
-    --dot-sm: 0.75rem; /* 12px — project chip */
-    --dot-md: 1rem; /* 16px — swatch in a row */
-    --dot-lg: 1.125rem; /* 18px — swatch in a drawer header */
+    --dot-xs: 0.5rem; /* 8px:  inline hue marker */
+    --dot-sm: 0.75rem; /* 12px: project chip */
+    --dot-md: 1rem; /* 16px: swatch in a row */
+    --dot-lg: 1.125rem; /* 18px: swatch in a drawer header */
 
     /* ── Overlay widths ───────────────────────────────────────────────────────
        Six hand-built modals had drifted to six widths. Four steps carry them; the two
        that sit off the scale (FontAdder 520, CommandPalette 560) keep an explicit
        override so the exception stays visible.                                        */
-    --modal-width-sm: 22.5rem; /* 360px — confirm */
-    --modal-width-md: 26.25rem; /* 420px — short form */
-    --modal-width-lg: 30rem; /* 480px — form with a preview */
-    --modal-width-xl: 37.5rem; /* 600px — code / table */
+    --modal-width-sm: 22.5rem; /* 360px: confirm */
+    --modal-width-md: 26.25rem; /* 420px: short form */
+    --modal-width-lg: 30rem; /* 480px: form with a preview */
+    --modal-width-xl: 37.5rem; /* 600px: code / table */
 
     /* ── Popover widths ───────────────────────────────────────────────────────
        Seven floating panels had six widths. Three steps carry them; 248 rounds to
        240, which is a popover, not a layout.                                        */
-    --popover-width-sm: 15rem; /* 240px — filters, step editor */
-    --popover-width-md: 17.5rem; /* 280px — unit settings */
-    --popover-width-lg: 20rem; /* 320px — preview settings */
+    --popover-width-sm: 15rem; /* 240px: filters, step editor */
+    --popover-width-md: 17.5rem; /* 280px: unit settings */
+    --popover-width-lg: 20rem; /* 320px: preview settings */
 
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
@@ -202,7 +202,7 @@
 
     --color-backdrop: oklch(from var(--onyx-950) l c h / 0.6);
 
-    /* A single soft accent halo — paired with an accent border on focus reads as
+    /* A single soft accent halo. Paired with an accent border on focus it reads as
        one cohesive focus state, not a hard double ring. */
     --shadow-focus: 0 0 0 3px oklch(from var(--color-primary-default) l c h / 0.2);
     --shadow-focus-error: 0 0 0 3px oklch(from var(--color-error-default) l c h / 0.2);
@@ -235,7 +235,7 @@
     --type-heading-weight: var(--weight-bold);
     --type-heading-tracking: var(--tracking-tight);
 
-    /* Page/section titles — a step above headings. */
+    /* Page/section titles: a step above headings. */
     --type-title-size: var(--text-24);
     --type-title-weight: var(--weight-bold);
     --type-title-tracking: var(--tracking-tight);

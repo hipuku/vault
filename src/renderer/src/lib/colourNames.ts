@@ -2,7 +2,7 @@ import { converter, differenceCiede2000 } from 'culori'
 import namesRaw from './colornames.json'
 
 // Ported from hexicon: name any hex against the meodai dataset (31,900 names)
-// with a two-pass match — a fast CIE76 coarse scan narrows the field, then
+// with a two-pass match: a fast CIE76 coarse scan narrows the field, then
 // CIEDE2000 re-scores the candidates for an accurate ranking + confidence.
 
 const toLab = converter('lab')
@@ -15,7 +15,7 @@ export interface NameMatch {
 }
 
 export interface ConfidenceBands {
-  veryClose: number // ΔE < 3 — "same name" zone
+  veryClose: number // ΔE < 3: the "same name" zone
   approximate: number // ΔE 3–10
   distant: number // ΔE ≥ 10 (within scan radius)
 }
@@ -76,7 +76,7 @@ export function nearestNames(hex: string, count = 6): NameResult {
 
   // Sort on the raw distance, round only for display. Rounding first collapsed every
   // candidate within 0.05 into a tie, which the dataset's key order then broke
-  // arbitrarily — roughly one colour in fourteen was named by a match that was not
+  // arbitrarily: roughly one colour in fourteen was named by a match that was not
   // the nearest one.
   const scored = pool
     .map(e => ({ name: e.name, hex: e.hex, deltaE: deltaE(hex, e.hex) }))

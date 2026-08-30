@@ -22,7 +22,7 @@ function stateOf(sel) {
   return m ? m[1] : null
 }
 
-/** Class + pseudo-class count — what decides these rules against each other. */
+/** Class and pseudo-class count: what decides these rules against each other. */
 function specificity(sel) {
   return (sel.match(/\.[A-Za-z][\w-]*/g) || []).length + (sel.match(/:(?!not\()[a-z-]+/g) || []).length
 }

@@ -26,7 +26,7 @@ function safeProtocol(url: string): string {
 
 /** Resolve a renderer-supplied font path, refusing anything outside the directory the
  *  app owns. Both callers pass a path that came from the database, and every path the
- *  database holds was written by copyFontFiles into userData/fonts — so this rejects
+ *  database holds was written by copyFontFiles into userData/fonts, so this rejects
  *  nothing legitimate, and stops the two path-taking handlers being a general-purpose
  *  read-any-file / reveal-any-file primitive for the renderer. */
 function ownedFontPath(candidate: string): string {
@@ -58,8 +58,8 @@ function createWindow(): void {
 
   win.on('ready-to-show', () => win.show())
 
-  // Only http(s) reaches the OS opener. Any other scheme — file:, smb:, a custom
-  // handler registered by another app — is a way to have the shell run something on
+  // Only http(s) reaches the OS opener. Any other scheme (file:, smb:, a custom
+  // handler registered by another app) is a way to have the shell run something on
   // the user's behalf from a string the renderer chose.
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https?:$/.test(safeProtocol(url))) shell.openExternal(url)

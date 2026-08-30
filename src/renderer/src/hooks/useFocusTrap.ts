@@ -9,7 +9,7 @@ const FOCUSABLE =
  * it on close.
  *
  * Without this, Tab walks out of the overlay into the live page behind it, and closing
- * one drops focus to <body> — after deleting a colour you restarted from the top of the
+ * one drops focus to <body>: after deleting a colour you restarted from the top of the
  * sidebar. Modal owned this logic first; Drawer needs the same thing, so it lives here.
  *
  * @param open      whether the overlay is showing

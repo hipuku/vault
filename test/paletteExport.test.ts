@@ -30,7 +30,7 @@ function swatch(p: Partial<Swatch>): Swatch {
   }
 }
 
-describe('buildTokenTree — tonal', () => {
+describe('buildTokenTree: tonal', () => {
   it('groups by ramp key and keys by stop label', () => {
     const tree = buildTokenTree(
       palette('tonal'),
@@ -53,7 +53,7 @@ describe('buildTokenTree — tonal', () => {
   })
 })
 
-describe('buildTokenTree — expressive', () => {
+describe('buildTokenTree: expressive', () => {
   it('maps group keys through the supplied names and defaults blank labels', () => {
     const tree = buildTokenTree(
       palette('expressive'),

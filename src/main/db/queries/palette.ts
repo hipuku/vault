@@ -15,7 +15,7 @@ function insertPalette(
      VALUES (?, ?, ?, ?, ?, ?)`,
   )
 
-  // Palette row and swatches in one transaction — see the note in type-scale.ts.
+  // Palette row and swatches in one transaction. See the note in type-scale.ts.
   const id = db.transaction((list: SwatchInput[]) => {
     const { lastInsertRowid } = insertPaletteRow.run(name, kind, baseHex, JSON.stringify(genParams))
     const paletteId = Number(lastInsertRowid)
@@ -51,7 +51,7 @@ export function updatePaletteName(id: number, name: string): void {
   getDb().prepare("UPDATE palettes SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
-/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+/** asset_tags is polymorphic, so SQLite cannot cascade it: deleting the asset leaves
  *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
 export function deletePalette(id: number): void {
   const db = getDb()

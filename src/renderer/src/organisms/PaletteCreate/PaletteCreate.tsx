@@ -265,7 +265,7 @@ export function PaletteCreate({
       <div className={styles.panes}>
         {/* ── Controls ── */}
         <div className={styles.controls}>
-          {/* 1 — Name */}
+          {/* 1. Name */}
           <div className={styles.field}>
             <label className={styles.label}>
               Name <span className={styles.req}>*</span>
@@ -273,7 +273,7 @@ export function PaletteCreate({
             <Input value={name} onChange={e => setName(e.target.value)} placeholder="Palette name" autoFocus />
           </div>
 
-          {/* 2 — Builder type */}
+          {/* 2. Builder type */}
           <div className={styles.field}>
             <label className={styles.label}>Type</label>
             <SegmentedControl
@@ -287,7 +287,7 @@ export function PaletteCreate({
             />
           </div>
 
-          {/* 3 — Project */}
+          {/* 3. Project */}
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
             <TagSelect
@@ -300,7 +300,7 @@ export function PaletteCreate({
             />
           </div>
 
-          {/* 4 — Seeds (scoped to project) */}
+          {/* 4. Seeds (scoped to project) */}
           <div className={styles.field}>
             <label className={styles.label}>
               {seedLabel}
@@ -348,7 +348,7 @@ export function PaletteCreate({
             )}
           </div>
 
-          {/* 5 — Ramps / Strategy */}
+          {/* 5. Ramps / Strategy */}
           {tab === 'tonal' ? (
             <div className={styles.field}>
               <label className={styles.label}>Ramps</label>
@@ -434,7 +434,7 @@ export function PaletteCreate({
           ) : (
             <>
               {nearIdentical && (
-                <p className={styles.advisory}>Some colours are nearly identical — try a lower hue count.</p>
+                <p className={styles.advisory}>Some colours are nearly identical. Try a lower hue count.</p>
               )}
               <div className={styles.expPreview}>
                 {Array.from(expGroups.values()).map((hexes, gi) => {

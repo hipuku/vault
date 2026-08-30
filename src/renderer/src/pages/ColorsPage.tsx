@@ -208,7 +208,7 @@ export function ColorsPage({
           <EmptyState
             title="No colours match this filter"
             description={
-              favOnly ? 'No favourites yet — star a colour to see it here.' : 'No colours in this project yet.'
+              favOnly ? 'No favourites yet. Star a colour to see it here.' : 'No colours in this project yet.'
             }
           />
         ) : (

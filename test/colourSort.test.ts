@@ -15,7 +15,7 @@ function colour(p: Partial<Colour>): Colour {
 
 describe('hueFamily', () => {
   it('classifies saturated colours into named OKLCH families', () => {
-    // NB: OKLCH hue ≠ sRGB intuition — sRGB #ff0000 lands in Orange (hue ~29).
+    // NB: OKLCH hue ≠ sRGB intuition. sRGB #ff0000 lands in Orange (hue ~29).
     expect(hueFamily('#e0115f')).toBe('Red') // hue ~9
     expect(hueFamily('#ff0000')).toBe('Orange') // hue ~29
     expect(hueFamily('#00cc00')).toBe('Green') // hue ~142

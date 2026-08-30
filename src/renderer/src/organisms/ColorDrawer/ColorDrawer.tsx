@@ -23,7 +23,7 @@ import styles from './ColorDrawer.module.css'
 
 interface ColorDrawerProps {
   colour: Colour | null
-  /** Full library — used to flag suggested names already taken by another colour. */
+  /** Full library, used to flag suggested names already taken by another colour. */
   library: Colour[]
   onClose: () => void
   onRename: (id: number, name: string) => void
@@ -65,7 +65,7 @@ export function ColorDrawer({
   const shades = useMemo(() => (colour ? generateLightnessScale(colour.hex) : []), [colour])
   const activeShade = useMemo(() => (colour ? nearestShadeIndex(colour.hex, shades) : -1), [colour, shades])
 
-  // Names already used by *another* colour — a suggestion matching one would collide on apply.
+  // Names already used by *another* colour: a suggestion matching one would collide on apply.
   const takenNames = useMemo(() => {
     const s = new Set<string>()
     for (const c of library) if (c.id !== colour?.id) s.add(c.name.toLowerCase())

@@ -17,7 +17,7 @@ export interface ModalProps {
   chrome?: 'header' | 'plain'
   /** Search-led surfaces sit high rather than centred. */
   align?: 'center' | 'top'
-  /** Replaces the header's title node — a tab strip, typically. `title` still names
+  /** Replaces the header's title node, typically a tab strip. `title` still names
    *  the dialog for assistive tech. The close button and the rule stay. */
   header?: React.ReactNode
   /** Closing on a backdrop click is opt-in: a destructive confirm should not. */
@@ -29,7 +29,7 @@ export interface ModalProps {
 /**
  * The shared modal shell: overlay, panel, focus management.
  *
- * Focus is handled by useFocusTrap, which Drawer uses too — every hand-rolled copy of
+ * Focus is handled by useFocusTrap, which Drawer uses too. Every hand-rolled copy of
  * this shell handled Escape and none of them trapped focus or gave it back.
  */
 export default function Modal({

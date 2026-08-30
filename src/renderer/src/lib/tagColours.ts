@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
 
 // A uniform tag palette: fixed OKLCH lightness + chroma, hue swept evenly
-// around the wheel. One scale, every swatch the same perceptual weight — and
+// around the wheel. One scale, every swatch the same perceptual weight, and
 // all in sRGB gamut at L 0.64 / C 0.11 so none are silently clipped.
 const COUNT = 12
 const LIGHTNESS = 0.64

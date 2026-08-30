@@ -22,7 +22,7 @@ export function useTags(): {
     refresh()
   }, [refresh])
 
-  // Create/update may reject on the UNIQUE(label) constraint — callers catch
+  // Create/update may reject on the UNIQUE(label) constraint, so callers catch
   // the rejection to show inline "tag already exists" feedback.
   const createTag = useCallback(async (label: string, colour: string): Promise<TagWithCount> => {
     const tag = await window.api.tag.create(label, colour)

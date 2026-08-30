@@ -1,9 +1,9 @@
 # scripts
 
-## `inject-variants.mjs` — the variant matrix for the Figma reference
+## `inject-variants.mjs`: the variant matrix for the Figma reference
 
 Reads each component's props interface and stylesheet, and writes a table into the reference
-page: every property, its type, its possible values and its default — plus a `state` axis built
+page: every property, its type, its possible values and its default, plus a `state` axis built
 from the pseudo-classes the CSS actually styles, and a count of how many frames the component set
 needs.
 
@@ -13,12 +13,12 @@ REF=../vault-figma-reference node scripts/inject-variants.mjs atoms.html \
 ```
 
 The value is that it is generated. Re-run it after changing a prop union and the reference cannot
-drift from the code — add a `variant` and the table grows a column on its own.
+drift from the code: add a `variant` and the table grows a column on its own.
 
 Re-running is safe: a section that already carries a matrix is skipped, so clear the old blocks
 first if you want them rebuilt.
 
-## `inject-matrix.mjs` — every variant × state, rendered
+## `inject-matrix.mjs`: every variant × state, rendered
 
 The variant table names the axes; it does not tell you what `secondary + hover` looks like.
 This walks the stylesheet's cascade for each combination and writes a grid: a rendered chip
@@ -30,7 +30,7 @@ REF=../vault-figma-reference node scripts/inject-matrix.mjs atoms.html spec.json
 ```
 
 Two things it gets right that a naive read does not. It sorts matched rules by **specificity**
-before source order, so `.trigger:focus-visible` correctly beats a later `.block` — without that
+before source order, so `.trigger:focus-visible` correctly beats a later `.block`. Without that
 the matrix showed a focus ring the browser never renders. And it marks combinations that do not
 differ from the default: Button multiplies out to 32 frames but only **13** are distinct, because
 `active` is styled for `primary` alone.

@@ -14,7 +14,7 @@ export interface PopoverState {
  * outside the wrapper, and Escape. Six components had their own copy of this effect.
  *
  * `onClose` runs on both dismissal routes, for callers that reset something as the
- * panel goes away — TagSelect clears its query and blurs its input. It is held in a
+ * panel goes away: TagSelect clears its query and blurs its input. It is held in a
  * ref so an inline arrow from the caller does not re-subscribe the listeners on every
  * render, and `toggle`/`close` are stable so they can be effect dependencies.
  */

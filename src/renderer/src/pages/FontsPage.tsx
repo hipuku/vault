@@ -202,7 +202,7 @@ export function FontsPage({
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No fonts match this filter"
-            description={favOnly ? 'No favourites yet — star a font to see it here.' : 'No fonts in this project yet.'}
+            description={favOnly ? 'No favourites yet. Star a font to see it here.' : 'No fonts in this project yet.'}
           />
         ) : (
           grid

@@ -51,7 +51,7 @@
 }
 
 /* The palette card is itself the focus context and the input is always focused
-   while it's open — so suppress the global accent ring here (it would otherwise
+   while it's open, so suppress the global accent ring here (it would otherwise
    show as a clipped rectangle inside the rounded container). */
 .input:focus-visible {
   box-shadow: none;

@@ -13,7 +13,7 @@ interface EditableNameProps {
   textClassName?: string
 }
 
-/** Click-to-edit name with a hover pen — the shared rename affordance. */
+/** Click-to-edit name with a hover pen: the shared rename affordance. */
 export function EditableName({ value, onCommit, ariaLabel, textClassName }: EditableNameProps): React.ReactElement {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(value)

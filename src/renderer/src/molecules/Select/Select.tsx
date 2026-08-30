@@ -27,7 +27,7 @@ interface SelectProps<K extends string> {
 
 /** A custom dropdown replacing native <select>: a trigger (current label +
  *  padded chevron) opening a panel of options with a check on the selected one.
- *  Closes on outside-click and Escape — mirrors the Menu primitive. */
+ *  Closes on outside-click and Escape, mirroring the Menu primitive. */
 export function Select<K extends string>({
   value,
   options,

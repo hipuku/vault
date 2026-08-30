@@ -26,7 +26,7 @@
   cursor: not-allowed;
 }
 
-/* ── Sizes (boxier — more vertical presence, pill radius kept) ─────────────── */
+/* ── Sizes (boxier: more vertical presence, pill radius kept) ──────────────── */
 
 .sm {
   height: var(--control-height-md);

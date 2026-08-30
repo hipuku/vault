@@ -12,7 +12,7 @@ interface StepDef {
   heading: boolean
 }
 
-/** Product/semantic roles — Display→Label, like Material and most design systems. */
+/** Product/semantic roles: Display→Label, like Material and most design systems. */
 const SEMANTIC_STEPS: StepDef[] = [
   { name: 'Display', exponent: 5.25, weight: 700, lineHeight: '1.1', letterSpacing: '-0.02em', heading: true },
   { name: 'Headline', exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
@@ -24,7 +24,7 @@ const SEMANTIC_STEPS: StepDef[] = [
   { name: 'Label', exponent: -1.3, weight: 500, lineHeight: '1.4', letterSpacing: '0.08em', heading: false },
 ]
 
-/** HTML markup — h1–h6 + paragraph + small, mapping 1:1 to web-document tags. */
+/** HTML markup: h1–h6, paragraph and small, mapping 1:1 to web-document tags. */
 const MARKUP_STEPS: StepDef[] = [
   { name: 'H1', exponent: 3.83, weight: 700, lineHeight: '1.15', letterSpacing: '-0.02em', heading: true },
   { name: 'H2', exponent: 2.82, weight: 700, lineHeight: '1.2', letterSpacing: '-0.01em', heading: true },
@@ -70,7 +70,7 @@ interface StepMetrics {
 }
 
 /** True when a scale's steps no longer match the ramp its base/ratio would
- *  generate — i.e. it's been hand-tuned and is no longer a named ratio. */
+ *  generate, i.e. it's been hand-tuned and is no longer a named ratio. */
 export function isCustomScale(steps: StepMetrics[], baseSize: number, ratio: number): boolean {
   const kind = detectKind(steps.map(s => s.step_name))
   const generated = generateTypeScaleSteps(baseSize, ratio, kind)

@@ -182,7 +182,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
       <div className={styles.panes}>
         {/* ── Controls ── */}
         <div className={styles.controls}>
-          {/* 1 — Name */}
+          {/* 1. Name */}
           <div className={styles.field}>
             <label className={styles.label}>
               Name <span className={styles.req}>*</span>
@@ -190,13 +190,13 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             <Input value={name} onChange={e => setName(e.target.value)} placeholder="Type scale name" autoFocus />
           </div>
 
-          {/* 2 — Preset kind */}
+          {/* 2. Preset kind */}
           <div className={styles.field}>
             <label className={styles.label}>Type</label>
             <SegmentedControl ariaLabel="Scale type" value={kind} onChange={setKind} options={KIND_OPTIONS} />
           </div>
 
-          {/* 3 — Project */}
+          {/* 3. Project */}
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
             <TagSelect
@@ -209,7 +209,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             />
           </div>
 
-          {/* 4 — Fonts (scoped to project) */}
+          {/* 4. Fonts (scoped to project) */}
           {projectId == null ? (
             <p className={styles.empty}>Choose a project to pick its heading &amp; body fonts.</p>
           ) : scopedFonts.length === 0 ? (
@@ -242,7 +242,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             </>
           )}
 
-          {/* 5 — Base size */}
+          {/* 5. Base size */}
           <div className={styles.field}>
             <label className={styles.label}>Base size</label>
             <div className={styles.sizeInput}>
@@ -258,7 +258,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             </div>
           </div>
 
-          {/* 6 — Ratio presets */}
+          {/* 6. Ratio presets */}
           <div className={styles.field}>
             <label className={styles.label}>Ratio</label>
             <div className={styles.ratios}>
@@ -286,7 +286,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             <div className={styles.previewEmpty}>
               {projectId == null
                 ? 'Choose a project and its fonts to preview the scale.'
-                : 'This project has no fonts yet — add some to preview the scale.'}
+                : 'This project has no fonts yet. Add some to preview the scale.'}
             </div>
           ) : (
             <>

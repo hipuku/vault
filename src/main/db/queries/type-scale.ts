@@ -22,7 +22,7 @@ export function createTypeScale(
 
   // The scale row and its steps go in one transaction. Inserting the parent first and
   // wrapping only the children left a committed scale with zero steps whenever a step
-  // violated a constraint — and there is no update handler, so the user could not
+  // violated a constraint, and there is no update handler, so the user could not
   // repair it.
   const id = db.transaction((list: TypeScaleStepInput[]) => {
     const { lastInsertRowid } = insertScale.run(name, headingFontId, bodyFontId, baseSize, ratio)
@@ -44,7 +44,7 @@ export function updateTypeScaleName(id: number, name: string): void {
   getDb().prepare("UPDATE type_scales SET name = ?, updated_at = datetime('now') WHERE id = ?").run(name, id)
 }
 
-/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+/** asset_tags is polymorphic, so SQLite cannot cascade it: deleting the asset leaves
  *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
 export function deleteTypeScale(id: number): void {
   const db = getDb()

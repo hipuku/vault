@@ -33,7 +33,7 @@ export function palettesUsingColour(id: number): Array<{ id: number; name: strin
     .all(id) as Array<{ id: number; name: string }>
 }
 
-/** asset_tags is polymorphic, so SQLite cannot cascade it — deleting the asset leaves
+/** asset_tags is polymorphic, so SQLite cannot cascade it: deleting the asset leaves
  *  its tag rows behind, and listTags counts them forever. Every delete clears its own. */
 export function deleteColour(id: number): void {
   const db = getDb()

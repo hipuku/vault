@@ -15,7 +15,7 @@ interface ColorFiltersProps {
 }
 
 /** Unified sort / group popover for the Colors page. Closes on
- *  outside-click and Escape — mirrors the Menu primitive. */
+ *  outside-click and Escape, mirroring the Menu primitive. */
 export function ColorFilters({
   sortKey,
   onSortChange,

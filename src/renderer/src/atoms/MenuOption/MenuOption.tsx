@@ -7,7 +7,7 @@ export interface MenuOptionProps extends Omit<React.ButtonHTMLAttributes<HTMLBut
   label: string
   /** Shows the tick on the right. */
   selected?: boolean
-  /** Rendered before the label — a colour dot, typically. */
+  /** Rendered before the label, typically a colour dot. */
   leading?: React.ReactNode
 }
 

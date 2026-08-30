@@ -16,7 +16,7 @@ export interface PopoverProps {
 
 /**
  * The floating panel half of a popover. Open state, the trigger and outside-click
- * dismissal live in `usePopover` — this is only the surface, so a caller can put it
+ * dismissal live in `usePopover`. This is only the surface, so a caller can put it
  * behind whatever trigger it already has.
  */
 export function Popover({

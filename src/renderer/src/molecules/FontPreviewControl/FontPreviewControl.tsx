@@ -11,7 +11,7 @@ interface FontPreviewControlProps {
   onSizeChange: (size: number) => void
 }
 
-/** Compact toolbar control for preview text + size — opens a popover. Mirrors the
+/** Compact toolbar control for preview text and size, opening a popover. Mirrors the
  *  ColorFilters idiom so the Fonts toolbar matches the other pages. The single
  *  source of truth for how font cards and the drawer specimens render. */
 export function FontPreviewControl({

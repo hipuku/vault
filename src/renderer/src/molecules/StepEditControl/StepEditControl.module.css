@@ -44,7 +44,7 @@
   box-shadow: var(--shadow-focus);
 }
 
-/* Size field — value + a px suffix that always hugs the number. */
+/* Size field: value plus a px suffix that always hugs the number. */
 .unitField {
   display: inline-flex;
   align-items: center;

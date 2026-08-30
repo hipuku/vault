@@ -97,7 +97,7 @@
   white-space: nowrap;
 }
 
-/* Create-mode hover edit — revealed top-right of the row. */
+/* Create-mode hover edit, revealed top-right of the row. */
 .trailing {
   position: absolute;
   top: var(--space-4);

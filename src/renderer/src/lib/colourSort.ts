@@ -58,7 +58,7 @@ const HUE_FAMILIES: Array<{ title: string; min: number; max: number }> = [
   { title: 'Pink', min: 300, max: 345 },
 ]
 
-/** Named OKLCH hue family for a colour — the single source of truth shared by the
+/** Named OKLCH hue family for a colour: the single source of truth shared by the
  *  Colors-page grouping and the card pill. */
 export function hueFamily(hex: string): string {
   if (chroma(hex) < 0.03) return 'Neutral'
@@ -119,8 +119,8 @@ export function groupColours(colours: Colour[], key: GroupKey): ColourGroup[] {
       const dark: Colour[] = []
       for (const c of colours) (prefersDarkText(c.hex) ? light : dark).push(c)
       return [
-        { title: 'Light — good with dark text', colours: light },
-        { title: 'Dark — good with light text', colours: dark },
+        { title: 'Light, good with dark text', colours: light },
+        { title: 'Dark, good with light text', colours: dark },
       ].filter(g => g.colours.length > 0)
     }
     default:

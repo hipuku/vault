@@ -38,7 +38,7 @@ export function analyseHueArc(midHexes: string[]): HueArcResult {
   if (hues.length <= 1) return { totalAngle: 0, hues }
 
   // All hues equal means every gap is 0, and 360 - 0 would report a monochrome
-  // palette as covering the whole wheel — the inverse of the truth.
+  // palette as covering the whole wheel, which is the inverse of the truth.
   const sorted = [...hues].sort((a, b) => a - b)
   if (sorted[0] === sorted[sorted.length - 1]) return { totalAngle: 0, hues }
   // largest gap in the circle determines coverage

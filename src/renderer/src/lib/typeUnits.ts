@@ -13,7 +13,7 @@ export interface TypeUnits {
   tracking: TrackingUnit
 }
 
-/** Canonical forms — the defaults the table opens on. */
+/** Canonical forms: the defaults the table opens on. */
 export const DEFAULT_UNITS: TypeUnits = {
   size: 'px',
   weight: 'number',
@@ -54,7 +54,7 @@ export function formatSize(px: number, unit: SizeUnit): string {
 
 export function formatLineHeight(value: string, sizePx: number, unit: LineHeightUnit): string {
   const mult = parseFloat(value)
-  if (Number.isNaN(mult)) return value // e.g. 'normal' — leave as-is
+  if (Number.isNaN(mult)) return value // e.g. 'normal', which is left as-is
   switch (unit) {
     case 'unitless':
       return trim(mult)
@@ -67,8 +67,8 @@ export function formatLineHeight(value: string, sizePx: number, unit: LineHeight
 
 /**
  * @param forCss  emit something a stylesheet accepts. `letter-spacing` takes no
- *                percentage, so the % reading — which is how type is discussed, and
- *                what Figma shows — is converted back to em on the way out. Without
+ *                percentage, so the % reading, which is how type is discussed and
+ *                what Figma shows, is converted back to em on the way out. Without
  *                this the exports carried `letter-spacing: 8%`, which every browser
  *                silently drops.
  */

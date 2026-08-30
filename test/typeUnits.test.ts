@@ -79,7 +79,7 @@ describe('formatWeight', () => {
   })
 })
 
-describe('formatTracking — CSS safety', () => {
+describe('formatTracking: CSS safety', () => {
   /* letter-spacing takes no percentage. The viewer shows % because that is how type is
      discussed; the exports must not carry it, or the declaration is dropped silently. */
   it('emits % for reading', () => {

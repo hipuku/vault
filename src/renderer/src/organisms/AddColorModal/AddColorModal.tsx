@@ -26,10 +26,10 @@ interface AddColorModalProps {
   open: boolean
   onClose: () => void
   library: Colour[]
-  /** May be async — the modal awaits it and only closes once the write succeeds. */
+  /** May be async: the modal awaits it and only closes once the write succeeds. */
   onAdd: (hex: string, name: string) => unknown
   onAddMany: (list: Array<{ hex: string; name: string }>) => unknown
-  /** Locks the colour to a fixed hex (no picker, no image tab) — e.g. promoting a
+  /** Locks the colour to a fixed hex (no picker, no image tab), e.g. promoting a
    *  palette swatch to the library. */
   fixedHex?: string
   /** Override the primary-button label (default "Add colour"). */
@@ -64,7 +64,7 @@ export function AddColorModal({
   const [rows, setRows] = useState<ImageRow[]>([])
   const [editingHex, setEditingHex] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  // The write can fail — a duplicate name, a locked database. Closing on the next line
+  // The write can fail: a duplicate name, a locked database. Closing on the next line
   // meant the colour silently never appeared.
   const [busy, setBusy] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
@@ -256,7 +256,7 @@ export function AddColorModal({
 
               {similar && (
                 <Callout variant="warning">
-                  Similar to <strong>{similar.name}</strong> ({similar.hex}) — ΔE {formatDeltaE(similar.deltaE)}
+                  Similar to <strong>{similar.name}</strong> ({similar.hex}), ΔE {formatDeltaE(similar.deltaE)}
                 </Callout>
               )}
               {dupName && (
@@ -335,7 +335,7 @@ export function AddColorModal({
                     const nameTaken = existingNames.has(key)
                     const dupInBatch = !nameTaken && r.included && (nameCounts.get(key) ?? 0) > 1
                     const warnings: string[] = []
-                    if (sim) warnings.push(`Similar to “${sim.name}” — ΔE ${formatDeltaE(sim.deltaE)}`)
+                    if (sim) warnings.push(`Similar to “${sim.name}”, ΔE ${formatDeltaE(sim.deltaE)}`)
                     if (nameTaken) warnings.push(`You already have a colour named “${r.name}”`)
                     else if (dupInBatch) warnings.push(`Another selected row is also named “${r.name}”`)
                     return (

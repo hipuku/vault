@@ -16,7 +16,7 @@ const SEMANTIC_HUE: Record<'success' | 'warning' | 'error', number> = {
 /** The floor is deliberate: a success/warning/error ramp has to read as green/amber/red
  *  even when the seed is muted, so chroma is scaled from the seed but never allowed below
  *  45. The consequence is that a near-grey seed yields saturated semantic ramps that do
- *  not visibly derive from it — only `primary` and `neutral` track a grey seed closely. */
+ *  not visibly derive from it: only `primary` and `neutral` track a grey seed closely. */
 const SEMANTIC_CHROMA_FLOOR = 45
 
 function rotateHue(seedHex: string, targetHue: number, chromaScale: number): string {

@@ -21,7 +21,7 @@ interface FontAdderProps {
   open: boolean
   onClose: () => void
   existing: Set<string>
-  /** Both may be async — the adder awaits them and surfaces a failure rather than
+  /** Both may be async: the adder awaits them and surfaces a failure rather than
    *  closing as though it worked. */
   onAddGoogle: (meta: GoogleFontMeta) => unknown
   onAddLocal: (family: string, files: LocalFontFile[]) => unknown
@@ -347,7 +347,7 @@ export function FontAdder({
               <FontAwesomeIcon icon={faUpload} className={styles.dropIcon} />
               <p className={styles.dropText}>Drop font files, or click to choose</p>
               <p className={styles.dropHint}>
-                One family at a time — add every weight & italic. .ttf · .otf · .woff · .woff2
+                One family at a time. Add every weight & italic. .ttf · .otf · .woff · .woff2
               </p>
               <input
                 ref={fileRef}
@@ -368,7 +368,7 @@ export function FontAdder({
                 <Input value={localFamily} onChange={e => setLocalFamily(e.target.value)} placeholder="e.g. Inter" />
                 {localDup && (
                   <span className={styles.dupWarn}>
-                    “{localFamily.trim()}” is already in your library — this adds a duplicate.
+                    “{localFamily.trim()}” is already in your library, so this adds a duplicate.
                   </span>
                 )}
               </label>

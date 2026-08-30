@@ -10,7 +10,7 @@ interface PillProps {
   className?: string
 }
 
-/** A small, neutral metadata pill — distinct from `Badge` (which carries
+/** A small, neutral metadata pill, distinct from `Badge` (which carries
  *  status semantics). Use for descriptive tags like "Tonal · 5 ramps". */
 export function Pill({ label, icon, className }: PillProps): React.ReactElement {
   return (
