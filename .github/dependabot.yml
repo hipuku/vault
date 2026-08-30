@@ -35,6 +35,19 @@ updates:
       # on the next run and says nothing about why it was refused.
       - dependency-name: 'typescript'
         update-types: ['version-update:semver-major']
+      # vite 8 and @vitejs/plugin-react 6 need each other and neither works here
+      # yet. plugin-react 6 peers vite ^8 alone, and electron-vite 5, which is
+      # latest, peers ^5 || ^6 || ^7, so the two halves of that upgrade want
+      # different vite majors and no combination installs. electron-vite
+      # 6.0.0-beta.1 peers ^6 || ^7 || ^8; when it ships stable these two rules
+      # come out and both bumps land in one commit.
+      #
+      # Scoped to the versions that cannot work rather than to semver-major, so
+      # anything below the ceiling still arrives as a pull request.
+      - dependency-name: 'vite'
+        versions: ['>=8']
+      - dependency-name: '@vitejs/plugin-react'
+        versions: ['>=6']
 
   - package-ecosystem: github-actions
     directory: /
