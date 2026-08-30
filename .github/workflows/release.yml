@@ -20,7 +20,7 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # Unsigned build — Vault ships as a direct download, not via the App Store.
+      # Unsigned build. Vault ships as a direct download rather than through the App Store.
       # CSC_IDENTITY_AUTO_DISCOVERY=false makes the build deterministic (no attempt
       # to find a signing identity on the runner). The app keeps Electron's ad-hoc
       # signature, so it launches on Apple Silicon after the user clears quarantine
@@ -29,7 +29,7 @@ jobs:
       # PASSWORD/APPLE_TEAM_ID secrets, and remove the env override below.
       # `--publish never`: electron-builder only builds the DMGs into dist/. On a
       # tag it would otherwise try to publish to GitHub itself and fail without a
-      # token — publishing is the dedicated softprops step below.
+      # token. Publishing is the dedicated softprops step below.
       - name: Build unsigned .dmg (arm64 + x64)
         run: npm run dist:mac -- --publish never
         env:

@@ -25,9 +25,9 @@ updates:
     commit-message:
       prefix: 'deps'
     ignore:
-      # @types/node describes the runtime, so it tracks the Node that Electron ships and
-      # that CI installs — currently 22 — not the newest release line. Taking a major here
-      # type-checks the app against APIs the binary does not have.
+      # @types/node describes the runtime, so it tracks the Node that Electron ships
+      # and that CI installs, currently 22, rather than the newest release line.
+      # Taking a major here type-checks the app against APIs the binary does not have.
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
       # TypeScript 7 is the native rewrite, deferred across every repo here so they
