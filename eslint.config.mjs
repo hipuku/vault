@@ -31,6 +31,6 @@ export default tseslint.config(
       ecmaVersion: 'latest',
     },
   },
-  // Prettier owns formatting — disable any stylistic ESLint rules that would fight it.
+  // Prettier owns formatting, so disable any stylistic ESLint rules that would fight it.
   prettier,
 )

@@ -5,5 +5,5 @@ out
 *.tsbuildinfo
 .DS_Store
 
-# Local scratch notes only — committed docs (README / DESIGN / FEATURE) are tracked
+# Local scratch notes only. The committed docs (README / DESIGN / FEATURE) are tracked.
 *.local.md
