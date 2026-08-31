@@ -59,8 +59,7 @@ export function deleteFont(id: number): string[] {
   const db = getDb()
   return db.transaction(() => {
     const row = db.prepare('SELECT source, source_url FROM fonts WHERE id = ?').get(id) as
-      | { source: string; source_url: string }
-      | undefined
+      { source: string; source_url: string } | undefined
     let paths: string[] = []
     if (row?.source === 'local' && row.source_url) {
       try {
