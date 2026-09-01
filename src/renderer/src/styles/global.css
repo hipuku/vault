@@ -150,11 +150,14 @@ textarea::placeholder {
   color: var(--color-error-default);
 }
 
-/* Favourite "on" state: gold icon, holds through hover */
-.icon-btn--star {
+/* Toggle "on" state: gold icon, holds through hover. Driven by IconButton's
+   `pressed`, which also emits aria-pressed. Was .icon-btn--star, a name that
+   described the one place it was used rather than what it does, and it was
+   applied by hand-rolled buttons that bypassed the atom. */
+.icon-btn--on {
   color: var(--amber-500);
 }
-.icon-btn--star:hover:not(:disabled) {
+.icon-btn--on:hover:not(:disabled) {
   background: var(--color-surface-subtle);
   color: var(--amber-500);
 }

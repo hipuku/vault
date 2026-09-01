@@ -4,6 +4,7 @@ import { faStar, faTrash, faFolderOpen, faDownload, faArrowUpRightFromSquare } f
 import type { Font, Tag } from '@shared/types'
 import { Drawer } from '../../molecules/Drawer/Drawer'
 import { Button } from '../../atoms/Button/Button'
+import { IconButton } from '../../atoms/IconButton/IconButton'
 import { TagSelect } from '../../molecules/TagSelect/TagSelect'
 import { TagModal } from '../../organisms/TagModal/TagModal'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
@@ -95,14 +96,14 @@ export function FontDrawer({
             <span className={styles.bigName} style={{ fontFamily: stack }}>
               {font.family}
             </span>
-            <button
-              type="button"
-              className={['icon-btn', styles.star, font.favourite ? 'icon-btn--star' : ''].filter(Boolean).join(' ')}
+            <IconButton
+              className={styles.star}
+              pressed={Boolean(font.favourite)}
               onClick={() => onToggleFavourite(font.id, font.favourite ? 0 : 1)}
-              aria-label={font.favourite ? 'Unfavourite' : 'Favourite'}
+              label={font.favourite ? 'Unfavourite' : 'Favourite'}
             >
               <FontAwesomeIcon icon={faStar} />
-            </button>
+            </IconButton>
           </div>
           <p className={styles.sub}>
             {font.category} · {font.source === 'google' ? 'Google Fonts' : 'Local file'}

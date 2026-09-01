@@ -39,8 +39,7 @@ function Harness({ onChange = () => {} }: { onChange?: (k: Key) => void }): Reac
 
 const trigger = (): HTMLElement => screen.getByRole('combobox', { name: 'Sort' })
 const active = (): string | undefined =>
-  document.getElementById(trigger().getAttribute('aria-activedescendant') ?? '')?.textContent ??
-  undefined
+  document.getElementById(trigger().getAttribute('aria-activedescendant') ?? '')?.textContent ?? undefined
 
 describe('Select', () => {
   it('keeps every option a direct child of the listbox', async () => {

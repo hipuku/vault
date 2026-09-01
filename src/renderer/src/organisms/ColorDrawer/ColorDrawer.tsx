@@ -6,6 +6,7 @@ import { Drawer } from '../../molecules/Drawer/Drawer'
 import { Tooltip } from '../../atoms/Tooltip/Tooltip'
 import { generateLightnessScale } from '@shared/lib/lightnessScale'
 import { Button } from '../../atoms/Button/Button'
+import { IconButton } from '../../atoms/IconButton/IconButton'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
 import { TagSelect } from '../../molecules/TagSelect/TagSelect'
 import { TagModal } from '../../organisms/TagModal/TagModal'
@@ -157,14 +158,14 @@ export function ColorDrawer({
                 </button>
               </div>
             )}
-            <button
-              type="button"
-              className={['icon-btn', styles.star, colour.favourite ? 'icon-btn--star' : ''].filter(Boolean).join(' ')}
+            <IconButton
+              className={styles.star}
+              pressed={Boolean(colour.favourite)}
               onClick={() => onToggleFavourite(colour.id, colour.favourite ? 0 : 1)}
-              aria-label={colour.favourite ? 'Unfavourite' : 'Favourite'}
+              label={colour.favourite ? 'Unfavourite' : 'Favourite'}
             >
               <FontAwesomeIcon icon={faStar} />
-            </button>
+            </IconButton>
           </div>
 
           <div className={styles.copyGrid}>

@@ -163,8 +163,6 @@
 
     --color-surface-default: var(--onyx-0);
     --color-surface-subtle: var(--onyx-100);
-    --color-surface-raised: var(--onyx-0);
-    --color-surface-overlay: var(--onyx-50);
     --color-surface-sunken: var(--onyx-200);
     --color-surface-inverse: var(--onyx-900);
     --color-surface-disabled: var(--onyx-100);
@@ -179,16 +177,13 @@
     --color-border-default: var(--onyx-200);
     --color-border-strong: var(--onyx-300);
     --color-border-focus: var(--ruby-500);
-    --color-border-disabled: var(--onyx-200);
 
     --color-primary-default: var(--ruby-500);
     --color-primary-hover: var(--ruby-600);
     --color-primary-pressed: var(--ruby-700);
     --color-primary-subtle: var(--ruby-100);
-    --color-primary-disabled: var(--onyx-200);
 
     --color-success-subtle: var(--emerald-100);
-    --color-success-default: var(--emerald-500);
     --color-success-solid: var(--emerald-700);
 
     --color-error-subtle: var(--garnet-100);

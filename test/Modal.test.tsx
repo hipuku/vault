@@ -9,13 +9,7 @@ import Modal from '@renderer/molecules/Modal/Modal'
  * Escape and none of them trapped focus or gave it back. Modal and Drawer are the two
  * that use it, and until this file there was no test of either in this repo.
  */
-function Harness({
-  onClose = () => {},
-  open = true,
-}: {
-  onClose?: () => void
-  open?: boolean
-}): React.ReactElement {
+function Harness({ onClose = () => {}, open = true }: { onClose?: () => void; open?: boolean }): React.ReactElement {
   return (
     <>
       <button type="button">behind</button>
@@ -31,9 +25,7 @@ describe('Modal', () => {
   it('names the dialog by its rendered heading', () => {
     render(<Harness />)
     const dialog = screen.getByRole('dialog', { name: 'Add colour' })
-    expect(dialog.getAttribute('aria-labelledby')).toBe(
-      screen.getByRole('heading', { name: 'Add colour' }).id,
-    )
+    expect(dialog.getAttribute('aria-labelledby')).toBe(screen.getByRole('heading', { name: 'Add colour' }).id)
   })
 
   it('focuses into the panel and keeps Tab inside it', async () => {
