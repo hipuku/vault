@@ -35,3 +35,12 @@
   width: var(--dot-sm);
   color: var(--color-primary-default);
 }
+
+/* The keyboard highlight for the listbox form. Focus stays on the trigger while a
+   Select is open, so without a mark of its own there is nothing on screen tracking
+   the arrow keys. */
+.active {
+  background: var(--color-surface-subtle);
+  color: var(--color-ink-primary);
+  box-shadow: inset 0 0 0 2px var(--color-primary-default);
+}

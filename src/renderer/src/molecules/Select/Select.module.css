@@ -24,3 +24,11 @@
   flex-shrink: 0;
   color: var(--color-ink-tertiary);
 }
+
+/* The listbox itself, inside Popover's panel. Popover supplies the surface and the
+   padding; this only removes the list defaults. */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
