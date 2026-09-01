@@ -39,6 +39,24 @@ function ownedFontPath(candidate: string): string {
   return full
 }
 
+const ASSET_TYPES: readonly AssetType[] = ['colour', 'font', 'palette', 'type_scale']
+
+/** Narrow a renderer-supplied asset type back to the union the database expects.
+ *
+ *  The rest of the IPC surface is left unvalidated on purpose. Every argument that
+ *  reaches SQLite is a bound parameter — nothing is interpolated into a statement, in
+ *  any query file — so a wrong type there throws at the bind and stops. The two
+ *  arguments that reach the filesystem and the shell are already narrowed by
+ *  ownedFontPath and safeProtocol. This one is different because every wrong value is
+ *  a *valid* bind: `asset_tags` takes any string, so a typo'd asset type writes a row
+ *  that nothing ever reads back, and the failure is silent rather than loud. */
+function assertAssetType(value: AssetType): AssetType {
+  if (!ASSET_TYPES.includes(value)) {
+    throw new Error(`Unknown asset type: ${String(value)}`)
+  }
+  return value
+}
+
 function createWindow(): void {
   const win = new BrowserWindow({
     width: 1200,
@@ -50,7 +68,12 @@ function createWindow(): void {
     backgroundColor: '#fefefe',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false,
+      // Sandboxed, which is Electron's own default and was switched off only because
+      // the project template ships it that way. The built preload requires exactly one
+      // module, `electron`, which a sandboxed preload can load; it holds no Node API
+      // and no filesystem access of its own, so nothing here needed the exemption.
+      // Every path that does touch the disk is an IPC handler in this file.
+      sandbox: true,
       contextIsolation: true,
       nodeIntegration: false,
     },
@@ -226,17 +249,19 @@ ipcMain.handle('tag:update', (_e, id: number, label: string, colour: string) => 
 ipcMain.handle('tag:list', () => tagQueries.listTags())
 ipcMain.handle('tag:delete', (_e, id: number) => tagQueries.deleteTag(id))
 ipcMain.handle('tag:assign', (_e, assetType: AssetType, assetId: number, tagId: number) =>
-  tagQueries.assignTag(assetType, assetId, tagId),
+  tagQueries.assignTag(assertAssetType(assetType), assetId, tagId),
 )
 ipcMain.handle('tag:remove', (_e, assetType: AssetType, assetId: number, tagId: number) =>
-  tagQueries.removeTag(assetType, assetId, tagId),
+  tagQueries.removeTag(assertAssetType(assetType), assetId, tagId),
 )
 ipcMain.handle('tag:list-for-asset', (_e, assetType: AssetType, assetId: number) =>
-  tagQueries.listTagsForAsset(assetType, assetId),
+  tagQueries.listTagsForAsset(assertAssetType(assetType), assetId),
 )
-ipcMain.handle('tag:list-for-section', (_e, assetType: AssetType) => tagQueries.listTagsForSection(assetType))
+ipcMain.handle('tag:list-for-section', (_e, assetType: AssetType) =>
+  tagQueries.listTagsForSection(assertAssetType(assetType)),
+)
 ipcMain.handle('tag:list-asset-ids', (_e, assetType: AssetType, tagId: number) =>
-  tagQueries.listAssetIdsForTag(assetType, tagId),
+  tagQueries.listAssetIdsForTag(assertAssetType(assetType), tagId),
 )
 
 // ── Clipboard ─────────────────────────────────────────────────────────────────
