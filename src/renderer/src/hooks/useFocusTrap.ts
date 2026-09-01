@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
@@ -12,6 +12,13 @@ const FOCUSABLE =
  * one drops focus to <body>: after deleting a colour you restarted from the top of the
  * sidebar. Modal owned this logic first; Drawer needs the same thing, so it lives here.
  *
+ * `onEscape` is held in a ref, the way usePopover holds its `onClose`. Every caller
+ * passes an inline arrow, so as a dependency it would tear the effect down and set it
+ * up again on every render of the parent: the cleanup hands focus back to the opener
+ * and the setup pulls it to the first field, so a click inside an open modal bounced
+ * focus out of whatever the user was using. Found on 2026-09-01, when this repo
+ * finally got a test that renders a component.
+ *
  * @param open      whether the overlay is showing
  * @param container the element to trap within
  * @param onEscape  called on Escape, if the caller wants it handled here
@@ -21,6 +28,9 @@ export function useFocusTrap(
   container: React.RefObject<HTMLElement | null>,
   onEscape?: () => void,
 ): void {
+  const latestEscape = useRef(onEscape)
+  latestEscape.current = onEscape
+
   useEffect(() => {
     if (!open) return
     const opener = document.activeElement as HTMLElement | null
@@ -33,7 +43,7 @@ export function useFocusTrap(
 
     const onKey = (e: KeyboardEvent): void => {
       if (e.key === 'Escape') {
-        onEscape?.()
+        latestEscape.current?.()
         return
       }
       if (e.key !== 'Tab' || !node) return
@@ -54,5 +64,5 @@ export function useFocusTrap(
       window.removeEventListener('keydown', onKey)
       opener?.focus()
     }
-  }, [open, container, onEscape])
+  }, [open, container])
 }
