@@ -300,9 +300,9 @@ one below it. Nothing points upward.
   steps look even and matches read as a human would judge them. RGB distance puts colours close
   together that do not look alike.
 - **The hue bins come from `haus-colour-utils`.** vault carried its own copy with the same
-  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red is OKLCH hue
-  29, not 0, so every family sat about one bin anticlockwise of where it belonged and 17 of 27
-  canonical colours were misnamed. The bins are a shared decision, so they live in one place
+  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red sits at
+  OKLCH hue 29 rather than 0, so every family sat about one bin anticlockwise of where it
+  belonged and 17 of 27 canonical colours were misnamed. The bins are a shared decision, so they live in one place
   and vault reads them, which is also how the second correction arrived without any work
   here: 0.3.0 refits the boundaries to 4,275 human-named colours, because the midpoints
   between eight anchor colours assumed a family is centred on the colour it is named after.
@@ -360,8 +360,8 @@ one below it. Nothing points upward.
 
 ## Known tradeoffs / next
 
-- **Storage durability.** Data lives in app `userData`, which is robust against moved files but not
-  backed up. The planned **Phase 2** is an Obsidian-style nominated vault folder (assets +
+- **Storage durability.** Data lives in app `userData`, so it survives a moved application
+  and is not backed up anywhere. The planned **Phase 2** is an Obsidian-style nominated vault folder (assets +
   data in one portable, sync-able directory).
 - **Variable fonts.** Installed-font import reads one weight per face from `system_profiler`;
   variable axes aren't expanded yet.
