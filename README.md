@@ -56,7 +56,7 @@ npm run dev      # launch the app with HMR
 | ------------------- | ----------------------------------------- |
 | `npm run dev`       | Run the app (electron-vite, HMR)          |
 | `npm run typecheck` | `tsc --noEmit` across main and renderer   |
-| `npm run test`      | Vitest (watch) over the pure `lib/` logic |
+| `npm run test`      | Vitest (watch): the pure `lib/` logic in node, the components in jsdom |
 | `npm run test:run`  | Vitest once (CI)                          |
 | `npm run lint`      | ESLint (typescript-eslint + react-hooks)  |
 | `npm run format`    | Prettier write                            |
