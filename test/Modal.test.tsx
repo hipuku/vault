@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import Modal from '@renderer/molecules/Modal/Modal'
+import { axe } from 'vitest-axe'
 
 /**
  * useFocusTrap's own docstring says it: every hand-rolled copy of this shell handled
@@ -93,5 +94,18 @@ describe('Modal', () => {
     await user.click(bump)
 
     expect(document.activeElement).toBe(screen.getByRole('button', { name: /bump/ }))
+  })
+})
+
+/**
+ * vault has 51 component directories and shipped two component tests, neither
+ * of which asserted anything about accessibility. Modal is the right place to
+ * start: it owns focus, and axe cannot see a missing focus trap, so this
+ * assertion sits alongside the keyboard tests rather than replacing them.
+ */
+describe('accessibility', () => {
+  it('has no violations when open', async () => {
+    const { container } = render(<Harness />)
+    expect((await axe(container)).violations).toEqual([])
   })
 })

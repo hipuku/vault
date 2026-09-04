@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { Select } from '@renderer/molecules/Select/Select'
+import { axe } from 'vitest-axe'
 
 /**
  * Select replaced a native <select> and for a long time kept none of what the native
@@ -144,5 +145,18 @@ describe('Select', () => {
     // The whole pattern rests on this: the options are announced through
     // aria-activedescendant precisely because they cannot hold focus themselves.
     expect(document.activeElement).toBe(trigger())
+  })
+})
+
+describe('accessibility', () => {
+  it('has no violations closed', async () => {
+    const { container } = render(<Harness />)
+    expect((await axe(container)).violations).toEqual([])
+  })
+
+  it('has no violations with the listbox open', async () => {
+    const { container } = render(<Harness />)
+    await userEvent.click(screen.getByRole('combobox'))
+    expect((await axe(container)).violations).toEqual([])
   })
 })
