@@ -7,3 +7,7 @@ out
 
 # Local scratch notes only. The committed docs (README / DESIGN / FEATURE) are tracked.
 *.local.md
+
+e2e-results/
+test-results/
+playwright-report/

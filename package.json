@@ -18,7 +18,8 @@
     "format:check": "prettier --check .",
     "dist": "npm run build && electron-builder",
     "dist:mac": "npm run build && electron-builder --mac",
-    "postinstall": "install-electron"
+    "postinstall": "install-electron",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
@@ -37,6 +38,7 @@
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@electron-toolkit/utils": "^4.0.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.6",
