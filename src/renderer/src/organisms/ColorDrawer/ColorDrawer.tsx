@@ -106,7 +106,7 @@ export function ColorDrawer({
   }
 
   return (
-    <Drawer open={colour !== null} onClose={onClose}>
+    <Drawer open={colour !== null} onClose={onClose} ariaLabel="Colour details">
       {colour && (
         <div className={styles.content}>
           <div className={styles.block} style={{ background: colour.hex }}>

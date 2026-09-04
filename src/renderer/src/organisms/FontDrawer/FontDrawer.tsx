@@ -89,7 +89,7 @@ export function FontDrawer({
   const importCss = font && font.source === 'google' ? `@import url('${googleCssUrl(font.family, weights)}');` : ''
 
   return (
-    <Drawer open={font !== null} onClose={onClose}>
+    <Drawer open={font !== null} onClose={onClose} ariaLabel="Font details">
       {font && (
         <div className={styles.content}>
           <div className={styles.head}>
