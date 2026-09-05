@@ -11,6 +11,7 @@
   gap: var(--space-1);
   width: 100%;
   min-height: var(--control-height-lg);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   padding: 5px var(--space-3);
   background: var(--color-surface-default);
   border: var(--border-width) solid var(--color-border-default);

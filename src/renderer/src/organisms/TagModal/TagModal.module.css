@@ -23,6 +23,7 @@
   aspect-ratio: 1;
   border: none;
   border-radius: var(--radius-full);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   cursor: pointer;
   display: flex;
@@ -38,6 +39,7 @@
 }
 
 .swatchOn {
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow:
     0 0 0 2px var(--color-surface-default),
     0 0 0 4px var(--color-ink-primary);

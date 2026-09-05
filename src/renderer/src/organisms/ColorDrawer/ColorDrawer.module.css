@@ -149,6 +149,7 @@ input.name {
   width: var(--dot-lg);
   height: var(--dot-lg);
   border-radius: var(--radius-sm);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   flex-shrink: 0;
 }
@@ -174,17 +175,6 @@ input.name {
   flex-shrink: 0;
   font-size: var(--text-12);
   color: var(--amber-500);
-}
-
-.nameActions {
-  display: flex;
-  align-items: center;
-  width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    width var(--duration-normal) var(--ease-move),
-    opacity var(--duration-fast) var(--ease-move);
 }
 
 .nameRow:hover .nameActions {

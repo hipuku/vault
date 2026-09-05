@@ -42,5 +42,6 @@
 .active {
   background: var(--color-surface-subtle);
   color: var(--color-ink-primary);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: inset 0 0 0 2px var(--color-primary-default);
 }

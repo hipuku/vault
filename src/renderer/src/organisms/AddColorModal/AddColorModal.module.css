@@ -30,6 +30,7 @@
   height: var(--control-height-lg);
   border-radius: var(--radius-full);
   border: var(--border-width) solid var(--color-border-default);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   cursor: pointer;
   padding: 0;
@@ -256,6 +257,7 @@
   height: var(--control-height-sm);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
 }
 

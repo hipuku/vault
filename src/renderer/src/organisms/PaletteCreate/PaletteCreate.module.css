@@ -104,6 +104,7 @@
   aspect-ratio: 1;
   border: none;
   border-radius: var(--radius-md);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   cursor: pointer;
   display: flex;
@@ -113,6 +114,7 @@
   transition: box-shadow var(--duration-fast) var(--ease-move);
 }
 .seedOn {
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow:
     0 0 0 2px var(--color-surface-default),
     0 0 0 4px var(--color-primary-default);
@@ -155,7 +157,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-ink-secondary);
-  font-size: 11px;
+  font-size: var(--text-11);
 }
 .stepBtn:hover:not(:disabled) {
   background: var(--color-surface-subtle);

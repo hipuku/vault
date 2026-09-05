@@ -24,6 +24,12 @@ jobs:
       # every file would have been turned off instead of adopted.
       - run: npm run lint:prose
 
+      # The hardcoded-value gate. vault ships 159 custom properties and had
+      # nothing checking that components read them, which of the seven repos is
+      # the one where that costs most: this app's whole subject is colour and
+      # type values, and its own were the only ones nothing measured.
+      - run: npm run lint:css
+
   format:
     name: Format
     runs-on: macos-latest

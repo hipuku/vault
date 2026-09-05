@@ -15,7 +15,7 @@
   font-size: var(--text-28);
   line-height: 1.1;
   color: var(--color-ink-primary);
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* star: locked .icon-btn pattern (global) + .icon-btn--star when favourited */
@@ -42,7 +42,7 @@
   font-size: var(--text-20);
   color: var(--color-ink-primary);
   line-height: var(--leading-snug);
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .copyRow {

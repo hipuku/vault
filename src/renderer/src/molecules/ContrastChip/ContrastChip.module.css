@@ -7,6 +7,7 @@
   border-radius: var(--radius-sm);
   font-size: var(--text-13);
   font-weight: var(--weight-bold);
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
   flex-shrink: 0;
 }

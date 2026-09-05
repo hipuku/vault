@@ -8,7 +8,7 @@
   color: var(--color-ink-tertiary);
   font-size: var(--type-label-xs-size);
   font-weight: var(--weight-medium);
-  line-height: 1.6;
+  line-height: var(--leading-loose);
   white-space: nowrap;
 }
 
