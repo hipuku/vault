@@ -80,8 +80,15 @@ export default {
       ],
       {
         ignoreKeywords: [
-          'transparent', 'currentColor', 'currentcolor',
-          'inherit', 'initial', 'unset', 'revert', 'none', 'auto',
+          'transparent',
+          'currentColor',
+          'currentcolor',
+          'inherit',
+          'initial',
+          'unset',
+          'revert',
+          'none',
+          'auto',
         ],
         ignoreValues: ['0', '1', '50%', '100%', '1px', '2px', '-2px', ...OFF_SCALE],
         disableFix: true,

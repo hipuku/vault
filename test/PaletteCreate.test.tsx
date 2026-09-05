@@ -57,13 +57,13 @@ function setup(overrides: Partial<React.ComponentProps<typeof PaletteCreate>> = 
     // landmark, and in the app this screen renders inside one. Without it the
     // suite would report a violation the component cannot fix.
     <main>
-    <PaletteCreate
-      library={COLOURS}
-      onCancel={onCancel}
-      onCreateTonal={onCreateTonal}
-      onCreateExpressive={onCreateExpressive}
-      {...overrides}
-    />
+      <PaletteCreate
+        library={COLOURS}
+        onCancel={onCancel}
+        onCreateTonal={onCreateTonal}
+        onCreateExpressive={onCreateExpressive}
+        {...overrides}
+      />
     </main>,
   )
   return { user, onCancel, onCreateTonal, onCreateExpressive }
@@ -78,8 +78,12 @@ async function chooseProject(user: ReturnType<typeof userEvent.setup>) {
 const seedButton = (name: string) => screen.getByRole('button', { name: new RegExp(name) })
 const createButton = () => screen.getByRole('button', { name: /Create palette|Creating/ })
 
-beforeEach(() => { stubApi() })
-afterEach(() => { vi.restoreAllMocks() })
+beforeEach(() => {
+  stubApi()
+})
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 
 describe('PaletteCreate · what it will let you ask for', () => {
   it('cannot create without a name, however many seeds are picked', async () => {
@@ -184,9 +188,7 @@ describe('PaletteCreate · tonal', () => {
     await user.click(createButton())
 
     await waitFor(() =>
-      expect(onCreateTonal).toHaveBeenCalledWith('Brand', '#7653ab', 1, [
-        'primary', 'neutral', 'warning', 'error',
-      ]),
+      expect(onCreateTonal).toHaveBeenCalledWith('Brand', '#7653ab', 1, ['primary', 'neutral', 'warning', 'error']),
     )
   })
 
