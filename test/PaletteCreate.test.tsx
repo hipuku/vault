@@ -10,8 +10,8 @@ import type { Colour, Palette, Tag } from '@shared/types'
  * The palette generators, which vault#19 filed as the hardest logic here and
  * the least covered.
  *
- * The generators themselves — `generateTonalSystem`, `generateExpressiveSet`
- * — already have domain tests, and this is not those. What had nothing was the
+ * The generators themselves: `generateTonalSystem`, `generateExpressiveSet`
+ *, already have domain tests, and this is not those. What had nothing was the
  * screen that decides *what to hand them*: which colours are eligible, how many
  * hue groups is a legal request, which ramps a caller is allowed to turn off,
  * and whether the create button is reachable at all. Every one of those is a
@@ -104,7 +104,7 @@ describe('PaletteCreate · what it will let you ask for', () => {
   })
 
   it('shows no colours at all until a project is chosen', async () => {
-    // Not an empty library — the library has six. `scopedColours` is [] while
+    // Not an empty library: the library has six. `scopedColours` is [] while
     // projectColourIds is null, so the whole grid is gated behind the project
     // picker. Worth pinning because it reads like a bug until you find the line.
     setup()
@@ -173,7 +173,7 @@ describe('PaletteCreate · tonal', () => {
   })
 
   it('hands the generator the ramps in a fixed order, not click order', async () => {
-    // ALL_RAMPS.filter(), not [...ramps] — a Set iterates in insertion order, so
+    // ALL_RAMPS.filter(), not [...ramps]: a Set iterates in insertion order, so
     // turning error on before warning would otherwise reorder the palette.
     const { user, onCreateTonal } = setup()
     await chooseProject(user)
@@ -329,7 +329,7 @@ describe('PaletteCreate · accessibility', () => {
 
   it('labels the name field', async () => {
     // The visible "Name *" label is not associated with anything, so the only
-    // accessible name this field has is its placeholder — which disappears the
+    // accessible name this field has is its placeholder: which disappears the
     // moment someone types into it.
     setup()
     expect(screen.getByLabelText(/Name/)).toBe(screen.getByPlaceholderText('Palette name'))

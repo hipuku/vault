@@ -19,6 +19,11 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
+      # House style does not use an em dash. Ratcheted against a baseline rather
+      # than absolute: a rule that could only pass after a mechanical rewrite of
+      # every file would have been turned off instead of adopted.
+      - run: npm run lint:prose
+
   format:
     name: Format
     runs-on: macos-latest

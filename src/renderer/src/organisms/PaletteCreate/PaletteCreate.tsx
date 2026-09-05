@@ -58,7 +58,7 @@ export function PaletteCreate({
   const [tab, setTab] = useState<'tonal' | 'expressive'>('tonal')
   const [name, setName] = useState('')
   /* The visible "Name *" label was next to the input rather than attached to
-     it, so the field's only accessible name was its placeholder — which is the
+     it, so the field's only accessible name was its placeholder: which is the
      one thing that disappears the moment someone types. */
   const nameId = useId()
   const [query, setQuery] = useState('')

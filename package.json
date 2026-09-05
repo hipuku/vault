@@ -13,6 +13,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint .",
+    "lint:prose": "node scripts/check-punctuation.mjs",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
