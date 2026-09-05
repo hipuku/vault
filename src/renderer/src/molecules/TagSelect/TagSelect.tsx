@@ -8,6 +8,13 @@ import { MenuOption } from '../../atoms/MenuOption/MenuOption'
 import styles from './TagSelect.module.css'
 
 interface TagSelectProps {
+  /**
+   * Required, and it has to be: `placeholder` empties as soon as something is
+   * selected, so the input's only accessible name disappears at exactly the
+   * moment there is state worth announcing. axe caught it as `label` on four
+   * screens at once.
+   */
+  ariaLabel: string
   allTags: Tag[]
   selectedIds: Set<number>
   onToggle: (tag: Tag) => void
@@ -21,6 +28,7 @@ interface TagSelectProps {
 /** Notion-style combobox: type to prefix-filter, pick from the dropdown, or
  *  create a new entry (prefilled with the query) from the row at the bottom. */
 export function TagSelect({
+  ariaLabel,
   allTags,
   selectedIds,
   onToggle,
@@ -88,6 +96,7 @@ export function TagSelect({
         <input
           ref={inputRef}
           className={styles.input}
+          aria-label={ariaLabel}
           value={query}
           placeholder={selected.length === 0 ? (placeholder ?? 'Add to projects…') : ''}
           onChange={e => {

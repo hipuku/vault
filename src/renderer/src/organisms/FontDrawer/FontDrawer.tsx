@@ -174,6 +174,7 @@ export function FontDrawer({
           <div className={styles.group}>
             <h3 className="eyebrow">Projects</h3>
             <TagSelect
+              ariaLabel="Projects"
               allTags={allTags}
               selectedIds={assigned}
               onToggle={toggleTag}

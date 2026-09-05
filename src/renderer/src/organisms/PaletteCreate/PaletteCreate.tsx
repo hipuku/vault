@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faChevronLeft,
@@ -57,6 +57,10 @@ export function PaletteCreate({
 }: PaletteCreateProps): React.ReactElement {
   const [tab, setTab] = useState<'tonal' | 'expressive'>('tonal')
   const [name, setName] = useState('')
+  /* The visible "Name *" label was next to the input rather than attached to
+     it, so the field's only accessible name was its placeholder — which is the
+     one thing that disappears the moment someone types. */
+  const nameId = useId()
   const [query, setQuery] = useState('')
 
   // Project scope
@@ -267,10 +271,16 @@ export function PaletteCreate({
         <div className={styles.controls}>
           {/* 1. Name */}
           <div className={styles.field}>
-            <label className={styles.label}>
+            <label className={styles.label} htmlFor={nameId}>
               Name <span className={styles.req}>*</span>
             </label>
-            <Input value={name} onChange={e => setName(e.target.value)} placeholder="Palette name" autoFocus />
+            <Input
+              id={nameId}
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Palette name"
+              autoFocus
+            />
           </div>
 
           {/* 2. Builder type */}
@@ -291,6 +301,7 @@ export function PaletteCreate({
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
             <TagSelect
+              ariaLabel="Project"
               allTags={projects}
               selectedIds={projectId != null ? new Set([projectId]) : new Set()}
               onToggle={selectProject}

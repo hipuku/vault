@@ -200,6 +200,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
             <TagSelect
+              ariaLabel="Project"
               allTags={projects}
               selectedIds={projectId != null ? new Set([projectId]) : new Set()}
               onToggle={selectProject}
