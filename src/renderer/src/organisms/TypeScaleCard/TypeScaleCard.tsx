@@ -62,7 +62,7 @@ export function TypeScaleCard({
                 fontFamily: bodyStack,
                 fontSize: 12,
                 fontWeight: caption.weight,
-                color: 'var(--color-ink-tertiary)',
+                color: 'var(--haus-color-ink-tertiary)',
               }}
             >
               {PREVIEW}

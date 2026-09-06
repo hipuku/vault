@@ -2,19 +2,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-surface-subtle);
-  border: var(--border-width) solid transparent;
-  border-radius: var(--radius-md);
+  gap: var(--haus-space-3);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  background: var(--haus-color-surface-subtle);
+  border: var(--haus-border-width-default) solid transparent;
+  border-radius: var(--haus-radius-md);
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-secondary);
   transition:
-    background var(--duration-normal) var(--ease-move),
-    color var(--duration-normal) var(--ease-move);
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .block {
@@ -23,18 +23,18 @@
 }
 
 .chip:hover {
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-primary);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-primary);
 }
 
 .copied {
-  background: var(--color-success-subtle);
-  color: var(--color-success-solid);
+  background: var(--haus-color-success-subtle);
+  color: var(--haus-color-success-solid);
 }
 
 .mono .label {
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
 }
 
 .label {
@@ -47,7 +47,7 @@
   width: 12px;
   flex-shrink: 0;
   opacity: 0.5;
-  transition: opacity var(--duration-normal) var(--ease-move);
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .chip:hover .icon,

@@ -4,11 +4,11 @@
   justify-content: center;
   width: 28px;
   height: var(--control-height-xs);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-13);
-  font-weight: var(--weight-bold);
+  border-radius: var(--haus-radius-sm);
+  font-size: var(--haus-text-13);
+  font-weight: var(--haus-weight-bold);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
   flex-shrink: 0;
 }
 
@@ -17,36 +17,36 @@
 .row {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--type-body-sm-size);
+  gap: var(--haus-space-2);
+  font-size: var(--haus-type-body-sm-size);
 }
 
 .label {
   flex: 1;
-  color: var(--color-ink-secondary);
+  color: var(--haus-color-ink-secondary);
 }
 
 .ratio {
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* ── Shared badge ───────────────────────────────────────── */
 
 .badge {
-  font-size: var(--text-11);
-  font-weight: var(--weight-semibold);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
+  font-size: var(--haus-text-11);
+  font-weight: var(--haus-weight-semibold);
+  padding: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
 }
 
 .pass {
-  background: var(--color-success-subtle);
-  color: var(--color-success-solid);
+  background: var(--haus-color-success-subtle);
+  color: var(--haus-color-success-solid);
 }
 
 .fail {
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-disabled);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-disabled);
 }

@@ -4,25 +4,25 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: var(--space-3);
-  padding: var(--space-12);
+  gap: var(--haus-space-3);
+  padding: var(--haus-space-12);
   min-height: 240px;
 }
 
 .title {
-  font-size: var(--type-heading-sm-size);
-  font-weight: var(--type-heading-sm-weight);
-  letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  color: var(--haus-color-ink-primary);
 }
 
 .description {
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-tertiary);
-  line-height: var(--type-body-sm-leading);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-tertiary);
+  line-height: var(--haus-type-body-sm-leading);
   max-width: 280px;
 }
 
 .action {
-  margin-top: var(--space-2);
+  margin-top: var(--haus-space-2);
 }

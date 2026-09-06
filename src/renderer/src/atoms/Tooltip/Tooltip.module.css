@@ -7,20 +7,20 @@
    inline from the trigger's bounding rect (see Tooltip.tsx). */
 .bubble {
   position: fixed;
-  z-index: var(--z-tooltip);
+  z-index: var(--haus-z-tooltip);
   width: max-content;
   max-width: 220px;
-  padding: var(--space-1) var(--space-2);
-  background: var(--color-surface-inverse);
-  color: var(--color-ink-inverse);
-  font-family: var(--font-sans);
-  font-size: var(--text-12);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-snug);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
+  padding: var(--haus-space-1) var(--haus-space-2);
+  background: var(--haus-color-surface-inverse);
+  color: var(--haus-color-ink-inverse);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-12);
+  font-weight: var(--haus-weight-medium);
+  line-height: var(--haus-leading-snug);
+  border-radius: var(--haus-radius-sm);
+  box-shadow: var(--haus-shadow-md);
   pointer-events: none;
-  animation: fade var(--duration-fast) var(--ease-move);
+  animation: fade var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 @keyframes fade {

@@ -9,38 +9,38 @@
   display: grid;
   grid-template-columns: 120px 1fr;
   align-items: center;
-  gap: var(--space-5);
-  padding-bottom: var(--space-3);
-  border-bottom: var(--border-width) solid var(--color-border-default);
+  gap: var(--haus-space-5);
+  padding-bottom: var(--haus-space-3);
+  border-bottom: var(--haus-border-width-default) solid var(--haus-color-border-default);
 }
 
 .metricsHead {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 
 /* Column header: icon + label (palette "group name" style) + a muted unit. */
 .headCell {
   display: inline-flex;
   align-items: baseline;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   min-width: 0;
 }
 .headIcon {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
   align-self: center;
 }
 .headLabel {
-  font-size: var(--text-14);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
 }
 .headUnit {
-  font-size: var(--text-14);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* ── Step rows ───────────────────────────────────────────────────────────── */
@@ -49,17 +49,17 @@
   position: relative;
   display: grid;
   grid-template-columns: 120px 1fr;
-  gap: var(--space-5);
-  padding: var(--space-5) 0;
-  border-bottom: var(--border-width) solid var(--color-border-subtle);
+  gap: var(--haus-space-5);
+  padding: var(--haus-space-5) 0;
+  border-bottom: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .stepName {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-tertiary);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--haus-tracking-wide);
   padding-top: 2px;
 }
 
@@ -67,11 +67,11 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 
 .specimen {
-  color: var(--color-ink-primary);
+  color: var(--haus-color-ink-primary);
   min-width: 0;
   overflow: hidden;
   /* Wrap to a few lines so line-height is actually visible. */
@@ -86,24 +86,24 @@
 .metricsRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 
 .metric {
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
   font-variant-numeric: tabular-nums;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
   white-space: nowrap;
 }
 
 /* Create-mode hover edit, revealed top-right of the row. */
 .trailing {
   position: absolute;
-  top: var(--space-4);
+  top: var(--haus-space-4);
   right: 0;
   opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-move);
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
 .row:hover .trailing {
   opacity: 1;

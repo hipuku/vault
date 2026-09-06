@@ -2,22 +2,22 @@
 
 .tabOn,
 .tabOn:hover {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-default);
+  background: var(--haus-color-primary-subtle);
+  color: var(--haus-color-primary-default);
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: var(--haus-space-4);
+  padding: var(--haus-space-5);
   overflow-y: auto;
 }
 
 .hexRow {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .pickerWrap {
@@ -27,43 +27,43 @@
 
 .preview {
   width: 40px;
-  height: var(--control-height-lg);
-  border-radius: var(--radius-full);
-  border: var(--border-width) solid var(--color-border-default);
+  height: var(--haus-control-height-lg);
+  border-radius: var(--haus-radius-full);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
   cursor: pointer;
   padding: 0;
 }
 
 .hexInput {
   flex: 1;
-  height: var(--control-height-lg);
-  padding: 0 var(--space-4);
-  font-family: var(--font-mono);
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  height: var(--haus-control-height-lg);
+  padding: 0 var(--haus-space-4);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
   outline: none;
   transition:
-    border-color var(--duration-normal) var(--ease-move),
-    box-shadow var(--duration-fast) var(--ease-move);
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 .hexInput::placeholder {
-  font-family: var(--font-sans);
-  color: var(--color-ink-disabled);
+  font-family: var(--haus-font-sans);
+  color: var(--haus-color-ink-disabled);
 }
 .hexInput:focus-visible {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .sectionHead {
@@ -73,60 +73,60 @@
 }
 
 .sectionLabel {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-tracking-wide);
   text-transform: uppercase;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .confidence {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .names {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .nameChip {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  border: var(--border-width) solid var(--color-border-default);
-  background: var(--color-surface-default);
+  gap: var(--haus-space-1);
+  padding: var(--haus-space-1) var(--haus-space-3);
+  border-radius: var(--haus-radius-full);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  background: var(--haus-color-surface-default);
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-secondary);
   transition:
-    background var(--duration-normal) var(--ease-move),
-    border-color var(--duration-normal) var(--ease-move),
-    color var(--duration-normal) var(--ease-move);
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move);
 }
 .nameChip:hover {
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .nameChipOn {
   border-color: transparent;
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-default);
+  background: var(--haus-color-primary-subtle);
+  color: var(--haus-color-primary-default);
 }
 .nameCheck {
   width: 10px;
 }
 .nameDelta {
-  font-family: var(--font-mono);
-  font-size: var(--text-11);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-11);
+  color: var(--haus-color-ink-tertiary);
 }
 .nameChipOn .nameDelta {
-  color: var(--color-primary-default);
+  color: var(--haus-color-primary-default);
 }
 
 .useInstead {
@@ -134,11 +134,11 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-left: var(--space-1);
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--weight-semibold);
-  color: var(--color-primary-default);
+  margin-left: var(--haus-space-1);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-primary-default);
   text-decoration: underline;
 }
 
@@ -146,61 +146,61 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-2);
-  padding-top: var(--space-2);
+  gap: var(--haus-space-2);
+  padding-top: var(--haus-space-2);
 }
 .footerRight {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   margin-left: auto;
 }
 
 /* ── Image tab ───────────────────────────────────────────────────────────── */
 
 .dropzone {
-  padding: var(--space-10) var(--space-6);
-  border: 2px dashed var(--color-border-strong);
-  border-radius: var(--radius-lg);
+  padding: var(--haus-space-10) var(--haus-space-6);
+  border: 2px dashed var(--haus-color-border-strong);
+  border-radius: var(--haus-radius-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   cursor: pointer;
   transition:
-    border-color var(--duration-normal) var(--ease-move),
-    background var(--duration-normal) var(--ease-move);
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    background var(--haus-duration-normal) var(--haus-ease-move);
 }
 .dropzone:hover,
 .dropzoneActive {
-  border-color: var(--color-primary-default);
-  background: var(--color-primary-subtle);
+  border-color: var(--haus-color-primary-default);
+  background: var(--haus-color-primary-subtle);
 }
 .dropIcon {
   width: 28px;
-  color: var(--color-ink-tertiary);
-  margin-bottom: var(--space-1);
+  color: var(--haus-color-ink-tertiary);
+  margin-bottom: var(--haus-space-1);
 }
 .dropText {
-  font-size: var(--type-body-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-secondary);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-secondary);
 }
 .dropHint {
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-tertiary);
 }
 .fileInput {
   display: none;
 }
 
 .previewWrap {
-  border-radius: var(--radius-md);
+  border-radius: var(--haus-radius-md);
   overflow: hidden;
-  border: var(--border-width) solid var(--color-border-subtle);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   max-height: 180px;
   display: flex;
   justify-content: center;
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .previewImg {
   max-width: 100%;
@@ -211,10 +211,10 @@
 .loading {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  color: var(--color-ink-tertiary);
-  font-size: var(--type-body-sm-size);
-  padding: var(--space-4) 0;
+  gap: var(--haus-space-2);
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+  padding: var(--haus-space-4) 0;
 }
 
 .extractRows {
@@ -227,17 +227,17 @@
 .extractRow {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
   height: 44px;
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-md);
+  padding: 0 var(--haus-space-2);
+  border-radius: var(--haus-radius-md);
   cursor: pointer;
   transition:
-    opacity var(--duration-normal) var(--ease-move),
-    background var(--duration-normal) var(--ease-move);
+    opacity var(--haus-duration-normal) var(--haus-ease-move),
+    background var(--haus-duration-normal) var(--haus-ease-move);
 }
 .extractRow:hover {
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .extractRowOff {
   opacity: 0.4;
@@ -247,25 +247,25 @@
   width: 15px;
   height: 15px;
   margin: 0;
-  accent-color: var(--color-primary-default);
+  accent-color: var(--haus-color-primary-default);
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .extractSwatch {
   width: 28px;
-  height: var(--control-height-sm);
-  border-radius: var(--radius-sm);
+  height: var(--haus-control-height-sm);
+  border-radius: var(--haus-radius-sm);
   flex-shrink: 0;
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
 }
 
 /* name + warning + pen hug the swatch; hex is pushed to the far right */
 .extractMain {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   min-width: 0;
 }
 
@@ -276,10 +276,10 @@
   background: none;
   border: none;
   outline: none;
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  line-height: var(--leading-tight);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  line-height: var(--haus-leading-tight);
+  color: var(--haus-color-ink-primary);
   padding: 2px 0;
   cursor: text;
 }
@@ -292,10 +292,10 @@
 .extractNameText {
   min-width: 0;
   max-width: 240px;
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  line-height: var(--leading-tight);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  line-height: var(--haus-leading-tight);
+  color: var(--haus-color-ink-primary);
   padding: 2px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -305,8 +305,8 @@
 .extractWarn {
   display: inline-flex;
   flex-shrink: 0;
-  font-size: var(--text-12);
-  color: var(--amber-500);
+  font-size: var(--haus-text-12);
+  color: var(--haus-mango-500);
 }
 
 .extractPen {
@@ -316,8 +316,8 @@
   overflow: hidden;
   opacity: 0;
   transition:
-    width var(--duration-normal) var(--ease-move),
-    opacity var(--duration-fast) var(--ease-move);
+    width var(--haus-duration-normal) var(--haus-ease-move),
+    opacity var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 .extractRow:hover .extractPen {
@@ -327,9 +327,9 @@
 
 .extractHex {
   margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
   flex-shrink: 0;
 }
 
@@ -337,8 +337,8 @@
 .saveError {
   flex: 1;
   min-width: 0;
-  font-size: var(--type-body-sm-size);
-  color: var(--color-error-default);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-error-default);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

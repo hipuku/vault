@@ -1,11 +1,11 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: var(--color-backdrop);
-  z-index: calc(var(--z-modal) - 1);
+  background: var(--haus-color-backdrop);
+  z-index: calc(var(--haus-z-modal) - 1);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-moderate) var(--ease-move);
+  transition: opacity var(--haus-duration-moderate) var(--haus-ease-move);
 }
 
 .backdrop.open {
@@ -20,12 +20,12 @@
   bottom: 0;
   width: 440px;
   max-width: 92vw;
-  background: var(--color-surface-default);
-  border-left: var(--border-width) solid var(--color-border-subtle);
-  box-shadow: var(--shadow-lg);
-  z-index: var(--z-modal);
+  background: var(--haus-color-surface-default);
+  border-left: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  box-shadow: var(--haus-shadow-lg);
+  z-index: var(--haus-z-modal);
   transform: translateX(100%);
-  transition: transform var(--duration-moderate) var(--ease-enter);
+  transition: transform var(--haus-duration-moderate) var(--haus-ease-enter);
   overflow-y: auto;
   display: flex;
   flex-direction: column;

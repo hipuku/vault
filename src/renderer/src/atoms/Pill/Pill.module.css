@@ -1,14 +1,14 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-tertiary);
-  font-size: var(--type-label-xs-size);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-loose);
+  gap: var(--haus-space-1);
+  padding: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-weight-medium);
+  line-height: var(--haus-leading-loose);
   white-space: nowrap;
 }
 

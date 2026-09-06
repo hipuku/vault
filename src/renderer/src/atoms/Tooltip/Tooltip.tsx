@@ -11,7 +11,7 @@ interface TooltipProps {
   align?: 'center' | 'start' | 'end'
 }
 
-const GAP = 8 // matches --space-2
+const GAP = 8 // matches --haus-space-2
 
 /** A small accessible tooltip. The bubble is rendered in a portal on `document.body`
  *  and positioned from the trigger's bounding rect, so it never gets clipped by an

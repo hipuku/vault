@@ -3,16 +3,16 @@
 .titleRow {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .req {
-  color: var(--color-error-default);
+  color: var(--haus-color-error-default);
 }
 
 .error {
-  font-size: var(--text-12);
-  color: var(--color-error-default);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-error-default);
   max-width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -31,45 +31,45 @@
 .controls {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-5) var(--space-6);
+  gap: var(--haus-space-5);
+  padding: var(--haus-space-5) var(--haus-space-6);
   overflow-y: auto;
-  border-right: var(--border-width) solid var(--color-border-subtle);
+  border-right: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .label {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .empty {
-  font-size: var(--text-13);
-  color: var(--color-ink-tertiary);
-  line-height: var(--leading-normal);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-tertiary);
+  line-height: var(--haus-leading-normal);
 }
 
 /* Base size: value plus a px suffix that hugs the number (matches StepEditControl). */
 .sizeInput {
   width: 120px;
-  height: var(--control-height-lg);
+  height: var(--haus-control-height-lg);
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  padding: 0 var(--space-3);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  padding: 0 var(--haus-space-3);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
 }
 .sizeInput:focus-within {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 .numInput {
   flex: 1;
@@ -78,15 +78,15 @@
   border: none;
   background: none;
   outline: none;
-  font-family: var(--font-mono);
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-primary);
 }
 .unit {
-  margin-left: var(--space-1);
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-disabled);
+  margin-left: var(--haus-space-1);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-disabled);
   pointer-events: none;
 }
 
@@ -94,71 +94,71 @@
 .ratios {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .ratio {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
   cursor: pointer;
   text-align: left;
   transition:
-    border-color var(--duration-fast) var(--ease-move),
-    background var(--duration-fast) var(--ease-move);
+    border-color var(--haus-duration-fast) var(--haus-ease-move),
+    background var(--haus-duration-fast) var(--haus-ease-move);
 }
 .ratio:hover {
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .ratioOn {
-  border-color: var(--color-primary-default);
-  background: var(--color-primary-subtle);
+  border-color: var(--haus-color-primary-default);
+  background: var(--haus-color-primary-subtle);
 }
 .ratioName {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-13);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-primary);
+  gap: var(--haus-space-1);
+  font-size: var(--haus-text-13);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-primary);
 }
 .ratioOn .ratioName {
-  color: var(--color-primary-default);
+  color: var(--haus-color-primary-default);
 }
 .rec {
-  color: var(--color-primary-default);
-  font-size: var(--text-11);
+  color: var(--haus-color-primary-default);
+  font-size: var(--haus-text-11);
 }
 .ratioVal {
-  font-family: var(--font-mono);
-  font-size: var(--text-11);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-11);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* ── Preview pane ────────────────────────────────────────────────────────── */
 
 .previewPane {
   overflow-y: auto;
-  padding: var(--space-6);
-  background: var(--color-surface-subtle);
+  padding: var(--haus-space-6);
+  background: var(--haus-color-surface-subtle);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 
 .previewEmpty {
   margin: auto;
-  font-size: var(--text-14);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-14);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .previewHead {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 .previewField {
   flex: 1;

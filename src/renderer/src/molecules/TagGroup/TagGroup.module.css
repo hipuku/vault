@@ -6,13 +6,13 @@
 .title {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-5) var(--space-6) 0;
-  font-size: var(--type-label-size);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-5) var(--haus-space-6) 0;
+  font-size: var(--haus-type-label-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-tracking-wide);
   text-transform: uppercase;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .count {
@@ -21,11 +21,11 @@
   justify-content: center;
   min-width: var(--dot-lg);
   height: var(--dot-lg);
-  padding: 0 var(--space-1);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-tertiary);
-  font-size: var(--text-11);
-  font-weight: var(--weight-medium);
+  padding: 0 var(--haus-space-1);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-text-11);
+  font-weight: var(--haus-weight-medium);
   letter-spacing: 0;
 }

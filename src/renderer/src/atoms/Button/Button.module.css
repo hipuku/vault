@@ -2,17 +2,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  border: var(--border-width) solid transparent;
+  gap: var(--haus-space-2);
+  border: var(--haus-border-width-default) solid transparent;
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-weight: var(--weight-bold);
+  font-family: var(--haus-font-sans);
+  font-weight: var(--haus-weight-bold);
   white-space: nowrap;
   transition:
-    background var(--duration-normal) var(--ease-move),
-    color var(--duration-normal) var(--ease-move),
-    border-color var(--duration-normal) var(--ease-move),
-    box-shadow var(--duration-fast) var(--ease-move);
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move),
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 /* The label leads; the FA solid glyph (optically heavier than text) is scaled
@@ -22,66 +22,66 @@
 }
 
 .button:disabled {
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
   cursor: not-allowed;
 }
 
 /* ── Sizes (boxier: more vertical presence, pill radius kept) ──────────────── */
 
 .sm {
-  height: var(--control-height-md);
-  padding: 0 var(--space-4);
-  font-size: var(--text-13);
-  border-radius: var(--radius-full);
+  height: var(--haus-control-height-md);
+  padding: 0 var(--haus-space-4);
+  font-size: var(--haus-text-13);
+  border-radius: var(--haus-radius-full);
 }
 
 .md {
-  height: var(--control-height-lg);
-  padding: 0 var(--space-5);
-  font-size: var(--text-14);
-  border-radius: var(--radius-full);
+  height: var(--haus-control-height-lg);
+  padding: 0 var(--haus-space-5);
+  font-size: var(--haus-text-14);
+  border-radius: var(--haus-radius-full);
 }
 
 /* ── Variants ────────────────────────────────────────────────────────────── */
 
 .primary {
-  background: var(--color-primary-default);
-  color: var(--color-ink-inverse);
+  background: var(--haus-color-primary-default);
+  color: var(--haus-color-ink-inverse);
 }
 .primary:hover:not(:disabled) {
-  background: var(--color-primary-hover);
+  background: var(--haus-color-primary-hover);
 }
 .primary:active:not(:disabled) {
-  background: var(--color-primary-pressed);
+  background: var(--haus-color-primary-pressed);
 }
 
 /* Secondary = true outline: transparent fill, real border, ink text. */
 .secondary {
   background: transparent;
-  color: var(--color-ink-primary);
-  border-color: var(--color-border-strong);
+  color: var(--haus-color-ink-primary);
+  border-color: var(--haus-color-border-strong);
 }
 .secondary:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
-  border-color: var(--color-ink-tertiary);
+  background: var(--haus-color-surface-subtle);
+  border-color: var(--haus-color-ink-tertiary);
 }
 
 /* Ghost = text only; a step lighter than filled/outline so the de-emphasis reads. */
 .ghost {
   background: transparent;
-  color: var(--color-ink-secondary);
-  font-weight: var(--weight-semibold);
+  color: var(--haus-color-ink-secondary);
+  font-weight: var(--haus-weight-semibold);
 }
 .ghost:hover:not(:disabled) {
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-primary);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-primary);
 }
 
 .danger {
-  background: var(--color-error-subtle);
-  color: var(--color-error-default);
+  background: var(--haus-color-error-subtle);
+  color: var(--haus-color-error-default);
 }
 .danger:hover:not(:disabled) {
-  background: var(--color-error-default);
-  color: var(--color-ink-inverse);
+  background: var(--haus-color-error-default);
+  color: var(--haus-color-ink-inverse);
 }

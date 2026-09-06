@@ -16,13 +16,13 @@
   text-overflow: ellipsis;
 }
 .prefix {
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .caret {
   width: 11px;
   flex-shrink: 0;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* The listbox itself, inside Popover's panel. Popover supplies the surface and the

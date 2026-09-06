@@ -1,12 +1,12 @@
 .callout {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
-  font-size: var(--type-body-sm-size);
-  line-height: var(--leading-snug);
-  color: var(--color-ink-secondary);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  border-radius: var(--haus-radius-md);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-leading-snug);
+  color: var(--haus-color-ink-secondary);
 }
 
 .icon {
@@ -20,27 +20,27 @@
   min-width: 0;
 }
 .body strong {
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
 }
 
 .info {
-  background: var(--color-info-subtle);
+  background: var(--haus-color-info-subtle);
 }
 .info .icon {
-  color: var(--color-info-default);
+  color: var(--haus-color-info-default);
 }
 
 .warning {
-  background: var(--color-warning-subtle);
+  background: var(--haus-color-warning-subtle);
 }
 .warning .icon {
-  color: var(--color-warning-default);
+  color: var(--haus-color-warning-default);
 }
 
 .error {
-  background: var(--color-error-subtle);
+  background: var(--haus-color-error-subtle);
 }
 .error .icon {
-  color: var(--color-error-default);
+  color: var(--haus-color-error-default);
 }

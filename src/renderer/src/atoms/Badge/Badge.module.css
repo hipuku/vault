@@ -1,31 +1,31 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  font-size: var(--type-label-xs-size);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-wide);
-  line-height: var(--leading-loose);
+  padding: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-weight-medium);
+  letter-spacing: var(--haus-tracking-wide);
+  line-height: var(--haus-leading-loose);
   white-space: nowrap;
 }
 
 .neutral {
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-secondary);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-secondary);
 }
 
 .success {
-  background: var(--color-success-subtle);
-  color: var(--color-success-solid);
+  background: var(--haus-color-success-subtle);
+  color: var(--haus-color-success-solid);
 }
 
 .warning {
-  background: var(--color-warning-subtle);
-  color: var(--color-warning-default);
+  background: var(--haus-color-warning-subtle);
+  color: var(--haus-color-warning-default);
 }
 
 .error {
-  background: var(--color-error-subtle);
-  color: var(--color-error-default);
+  background: var(--haus-color-error-subtle);
+  color: var(--haus-color-error-default);
 }

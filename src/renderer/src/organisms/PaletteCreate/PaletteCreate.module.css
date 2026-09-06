@@ -3,16 +3,16 @@
 .titleRow {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .req {
-  color: var(--color-error-default);
+  color: var(--haus-color-error-default);
 }
 
 .error {
-  font-size: var(--text-12);
-  color: var(--color-error-default);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-error-default);
   max-width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -31,33 +31,33 @@
 .controls {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-5) var(--space-6);
+  gap: var(--haus-space-5);
+  padding: var(--haus-space-5) var(--haus-space-6);
   overflow-y: auto;
-  border-right: var(--border-width) solid var(--color-border-subtle);
+  border-right: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .label {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-tertiary);
 }
 .labelHint {
-  font-weight: var(--weight-regular);
-  color: var(--color-ink-tertiary);
+  font-weight: var(--haus-weight-regular);
+  color: var(--haus-color-ink-tertiary);
   opacity: 0.7;
 }
 
 .empty {
-  font-size: var(--text-13);
-  color: var(--color-ink-tertiary);
-  line-height: var(--leading-normal);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-tertiary);
+  line-height: var(--haus-leading-normal);
 }
 
 /* Seed search + grid */
@@ -68,75 +68,75 @@
 }
 .searchIcon {
   position: absolute;
-  left: var(--space-3);
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  left: var(--haus-space-3);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
   pointer-events: none;
 }
 .searchInput {
   width: 100%;
   height: 36px;
-  padding: 0 var(--space-3) 0 calc(var(--space-3) * 2 + 12px);
-  font-family: var(--font-sans);
-  font-size: var(--text-13);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  padding: 0 var(--haus-space-3) 0 calc(var(--haus-space-3) * 2 + 12px);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
   outline: none;
   transition:
-    border-color var(--duration-fast) var(--ease-move),
-    box-shadow var(--duration-fast) var(--ease-move);
+    border-color var(--haus-duration-fast) var(--haus-ease-move),
+    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 .searchInput:focus-visible {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 .seedGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-2);
-  margin-top: var(--space-2);
+  gap: var(--haus-space-2);
+  margin-top: var(--haus-space-2);
 }
 
 .seed {
   aspect-ratio: 1;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--haus-radius-md);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-12);
-  transition: box-shadow var(--duration-fast) var(--ease-move);
+  font-size: var(--haus-text-12);
+  transition: box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 .seedOn {
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow:
-    0 0 0 2px var(--color-surface-default),
-    0 0 0 4px var(--color-primary-default);
+    0 0 0 2px var(--haus-color-surface-default),
+    0 0 0 4px var(--haus-color-primary-default);
 }
 
 /* Ramps */
 .ramps {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .ramp {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-13);
-  color: var(--color-ink-primary);
+  gap: var(--haus-space-2);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-primary);
   cursor: pointer;
   user-select: none;
 }
 .rampForced {
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
   cursor: default;
 }
 
@@ -144,23 +144,23 @@
 .stepper {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .stepBtn {
   width: 30px;
   height: 30px;
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
+  background: var(--haus-color-surface-default);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-ink-secondary);
-  font-size: var(--text-11);
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-text-11);
 }
 .stepBtn:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .stepBtn:disabled {
   opacity: 0.4;
@@ -169,74 +169,74 @@
 .stepVal {
   min-width: 28px;
   text-align: center;
-  font-size: var(--text-14);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-primary);
 }
 
 /* Strategy pills */
 .strategy {
   display: flex;
-  gap: var(--space-1);
+  gap: var(--haus-space-1);
   flex-wrap: wrap;
 }
 .pill {
   height: 30px;
-  padding: 0 var(--space-3);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-default);
+  padding: 0 var(--haus-space-3);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-default);
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: var(--text-12);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-secondary);
   transition:
-    background var(--duration-fast) var(--ease-move),
-    color var(--duration-fast) var(--ease-move),
-    border-color var(--duration-fast) var(--ease-move);
+    background var(--haus-duration-fast) var(--haus-ease-move),
+    color var(--haus-duration-fast) var(--haus-ease-move),
+    border-color var(--haus-duration-fast) var(--haus-ease-move);
 }
 .pill:hover {
-  background: var(--color-surface-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 .pillOn {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-default);
-  border-color: var(--color-primary-default);
+  background: var(--haus-color-primary-subtle);
+  color: var(--haus-color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 /* ── Preview pane ────────────────────────────────────────────────────────── */
 
 .previewPane {
   overflow-y: auto;
-  padding: var(--space-6);
-  background: var(--color-surface-subtle);
+  padding: var(--haus-space-6);
+  background: var(--haus-color-surface-subtle);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .previewEmpty {
   margin: auto;
-  font-size: var(--text-14);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-14);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* Tonal preview */
 .tonalPreview {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 .tonalRamp {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 /* Heading shared with the expressive view (.expRowName) for consistency. */
 .rampName {
-  font-size: var(--text-14);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
 }
 .tonalStrip {
   display: flex;
@@ -246,52 +246,52 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--haus-space-1);
 }
 .tonalSwatch {
   width: 100%;
   height: 44px;
 }
 .tonalStop:first-child .tonalSwatch {
-  border-top-left-radius: var(--radius-md);
-  border-bottom-left-radius: var(--radius-md);
+  border-top-left-radius: var(--haus-radius-md);
+  border-bottom-left-radius: var(--haus-radius-md);
 }
 .tonalStop:last-child .tonalSwatch {
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  border-top-right-radius: var(--haus-radius-md);
+  border-bottom-right-radius: var(--haus-radius-md);
 }
 /* Stop label shared with the expressive view (.expStopLabel). */
 .tonalStopLabel {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* Expressive preview */
 .advisory {
-  font-size: var(--text-12);
-  color: var(--color-warning-default);
-  background: var(--color-warning-subtle);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-warning-default);
+  background: var(--haus-color-warning-subtle);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  border-radius: var(--haus-radius-md);
 }
 .expPreview {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--haus-space-4);
 }
 .expRow {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .expRowName {
-  font-size: var(--text-14);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
 }
 .expRowStops {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .expStop {
   flex: 1;
@@ -302,9 +302,9 @@
 .expSwatch {
   width: 100%;
   height: 48px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--haus-radius-sm);
 }
 .expStopLabel {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }

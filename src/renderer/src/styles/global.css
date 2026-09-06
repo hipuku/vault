@@ -16,12 +16,12 @@ body,
 }
 
 body {
-  font-family: var(--font-sans);
-  font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
-  line-height: var(--type-body-leading);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
+  line-height: var(--haus-type-body-leading);
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
@@ -38,7 +38,7 @@ select {
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--color-ink-disabled);
+  color: var(--haus-color-ink-disabled);
   opacity: 1;
 }
 
@@ -46,7 +46,7 @@ textarea::placeholder {
 .app {
   display: flex;
   height: 100%;
-  background: var(--color-surface-default);
+  background: var(--haus-color-surface-default);
 }
 
 /* Traffic-light inset, leaving room for macOS window controls */
@@ -62,8 +62,8 @@ textarea::placeholder {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-right: var(--border-width) solid var(--color-border-subtle);
-  background: var(--color-surface-subtle);
+  border-right: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  background: var(--haus-color-surface-subtle);
 }
 
 /* Main content area */
@@ -89,14 +89,14 @@ textarea::placeholder {
   background: transparent;
 }
 .scroll-area::-webkit-scrollbar-thumb {
-  background: var(--color-border-default);
-  border-radius: var(--radius-full);
+  background: var(--haus-color-border-default);
+  border-radius: var(--haus-radius-full);
 }
 
 /* Focus ring utility */
 *:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 /* ── Icon button: THE locked pattern for every icon-only button ────────────
@@ -113,18 +113,18 @@ textarea::placeholder {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--color-ink-tertiary);
-  border-radius: var(--radius-full);
+  color: var(--haus-color-ink-tertiary);
+  border-radius: var(--haus-radius-full);
   transition:
-    background var(--duration-normal) var(--ease-move),
-    color var(--duration-normal) var(--ease-move);
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move);
 }
 .icon-btn:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-secondary);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-secondary);
 }
 .icon-btn:disabled {
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
   cursor: not-allowed;
 }
 
@@ -132,22 +132,22 @@ textarea::placeholder {
 .icon-btn--sm {
   width: 24px;
   height: 24px;
-  font-size: var(--text-12);
+  font-size: var(--haus-text-12);
 }
 .icon-btn--xs {
   width: 20px;
   height: 20px;
-  font-size: var(--text-11);
+  font-size: var(--haus-text-11);
 }
 
 /* Tones (hover tint + colour) */
 .icon-btn--primary:hover:not(:disabled) {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-default);
+  background: var(--haus-color-primary-subtle);
+  color: var(--haus-color-primary-default);
 }
 .icon-btn--danger:hover:not(:disabled) {
-  background: var(--color-error-subtle);
-  color: var(--color-error-default);
+  background: var(--haus-color-error-subtle);
+  color: var(--haus-color-error-default);
 }
 
 /* Toggle "on" state: gold icon, holds through hover. Driven by IconButton's
@@ -155,22 +155,22 @@ textarea::placeholder {
    described the one place it was used rather than what it does, and it was
    applied by hand-rolled buttons that bypassed the atom. */
 .icon-btn--on {
-  color: var(--amber-500);
+  color: var(--haus-mango-500);
 }
 .icon-btn--on:hover:not(:disabled) {
-  background: var(--color-surface-subtle);
-  color: var(--amber-500);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-mango-500);
 }
 
 /* ── Eyebrow: THE shared section/group label ────────────────────────────────
    Uppercase, tracked, muted. Used for every section title (Projects, Contrast,
    Weights, Quality, …). Spacing belongs on the wrapper, not here. */
 .eyebrow {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-tracking-wide);
   text-transform: uppercase;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* Reduced motion */

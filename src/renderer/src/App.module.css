@@ -3,7 +3,7 @@
 .brand {
   display: flex;
   align-items: center;
-  padding: var(--space-4) var(--space-4) var(--space-5);
+  padding: var(--haus-space-4) var(--haus-space-4) var(--haus-space-5);
 }
 
 .brandWordmark {
@@ -15,58 +15,58 @@
 /* ── Sidebar nav items ───────────────────────────────────────────────────── */
 
 .navSection {
-  padding: var(--space-4) var(--space-4) var(--space-1);
-  font-size: var(--type-label-xs-size);
-  font-weight: var(--type-label-xs-weight);
-  letter-spacing: var(--type-label-xs-tracking);
-  color: var(--color-ink-tertiary);
+  padding: var(--haus-space-4) var(--haus-space-4) var(--haus-space-1);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-type-label-xs-weight);
+  letter-spacing: var(--haus-type-label-xs-tracking);
+  color: var(--haus-color-ink-tertiary);
   text-transform: uppercase;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  margin: 1px var(--space-2);
-  width: calc(100% - var(--space-4));
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  margin: 1px var(--haus-space-2);
+  width: calc(100% - var(--haus-space-4));
   text-align: left;
   background: none;
   border: none;
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: var(--type-label-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-tertiary);
-  border-radius: var(--radius-full);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-tertiary);
+  border-radius: var(--haus-radius-full);
   transition:
-    background var(--duration-normal) var(--ease-move),
-    color var(--duration-normal) var(--ease-move);
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .navItem:hover {
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-secondary);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-secondary);
 }
 
 /* Active: neutral pill keeps the rail calm; the accent rides only the icon,
    a quiet "you are here" rather than a loud filled accent pill. */
 .navItemActive,
 .navItemActive:hover {
-  background: var(--color-surface-sunken);
-  color: var(--color-ink-primary);
-  font-weight: var(--weight-semibold);
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
 }
 
 .navItemActive .navIcon {
-  color: var(--color-primary-default);
+  color: var(--haus-color-primary-default);
 }
 
 .navIcon {
   width: 15px;
   flex-shrink: 0;
   color: inherit;
-  transition: color var(--duration-fast) var(--ease-move);
+  transition: color var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 /* ── Tags area ───────────────────────────────────────────────────────────── */
@@ -74,7 +74,7 @@
 .tagsArea {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-1) 0;
+  padding: var(--haus-space-1) 0;
 }
 
 /* A tag row behaves like a nav item: a single subtle pill on hover/active.
@@ -83,15 +83,15 @@
 .tagItem {
   display: flex;
   align-items: center;
-  margin: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  transition: background var(--duration-normal) var(--ease-move);
+  margin: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
+  transition: background var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .tagItem:hover,
 .tagItemActive,
 .tagItemActive:hover {
-  background: var(--color-surface-sunken);
+  background: var(--haus-color-surface-sunken);
 }
 
 .tagSelect {
@@ -99,32 +99,32 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-2) var(--haus-space-3);
   background: none;
   border: none;
   cursor: pointer;
   text-align: left;
-  font-family: var(--font-sans);
-  font-size: var(--type-label-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-tertiary);
-  border-radius: var(--radius-full);
-  transition: color var(--duration-normal) var(--ease-move);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-tertiary);
+  border-radius: var(--haus-radius-full);
+  transition: color var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .tagItem:hover .tagSelect {
-  color: var(--color-ink-secondary);
+  color: var(--haus-color-ink-secondary);
 }
 .tagItemActive .tagSelect {
-  color: var(--color-ink-primary);
-  font-weight: var(--weight-semibold);
+  color: var(--haus-color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
 }
 
 .tagDot {
   width: 9px;
   height: 9px;
-  border-radius: var(--radius-full);
+  border-radius: var(--haus-radius-full);
   flex-shrink: 0;
 }
 
@@ -142,23 +142,23 @@
   overflow: hidden;
   opacity: 0;
   transition:
-    width var(--duration-normal) var(--ease-move),
-    opacity var(--duration-fast) var(--ease-move);
+    width var(--haus-duration-normal) var(--haus-ease-move),
+    opacity var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 .tagItem:hover .tagItemActions,
 .tagItemActive .tagItemActions {
   width: 50px;
   opacity: 1;
-  padding-right: var(--space-1);
+  padding-right: var(--haus-space-1);
 }
 
 /* ── Add tag footer ──────────────────────────────────────────────────────── */
 
 .sidebarFooter {
   margin-top: auto;
-  padding: var(--space-2);
-  border-top: var(--border-width) solid var(--color-border-subtle);
+  padding: var(--haus-space-2);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .addTagBtn {
@@ -166,5 +166,5 @@
 }
 
 .tagDivider {
-  margin: var(--space-3) var(--space-4) var(--space-2);
+  margin: var(--haus-space-3) var(--haus-space-4) var(--haus-space-2);
 }

@@ -2,7 +2,7 @@
    Only the message paragraph is specific to a confirm. */
 
 .message {
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-secondary);
-  line-height: var(--type-body-sm-leading);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-secondary);
+  line-height: var(--haus-type-body-sm-leading);
 }

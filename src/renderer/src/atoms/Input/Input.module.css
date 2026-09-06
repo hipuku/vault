@@ -1,40 +1,40 @@
 .input {
-  height: var(--control-height-lg);
-  padding: 0 var(--space-4);
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  height: var(--haus-control-height-lg);
+  padding: 0 var(--haus-space-4);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
   outline: none;
   width: 100%;
   transition:
-    border-color var(--duration-normal) var(--ease-move),
-    box-shadow var(--duration-fast) var(--ease-move);
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 .input::placeholder {
-  color: var(--color-ink-disabled);
+  color: var(--haus-color-ink-disabled);
 }
 
 /* Focus: accent border + one soft halo (no hard double ring). */
 .input:focus-visible {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 /* Error: the border itself carries the semantic colour. */
 .error {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 .error:focus-visible {
-  border-color: var(--color-error-default);
-  box-shadow: var(--shadow-focus-error);
+  border-color: var(--haus-color-error-default);
+  box-shadow: var(--haus-focus-ring-error);
 }
 
 .input:disabled {
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
   cursor: not-allowed;
-  background: var(--color-surface-disabled);
+  background: var(--haus-color-surface-disabled);
 }

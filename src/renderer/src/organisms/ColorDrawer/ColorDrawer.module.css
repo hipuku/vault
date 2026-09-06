@@ -15,7 +15,7 @@
   inset: 0;
   display: flex;
   opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-move);
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
 .block:hover .blockShades {
   opacity: 1;
@@ -32,32 +32,32 @@
   content: '';
   position: absolute;
   left: 50%;
-  bottom: var(--space-3);
+  bottom: var(--haus-space-3);
   transform: translateX(-50%);
   width: 7px;
   height: 7px;
-  border-radius: var(--radius-full);
-  background: var(--color-surface-default);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-default);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
 }
 
 .section {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5) var(--space-2);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-4) var(--haus-space-5) var(--haus-space-2);
 }
 
 .name {
   field-sizing: content;
   max-width: 100%;
   min-width: 1ch;
-  font-family: var(--font-sans);
-  font-size: var(--type-heading-size);
-  font-weight: var(--type-heading-weight);
-  letter-spacing: var(--type-heading-tracking);
-  line-height: var(--leading-tight);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-type-heading-weight);
+  letter-spacing: var(--haus-type-heading-tracking);
+  line-height: var(--haus-leading-tight);
+  color: var(--haus-color-ink-primary);
   background: transparent;
   border: none;
   outline: none;
@@ -83,8 +83,8 @@ input.name {
   overflow: hidden;
   opacity: 0;
   transition:
-    width var(--duration-normal) var(--ease-move),
-    opacity var(--duration-fast) var(--ease-move);
+    width var(--haus-duration-normal) var(--haus-ease-move),
+    opacity var(--haus-duration-fast) var(--haus-ease-move);
 }
 
 .section:hover .nameActions {
@@ -99,16 +99,16 @@ input.name {
 .copyGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-5) var(--space-4);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-2) var(--haus-space-5) var(--haus-space-4);
 }
 
 .group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5);
-  border-top: var(--border-width) solid var(--color-border-subtle);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-4) var(--haus-space-5);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .groupHead {
@@ -118,8 +118,8 @@ input.name {
 }
 
 .confidence {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .nameList {
@@ -131,26 +131,26 @@ input.name {
 .nameRow {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2);
-  border-radius: var(--radius-md);
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  color: var(--color-ink-secondary);
-  transition: background var(--duration-normal) var(--ease-move);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-2);
+  border-radius: var(--haus-radius-md);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-ink-secondary);
+  transition: background var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .nameRow:hover {
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-primary);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-primary);
 }
 
 .nameSwatch {
   width: var(--dot-lg);
   height: var(--dot-lg);
-  border-radius: var(--radius-sm);
+  border-radius: var(--haus-radius-sm);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
   flex-shrink: 0;
 }
 
@@ -159,12 +159,12 @@ input.name {
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .nameText {
   min-width: 0;
-  font-weight: var(--weight-medium);
+  font-weight: var(--haus-weight-medium);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,8 +173,8 @@ input.name {
 .nameWarn {
   display: inline-flex;
   flex-shrink: 0;
-  font-size: var(--text-12);
-  color: var(--amber-500);
+  font-size: var(--haus-text-12);
+  color: var(--haus-mango-500);
 }
 
 .nameRow:hover .nameActions {
@@ -183,12 +183,12 @@ input.name {
 }
 
 .nameDelta {
-  font-family: var(--font-mono);
-  font-size: var(--text-11);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-11);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .footer {
-  padding: var(--space-4) var(--space-5) var(--space-6);
+  padding: var(--haus-space-4) var(--haus-space-5) var(--haus-space-6);
   margin-top: auto;
 }

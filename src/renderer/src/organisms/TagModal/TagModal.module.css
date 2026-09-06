@@ -3,35 +3,35 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-6);
+  gap: var(--haus-space-4);
+  padding: var(--haus-space-6);
 }
 
 .error {
-  font-size: var(--type-body-sm-size);
-  color: var(--color-error-default);
+  font-size: var(--haus-type-body-sm-size);
+  color: var(--haus-color-error-default);
 }
 
 .swatches {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-3) var(--space-4);
-  padding: var(--space-1) 0;
+  gap: var(--haus-space-3) var(--haus-space-4);
+  padding: var(--haus-space-1) 0;
 }
 
 .swatch {
   aspect-ratio: 1;
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--haus-radius-full);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
-  box-shadow: 0 0 0 1px var(--color-border-subtle) inset;
+  box-shadow: 0 0 0 1px var(--haus-color-border-subtle) inset;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
-    transform var(--duration-normal) var(--ease-spring),
-    box-shadow var(--duration-normal) var(--ease-move);
+    transform var(--haus-duration-normal) var(--haus-ease-spring),
+    box-shadow var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .swatch:hover {
@@ -41,8 +41,8 @@
 .swatchOn {
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
   box-shadow:
-    0 0 0 2px var(--color-surface-default),
-    0 0 0 4px var(--color-ink-primary);
+    0 0 0 2px var(--haus-color-surface-default),
+    0 0 0 4px var(--haus-color-ink-primary);
 }
 
 .check {

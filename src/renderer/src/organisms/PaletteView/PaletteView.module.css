@@ -1,15 +1,15 @@
 .titleRow {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--haus-space-5);
   max-width: 920px;
-  padding: var(--space-6);
+  padding: var(--haus-space-6);
 }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
@@ -17,15 +17,15 @@
 .hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .heroStrip {
   display: flex;
   height: 96px;
-  border-radius: var(--radius-lg);
+  border-radius: var(--haus-radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--haus-shadow-sm);
 }
 .heroSwatch {
   flex: 1;
@@ -34,27 +34,27 @@
 .heroMeta {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   flex-wrap: wrap;
 }
 
 .heroDivider {
   width: 1px;
   height: 16px;
-  background: var(--color-border-default);
-  margin: 0 var(--space-1);
+  background: var(--haus-color-border-default);
+  margin: 0 var(--haus-space-1);
 }
 
 .projectPill {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-tertiary);
-  font-size: var(--type-label-xs-size);
-  font-weight: var(--weight-medium);
+  gap: var(--haus-space-1);
+  padding: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-weight-medium);
   white-space: nowrap;
 }
 .projectDot {
@@ -69,24 +69,24 @@
 .preview {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--haus-space-5);
 }
 
 .group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .groupName {
-  font-size: var(--text-14);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-text-14);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
 }
 
 .stops {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 .stopsTonal .swatch {
   height: 44px;
@@ -100,7 +100,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--haus-space-1);
 }
 
 .swatchWrap {
@@ -109,36 +109,36 @@
 .swatch {
   display: block;
   width: 100%;
-  border-radius: var(--radius-sm);
+  border-radius: var(--haus-radius-sm);
 }
 .stopLabel {
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
 
 /* Swatch overlay actions: a scrim so they read on any colour, plus a clear hover. */
 .promote,
 .inLib {
   position: absolute;
-  top: var(--space-1);
-  right: var(--space-1);
+  top: var(--haus-space-1);
+  right: var(--haus-space-1);
   width: 24px;
   height: var(--control-height-xs);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--haus-radius-full);
   color: #fff;
 }
 .promote {
   border: none;
   background: rgb(0 0 0 / 0.4);
   cursor: pointer;
-  font-size: var(--text-12);
+  font-size: var(--haus-text-12);
   opacity: 0;
   transition:
-    opacity var(--duration-fast) var(--ease-move),
-    background var(--duration-fast) var(--ease-move);
+    opacity var(--haus-duration-fast) var(--haus-ease-move),
+    background var(--haus-duration-fast) var(--haus-ease-move);
 }
 .swatchWrap:hover .promote {
   opacity: 1;
@@ -147,6 +147,6 @@
   background: rgb(0 0 0 / 0.65);
 }
 .inLib {
-  font-size: var(--text-14);
+  font-size: var(--haus-text-14);
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5));
 }

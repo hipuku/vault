@@ -1,5 +1,5 @@
 .divider {
   border: none;
-  border-top: var(--border-width) solid var(--color-border-subtle);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   margin: 0;
 }

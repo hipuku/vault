@@ -10,12 +10,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .fieldLabel {
-  font-size: var(--text-12);
-  color: var(--color-ink-secondary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-secondary);
 }
 
 /* Every control occupies the same footprint (40px matches the Select trigger). */
@@ -23,39 +23,39 @@
 .unitField,
 .control {
   width: 120px;
-  height: var(--control-height-lg);
+  height: var(--haus-control-height-lg);
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
 /* Plain text/number inputs (line height, tracking) */
 .control {
-  padding: 0 var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--text-13);
-  color: var(--color-ink-primary);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  padding: 0 var(--haus-space-3);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
   outline: none;
 }
 .control:focus-visible {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 /* Size field: value plus a px suffix that always hugs the number. */
 .unitField {
   display: inline-flex;
   align-items: center;
-  padding: 0 var(--space-3);
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  padding: 0 var(--haus-space-3);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
 }
 .unitField:focus-within {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 .unitInput {
   flex: 1;
@@ -64,15 +64,15 @@
   border: none;
   background: none;
   outline: none;
-  font-family: var(--font-mono);
-  font-size: var(--text-13);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-13);
+  color: var(--haus-color-ink-primary);
 }
 .unit {
-  margin-left: var(--space-1);
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-disabled);
+  margin-left: var(--haus-space-1);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-disabled);
   pointer-events: none;
 }
 

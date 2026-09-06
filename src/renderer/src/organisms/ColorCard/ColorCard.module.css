@@ -3,18 +3,18 @@
   flex-direction: column;
   width: 100%;
   padding: 0;
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-lg);
   overflow: hidden;
-  background: var(--color-surface-default);
+  background: var(--haus-color-surface-default);
   cursor: pointer;
   text-align: left;
   font: inherit;
-  transition: box-shadow var(--duration-normal) var(--ease-move);
+  transition: box-shadow var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--haus-shadow-md);
 }
 
 .swatch {
@@ -29,7 +29,7 @@
   inset: 0;
   display: flex;
   opacity: 0;
-  transition: opacity var(--duration-normal) var(--ease-move);
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .card:hover .shades {
@@ -47,33 +47,33 @@
   content: '';
   position: absolute;
   left: 50%;
-  bottom: var(--space-2);
+  bottom: var(--haus-space-2);
   transform: translateX(-50%);
   width: 6px;
   height: 6px;
-  border-radius: var(--radius-full);
-  background: var(--color-surface-default);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-default);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
 }
 
 .edit {
   position: absolute;
   z-index: 1;
-  top: var(--space-2);
-  right: var(--space-2);
+  top: var(--haus-space-2);
+  right: var(--haus-space-2);
   width: 24px;
   height: var(--control-height-xs);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-12);
-  border-radius: var(--radius-full);
+  font-size: var(--haus-text-12);
+  border-radius: var(--haus-radius-full);
   /* Always light: the 10-shade ramp revealed on hover is dark at this corner;
      drop-shadow keeps it legible on the occasional pale swatch. */
   color: #fff;
   opacity: 0;
   filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
-  transition: opacity var(--duration-normal) var(--ease-move);
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
 
 .card:hover .edit {
@@ -83,27 +83,27 @@
 .body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-3);
 }
 
 .nameRow {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   min-width: 0;
 }
 
 .favInline {
-  color: var(--amber-500);
-  font-size: var(--text-12);
+  color: var(--haus-mango-500);
+  font-size: var(--haus-text-12);
   flex-shrink: 0;
 }
 
 .name {
-  font-size: var(--type-body-size);
-  font-weight: var(--weight-medium);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-primary);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -112,11 +112,11 @@
 .meta {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
 }
 
 .hex {
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }

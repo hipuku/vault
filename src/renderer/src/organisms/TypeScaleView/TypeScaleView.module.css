@@ -1,15 +1,15 @@
 .titleRow {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--haus-space-5);
   max-width: 920px;
-  padding: var(--space-6);
+  padding: var(--haus-space-6);
 }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
@@ -17,38 +17,38 @@
 .hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--haus-space-3);
 }
 
 .heroBanner {
   display: grid;
-  gap: var(--space-6);
-  padding: var(--space-6);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface-subtle);
-  box-shadow: var(--shadow-sm);
+  gap: var(--haus-space-6);
+  padding: var(--haus-space-6);
+  border-radius: var(--haus-radius-lg);
+  background: var(--haus-color-surface-subtle);
+  box-shadow: var(--haus-shadow-sm);
   overflow: hidden;
 }
 
 .specimenCol {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   min-width: 0;
 }
 
 .specimenRole {
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-tertiary);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: var(--haus-tracking-wide);
 }
 
 .specimenFamily {
   font-size: 32px;
-  font-weight: var(--weight-semibold);
-  color: var(--color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-primary);
   line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
@@ -57,35 +57,35 @@
 
 .specimenGlyphs {
   font-size: 18px;
-  line-height: var(--leading-relaxed);
-  color: var(--color-ink-secondary);
+  line-height: var(--haus-leading-relaxed);
+  color: var(--haus-color-ink-secondary);
   overflow-wrap: anywhere;
 }
 
 .heroMeta {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   flex-wrap: wrap;
 }
 
 .heroDivider {
   width: 1px;
   height: 16px;
-  background: var(--color-border-default);
-  margin: 0 var(--space-1);
+  background: var(--haus-color-border-default);
+  margin: 0 var(--haus-space-1);
 }
 
 .projectPill {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-subtle);
-  color: var(--color-ink-tertiary);
-  font-size: var(--type-label-xs-size);
-  font-weight: var(--weight-medium);
+  gap: var(--haus-space-1);
+  padding: 1px var(--haus-space-2);
+  border-radius: var(--haus-radius-full);
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-weight-medium);
   white-space: nowrap;
 }
 .projectDot {
@@ -100,8 +100,8 @@
 .specimenHead {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-5);
+  gap: var(--haus-space-3);
+  margin-bottom: var(--haus-space-5);
 }
 .previewField {
   flex: 1;

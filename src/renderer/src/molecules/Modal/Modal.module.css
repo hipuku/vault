@@ -4,11 +4,11 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: var(--color-backdrop);
-  z-index: var(--z-modal);
+  background: var(--haus-color-backdrop);
+  z-index: var(--haus-z-modal);
   display: flex;
   justify-content: center;
-  padding: var(--space-6);
+  padding: var(--haus-space-6);
 }
 
 .center {
@@ -22,10 +22,10 @@
 }
 
 .panel {
-  background: var(--color-surface-default);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-lg);
+  box-shadow: var(--haus-shadow-lg);
   width: var(--modal-width, var(--modal-width-md));
   max-width: 100%;
   max-height: 90vh;
@@ -49,25 +49,25 @@
 
 /* Padded rather than scrolling: for a short dialog the body is the whole panel. */
 .plain {
-  padding: var(--space-6);
-  gap: var(--space-4);
+  padding: var(--haus-space-6);
+  gap: var(--haus-space-4);
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
-  border-bottom: var(--border-width) solid var(--color-border-subtle);
+  gap: var(--haus-space-3);
+  padding: var(--haus-space-4) var(--haus-space-4) var(--haus-space-4) var(--haus-space-5);
+  border-bottom: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   flex: 0 0 auto;
 }
 
 .title {
-  font-size: var(--type-heading-sm-size);
-  font-weight: var(--type-heading-sm-weight);
-  letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-ink-primary);
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  color: var(--haus-color-ink-primary);
 }
 
 .body {
@@ -79,11 +79,11 @@
 .footer {
   display: flex;
   justify-content: flex-end;
-  gap: var(--space-2);
+  gap: var(--haus-space-2);
   flex: 0 0 auto;
 }
 
 .chromed .footer {
-  padding: var(--space-4) var(--space-5);
-  border-top: var(--border-width) solid var(--color-border-subtle);
+  padding: var(--haus-space-4) var(--haus-space-5);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }

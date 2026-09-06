@@ -1,25 +1,25 @@
 /* Shell, header, title and footer come from Modal. */
 
 .formats {
-  padding: var(--space-4) var(--space-5) 0;
+  padding: var(--haus-space-4) var(--haus-space-5) 0;
 }
 
 .code {
-  margin: var(--space-4) var(--space-5);
-  padding: var(--space-4);
-  background: var(--color-surface-sunken);
-  border: var(--border-width) solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
+  margin: var(--haus-space-4) var(--haus-space-5);
+  padding: var(--haus-space-4);
+  background: var(--haus-color-surface-sunken);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-md);
   overflow: auto;
-  font-family: var(--font-mono);
-  font-size: var(--text-12);
-  line-height: var(--leading-relaxed);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-text-12);
+  line-height: var(--haus-leading-relaxed);
+  color: var(--haus-color-ink-primary);
   white-space: pre;
 }
 
 .hint {
   flex: 1;
-  font-size: var(--text-12);
-  color: var(--color-ink-tertiary);
+  font-size: var(--haus-text-12);
+  color: var(--haus-color-ink-tertiary);
 }
