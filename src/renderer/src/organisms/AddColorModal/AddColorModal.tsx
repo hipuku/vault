@@ -219,6 +219,13 @@ export function AddColorModal({
               className={styles.hexInput}
               value={text}
               onChange={e => setText(e.target.value)}
+              /* A placeholder is not an accessible name. It disappears the
+                 moment anything is typed, and several screen readers never
+                 announce it at all, so this field, the primary control of the
+                 whole flow, had nothing to address it by. The visible text
+                 stays a placeholder because the field is the only one here and
+                 a label above it would be repeating the modal's own title. */
+              aria-label="Colour value"
               placeholder="#hex or paste a colour"
               spellCheck={false}
               autoFocus={!fixedHex}

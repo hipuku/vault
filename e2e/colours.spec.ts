@@ -25,18 +25,22 @@ test.afterAll(async () => {
 })
 
 test('opens on an empty library', async () => {
-  // Asserted through the nav and the primary action rather than a heading:
-  // none of the five pages has one. That is a real gap, filed rather than
-  // papered over here, and this assertion should become a heading check the
-  // day it is closed.
-  await expect(page.getByRole('button', { name: 'Add colour' }).first()).toBeVisible({ timeout: 20_000 })
-  await expect(page.getByText('Colors', { exact: true }).first()).toBeVisible()
+  /* The heading check vault#29 asked for. The gap it reported was not real:
+     the pages do not contain an <h1>, they render Toolbar and Toolbar does, so
+     the rendered document has had a level-1 heading all along. Asserted here
+     the way a screen reader would ask for it, by role and name, rather than as
+     the plain-text match this used to settle for. */
+  await expect(page.getByRole('heading', { level: 1, name: 'Colors' })).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByRole('button', { name: 'Add colour' }).first()).toBeVisible()
 })
 
 test('adds a colour, names it, and persists it through IPC', async () => {
   await page.getByRole('button', { name: 'Add colour' }).first().click()
 
-  const hex = page.getByPlaceholder('#hex or paste a colour')
+  /* Addressed by its accessible name, the way a reader using a screen reader
+     addresses it. This used to be getByPlaceholder because there was nothing
+     else to reach it by, which is what filed vault#30. */
+  const hex = page.getByRole('textbox', { name: 'Colour value' })
   await expect(hex).toBeVisible()
   await hex.fill('#AA1155')
 
