@@ -99,7 +99,7 @@
        darker mango; it was patching a shared role so that five call sites using
        the wrong role would pass. haus already names the right one, and the ramp
        documents it: the 700 step is labelled "Text on subtle background" and is
-       published as */on-subtle. Those five now read that, contrast is back at
+       published as the -on-subtle role. Those five now read that, contrast is back at
        6.51:1 and 8.05:1, and the shared role is left where haus put it.
 
        The guard written to hold that then failed on eleven more, all of them

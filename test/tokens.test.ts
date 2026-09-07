@@ -98,7 +98,9 @@ describe('vault reads haus-tokens', () => {
     // before it passed, which is the same proof.
     const wrong: string[] = []
     for (const f of VAULT_CSS) {
-      for (const m of read(f).matchAll(/(?:^|[^-])color:\s*var\((--haus-color-(?:warning|info|success|error)-default)\)/gm)) {
+      for (const m of read(f).matchAll(
+        /(?:^|[^-])color:\s*var\((--haus-color-(?:warning|info|success|error)-default)\)/gm,
+      )) {
         wrong.push(`${f.slice(SRC.length + 1)}: ${m[1]}`)
       }
     }
