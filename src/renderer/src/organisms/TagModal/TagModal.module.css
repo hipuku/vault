@@ -9,7 +9,7 @@
 
 .error {
   font-size: var(--haus-type-body-sm-size);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }
 
 .swatches {

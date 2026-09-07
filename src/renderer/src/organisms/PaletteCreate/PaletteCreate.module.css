@@ -7,12 +7,12 @@
 }
 
 .req {
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }
 
 .error {
   font-size: var(--haus-text-12);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
   max-width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -269,7 +269,7 @@
 /* Expressive preview */
 .advisory {
   font-size: var(--haus-text-12);
-  color: var(--haus-color-warning-default);
+  color: var(--haus-color-warning-on-subtle);
   background: var(--haus-color-warning-subtle);
   padding: var(--haus-space-2) var(--haus-space-3);
   border-radius: var(--haus-radius-md);

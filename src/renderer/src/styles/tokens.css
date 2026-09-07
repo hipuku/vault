@@ -1,7 +1,7 @@
 /* ─── vault / tokens ──────────────────────────────────────────────────────────
    vault takes its token layer from haus-tokens 1.0. What is left in this file is
    the part that is genuinely vault's: fifteen primitives haus has no name for,
-   one role it has no name for, and seven places vault deliberately resolves a
+   one role it has no name for, and three places vault deliberately resolves a
    shared role differently.
 
    Until 2026-09-07 this file declared 159 properties, and 141 of them were
@@ -78,28 +78,40 @@
     color-scheme: light;
 
     /* ── Where vault resolves a shared role differently ───────────────────────
-       Seven of them, kept as overrides rather than absorbed, because adopting a
-       token layer is not licence to restyle a shipped product. Each is a
-       decision, and four of the seven are open: see vault#32.                   */
+       Three of them. There were seven; vault#32 examined all seven and closed
+       four by taking haus's value, so what is left is the part that is a
+       decision rather than an accident.
+
+       The four that went, and why none of them was worth keeping. Control
+       heights: vault's md and lg were 32px and 40px against haus's 36px and
+       44px, and 44px is the WCAG 2.5.8 AAA target size and Apple's HIG minimum,
+       so vault's lg sat 4px under a published floor for no stated reason. Focus
+       ring: vault's was a soft single ring at 20% opacity and had never been
+       measured against anything; haus's is a double ring that clears 3:1 (1.4.11)
+       against both the page and a card.
+
+       Warning and info were not a fork at all, which only became visible on
+       removing them. vault held --haus-color-warning-default at the 700 of the
+       ramp where haus holds it at the 500, and five call sites read it as a text
+       or icon colour on the matching -subtle background. Taking haus's value
+       dropped Badge's warning label from 6.51:1 to 3.79:1, under the 4.5:1 that
+       1.4.3 asks of text. The override was not expressing a preference for a
+       darker mango; it was patching a shared role so that five call sites using
+       the wrong role would pass. haus already names the right one, and the ramp
+       documents it: the 700 step is labelled "Text on subtle background" and is
+       published as */on-subtle. Those five now read that, contrast is back at
+       6.51:1 and 8.05:1, and the shared role is left where haus put it.
+
+       The guard written to hold that then failed on eleven more, all of them
+       --haus-color-error-default painted as text. Four sat on error-subtle at
+       4.30:1 and were failing already, with no override to hide behind and
+       nothing reporting them. See the guard in test/tokens.test.ts.
+
+       The three that stay are the three with an argument. Each is a decision,
+       and adopting a token layer is not licence to restyle a shipped product. */
 
     /* vault bundles the variable font; haus names the static family. Same face. */
     --haus-font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
-
-    /* 32px and 40px against haus's 36px and 44px. haus's lg is the WCAG 2.5.8
-       AAA target size and vault's is 4px under it, which makes this the one
-       fork on this list with an accessibility argument against it. */
-    --haus-control-height-md: 2rem;
-    --haus-control-height-lg: 2.5rem;
-
-    /* A soft single ring at 20% against haus's ruling A1 double ring. haus's
-       clears 3:1 against both the page and a card; this one is not measured. */
-    --haus-focus-ring: 0 0 0 3px oklch(from var(--haus-color-primary-default) l c h / 0.2);
-    --haus-focus-ring-error: 0 0 0 3px oklch(from var(--haus-color-error-default) l c h / 0.2);
-
-    /* 700 against haus's 500 on both. Darker, and it carries white text where
-       haus's pairs a dark ink. A real difference, not a drift. */
-    --haus-color-warning-default: var(--haus-mango-700);
-    --haus-color-info-default: var(--haus-elderberry-700);
 
     /* Bold against haus's semibold, and wide against haus's widest. */
     --haus-type-heading-weight: var(--haus-weight-bold);

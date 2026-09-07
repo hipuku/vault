@@ -78,6 +78,33 @@ describe('vault reads haus-tokens', () => {
     expect([...read_].filter(n => !defined.has(n))).toContain('--not-a-token')
   })
 
+  it('never paints text with a status fill role', () => {
+    // Found by deleting an override rather than by any check firing. vault held
+    // --haus-color-warning-default at the 700 of the ramp where haus holds it at
+    // the 500, and five call sites read it as a text or icon colour on the
+    // matching -subtle background. That looked like a fork of a shared role. It
+    // was a patch: take haus's value and Badge's warning label falls to 3.79:1,
+    // under the 4.5:1 that 1.4.3 asks of text.
+    //
+    // The four status ramps publish the step for this and label it "Text on
+    // subtle background": */on-subtle, the 700. A -default is a fill. Painting
+    // text with it is the mistake that hid behind the override, so it is a rule
+    // here rather than a thing to remember.
+    //
+    // It found eleven more the moment it was written, all --haus-color-error-
+    // default as text. Four were on error-subtle at 4.30:1, failing already,
+    // with no override involved and nothing reporting them. All are on-subtle
+    // now. No negative case is written for this one: it failed on real code
+    // before it passed, which is the same proof.
+    const wrong: string[] = []
+    for (const f of VAULT_CSS) {
+      for (const m of read(f).matchAll(/(?:^|[^-])color:\s*var\((--haus-color-(?:warning|info|success|error)-default)\)/gm)) {
+        wrong.push(`${f.slice(SRC.length + 1)}: ${m[1]}`)
+      }
+    }
+    expect(wrong.sort()).toEqual([])
+  })
+
   it('restates no value haus already ships', () => {
     // The rule the adoption bought. vault may override a haus role, and seven
     // do, but an override that agrees with the package is not an override: it

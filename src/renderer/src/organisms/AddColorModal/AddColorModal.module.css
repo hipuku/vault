@@ -338,7 +338,7 @@
   flex: 1;
   min-width: 0;
   font-size: var(--haus-type-body-sm-size);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

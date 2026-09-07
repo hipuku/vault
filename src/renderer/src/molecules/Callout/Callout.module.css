@@ -28,19 +28,19 @@
   background: var(--haus-color-info-subtle);
 }
 .info .icon {
-  color: var(--haus-color-info-default);
+  color: var(--haus-color-info-on-subtle);
 }
 
 .warning {
   background: var(--haus-color-warning-subtle);
 }
 .warning .icon {
-  color: var(--haus-color-warning-default);
+  color: var(--haus-color-warning-on-subtle);
 }
 
 .error {
   background: var(--haus-color-error-subtle);
 }
 .error .icon {
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }

@@ -22,10 +22,10 @@
 
 .warning {
   background: var(--haus-color-warning-subtle);
-  color: var(--haus-color-warning-default);
+  color: var(--haus-color-warning-on-subtle);
 }
 
 .error {
   background: var(--haus-color-error-subtle);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }

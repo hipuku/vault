@@ -79,7 +79,7 @@
 
 .danger {
   background: var(--haus-color-error-subtle);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }
 .danger:hover:not(:disabled) {
   background: var(--haus-color-error-default);

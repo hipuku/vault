@@ -147,7 +147,7 @@ textarea::placeholder {
 }
 .icon-btn--danger:hover:not(:disabled) {
   background: var(--haus-color-error-subtle);
-  color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-subtle);
 }
 
 /* Toggle "on" state: gold icon, holds through hover. Driven by IconButton's
