@@ -70,12 +70,6 @@
   min-width: 0;
 }
 
-.favInline {
-  color: var(--accent-gold);
-  font-size: var(--haus-text-12);
-  flex-shrink: 0;
-}
-
 .name {
   font-size: var(--haus-type-body-size);
   font-weight: var(--haus-weight-medium);
