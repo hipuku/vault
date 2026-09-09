@@ -59,11 +59,10 @@ const SKIP = /(^|\/)(package-lock\.json|pnpm-lock\.yaml|.*\.(png|jpg|jpeg|gif|we
    `--exclude-standard` keeps .gitignore honoured, so build output and
    node_modules stay out. */
 function tracked() {
-  return execFileSync(
-    'git',
-    ['ls-files', '-z', '--cached', '--others', '--exclude-standard'],
-    { cwd: ROOT, maxBuffer: 32 * 1024 * 1024 },
-  )
+  return execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], {
+    cwd: ROOT,
+    maxBuffer: 32 * 1024 * 1024,
+  })
     .toString('utf8')
     .split('\0')
     .filter(Boolean)
