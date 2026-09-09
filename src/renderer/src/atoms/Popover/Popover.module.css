@@ -26,13 +26,13 @@
 }
 
 .sm {
-  width: var(--popover-width-sm);
+  width: var(--haus-popover-width-sm);
 }
 .md {
-  width: var(--popover-width-md);
+  width: var(--haus-popover-width-md);
 }
 .lg {
-  width: var(--popover-width-lg);
+  width: var(--haus-popover-width-lg);
 }
 
 /* Menus pad the panel rather than the rows, which carry their own hit area. */

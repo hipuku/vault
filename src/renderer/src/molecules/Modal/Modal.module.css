@@ -26,7 +26,7 @@
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   border-radius: var(--haus-radius-lg);
   box-shadow: var(--haus-shadow-lg);
-  width: var(--modal-width, var(--modal-width-md));
+  width: var(--modal-width, var(--haus-modal-width-md));
   max-width: 100%;
   max-height: 90vh;
   display: flex;
@@ -35,16 +35,16 @@
 }
 
 .sm {
-  --modal-width: var(--modal-width-sm);
+  --modal-width: var(--haus-modal-width-sm);
 }
 .md {
-  --modal-width: var(--modal-width-md);
+  --modal-width: var(--haus-modal-width-md);
 }
 .lg {
-  --modal-width: var(--modal-width-lg);
+  --modal-width: var(--haus-modal-width-lg);
 }
 .xl {
-  --modal-width: var(--modal-width-xl);
+  --modal-width: var(--haus-modal-width-xl);
 }
 
 /* Padded rather than scrolling: for a short dialog the body is the whole panel. */

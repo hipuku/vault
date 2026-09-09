@@ -54,21 +54,15 @@
     --dot-md: 1rem; /* 16px: swatch in a row */
     --dot-lg: 1.125rem; /* 18px: swatch in a drawer header */
 
-    /* ── Overlay widths ───────────────────────────────────────────────────────
-       Six hand-built modals had drifted to six widths. Four steps carry them; the two
-       that sit off the scale (FontAdder 520, CommandPalette 560) keep an explicit
-       override so the exception stays visible.                                        */
-    --modal-width-sm: 22.5rem; /* 360px: confirm */
-    --modal-width-md: 26.25rem; /* 420px: short form */
-    --modal-width-lg: 30rem; /* 480px: form with a preview */
-    --modal-width-xl: 37.5rem; /* 600px: code / table */
-
-    /* ── Popover widths ───────────────────────────────────────────────────────
-       Seven floating panels had six widths. Three steps carry them; 248 rounds to
-       240, which is a popover, not a layout.                                        */
-    --popover-width-sm: 15rem; /* 240px: filters, step editor */
-    --popover-width-md: 17.5rem; /* 280px: unit settings */
-    --popover-width-lg: 20rem; /* 320px: preview settings */
+    /* ── Overlay and panel widths ───────────────────────────────────────────────
+       Vault's Modal and Popover read haus's --haus-modal-width-* and
+       --haus-popover-width-* now, not a local scale. Modal's four steps and
+       Popover's became roles in haus-tokens 4.1.0 (haus grew a fourth modal
+       size and pulled Popover's widths off their literals), and vault took
+       haus's values rather than keeping its own narrower set: a width is a
+       proportion of the product's layout, and vault chose haus's proportions.
+       The two modals that sat off the scale (FontAdder 520, CommandPalette 560)
+       keep their explicit override, where the exception stays visible.           */
   }
 }
 
@@ -77,54 +71,26 @@
     color-scheme: light;
 
     /* ── Where vault resolves a shared role differently ───────────────────────
-       Four of them, in five declarations. There were seven; vault#32 examined
-       all seven and closed four by taking haus's value, so what is left is the
-       part that is a decision rather than an accident. The fourth arrived after
-       that count was written: heading-lg, forked in weight and tracking on
-       2026-09-09, which is why four roles read as five properties here.
+       Almost nowhere now. vault#32 examined seven overrides and closed four by
+       taking haus's value. Control heights: vault's md and lg were 32px and 40px
+       against haus's 36px and 44px, and 44px is the WCAG 2.5.8 AAA target size and
+       Apple's HIG minimum, so vault's lg sat 4px under a published floor for no
+       stated reason. Focus ring: vault's was a soft single ring at 20% opacity and
+       had never been measured, where haus's double ring clears 3:1 (1.4.11) against
+       both the page and a card. Warning and info were not forks at all: vault held
+       a shared role at the 700 where haus holds it at the 500, patching it so five
+       call sites reading the wrong role would pass, and the fix was to read the
+       -on-subtle role haus already publishes, not to hold the shared one darker.
 
-       The four that went, and why none of them was worth keeping. Control
-       heights: vault's md and lg were 32px and 40px against haus's 36px and
-       44px, and 44px is the WCAG 2.5.8 AAA target size and Apple's HIG minimum,
-       so vault's lg sat 4px under a published floor for no stated reason. Focus
-       ring: vault's was a soft single ring at 20% opacity and had never been
-       measured against anything; haus's is a double ring that clears 3:1 (1.4.11)
-       against both the page and a card.
+       The type forks outlasted those and went on 2026-09-09: heading and heading-lg
+       stood bold against haus's semibold, and label-xs tracked wide against haus's
+       widest, and vault took haus's type styles on the same reasoning as the widths
+       above. A weight and a tracking are a product's expression, but neither was
+       load-bearing, and carrying three private type roles that differ from public
+       ones by a step is the duplication the token guard exists to find. What is
+       left below is one declaration, and it is not a fork.
 
-       Warning and info were not a fork at all, which only became visible on
-       removing them. vault held --haus-color-warning-default at the 700 of the
-       ramp where haus holds it at the 500, and five call sites read it as a text
-       or icon colour on the matching -subtle background. Taking haus's value
-       dropped Badge's warning label from 6.51:1 to 3.79:1, under the 4.5:1 that
-       1.4.3 asks of text. The override was not expressing a preference for a
-       darker mango; it was patching a shared role so that five call sites using
-       the wrong role would pass. haus already names the right one, and the ramp
-       documents it: the 700 step is labelled "Text on subtle background" and is
-       published as the -on-subtle role. Those five now read that, contrast is back at
-       6.51:1 and 8.05:1, and the shared role is left where haus put it.
-
-       The guard written to hold that then failed on eleven more, all of them
-       --haus-color-error-default painted as text. Four sat on error-subtle at
-       4.30:1 and were failing already, with no override to hide behind and
-       nothing reporting them. See the guard in test/tokens.test.ts.
-
-       The four that stay are the four with an argument. Each is a decision, and
-       adopting a token layer is not licence to restyle a shipped product. */
-
-    /* vault bundles the variable font; haus names the static family. Same face. */
+       vault bundles the variable font; haus names the static family. Same face. */
     --haus-font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
-
-    /* Bold against haus's semibold, and wide against haus's widest. */
-    --haus-type-heading-weight: var(--haus-weight-bold);
-    --haus-type-label-xs-tracking: var(--haus-tracking-wide);
-
-    /* The Toolbar page title. It was a --type-title-* role here until 2026-09-09,
-       kept on the belief haus had no name for it. haus's heading-lg is that name,
-       at the same 24px, differing only in weight and tracking, so the title forks
-       heading-lg bold and tight rather than standing as a private role that
-       duplicates a public one. heading-lg has no other reader in vault, so the
-       fork reaches only the title. */
-    --haus-type-heading-lg-weight: var(--haus-weight-bold);
-    --haus-type-heading-lg-tracking: var(--haus-tracking-tight);
   }
 }
