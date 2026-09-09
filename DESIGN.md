@@ -260,9 +260,14 @@ one below it. Nothing points upward.
 - **What vault takes from haus, and what it keeps.** vault consumes haus's **token layer** in full:
   `brands/vault.css` supplies the brand and `semantics.css` resolves every role, so the vocabulary
   is shared and the values stay vault's. It takes **no components**, which is the portfolio's
-  standing rule rather than an accident: drift and vault consume the tokens, core consumes the
-  components. A shared component a product then overrides buys a dependency and nothing else, where
-  a shared token keeps the vocabulary and leaves the value the product's.
+  standing rule rather than an accident: vault consumes the tokens, core consumes the components.
+  A shared component a product then overrides buys a dependency and nothing else, where a shared
+  token keeps the vocabulary and leaves the value the product's.
+
+  *(drift was the other token consumer until 2026-09-09, when it took its foundation in-house on
+  the argument that a tool auditing design systems should not wear one. That leaves vault as the
+  token side of the rule on its own, and the rule is unchanged: it was never a claim about how
+  many products do it.)*
 
   Of vault's 48 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
   Popover, Tooltip, Callout, EmptyState, Modal and Select. They stay vault's, because each is

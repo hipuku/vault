@@ -72,4 +72,4 @@ npm run dev      # launch the app with HMR
 ## Stack
 
 Electron · React · TypeScript · CSS Modules · better-sqlite3 · electron-vite ·
-`haus-colour-utils` · `haus-colour-names`
+`haus-tokens` · `haus-colour-utils` · `haus-colour-names`

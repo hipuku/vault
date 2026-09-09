@@ -77,9 +77,11 @@
     color-scheme: light;
 
     /* ── Where vault resolves a shared role differently ───────────────────────
-       Three of them. There were seven; vault#32 examined all seven and closed
-       four by taking haus's value, so what is left is the part that is a
-       decision rather than an accident.
+       Four of them, in five declarations. There were seven; vault#32 examined
+       all seven and closed four by taking haus's value, so what is left is the
+       part that is a decision rather than an accident. The fourth arrived after
+       that count was written: heading-lg, forked in weight and tracking on
+       2026-09-09, which is why four roles read as five properties here.
 
        The four that went, and why none of them was worth keeping. Control
        heights: vault's md and lg were 32px and 40px against haus's 36px and
@@ -106,8 +108,8 @@
        4.30:1 and were failing already, with no override to hide behind and
        nothing reporting them. See the guard in test/tokens.test.ts.
 
-       The three that stay are the three with an argument. Each is a decision,
-       and adopting a token layer is not licence to restyle a shipped product. */
+       The four that stay are the four with an argument. Each is a decision, and
+       adopting a token layer is not licence to restyle a shipped product. */
 
     /* vault bundles the variable font; haus names the static family. Same face. */
     --haus-font-sans: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
