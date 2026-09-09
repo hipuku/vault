@@ -1,5 +1,5 @@
 /* ─── vault / tokens ──────────────────────────────────────────────────────────
-   vault takes its token layer from haus-tokens 3.x. What is left in this file is
+   vault takes its token layer from haus-tokens 4.x. What is left in this file is
    the part that is genuinely vault's: fourteen primitives haus has no name for,
    and five places vault deliberately resolves a shared role differently.
 
