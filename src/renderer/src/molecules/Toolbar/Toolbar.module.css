@@ -14,9 +14,9 @@
 }
 
 .title {
-  font-size: var(--type-title-size);
-  font-weight: var(--type-title-weight);
-  letter-spacing: var(--type-title-tracking);
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-type-heading-lg-weight);
+  letter-spacing: var(--haus-type-heading-lg-tracking);
   color: var(--haus-color-ink-primary);
   flex: 1;
 }

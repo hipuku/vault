@@ -257,6 +257,24 @@ one below it. Nothing points upward.
   The exception is the command palette, which manages its own focus because it is a combobox
   driven by `aria-activedescendant` and arrow keys rather than by Tab.
 
+- **What vault takes from haus, and what it keeps.** vault consumes haus's **token layer** in full:
+  `brands/vault.css` supplies the brand and `semantics.css` resolves every role, so the vocabulary
+  is shared and the values stay vault's. It takes **no components**, which is the portfolio's
+  standing rule rather than an accident: drift and vault consume the tokens, core consumes the
+  components. A shared component a product then overrides buys a dependency and nothing else, where
+  a shared token keeps the vocabulary and leaves the value the product's.
+
+  Of vault's 48 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
+  Popover, Tooltip, Callout, EmptyState, Modal and Select. They stay vault's, because each is
+  already shipped, themed and tested, and importing haus's would mean restyling a released app or
+  overriding the import straight back to what vault draws. The other **38 have no haus equivalent**,
+  and they are what the app is for: the colour domain (`ColorCard`, `ColorDrawer`, `ColorFilters`,
+  `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows (`PaletteView`,
+  `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`, `FontPreviewControl`,
+  `UnitsControl`, `StepEditControl`), and the shell affordances haus does not ship (`CommandPalette`,
+  `Drawer`, `SegmentedControl`, `TriggerPill`, `EditableName`). That is the line the portfolio wants:
+  what a product still needs after the design system has done its half.
+
 ---
 
 ## Decisions

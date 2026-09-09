@@ -1,8 +1,7 @@
 /* ─── vault / tokens ──────────────────────────────────────────────────────────
-   vault takes its token layer from haus-tokens 1.0. What is left in this file is
-   the part that is genuinely vault's: fifteen primitives haus has no name for,
-   one role it has no name for, and three places vault deliberately resolves a
-   shared role differently.
+   vault takes its token layer from haus-tokens 3.x. What is left in this file is
+   the part that is genuinely vault's: fourteen primitives haus has no name for,
+   and five places vault deliberately resolves a shared role differently.
 
    Until 2026-09-07 this file declared 159 properties, and 141 of them were
    haus's values restated by hand. Not approximately: the ruby ramp matched
@@ -117,10 +116,13 @@
     --haus-type-heading-weight: var(--haus-weight-bold);
     --haus-type-label-xs-tracking: var(--haus-tracking-wide);
 
-    /* ── The one role haus has no name for ────────────────────────────────────
-       A page title, one step above haus's heading and below its display.        */
-    --type-title-size: var(--haus-text-24);
-    --type-title-weight: var(--haus-weight-bold);
-    --type-title-tracking: var(--haus-tracking-tight);
+    /* The Toolbar page title. It was a --type-title-* role here until 2026-09-09,
+       kept on the belief haus had no name for it. haus's heading-lg is that name,
+       at the same 24px, differing only in weight and tracking, so the title forks
+       heading-lg bold and tight rather than standing as a private role that
+       duplicates a public one. heading-lg has no other reader in vault, so the
+       fork reaches only the title. */
+    --haus-type-heading-lg-weight: var(--haus-weight-bold);
+    --haus-type-heading-lg-tracking: var(--haus-tracking-tight);
   }
 }
