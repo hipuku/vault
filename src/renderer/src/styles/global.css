@@ -155,11 +155,11 @@ textarea::placeholder {
    described the one place it was used rather than what it does, and it was
    applied by hand-rolled buttons that bypassed the atom. */
 .icon-btn--on {
-  color: var(--haus-mango-500);
+  color: var(--accent-gold);
 }
 .icon-btn--on:hover:not(:disabled) {
   background: var(--haus-color-surface-subtle);
-  color: var(--haus-mango-500);
+  color: var(--accent-gold);
 }
 
 /* ── Eyebrow: THE shared section/group label ────────────────────────────────

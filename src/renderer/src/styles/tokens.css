@@ -46,6 +46,20 @@
        fell into) and --haus-control-height-xs (which vault's local was a byte
        copy of). Both read straight from haus; neither is restated here. */
 
+    /* ── The favourite accent ─────────────────────────────────────────────────
+       The gold of a starred colour, font or scale, at five sites. It is the
+       value of haus's `--haus-mango-500`, and it was read straight off that
+       primitive until 2026-09-10. A star is not a warning: the two only agree
+       today because vault's brand happens to answer both with the same hue, and
+       a rebrand of haus's warning ramp would silently regild every favourite in
+       the app. Named here so it cannot.
+
+       (Two sites *were* warnings, `.extractWarn` and `.nameWarn`. They read
+       `--haus-color-warning-on-subtle` now. Reading the primitive had hidden them
+       from the status-fill guard in `tokens.test.ts`, which caught them the moment
+       they moved onto a role: warning text takes the 700, not the 500 fill.) */
+    --accent-gold: oklch(60% 0.175 65);
+
     /* ── Dot / swatch chips ───────────────────────────────────────────────────
        The same small round indicator appeared at nine sizes across the app.          */
     --dot-xs: 0.5rem; /* 8px:  inline hue marker */

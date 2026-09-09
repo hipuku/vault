@@ -174,7 +174,7 @@ input.name {
   display: inline-flex;
   flex-shrink: 0;
   font-size: var(--haus-text-12);
-  color: var(--haus-mango-500);
+  color: var(--haus-color-warning-on-subtle);
 }
 
 .nameRow:hover .nameActions {

@@ -95,7 +95,7 @@
 }
 
 .favInline {
-  color: var(--haus-mango-500);
+  color: var(--accent-gold);
   font-size: var(--haus-text-12);
   flex-shrink: 0;
 }
