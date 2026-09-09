@@ -123,7 +123,7 @@
   top: var(--haus-space-1);
   right: var(--haus-space-1);
   width: 24px;
-  height: var(--control-height-xs);
+  height: var(--haus-control-height-xs);
   display: flex;
   align-items: center;
   justify-content: center;

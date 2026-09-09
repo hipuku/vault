@@ -12,7 +12,7 @@
 
 .bigName {
   flex: 1;
-  font-size: var(--text-28);
+  font-size: var(--haus-text-28);
   line-height: 1.1;
   color: var(--haus-color-ink-primary);
   overflow-wrap: break-word;

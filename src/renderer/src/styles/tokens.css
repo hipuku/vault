@@ -41,11 +41,10 @@
     /* Specimen previews only: a serif sample next to the sans UI. Not a UI face. */
     --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
 
-    /* One step above haus's scale, for the specimen sheet's largest sample. */
-    --text-28: 1.75rem;
-
-    /* 24px: icon button, small. Below haus's sm, and pointer-only by design. */
-    --control-height-xs: 1.5rem;
+    /* The 28px specimen size and the 24px xs control height are haus's now:
+       --haus-text-28 (haus-tokens 4.2.0 filled the 24-to-30 gap vault's specimen
+       fell into) and --haus-control-height-xs (which vault's local was a byte
+       copy of). Both read straight from haus; neither is restated here. */
 
     /* ── Dot / swatch chips ───────────────────────────────────────────────────
        The same small round indicator appeared at nine sizes across the app.          */

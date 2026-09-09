@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   width: 28px;
-  height: var(--control-height-xs);
+  height: var(--haus-control-height-xs);
   border-radius: var(--haus-radius-sm);
   font-size: var(--haus-text-13);
   font-weight: var(--haus-weight-bold);
