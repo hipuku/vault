@@ -8,7 +8,7 @@
   align-items: center;
   gap: var(--haus-space-2);
   padding: var(--haus-space-5) var(--haus-space-6) 0;
-  font-size: var(--haus-type-label-size);
+  font-size: var(--haus-type-label-md-size);
   font-weight: var(--haus-weight-semibold);
   letter-spacing: var(--haus-tracking-wide);
   text-transform: uppercase;

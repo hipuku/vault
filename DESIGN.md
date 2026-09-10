@@ -118,11 +118,12 @@ event. Arbitrary renderer input never reaches it.
 - **Runtime floor.** Electron 44 and better-sqlite3 13 both require Node 22, recorded in
   `engines` and `.nvmrc`. The SQLite driver ships N-API prebuilds, so nothing rebuilds it at
   install time; electron-builder still rebuilds at package time through its own copy.
-- **Production tree.** Fifteen packages reach the shipped app. React and its scheduler, the
+- **Production tree.** Sixteen packages reach the shipped app. React and its scheduler, the
   SQLite driver and its addon API, chroma-js, culori, react-colorful, the icon set, the
-  typeface, and two from the haus design system: `haus-colour-utils` for the hue bins and
-  `haus-colour-names` for the 31,900-name dataset. Neither adds a transitive dependency;
-  `haus-colour-utils` runs on the chroma-js that was already here.
+  typeface, and three from the haus design system: `haus-tokens` for the token layer,
+  `haus-colour-utils` for the hue bins and `haus-colour-names` for the 31,900-name dataset.
+  None of the three adds a transitive dependency; `haus-colour-utils` runs on the chroma-js
+  that was already here.
 
 ### Data model
 
@@ -264,6 +265,13 @@ one below it. Nothing points upward.
   A shared component a product then overrides buys a dependency and nothing else, where a shared
   token keeps the vocabulary and leaves the value the product's.
 
+  What stays in `styles/tokens.css` is six primitives haus has no name for: a serif for the
+  specimen previews, the four-step dot scale for swatch chips, and the favourite gold. One more
+  declaration is not a fork: `--haus-font-sans` names the variable build of the same Manrope.
+  The modal and popover widths, the 28px specimen size, the xs control height and the three
+  type forks all went to haus on 2026-09-09, and vault took haus's values rather than keeping
+  its own.
+
   _(drift was the other token consumer until 2026-09-09, when it took its foundation in-house on
   the argument that a tool auditing design systems should not wear one. That leaves vault as the
   token side of the rule on its own, and the rule is unchanged: it was never a claim about how
@@ -298,9 +306,11 @@ one below it. Nothing points upward.
 
 - **Deep ruby carries every action.** Ruby (anchored on `#AA1155` / `#880044`, built as an
   OKLCH ramp) is reserved for the wordmark, primary actions, focus rings, and the active nav
-  item. One amber (`--amber-500`) sits outside that rule, on the favourite star, because a
-  marker of state should not read as something to click. Everything else is calm
-  neutral (the `onyx` greys), so the accent reliably means "act here".
+  item. One gold, `--accent-gold`, sits outside that rule, on the favourite star, because a
+  marker of state should not read as something to click. It is vault's own token rather than
+  a read of the warning ramp it happens to match, because a star is not a warning and should
+  not move when the warning colour does. Everything else is calm neutral (the `onyx` greys),
+  so the accent reliably means "act here".
 - **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
   via `@fontsource-variable/manrope` rather than the Google CDN, because a local-first app can't depend
   on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400

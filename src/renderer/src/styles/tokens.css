@@ -1,7 +1,7 @@
 /* ─── vault / tokens ──────────────────────────────────────────────────────────
-   vault takes its token layer from haus-tokens 4.x. What is left in this file is
-   the part that is genuinely vault's: fourteen primitives haus has no name for,
-   and five places vault deliberately resolves a shared role differently.
+   vault takes its token layer from haus-tokens 5.x. What is left in this file is
+   the part that is genuinely vault's: six primitives haus has no name for, and
+   one declaration that names the variable build of haus's own face.
 
    Until 2026-09-07 this file declared 159 properties, and 141 of them were
    haus's values restated by hand. Not approximately: the ruby ramp matched

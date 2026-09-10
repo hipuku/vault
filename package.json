@@ -34,7 +34,7 @@
     "culori": "^4.0.2",
     "haus-colour-names": "^1.0.0",
     "haus-colour-utils": "^1.0.0",
-    "haus-tokens": "^4.2.0",
+    "haus-tokens": "^5.0.0",
     "react-colorful": "^5.8.0"
   },
   "devDependencies": {
