@@ -8,7 +8,7 @@
   background: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   border-radius: var(--haus-radius-md);
-  box-shadow: var(--haus-shadow-lg);
+  box-shadow: var(--haus-elevation-floating);
 }
 
 /* Alignment against the trigger. */
