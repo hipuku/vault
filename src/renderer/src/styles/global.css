@@ -168,9 +168,12 @@ textarea::placeholder {
    Uppercase, tracked, muted. Used for every section title (Projects, Contrast,
    Weights, Quality, …). Spacing belongs on the wrapper, not here. */
 .eyebrow {
-  font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-semibold);
-  letter-spacing: var(--haus-tracking-wide);
+  /* The whole label-eyebrow role, the one haus names for this. It read label-sm's
+     size, a weight and tracking-wide, and took its leading from the parent. */
+  font-size: var(--haus-type-label-eyebrow-size);
+  font-weight: var(--haus-type-label-eyebrow-weight);
+  letter-spacing: var(--haus-type-label-eyebrow-tracking);
+  line-height: var(--haus-type-label-eyebrow-leading);
   text-transform: uppercase;
   color: var(--haus-color-ink-tertiary);
 }

@@ -6,7 +6,7 @@
   background: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   border-radius: var(--haus-radius-lg);
-  box-shadow: var(--haus-shadow-sm);
+  box-shadow: var(--haus-elevation-raised);
 }
 
 .header {
