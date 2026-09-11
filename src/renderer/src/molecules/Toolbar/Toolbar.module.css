@@ -17,6 +17,9 @@
   font-size: var(--haus-type-heading-lg-size);
   font-weight: var(--haus-type-heading-lg-weight);
   letter-spacing: var(--haus-type-heading-lg-tracking);
+  /* The fourth property of the role. Without it the h1 took the body's 1.5, so the
+     title set three of heading-lg's four values and invented the last. */
+  line-height: var(--haus-type-heading-lg-leading);
   color: var(--haus-color-ink-primary);
   flex: 1;
 }

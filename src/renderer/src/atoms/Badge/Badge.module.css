@@ -3,10 +3,11 @@
   align-items: center;
   padding: 1px var(--haus-space-2);
   border-radius: var(--haus-radius-full);
+  /* The whole label-xs role, all four properties, so a text style can match it. */
   font-size: var(--haus-type-label-xs-size);
-  font-weight: var(--haus-weight-medium);
-  letter-spacing: var(--haus-tracking-wide);
-  line-height: var(--haus-leading-loose);
+  font-weight: var(--haus-type-label-xs-weight);
+  letter-spacing: var(--haus-type-label-xs-tracking);
+  line-height: var(--haus-type-label-xs-leading);
   white-space: nowrap;
 }
 

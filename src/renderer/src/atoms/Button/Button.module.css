@@ -18,7 +18,7 @@
 /* The label leads; the FA solid glyph (optically heavier than text) is scaled
    down to a supporting accent so the two read as complementary. */
 .button svg {
-  font-size: 0.85em;
+  font-size: var(--haus-icon-xs);
 }
 
 .button:disabled {
