@@ -23,10 +23,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.field:focus,
+/* No border or fill, so the box never moves between modes; focus is shown by the
+   haus ring instead, which draws outside the box and shifts nothing. */
+.field:focus {
+  outline: none;
+}
 .field:focus-visible {
   outline: none;
-  box-shadow: none;
+  box-shadow: var(--haus-focus-ring);
+  border-radius: var(--haus-radius-sm);
 }
 
 /* pen reveals on hover of the row */
@@ -34,6 +39,9 @@
   opacity: 0;
   transition: opacity var(--haus-duration-fast) var(--haus-ease-move);
 }
-.root:hover .pen {
+/* Keyboard focus reveals it too: at opacity 0 a focused pen, and its ring, were
+   invisible. */
+.root:hover .pen,
+.root:focus-within .pen {
   opacity: 1;
 }

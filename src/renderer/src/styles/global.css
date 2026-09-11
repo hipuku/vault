@@ -108,8 +108,8 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: var(--haus-control-height-sm);
+  height: var(--haus-control-height-sm);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -130,13 +130,15 @@ textarea::placeholder {
 
 /* Sizes */
 .icon-btn--sm {
-  width: 24px;
-  height: 24px;
+  width: var(--haus-control-height-xs);
+  height: var(--haus-control-height-xs);
   font-size: var(--haus-text-12);
 }
+/* xs was 20px, under WCAG 2.5.8's 24px target. It keeps the smaller glyph and
+   takes the 24px floor, so it now differs from sm only in glyph size. */
 .icon-btn--xs {
-  width: 20px;
-  height: 20px;
+  width: var(--haus-control-height-xs);
+  height: var(--haus-control-height-xs);
   font-size: var(--haus-text-11);
 }
 

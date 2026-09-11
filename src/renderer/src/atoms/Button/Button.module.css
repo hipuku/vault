@@ -46,7 +46,7 @@
 
 .primary {
   background: var(--haus-color-primary-default);
-  color: var(--haus-color-ink-inverse);
+  color: var(--haus-color-ink-on-primary);
 }
 .primary:hover:not(:disabled) {
   background: var(--haus-color-primary-hover);

@@ -18,7 +18,7 @@
   overflow-wrap: break-word;
 }
 
-/* star: locked .icon-btn pattern (global) + .icon-btn--star when favourited */
+/* star: locked .icon-btn pattern (global) + .icon-btn--on when favourited */
 
 .sub {
   padding: var(--haus-space-1) var(--haus-space-5) var(--haus-space-5);
