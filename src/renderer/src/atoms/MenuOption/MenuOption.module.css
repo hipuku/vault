@@ -14,7 +14,12 @@
   cursor: pointer;
   text-align: left;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
+  /* The whole body-sm role. The size alone left the leading to the element: a
+     <button> row took the browser's normal and an <li> row the body's 1.5, so the
+     two forms drew rows of different heights. */
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
   color: var(--haus-color-ink-secondary);
   transition: background var(--haus-duration-fast) var(--haus-ease-move);
 }
