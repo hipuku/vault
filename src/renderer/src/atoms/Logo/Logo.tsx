@@ -5,7 +5,7 @@ import React from 'react'
  * ruby ramp, 400 (V) → 800 (t), left to right. Fills use the design
  * tokens so the wordmark tracks any brand-ramp change.
  */
-export function BrandWordmark({ className }: { className?: string }): React.ReactElement {
+export function Logo({ className }: { className?: string }): React.ReactElement {
   return (
     <svg
       className={className}

@@ -84,8 +84,8 @@
     ],
     "states": [null]
   },
-  "6 \u00b7 Pill": {
-    "cssPath": "src/renderer/src/atoms/Pill/Pill.module.css",
+  "6 \u00b7 Chip": {
+    "cssPath": "src/renderer/src/atoms/Chip/Chip.module.css",
     "base": "pill",
     "label": "Sans-serif",
     "axes": [
@@ -188,8 +188,8 @@
       "variant:null": "bubble"
     }
   },
-  "13 \u00b7 TriggerPill": {
-    "cssPath": "src/renderer/src/atoms/TriggerPill/TriggerPill.module.css",
+  "13 \u00b7 PopoverTrigger": {
+    "cssPath": "src/renderer/src/atoms/PopoverTrigger/PopoverTrigger.module.css",
     "base": "trigger",
     "label": "Filters",
     "axes": [

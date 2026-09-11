@@ -222,7 +222,7 @@ flowchart TD
     P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
     D["organisms · 17<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
     R["molecules · 16<br/><small>Modal · Select · Drawer · Toolbar · ConfirmDialog<br/>TagSelect · UnitsControl · StepEditControl · …</small>"]
-    A["atoms · 15<br/><small>Button · IconButton · Input · Badge · Pill · Panel · Popover<br/>SegmentedControl · TriggerPill · MenuOption · Tooltip · …</small>"]
+    A["atoms · 15<br/><small>Button · IconButton · Input · Badge · Chip · Panel · Popover<br/>SegmentedControl · PopoverTrigger · MenuOption · Tooltip · …</small>"]
     H["hooks<br/><small>state + IPC</small>"]
     L["lib / shared<br/><small>pure functions</small>"]
 
@@ -248,7 +248,7 @@ one below it. Nothing points upward.
   readable, with no runtime styling cost. Tailwind and inline styles both move the vocabulary
   into the markup, which is the thing this system is trying to keep out of it.
 - **The same patterns repeat across sections.** Card =
-  whole-card button + hover edit pen + `Pill` (descriptor) + mono (value); viewers are
+  whole-card button + hover edit pen + `Chip` (descriptor) + mono (value); viewers are
   hero + `Panel`s; create flows are a two-pane (controls | live preview).
 - **Accessible by default.** Every overlay dismisses on Escape. Dialogs and drawers share one
   `useFocusTrap`: focus moves to the first control on open, Tab cycles inside the overlay, and
@@ -285,7 +285,7 @@ one below it. Nothing points upward.
   `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows (`PaletteView`,
   `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`, `FontPreviewControl`,
   `UnitsControl`, `StepEditControl`), and the shell affordances haus does not ship (`CommandPalette`,
-  `Drawer`, `SegmentedControl`, `TriggerPill`, `EditableName`). That is the line the portfolio wants:
+  `Drawer`, `SegmentedControl`, `PopoverTrigger`, `InlineEdit`). That is the line the portfolio wants:
   what a product still needs after the design system has done its half.
 
 ---

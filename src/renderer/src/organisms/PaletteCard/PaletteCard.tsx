@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faBarsStaggered, faTableColumns } from '@fortawesome/free-solid-svg-icons'
 import type { Palette, Swatch } from '@shared/types'
-import { Pill } from '../../atoms/Pill/Pill'
+import { Chip } from '../../atoms/Chip/Chip'
 import styles from './PaletteCard.module.css'
 
 interface PaletteCardProps {
@@ -62,7 +62,7 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
       <div className={styles.body}>
         <span className={styles.name}>{palette.name}</span>
         <div className={styles.meta}>
-          <Pill icon={meta.icon} label={meta.label} />
+          <Chip icon={meta.icon} label={meta.label} />
           <span className={styles.value}>{meta.value}</span>
         </div>
       </div>

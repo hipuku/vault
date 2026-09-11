@@ -1,9 +1,9 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
-import styles from './Pill.module.css'
+import styles from './Chip.module.css'
 
-interface PillProps {
+interface ChipProps {
   label: string
   /** Optional leading icon. */
   icon?: IconDefinition
@@ -12,9 +12,9 @@ interface PillProps {
 
 /** A small, neutral metadata pill, distinct from `Badge` (which carries
  *  status semantics). Use for descriptive tags like "Tonal · 5 ramps". */
-export function Pill({ label, icon, className }: PillProps): React.ReactElement {
+export function Chip({ label, icon, className }: ChipProps): React.ReactElement {
   return (
-    <span className={[styles.pill, className].filter(Boolean).join(' ')}>
+    <span className={[styles.chip, className].filter(Boolean).join(' ')}>
       {icon && <FontAwesomeIcon icon={icon} className={styles.icon} />}
       {label}
     </span>

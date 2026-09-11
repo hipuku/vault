@@ -5,7 +5,7 @@ import { Select } from '../../molecules/Select/Select'
 import type { TypeUnits, SizeUnit, WeightDisplay, LineHeightUnit, TrackingUnit } from '../../lib/typeUnits'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
-import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
+import { PopoverTrigger } from '../../atoms/PopoverTrigger/PopoverTrigger'
 import styles from './UnitsControl.module.css'
 
 interface UnitsControlProps {
@@ -39,12 +39,12 @@ export function UnitsControl({ units, onChange }: UnitsControlProps): React.Reac
 
   return (
     <div className={styles.root} ref={ref}>
-      <TriggerPill aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
+      <PopoverTrigger aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
         <FontAwesomeIcon icon={faSliders} />
         <span className={styles.summary}>
           {units.size} · {units.tracking}
         </span>
-      </TriggerPill>
+      </PopoverTrigger>
 
       {open && (
         <Popover align="right" width="md" column role="dialog" ariaLabel="Display units">

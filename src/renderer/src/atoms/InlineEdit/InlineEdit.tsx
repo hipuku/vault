@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
-import styles from './EditableName.module.css'
+import styles from './InlineEdit.module.css'
 
-interface EditableNameProps {
+interface InlineEditProps {
   value: string
   onCommit: (next: string) => void
   ariaLabel: string
@@ -14,7 +14,7 @@ interface EditableNameProps {
 }
 
 /** Click-to-edit name with a hover pen: the shared rename affordance. */
-export function EditableName({ value, onCommit, ariaLabel, textClassName }: EditableNameProps): React.ReactElement {
+export function InlineEdit({ value, onCommit, ariaLabel, textClassName }: InlineEditProps): React.ReactElement {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(value)
 

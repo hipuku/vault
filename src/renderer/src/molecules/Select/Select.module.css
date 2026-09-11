@@ -32,3 +32,27 @@
   margin: 0;
   padding: 0;
 }
+
+/* The trigger as a form field, when the Select is block: full width, squared off
+   and quieter, sitting in a stack of inputs rather than acting as a standalone pill.
+   It lived in PopoverTrigger as its block prop, but Select is its only user. Two
+   classes deep so it outranks the trigger's own rules, and its focus is restated
+   because a field border must not win over the focus border. */
+.root .fieldTrigger {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  border-radius: var(--haus-radius-md);
+  border-color: var(--haus-color-border-default);
+  font-weight: var(--haus-weight-medium);
+  color: var(--haus-color-ink-primary);
+}
+
+.root .fieldTrigger:hover {
+  border-color: var(--haus-color-border-strong);
+  color: var(--haus-color-ink-primary);
+}
+
+.root .fieldTrigger:focus-visible {
+  border-color: var(--haus-color-border-focus);
+}

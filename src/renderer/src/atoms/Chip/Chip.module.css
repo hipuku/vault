@@ -1,4 +1,4 @@
-.pill {
+.chip {
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-1);
@@ -6,7 +6,7 @@
   border-radius: var(--haus-radius-full);
   background: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-tertiary);
-  /* The whole label-xs role, as Badge takes, so a Pill and a Badge side by side in
+  /* The whole label-xs role, as Badge takes, so a Chip and a Badge side by side in
      a viewer header are the same type and the same height. */
   font-size: var(--haus-type-label-xs-size);
   font-weight: var(--haus-type-label-xs-weight);

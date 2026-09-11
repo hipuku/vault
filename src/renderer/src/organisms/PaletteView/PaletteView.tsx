@@ -14,8 +14,8 @@ import { Toolbar } from '../../molecules/Toolbar/Toolbar'
 import { Button } from '../../atoms/Button/Button'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Panel } from '../../atoms/Panel/Panel'
-import { Pill } from '../../atoms/Pill/Pill'
-import { EditableName } from '../../atoms/EditableName/EditableName'
+import { Chip } from '../../atoms/Chip/Chip'
+import { InlineEdit } from '../../atoms/InlineEdit/InlineEdit'
 import { Badge } from '../../atoms/Badge/Badge'
 import { ExportModal } from '../../organisms/ExportModal/ExportModal'
 import { AddColorModal } from '../../organisms/AddColorModal/AddColorModal'
@@ -187,7 +187,7 @@ export function PaletteView({
             <IconButton label="Back to palettes" onClick={onBack}>
               <FontAwesomeIcon icon={faChevronLeft} />
             </IconButton>
-            <EditableName value={palette.name} onCommit={n => onRename(palette.id, n)} ariaLabel="palette name" />
+            <InlineEdit value={palette.name} onCommit={n => onRename(palette.id, n)} ariaLabel="palette name" />
           </span>
         }
         actions={
@@ -212,8 +212,8 @@ export function PaletteView({
               ))}
             </div>
             <div className={styles.heroMeta}>
-              <Pill icon={kindMeta.icon} label={kindMeta.label} />
-              <Pill label={kindMeta.value} />
+              <Chip icon={kindMeta.icon} label={kindMeta.label} />
+              <Chip label={kindMeta.value} />
               {project && (
                 <span className={styles.projectPill}>
                   <span className={styles.projectDot} style={{ background: project.colour }} />
@@ -229,7 +229,7 @@ export function PaletteView({
               )}
               {quality?.kind === 'expressive' && (
                 <>
-                  <Pill label={`Hue ${quality.hue}°`} />
+                  <Chip label={`Hue ${quality.hue}°`} />
                   <Badge variant={ratingVariant(quality.chroma)} label={`Chroma ${quality.chroma}`} />
                   <Badge variant={ratingVariant(quality.lightness)} label={`Lightness ${quality.lightness}`} />
                   {quality.near > 0 && <Badge variant="warning" label={`${quality.near} near-identical`} />}

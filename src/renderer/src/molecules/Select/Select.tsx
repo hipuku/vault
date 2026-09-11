@@ -4,7 +4,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { usePopover } from '../../hooks/usePopover'
 import { useListbox } from '../../hooks/useListbox'
 import { Popover } from '../../atoms/Popover/Popover'
-import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
+import { PopoverTrigger } from '../../atoms/PopoverTrigger/PopoverTrigger'
 import { MenuOption } from '../../atoms/MenuOption/MenuOption'
 import styles from './Select.module.css'
 
@@ -66,8 +66,8 @@ export function Select<K extends string>({
 
   return (
     <div className={[styles.root, block ? styles.block : ''].filter(Boolean).join(' ')} ref={ref}>
-      <TriggerPill
-        block={block}
+      <PopoverTrigger
+        className={block ? styles.fieldTrigger : undefined}
         role="combobox"
         aria-label={ariaLabel}
         aria-haspopup="listbox"
@@ -82,7 +82,7 @@ export function Select<K extends string>({
           {current?.label}
         </span>
         <FontAwesomeIcon icon={faChevronDown} className={styles.caret} />
-      </TriggerPill>
+      </PopoverTrigger>
       {open && (
         <Popover align={align === 'right' ? 'right' : 'stretch'} pad="tight">
           <ul id={listbox.listId} role="listbox" aria-label={ariaLabel} className={styles.list}>

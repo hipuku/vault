@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { describe, expect, it, vi } from 'vitest'
-import { EditableName } from '@renderer/atoms/EditableName/EditableName'
+import { InlineEdit } from '@renderer/atoms/InlineEdit/InlineEdit'
 
 /**
  * DESIGN.md records that this atom is hand-written rather than composed,
@@ -14,11 +14,11 @@ import { EditableName } from '@renderer/atoms/EditableName/EditableName'
  *
  * Enter commits and Escape reverts. Neither was asserted anywhere.
  */
-describe('EditableName', () => {
+describe('InlineEdit', () => {
   it('commits on Enter', async () => {
     const onCommit = vi.fn()
     const user = userEvent.setup()
-    render(<EditableName value="core palette" onCommit={onCommit} ariaLabel="Palette name" />)
+    render(<InlineEdit value="core palette" onCommit={onCommit} ariaLabel="Palette name" />)
 
     // The field does not exist until the pen is pressed: at rest this is a span
     // plus a trigger, which is the opacity-reveal affordance DESIGN.md records.
@@ -33,7 +33,7 @@ describe('EditableName', () => {
   it('reverts on Escape, and does not commit', async () => {
     const onCommit = vi.fn()
     const user = userEvent.setup()
-    render(<EditableName value="core palette" onCommit={onCommit} ariaLabel="Palette name" />)
+    render(<InlineEdit value="core palette" onCommit={onCommit} ariaLabel="Palette name" />)
 
     await user.click(screen.getByRole('button', { name: 'Rename Palette name' }))
     const field = screen.getByLabelText('Palette name')
@@ -47,7 +47,7 @@ describe('EditableName', () => {
 
   it('carries an accessible name even though it renders no visible label', async () => {
     const user = userEvent.setup()
-    const { container } = render(<EditableName value="core palette" onCommit={vi.fn()} ariaLabel="Palette name" />)
+    const { container } = render(<InlineEdit value="core palette" onCommit={vi.fn()} ariaLabel="Palette name" />)
     expect((await axe(container)).violations).toEqual([])
 
     // The reason `ariaLabel` is required rather than optional: without it the

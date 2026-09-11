@@ -8,9 +8,9 @@ import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Panel } from '../../atoms/Panel/Panel'
-import { Pill } from '../../atoms/Pill/Pill'
+import { Chip } from '../../atoms/Chip/Chip'
 import { Badge } from '../../atoms/Badge/Badge'
-import { EditableName } from '../../atoms/EditableName/EditableName'
+import { InlineEdit } from '../../atoms/InlineEdit/InlineEdit'
 import { ExportModal } from '../../organisms/ExportModal/ExportModal'
 import { SpecimenTable } from '../../organisms/SpecimenTable/SpecimenTable'
 import { UnitsControl } from '../../molecules/UnitsControl/UnitsControl'
@@ -100,7 +100,7 @@ export function TypeScaleView({
             <IconButton label="Back to type scales" onClick={onBack}>
               <FontAwesomeIcon icon={faChevronLeft} />
             </IconButton>
-            <EditableName value={scale.name} onCommit={n => onRename(scale.id, n)} ariaLabel="type scale name" />
+            <InlineEdit value={scale.name} onCommit={n => onRename(scale.id, n)} ariaLabel="type scale name" />
           </span>
         }
         actions={
@@ -142,9 +142,9 @@ export function TypeScaleView({
               ))}
             </div>
             <div className={styles.heroMeta}>
-              <Pill icon={faTextHeight} label={`${steps.length} steps`} />
-              <Pill label={custom ? 'Custom' : ratioName} />
-              <Pill label={`${scale.base_size}px base`} />
+              <Chip icon={faTextHeight} label={`${steps.length} steps`} />
+              <Chip label={custom ? 'Custom' : ratioName} />
+              <Chip label={`${scale.base_size}px base`} />
               {project && (
                 <span className={styles.projectPill}>
                   <span className={styles.projectDot} style={{ background: project.colour }} />

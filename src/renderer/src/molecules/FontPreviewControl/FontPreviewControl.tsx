@@ -1,7 +1,7 @@
 import React from 'react'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
-import { TriggerPill } from '../../atoms/TriggerPill/TriggerPill'
+import { PopoverTrigger } from '../../atoms/PopoverTrigger/PopoverTrigger'
 import styles from './FontPreviewControl.module.css'
 
 interface FontPreviewControlProps {
@@ -24,10 +24,10 @@ export function FontPreviewControl({
 
   return (
     <div className={styles.root} ref={ref}>
-      <TriggerPill aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
+      <PopoverTrigger aria-haspopup="dialog" aria-expanded={open} onClick={toggle}>
         <span className={styles.aa}>Aa</span>
         <span className={styles.size}>{size}px</span>
-      </TriggerPill>
+      </PopoverTrigger>
 
       {open && (
         <Popover align="right" width="lg" column role="dialog" ariaLabel="Preview settings">

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import type { TypeScale, TypeScaleStep } from '@shared/types'
 import { RATIO_PRESETS } from '@shared/lib/typeScale'
-import { Pill } from '../../atoms/Pill/Pill'
+import { Chip } from '../../atoms/Chip/Chip'
 import styles from './TypeScaleCard.module.css'
 
 interface TypeScaleCardProps {
@@ -79,7 +79,7 @@ export function TypeScaleCard({
           <span className={styles.name}>{scale.name}</span>
         </div>
         <div className={styles.meta}>
-          <Pill label={ratioLabel(scale.ratio)} />
+          <Chip label={ratioLabel(scale.ratio)} />
           <span className={styles.value}>{scale.base_size}px</span>
         </div>
       </div>

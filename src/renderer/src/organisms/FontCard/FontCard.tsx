@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faPen } from '@fortawesome/free-solid-svg-icons'
 import type { Font } from '@shared/types'
 import { parseWeights, categoryGeneric, categoryLabel } from '../../lib/fontLoader'
-import { Pill } from '../../atoms/Pill/Pill'
+import { Chip } from '../../atoms/Chip/Chip'
 import styles from './FontCard.module.css'
 
 interface FontCardProps {
@@ -34,7 +34,7 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
           <span className={styles.name}>{font.family}</span>
         </div>
         <div className={styles.meta}>
-          <Pill label={categoryLabel(font.category)} />
+          <Chip label={categoryLabel(font.category)} />
           <span className={styles.value}>
             {weights.length} weight{weights.length === 1 ? '' : 's'}
           </span>

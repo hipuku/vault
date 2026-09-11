@@ -5,7 +5,7 @@ import type { Colour } from '@shared/types'
 import { generateLightnessScale } from '@shared/lib/lightnessScale'
 import { nearestShadeIndex } from '../../lib/colour'
 import { hueFamily } from '../../lib/colourSort'
-import { Pill } from '../../atoms/Pill/Pill'
+import { Chip } from '../../atoms/Chip/Chip'
 import styles from './ColorCard.module.css'
 
 interface ColorCardProps {
@@ -40,7 +40,7 @@ export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElemen
           <span className={styles.name}>{colour.name}</span>
         </div>
         <div className={styles.meta}>
-          <Pill label={hueFamily(colour.hex)} />
+          <Chip label={hueFamily(colour.hex)} />
           <span className={styles.hex}>{colour.hex}</span>
         </div>
       </div>

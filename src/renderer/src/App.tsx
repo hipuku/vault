@@ -18,7 +18,7 @@ import { useConfirm } from './hooks/useConfirm'
 import { Button } from './atoms/Button/Button'
 import { Divider } from './atoms/Divider/Divider'
 import { ConfirmDialog } from './molecules/ConfirmDialog/ConfirmDialog'
-import { BrandWordmark } from './atoms/BrandWordmark/BrandWordmark'
+import { Logo } from './atoms/Logo/Logo'
 import { TagModal } from './organisms/TagModal/TagModal'
 import { ColorsPage } from './pages/ColorsPage'
 import { FontsPage } from './pages/FontsPage'
@@ -87,7 +87,7 @@ function Sidebar({
       <div className="titlebar-inset" />
 
       <div className={styles.brand}>
-        <BrandWordmark className={styles.brandWordmark} />
+        <Logo className={styles.brandWordmark} />
       </div>
 
       {NAV_ITEMS.map(({ section, label, icon }) => (
