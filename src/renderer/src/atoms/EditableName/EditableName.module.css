@@ -18,7 +18,7 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: 2px 0;
+  padding: var(--haus-space-0-5) 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

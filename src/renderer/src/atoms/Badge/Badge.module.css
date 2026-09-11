@@ -1,7 +1,7 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 1px var(--haus-space-2);
+  padding: var(--haus-space-px) var(--haus-space-2);
   border-radius: var(--haus-radius-full);
   /* The whole label-xs role, all four properties, so a text style can match it. */
   font-size: var(--haus-type-label-xs-size);
