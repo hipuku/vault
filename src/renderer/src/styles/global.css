@@ -184,6 +184,9 @@ textarea::placeholder {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    /* Without this an infinite animation, the Spinner, keeps running at 0.01ms a
+       turn, a flicker rather than stillness. One iteration and it rests. */
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
