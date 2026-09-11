@@ -252,7 +252,13 @@ export function FontAdder({
     >
       {tab === 'google' ? (
         <div className={styles.googleBody}>
-          <Input autoFocus value={query} onChange={e => setQuery(e.target.value)} placeholder="Search Google Fonts…" />
+          <Input
+            autoFocus
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search Google Fonts…"
+            aria-label="Search Google Fonts"
+          />
           <SegmentedControl
             ariaLabel="Category"
             size="sm"
@@ -288,6 +294,7 @@ export function FontAdder({
             value={installedQuery}
             onChange={e => setInstalledQuery(e.target.value)}
             placeholder="Search installed fonts…"
+            aria-label="Search installed fonts"
           />
           <div className={styles.results}>
             {installedErr ? (

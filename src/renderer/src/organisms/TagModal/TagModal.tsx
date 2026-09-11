@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../../atoms/Button/Button'
@@ -20,6 +20,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
   const [label, setLabel] = useState('')
   const [colour, setColour] = useState(TAG_COLOURS[0])
   const [error, setError] = useState<string | null>(null)
+  const errorId = useId()
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
@@ -65,6 +66,8 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
           autoFocus
           value={label}
           error={!!error}
+          aria-label="Project name"
+          aria-describedby={error ? errorId : undefined}
           onChange={e => {
             setLabel(e.target.value)
             setError(null)
@@ -74,7 +77,11 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
             if (e.key === 'Enter') submit()
           }}
         />
-        {error && <p className={styles.error}>{error}</p>}
+        {error && (
+          <p id={errorId} className={styles.error} role="alert">
+            {error}
+          </p>
+        )}
 
         <div className={styles.swatches}>
           {TAG_COLOURS.map(c => {

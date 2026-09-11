@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faCode, faShapes } from '@fortawesome/free-solid-svg-icons'
 import type {
@@ -48,6 +48,7 @@ const DEFAULT_RATIO = 1.333
 
 export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreateProps): React.ReactElement {
   const [name, setName] = useState('')
+  const nameId = useId()
 
   // Project scope
   const [projects, setProjects] = useState<TagWithCount[]>([])
@@ -184,10 +185,16 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
         <div className={styles.controls}>
           {/* 1. Name */}
           <div className={styles.field}>
-            <label className={styles.label}>
+            <label className={styles.label} htmlFor={nameId}>
               Name <span className={styles.req}>*</span>
             </label>
-            <Input value={name} onChange={e => setName(e.target.value)} placeholder="Type scale name" autoFocus />
+            <Input
+              id={nameId}
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Type scale name"
+              autoFocus
+            />
           </div>
 
           {/* 2. Preset kind */}

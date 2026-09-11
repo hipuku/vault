@@ -18,7 +18,7 @@
   color: var(--haus-color-ink-disabled);
 }
 
-/* Focus: accent border + one soft halo (no hard double ring). */
+/* Focus: the accent border, plus the haus focus ring (a surface gap, then the ring). */
 .input:focus-visible {
   border-color: var(--haus-color-border-focus);
   box-shadow: var(--haus-focus-ring);
