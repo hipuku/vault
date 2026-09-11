@@ -253,10 +253,31 @@ one below it. Nothing points upward.
 - **Accessible by default.** Every overlay dismisses on Escape. Dialogs and drawers share one
   `useFocusTrap`: focus moves to the first control on open, Tab cycles inside the overlay, and
   focus returns to whatever opened it on close. Focus rings are `:focus-visible` with the accent
-  halo, and all motion respects `prefers-reduced-motion`.
+  halo, and all motion respects `prefers-reduced-motion`: since 2026-09-12 that rule also caps the
+  iteration count, so an endless animation (the spinner) rests after one near-instant turn rather
+  than flickering at 0.01ms a turn.
+
+  **Three defects are open, all found by auditing each component against its code**, and
+  they are listed rather than hidden: `vault#44`, `MenuOption` serves a menu item and a listbox
+  option under one name and `TagSelect`'s rows expose no selected state; `vault#45`,
+  `SegmentedControl` renders tab roles without tab behaviour where most of its uses are a radio
+  group; `vault#46`, `Tooltip` cannot be dismissed with Escape and closes when the pointer moves
+  onto it, which is WCAG 1.4.13. Fixed the same way: every `Input` call site now carries a name and
+  ties its error to the field (`ec8f009`), and `InlineEdit`'s pen is visible to keyboard focus with
+  its ring (`vault#40`, `#41`).
 
   The exception is the command palette, which manages its own focus because it is a combobox
   driven by `aria-activedescendant` and arrow keys rather than by Tab.
+
+- **A type role is taken whole, or not at all.** A haus type role is four tokens: size, weight,
+  leading and tracking. Reading two of them and inventing the rest is how a component drifts while
+  still looking tokenised, and it is invisible until something compares the four. Seven places did
+  exactly that and were corrected on 2026-09-11 and 12: `Badge` and `Chip` (which sit side by side
+  in a viewer header and disagreed), the `Toolbar` title that `InlineEdit` inherits, `MenuOption`
+  (whose two forms drew different row heights because only the `li` inherited a leading),
+  `SegmentedControl`, `Tooltip`, and the global `.eyebrow`. Each now sets all four. The test is
+  simple and worth applying to anything new: a component either declares a role's four properties
+  or it is not on that role, whatever its size says.
 
 - **What vault takes from haus, and what it keeps.** vault consumes haus's **token layer** in full:
   `brands/vault.css` supplies the brand and `semantics.css` resolves every role, so the vocabulary
