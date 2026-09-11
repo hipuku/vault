@@ -1,19 +1,19 @@
 .spinner {
   display: inline-block;
   border-radius: var(--haus-radius-full);
-  border: 2px solid var(--haus-color-border-default);
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-default);
   border-top-color: var(--haus-color-primary-default);
   animation: spin var(--haus-duration-moderate) linear infinite;
   flex-shrink: 0;
 }
 
 .sm {
-  width: 14px;
-  height: 14px;
+  width: var(--haus-icon-sm);
+  height: var(--haus-icon-sm);
 }
 .md {
-  width: 20px;
-  height: 20px;
+  width: var(--haus-icon-md);
+  height: var(--haus-icon-md);
 }
 
 @keyframes spin {
