@@ -14,9 +14,12 @@
   background: var(--haus-color-surface-inverse);
   color: var(--haus-color-ink-inverse);
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-12);
-  font-weight: var(--haus-weight-medium);
-  line-height: var(--haus-leading-snug);
+  /* The whole label-sm role, so a text style matches: it read label-sm's size and
+     weight, then leading-snug and no tracking. */
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   border-radius: var(--haus-radius-sm);
   box-shadow: var(--haus-shadow-md);
   pointer-events: none;
