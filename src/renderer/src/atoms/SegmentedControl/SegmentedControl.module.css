@@ -14,8 +14,12 @@
   cursor: pointer;
   border-radius: var(--haus-radius-full);
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role, so a text style matches: the size and weight were
+     already its, and the leading was the button's normal. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-tertiary);
   white-space: nowrap;
   transition:
@@ -35,6 +39,9 @@
 
 .sm {
   height: var(--haus-control-height-sm);
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   padding: 0 var(--haus-space-2);
 }
