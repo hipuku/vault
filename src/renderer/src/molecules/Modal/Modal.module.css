@@ -25,7 +25,7 @@
   background: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   border-radius: var(--haus-radius-lg);
-  box-shadow: var(--haus-shadow-lg);
+  box-shadow: var(--haus-elevation-overlay);
   width: var(--modal-width, var(--haus-modal-width-md));
   max-width: 100%;
   max-height: 90vh;
@@ -64,8 +64,12 @@
 }
 
 .title {
+  /* The whole heading-sm role. It set three of the four and left the leading to
+     the h2, which takes the browser's normal: the title drew taller than the role
+     and no text style could apply to it. */
   font-size: var(--haus-type-heading-sm-size);
   font-weight: var(--haus-type-heading-sm-weight);
+  line-height: var(--haus-type-heading-sm-leading);
   letter-spacing: var(--haus-type-heading-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
