@@ -4,14 +4,19 @@
   gap: var(--haus-space-2);
   padding: var(--haus-space-2) var(--haus-space-3);
   border-radius: var(--haus-radius-md);
+  /* The whole body-sm role. It took the role's size and then set leading-snug,
+     which is the heading leading: the notice read tighter than every other 13px
+     line in the app, and no text style could apply to it. */
   font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-leading-snug);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
 .icon {
-  width: 13px;
-  margin-top: 2px;
+  width: var(--haus-icon-xs);
+  margin-top: var(--haus-space-0-5);
   flex-shrink: 0;
 }
 
