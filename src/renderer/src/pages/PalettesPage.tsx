@@ -136,6 +136,7 @@ export function PalettesPage({
       title={confirm.title}
       message={confirm.message}
       confirmLabel={confirm.confirmLabel}
+      kind={confirm.kind}
       onConfirm={confirm.onConfirm}
       onCancel={confirm.onCancel}
     />

@@ -1,11 +1,12 @@
 /* Shell, header, title and footer come from Modal. */
 
 .formats {
-  padding: var(--haus-space-4) var(--haus-space-5) 0;
+  /* Modal's body pads; this only needs to exist as a row. */
+  display: flex;
 }
 
 .code {
-  margin: var(--haus-space-4) var(--haus-space-5);
+  margin-top: var(--haus-space-4);
   padding: var(--haus-space-4);
   background: var(--haus-color-surface-sunken);
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);

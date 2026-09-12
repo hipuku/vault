@@ -78,6 +78,10 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  /* The body pads itself, so a dialog does not have to. It used to supply none
+     and the four dialogs invented 24, 20, 16/20 and none between them. This is
+     the header bar's own padding, so body text lines up with the title. */
+  padding: var(--haus-space-4) var(--haus-space-5);
 }
 
 .footer {

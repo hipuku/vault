@@ -4,6 +4,9 @@ interface ConfirmOptions {
   title: string
   message: string
   confirmLabel?: string
+  /** 'alert' reports something and offers one button: nothing is destroyed, so
+   *  there is nothing to cancel. */
+  kind?: 'confirm' | 'alert'
 }
 
 interface ConfirmState extends ConfirmOptions {
@@ -16,6 +19,7 @@ export function useConfirm(): {
   title: string
   message: string
   confirmLabel: string
+  kind: 'confirm' | 'alert'
   onConfirm: () => void
   onCancel: () => void
 } {
@@ -45,6 +49,7 @@ export function useConfirm(): {
     title: state?.title ?? '',
     message: state?.message ?? '',
     confirmLabel: state?.confirmLabel ?? 'Delete',
+    kind: state?.kind ?? 'confirm',
     onConfirm,
     onCancel,
   }

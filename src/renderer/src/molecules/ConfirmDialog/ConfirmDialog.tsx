@@ -8,6 +8,9 @@ interface ConfirmDialogProps {
   title: string
   message: string
   confirmLabel?: string
+  /** 'alert' reports something and offers one primary button. A dialog that
+   *  destroys nothing must not draw a danger button, and has nothing to cancel. */
+  kind?: 'confirm' | 'alert'
   onConfirm: () => void
   onCancel: () => void
 }
@@ -23,6 +26,7 @@ export function ConfirmDialog({
   title,
   message,
   confirmLabel = 'Delete',
+  kind = 'confirm',
   onConfirm,
   onCancel,
 }: ConfirmDialogProps): React.ReactElement | null {
@@ -34,14 +38,20 @@ export function ConfirmDialog({
       size="sm"
       chrome="plain"
       footer={
-        <>
-          <Button variant="ghost" size="md" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button variant="danger" size="md" onClick={onConfirm}>
+        kind === 'alert' ? (
+          <Button variant="primary" size="md" onClick={onConfirm}>
             {confirmLabel}
           </Button>
-        </>
+        ) : (
+          <>
+            <Button variant="ghost" size="md" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button variant="danger" size="md" onClick={onConfirm}>
+              {confirmLabel}
+            </Button>
+          </>
+        )
       }
     >
       <p className={styles.message}>{message}</p>

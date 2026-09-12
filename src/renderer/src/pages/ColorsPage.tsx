@@ -104,6 +104,7 @@ export function ColorsPage({
         title: `Can’t delete “${colour.name}”`,
         message: `It’s used to build ${using.length} palette${using.length === 1 ? '' : 's'} (${using.map(p => p.name).join(', ')}). Remove it from ${using.length === 1 ? 'that palette' : 'those palettes'} first.`,
         confirmLabel: 'OK',
+        kind: 'alert',
       })
       return
     }
@@ -157,6 +158,7 @@ export function ColorsPage({
         title={confirm.title}
         message={confirm.message}
         confirmLabel={confirm.confirmLabel}
+        kind={confirm.kind}
         onConfirm={confirm.onConfirm}
         onCancel={confirm.onCancel}
       />

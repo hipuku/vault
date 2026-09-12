@@ -94,6 +94,7 @@ export function FontsPage({
         title: `Can’t remove “${font.family}”`,
         message: `It’s used by ${using.length} type scale${using.length === 1 ? '' : 's'} (${using.map(s => s.name).join(', ')}). Remove it from ${using.length === 1 ? 'that scale' : 'those scales'} first.`,
         confirmLabel: 'OK',
+        kind: 'alert',
       })
       return
     }
@@ -146,6 +147,7 @@ export function FontsPage({
         title={confirm.title}
         message={confirm.message}
         confirmLabel={confirm.confirmLabel}
+        kind={confirm.kind}
         onConfirm={confirm.onConfirm}
         onCancel={confirm.onCancel}
       />
