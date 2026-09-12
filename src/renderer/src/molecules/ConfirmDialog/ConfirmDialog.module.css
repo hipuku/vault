@@ -2,7 +2,12 @@
    Only the message paragraph is specific to a confirm. */
 
 .message {
+  /* The whole body-sm role. It set the size and the leading and left the weight
+     and tracking to the p, which happen to match: nothing moves, but now the
+     text style applies and nothing about it is typed. */
   font-size: var(--haus-type-body-sm-size);
-  color: var(--haus-color-ink-secondary);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  color: var(--haus-color-ink-secondary);
 }
