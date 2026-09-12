@@ -5,9 +5,9 @@ import type { Tag } from '@shared/types'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
 import { MenuOption } from '../../atoms/MenuOption/MenuOption'
-import styles from './TagSelect.module.css'
+import styles from './ProjectPicker.module.css'
 
-interface TagSelectProps {
+interface ProjectPickerProps {
   /**
    * Required, and it has to be: `placeholder` empties as soon as something is
    * selected, so the input's only accessible name disappears at exactly the
@@ -27,7 +27,7 @@ interface TagSelectProps {
 
 /** Notion-style combobox: type to prefix-filter, pick from the dropdown, or
  *  create a new entry (prefilled with the query) from the row at the bottom. */
-export function TagSelect({
+export function ProjectPicker({
   ariaLabel,
   allTags,
   selectedIds,
@@ -35,7 +35,7 @@ export function TagSelect({
   onCreateNew,
   single = false,
   placeholder,
-}: TagSelectProps): React.ReactElement {
+}: ProjectPickerProps): React.ReactElement {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 

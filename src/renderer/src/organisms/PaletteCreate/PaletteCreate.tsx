@@ -15,7 +15,7 @@ import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
-import { TagSelect } from '../../molecules/TagSelect/TagSelect'
+import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { generateTonalSystem, TONAL_STOP_LABELS } from '@shared/lib/tonalSystem'
 import { generateExpressiveSet, MAX_HUE_GROUPS } from '@shared/lib/expressiveSet'
 import { prefersDarkText, nearestNames } from '../../lib/colour'
@@ -300,7 +300,7 @@ export function PaletteCreate({
           {/* 3. Project */}
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
-            <TagSelect
+            <ProjectPicker
               ariaLabel="Project"
               allTags={projects}
               selectedIds={projectId != null ? new Set([projectId]) : new Set()}

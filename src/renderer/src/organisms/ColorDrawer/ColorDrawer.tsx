@@ -8,7 +8,7 @@ import { generateLightnessScale } from '@shared/lib/lightnessScale'
 import { Button } from '../../atoms/Button/Button'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
-import { TagSelect } from '../../molecules/TagSelect/TagSelect'
+import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { TagModal } from '../../organisms/TagModal/TagModal'
 import {
   toRgbString,
@@ -226,7 +226,7 @@ export function ColorDrawer({
 
           <div className={styles.group}>
             <h3 className="eyebrow">Projects</h3>
-            <TagSelect
+            <ProjectPicker
               ariaLabel="Projects"
               allTags={allTags}
               selectedIds={assigned}

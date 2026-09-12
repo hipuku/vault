@@ -221,7 +221,7 @@ the application's job.
 flowchart TD
     P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
     D["organisms · 17<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
-    R["molecules · 16<br/><small>Modal · Select · Drawer · Toolbar · ConfirmDialog<br/>TagSelect · UnitsControl · StepEditControl · …</small>"]
+    R["molecules · 16<br/><small>Modal · Select · Drawer · Toolbar · ConfirmDialog<br/>ProjectPicker · UnitsControl · StepEditControl · …</small>"]
     A["atoms · 15<br/><small>Button · IconButton · Input · Badge · Chip · Panel · Popover<br/>SegmentedControl · PopoverTrigger · MenuOption · Tooltip · …</small>"]
     H["hooks<br/><small>state + IPC</small>"]
     L["lib / shared<br/><small>pure functions</small>"]
@@ -259,7 +259,7 @@ one below it. Nothing points upward.
 
   **Three defects are open, all found by auditing each component against its code**, and
   they are listed rather than hidden: `vault#44`, `MenuOption` serves a menu item and a listbox
-  option under one name and `TagSelect`'s rows expose no selected state; `vault#45`,
+  option under one name and `ProjectPicker`'s rows expose no selected state; `vault#45`,
   `SegmentedControl` renders tab roles without tab behaviour where most of its uses are a radio
   group; `vault#46`, `Tooltip` cannot be dismissed with Escape and closes when the pointer moves
   onto it, which is WCAG 1.4.13. Fixed the same way: every `Input` call site now carries a name and

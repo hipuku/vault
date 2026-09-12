@@ -5,7 +5,7 @@ import type { Font, Tag } from '@shared/types'
 import { Drawer } from '../../molecules/Drawer/Drawer'
 import { Button } from '../../atoms/Button/Button'
 import { IconButton } from '../../atoms/IconButton/IconButton'
-import { TagSelect } from '../../molecules/TagSelect/TagSelect'
+import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { TagModal } from '../../organisms/TagModal/TagModal'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
 import { parseWeights, fontStack, googleCssUrl, loadGoogleFont, localFontPaths } from '../../lib/fontLoader'
@@ -173,7 +173,7 @@ export function FontDrawer({
 
           <div className={styles.group}>
             <h3 className="eyebrow">Projects</h3>
-            <TagSelect
+            <ProjectPicker
               ariaLabel="Projects"
               allTags={allTags}
               selectedIds={assigned}

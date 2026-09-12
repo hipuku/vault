@@ -19,7 +19,7 @@ import { Input } from '../../atoms/Input/Input'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import { Select } from '../../molecules/Select/Select'
-import { TagSelect } from '../../molecules/TagSelect/TagSelect'
+import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { SpecimenTable } from '../../organisms/SpecimenTable/SpecimenTable'
 import { UnitsControl } from '../../molecules/UnitsControl/UnitsControl'
 import { StepEditControl } from '../../molecules/StepEditControl/StepEditControl'
@@ -206,7 +206,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
           {/* 3. Project */}
           <div className={styles.field}>
             <label className={styles.label}>Project</label>
-            <TagSelect
+            <ProjectPicker
               ariaLabel="Project"
               allTags={projects}
               selectedIds={projectId != null ? new Set([projectId]) : new Set()}

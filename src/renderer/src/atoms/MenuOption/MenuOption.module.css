@@ -1,4 +1,4 @@
-/* A row inside a Popover menu. Select and TagSelect each had their own copy; the
+/* A row inside a Popover menu. Select and ProjectPicker each had their own copy; the
    hover, label and check rules were byte-identical and only the spacing had drifted
    (gap-2 vs gap-3, one padding value vs two, radius on one of them). */
 
