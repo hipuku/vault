@@ -16,7 +16,12 @@
 
 .icon {
   width: var(--haus-icon-xs);
-  margin-top: var(--haus-space-0-5);
+  /* Centre the icon on the first line, not on the callout: the row aligns to the
+     top so a two-line notice keeps its icon beside the first line. body-sm's box
+     is 13 x 1.5 = 19.5 and the icon is 12, so the offset wants 3.75; space-1 is
+     4, a quarter of a pixel out and a token rather than a number. It was 2, and
+     the icon sat visibly high. */
+  margin-top: var(--haus-space-1);
   flex-shrink: 0;
 }
 
