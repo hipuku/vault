@@ -9,7 +9,6 @@
   width: 100%;
 }
 
-/* Form variant: full-width, input-styled (matches the Input atom) */
 .label {
   white-space: nowrap;
   overflow: hidden;
@@ -20,7 +19,7 @@
 }
 
 .caret {
-  width: 11px;
+  width: var(--haus-icon-xs);
   flex-shrink: 0;
   color: var(--haus-color-ink-tertiary);
 }
@@ -44,7 +43,13 @@
   justify-content: space-between;
   border-radius: var(--haus-radius-md);
   border-color: var(--haus-color-border-default);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role. It set the weight alone over the trigger's 13px,
+     which is label-md's size and weight and none of its leading: a <button>
+     takes the browser's normal, so the field's text was on no role at all. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 
