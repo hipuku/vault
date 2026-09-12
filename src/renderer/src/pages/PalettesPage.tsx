@@ -97,8 +97,8 @@ export function PalettesPage({
 
   async function handleDelete(palette: Palette): Promise<void> {
     const ok = await confirm.confirm({
-      title: `Delete "${palette.name}"?`,
-      message: 'This palette and its swatches will be removed. This cannot be undone.',
+      title: `Delete “${palette.name}”?`,
+      message: 'This palette and its swatches will be removed. This can’t be undone.',
       confirmLabel: 'Delete palette',
     })
     if (ok) {

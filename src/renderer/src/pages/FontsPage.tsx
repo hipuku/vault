@@ -98,7 +98,7 @@ export function FontsPage({
       return
     }
     const ok = await confirm.confirm({
-      title: `Remove "${font.family}"?`,
+      title: `Remove “${font.family}”?`,
       message: 'This font will be removed from your library. This can’t be undone.',
       confirmLabel: 'Remove font',
     })

@@ -80,7 +80,7 @@ export function TypeScalesPage({
 
   async function handleDelete(scale: TypeScale): Promise<void> {
     const ok = await confirm.confirm({
-      title: `Delete "${scale.name}"?`,
+      title: `Delete “${scale.name}”?`,
       message: 'This type scale will be removed. This can’t be undone.',
       confirmLabel: 'Delete type scale',
     })

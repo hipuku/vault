@@ -108,7 +108,7 @@ export function ColorsPage({
       return
     }
     const ok = await confirm.confirm({
-      title: `Delete "${colour.name}"?`,
+      title: `Delete “${colour.name}”?`,
       message: 'This colour will be removed from your library. This can’t be undone.',
       confirmLabel: 'Delete colour',
     })

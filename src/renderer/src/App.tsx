@@ -70,10 +70,10 @@ function Sidebar({
   async function handleDelete(tag: TagWithCount): Promise<void> {
     const used = tag.count > 0
     const ok = await confirm.confirm({
-      title: `Delete "${tag.label}"?`,
+      title: `Delete “${tag.label}”?`,
       message: used
-        ? `It's on ${tag.count} ${tag.count === 1 ? 'item' : 'items'} and will be removed from ${tag.count === 1 ? 'it' : 'them'}. This can't be undone.`
-        : `This project isn't used yet. This can't be undone.`,
+        ? `It’s on ${tag.count} ${tag.count === 1 ? 'item' : 'items'} and will be removed from ${tag.count === 1 ? 'it' : 'them'}. This can’t be undone.`
+        : `This project isn’t used yet. This can’t be undone.`,
       confirmLabel: 'Delete project',
     })
     if (ok) {
