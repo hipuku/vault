@@ -21,6 +21,8 @@ interface SelectProps<K extends string> {
   ariaLabel: string
   /** Optional label prefix shown before the value in the trigger (e.g. "Sort:"). */
   prefix?: string
+  /** Shown when `value` matches no option, instead of an empty trigger. */
+  placeholder?: string
   align?: 'left' | 'right'
   /** Full-width, input-styled trigger (for form fields) instead of the toolbar pill. */
   block?: boolean
@@ -42,6 +44,7 @@ export function Select<K extends string>({
   onChange,
   ariaLabel,
   prefix,
+  placeholder,
   align = 'left',
   block = false,
 }: SelectProps<K>): React.ReactElement {
@@ -79,7 +82,7 @@ export function Select<K extends string>({
       >
         <span className={styles.label}>
           {prefix && <span className={styles.prefix}>{prefix} </span>}
-          {current?.label}
+          {current ? current.label : placeholder && <span className={styles.placeholder}>{placeholder}</span>}
         </span>
         <FontAwesomeIcon icon={faChevronDown} className={styles.caret} />
       </PopoverTrigger>

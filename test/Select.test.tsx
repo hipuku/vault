@@ -160,3 +160,34 @@ describe('accessibility', () => {
     expect((await axe(container)).violations).toEqual([])
   })
 })
+
+describe('placeholder', () => {
+  it('shows the placeholder when the value matches no option, and the label once it does', async () => {
+    // TypeScaleCreate's heading font is empty until a font is picked, and before
+    // 2026-09-13 that drew a trigger with nothing in it but an aria-label.
+    const user = userEvent.setup()
+
+    function Empty(): React.ReactElement {
+      const [value, setValue] = useState('')
+      return (
+        <Select
+          block
+          ariaLabel="Heading font"
+          placeholder="Choose a font"
+          value={value}
+          options={OPTIONS}
+          onChange={setValue}
+        />
+      )
+    }
+
+    render(<Empty />)
+    const trigger = screen.getByRole('combobox', { name: 'Heading font' })
+    expect(trigger.textContent).toContain('Choose a font')
+
+    await user.click(trigger)
+    await user.click(screen.getByRole('option', { name: 'Hue' }))
+    expect(trigger.textContent).toContain('Hue')
+    expect(trigger.textContent).not.toContain('Choose a font')
+  })
+})

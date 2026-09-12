@@ -266,6 +266,14 @@ one below it. Nothing points upward.
   ties its error to the field (`ec8f009`), and `InlineEdit`'s pen is visible to keyboard focus with
   its ring (`vault#40`, `#41`).
 
+  **The molecule audit found four more, and all four are fixed.** A `Callout`'s icon is decorative,
+  so an error and a note were announced identically: each tone now names itself, `Note`, `Warning`
+  or `Error`. A `ConfirmDialog` that destroys nothing drew a danger button beside a Cancel that did
+  the same thing: `kind="alert"` draws one primary button and no Cancel. A `Select` whose value
+  matched no option drew an empty control with only an `aria-label`, which the type scale creator
+  did before a font was picked: it takes a `placeholder`. And `Modal` supplied no body padding, so
+  its four dialogs each invented their own. Each has a test.
+
   The exception is the command palette, which manages its own focus because it is a combobox
   driven by `aria-activedescendant` and arrow keys rather than by Tab.
 

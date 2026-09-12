@@ -229,6 +229,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
                 <Select
                   block
                   ariaLabel="Heading font"
+                  placeholder="Choose a font"
                   value={headingFontId != null ? String(headingFontId) : ''}
                   options={scopedFonts.map(f => ({ key: String(f.id), label: f.family }))}
                   onChange={k => setHeadingFontId(Number(k))}

@@ -18,6 +18,12 @@
   color: var(--haus-color-ink-tertiary);
 }
 
+/* When value matches no option. The Input atom's placeholder colour, because it
+   is the same thing: a field with nothing chosen yet. */
+.placeholder {
+  color: var(--haus-color-ink-disabled);
+}
+
 .caret {
   width: var(--haus-icon-xs);
   flex-shrink: 0;
