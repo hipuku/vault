@@ -18,7 +18,12 @@
   display: flex;
   align-items: center;
   gap: var(--haus-space-2);
+  /* The whole body-sm role: the row set the size alone and left the label to
+     inherit a leading, so no text style could apply to it. */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
 }
 
 .label {
@@ -37,10 +42,16 @@
 
 /* ── Shared badge ───────────────────────────────────────── */
 
+/* This is the Badge atom, drawn again: .pass is Badge's success variant exactly,
+   and the padding and radius are its. Only .fail has no Badge tone, which is why
+   the atom is not used here yet. Taking the whole label-xs role is what Badge
+   takes, so the two now read as one thing and a text style matches. */
 .badge {
-  font-size: var(--haus-text-11);
-  font-weight: var(--haus-weight-semibold);
-  padding: 1px var(--haus-space-2);
+  font-size: var(--haus-type-label-xs-size);
+  font-weight: var(--haus-type-label-xs-weight);
+  line-height: var(--haus-type-label-xs-leading);
+  letter-spacing: var(--haus-type-label-xs-tracking);
+  padding: var(--haus-space-px) var(--haus-space-2);
   border-radius: var(--haus-radius-full);
 }
 
