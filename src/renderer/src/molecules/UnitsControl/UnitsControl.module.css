@@ -21,7 +21,13 @@
 }
 
 .label {
+  /* The whole label-sm role. It read the role's size, then a weight primitive
+     that happens to be the role's weight, and inherited its leading: the same
+     shape FontPreviewControl, ProjectPicker and StepEditControl each had, and
+     the last of the four. */
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
