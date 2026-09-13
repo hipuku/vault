@@ -7,6 +7,10 @@ import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
 import styles from './StepEditControl.module.css'
 
+/** The per-step editor in a type scale: an icon button opening a panel of four
+ *  fields. The panel is width="md" because its rows are not narrower than
+ *  UnitsControl's: a 120 control, a 12 gap and a label. At sm, 180, the label
+ *  column came to 16px and "Line height" had nowhere to go. */
 interface StepEditControlProps {
   size: number
   weight: number
@@ -32,7 +36,7 @@ export function StepEditControl({
         <FontAwesomeIcon icon={faSliders} />
       </IconButton>
       {open && (
-        <Popover align="right" width="sm" role="dialog" ariaLabel="Edit step">
+        <Popover align="right" width="md" role="dialog" ariaLabel="Edit step">
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Size</span>
             <span className={styles.unitField}>
