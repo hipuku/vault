@@ -14,11 +14,20 @@
 }
 
 .fieldLabel {
-  font-size: var(--haus-text-12);
+  /* The whole label-sm role, which is what haus names for a compact control
+     label. It set 12 and nothing else, so the weight was the body's regular and
+     12 regular is no role: label-sm is medium, label-field semibold, and
+     label-caption is 11. FontPreviewControl's Size label is the same thing in
+     the same kind of panel and reads the same role. */
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
-/* Every control occupies the same footprint (40px matches the Select trigger). */
+/* Every control occupies the same footprint: control-height-lg, 44, which is
+   what the Select trigger beside them is. */
 .controlBox,
 .unitField,
 .control {
