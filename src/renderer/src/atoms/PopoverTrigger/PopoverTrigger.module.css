@@ -1,20 +1,8 @@
-/* The pill that opens a popover. Four copies of this existed, differing only in a
-   stray `outline: none` and two transition durations. */
+/* The shape is the global .pill. This keeps only what is this component's own:
+   its transition, and a hover that darkens the border rather than tinting the
+   ground. */
 
 .trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--haus-space-2);
-  height: var(--haus-control-height-lg);
-  padding: 0 var(--haus-space-4);
-  border-radius: var(--haus-radius-full);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-strong);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-semibold);
-  color: var(--haus-color-ink-secondary);
   transition:
     border-color var(--haus-duration-fast) var(--haus-ease-move),
     color var(--haus-duration-fast) var(--haus-ease-move);

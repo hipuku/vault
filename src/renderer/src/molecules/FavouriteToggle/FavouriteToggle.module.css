@@ -1,17 +1,8 @@
+/* The shape is the global .pill, shared with PopoverTrigger. This keeps only
+   what is this component's own: its transition, a hover that tints the ground
+   rather than darkening the border, and the on state. */
+
 .toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--haus-space-2);
-  height: var(--haus-control-height-lg);
-  padding: 0 var(--haus-space-4);
-  border-radius: var(--haus-radius-full);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-strong);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-semibold);
-  color: var(--haus-color-ink-secondary);
   transition:
     background var(--haus-duration-normal) var(--haus-ease-move),
     color var(--haus-duration-normal) var(--haus-ease-move),
@@ -23,7 +14,8 @@
   color: var(--haus-color-ink-primary);
 }
 
-.on {
+/* Two classes deep so it outranks .pill's border and colour. */
+.toggle.on {
   background: var(--haus-color-primary-subtle);
   border-color: transparent;
   color: var(--haus-color-primary-default);

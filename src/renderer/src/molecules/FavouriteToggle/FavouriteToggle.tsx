@@ -13,7 +13,7 @@ export function FavouriteToggle({ active, onToggle }: FavouriteToggleProps): Rea
   return (
     <button
       type="button"
-      className={[styles.toggle, active ? styles.on : ''].filter(Boolean).join(' ')}
+      className={['pill', styles.toggle, active ? styles.on : ''].filter(Boolean).join(' ')}
       onClick={onToggle}
       aria-pressed={active}
     >

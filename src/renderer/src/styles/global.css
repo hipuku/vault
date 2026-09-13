@@ -99,6 +99,29 @@ textarea::placeholder {
   box-shadow: var(--haus-focus-ring);
 }
 
+/* ── Pill: THE shared shape for a 44-high pill button ──────────────────────
+   PopoverTrigger and FavouriteToggle drew this twice, and a diff of the two
+   returned the class name and two transition durations. One opens a popover,
+   the other toggles a filter, so they stay separate components with separate
+   names and separate hovers; the shape is stated once, here, as .icon-btn and
+   .eyebrow already are. Each component adds its own hover and its own states,
+   at two classes deep so it outranks this. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--haus-space-2);
+  height: var(--haus-control-height-lg);
+  padding: 0 var(--haus-space-4);
+  border-radius: var(--haus-radius-full);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-strong);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-text-13);
+  font-weight: var(--haus-weight-semibold);
+  color: var(--haus-color-ink-secondary);
+}
+
 /* ── Icon button: THE locked pattern for every icon-only button ────────────
    Rest: transparent, muted icon. Hover: circular tinted background + stronger
    icon. Compose a size modifier and (optionally) a tone modifier.
