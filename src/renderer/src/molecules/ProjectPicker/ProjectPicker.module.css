@@ -39,7 +39,11 @@
   border: none;
   outline: none;
   font-family: var(--haus-font-sans);
+  /* The whole body-sm role. */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 .input::placeholder {
@@ -55,11 +59,15 @@
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-1);
-  padding: 2px var(--haus-space-2);
+  padding: var(--haus-space-0-5) var(--haus-space-2);
   border-radius: var(--haus-radius-full);
   background: var(--haus-color-surface-subtle);
+  /* The whole label-sm role: it read the role's size, then a weight primitive
+     that happens to be the role's weight, and inherited its leading. */
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -91,7 +99,11 @@
 
 .noMatch {
   padding: var(--haus-space-2);
+  /* The whole body-sm role. */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -107,8 +119,12 @@
   cursor: pointer;
   text-align: left;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-body-sm-size);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role. It read body-sm's size and then overrode the weight
+     to medium, which is not body-sm at all: 13 and medium is label-md. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-primary-default);
   border-radius: var(--haus-radius-sm);
   transition: background var(--haus-duration-normal) var(--haus-ease-move);
@@ -118,5 +134,5 @@
 }
 
 .createIcon {
-  width: 11px;
+  width: var(--haus-icon-xs);
 }
