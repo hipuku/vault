@@ -30,6 +30,13 @@ export type MenuOptionProps =
  *
  * CommandPalette's rows still do not use this. They carry an icon, a hint and their
  * own filtering, and it owns the palette's layout rather than this menu's.
+ *
+ * **The tick and the accessibility tree stay in sync by construction** (vault#44).
+ * The button form is a toggle, so `selected` sets `aria-pressed` unless the caller
+ * has given the row a role or a pressed state of its own. ProjectPicker's rows drew
+ * the tick and announced nothing, so a screen reader heard "Brand refresh, button"
+ * whether or not the project was on the item. The `li` form is unaffected: Select
+ * passes `role="option"` and `aria-selected`, which is that pattern's equivalent.
  */
 export function MenuOption(props: MenuOptionProps): React.ReactElement {
   const { label, selected = false, leading, active = false, className } = props
@@ -61,8 +68,11 @@ export function MenuOption(props: MenuOptionProps): React.ReactElement {
     type = 'button',
     ...rest
   } = props
+  // A row that draws a tick is a toggle. Only default it: a caller that has given
+  // the row another role, or its own pressed state, means it.
+  const pressed = rest.role === undefined && rest['aria-pressed'] === undefined ? selected : rest['aria-pressed']
   return (
-    <button type={type} className={classes} {...rest}>
+    <button type={type} aria-pressed={pressed} className={classes} {...rest}>
       {body}
     </button>
   )

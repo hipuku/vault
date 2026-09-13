@@ -257,12 +257,15 @@ one below it. Nothing points upward.
   iteration count, so an endless animation (the spinner) rests after one near-instant turn rather
   than flickering at 0.01ms a turn.
 
-  **Three defects are open, all found by auditing each component against its code**, and
-  they are listed rather than hidden: `vault#44`, `MenuOption` serves a menu item and a listbox
-  option under one name and `ProjectPicker`'s rows expose no selected state; `vault#45`,
-  `SegmentedControl` renders tab roles without tab behaviour where most of its uses are a radio
-  group; `vault#46`, `Tooltip` cannot be dismissed with Escape and closes when the pointer moves
-  onto it, which is WCAG 1.4.13. Fixed the same way: every `Input` call site now carries a name and
+  **The three defects the atom audit found are now closed**, and they are recorded rather than
+  quietly dropped. `vault#46`, `Tooltip` met one of WCAG 1.4.13's three requirements: Escape now
+  dismisses the bubble without moving focus, and the bubble takes pointer events so it can be
+  hovered and read at magnification, closing on leaving both after a short grace period.
+  `vault#45`, `SegmentedControl` rendered `role="tablist"` with `role="tab"` and none of what tabs
+  promise; all six uses are a single choice from a set, so it is a radio group with one Tab stop
+  and arrows that move and choose. `vault#44`, `ProjectPicker`'s rows drew a tick and announced
+  nothing: the button form of `MenuOption` is a toggle, so `selected` sets `aria-pressed` and the
+  tick cannot disagree with the accessibility tree. Fixed the same way: every `Input` call site now carries a name and
   ties its error to the field (`ec8f009`), and `InlineEdit`'s pen is visible to keyboard focus with
   its ring (`vault#40`, `#41`).
 
