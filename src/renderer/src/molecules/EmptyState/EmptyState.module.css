@@ -10,16 +10,24 @@
 }
 
 .title {
+  /* The whole heading-sm role. It set three of the four and left the leading to
+     the p, which takes the body's 1.5 where the role is 1.2: the title drew
+     looser than a heading anywhere else in the app. */
   font-size: var(--haus-type-heading-sm-size);
   font-weight: var(--haus-type-heading-sm-weight);
+  line-height: var(--haus-type-heading-sm-leading);
   letter-spacing: var(--haus-type-heading-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
 .description {
+  /* The whole body-sm role: it took the size and the leading and left the weight
+     and tracking, which happen to match, so nothing moves. */
   font-size: var(--haus-type-body-sm-size);
-  color: var(--haus-color-ink-tertiary);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  color: var(--haus-color-ink-tertiary);
   max-width: 280px;
 }
 
