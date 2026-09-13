@@ -22,7 +22,10 @@
   max-width: 92vw;
   background: var(--haus-color-surface-default);
   border-left: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  box-shadow: var(--haus-shadow-lg);
+  /* The overlay role, as Modal reads. Both are aria-modal dialogs sharing
+     useFocusTrap, so they sit at the same depth; this read the shadow-lg
+     primitive, which is the floating role's value and a surface below. */
+  box-shadow: var(--haus-elevation-overlay);
   z-index: var(--haus-z-modal);
   transform: translateX(100%);
   transition: transform var(--haus-duration-moderate) var(--haus-ease-enter);
