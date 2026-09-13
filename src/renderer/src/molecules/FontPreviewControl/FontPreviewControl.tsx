@@ -2,6 +2,7 @@ import React from 'react'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
 import { PopoverTrigger } from '../../atoms/PopoverTrigger/PopoverTrigger'
+import { Input } from '../../atoms/Input/Input'
 import styles from './FontPreviewControl.module.css'
 
 interface FontPreviewControlProps {
@@ -31,8 +32,8 @@ export function FontPreviewControl({
 
       {open && (
         <Popover align="right" width="lg" column role="dialog" ariaLabel="Preview settings">
-          <input
-            className={styles.textInput}
+          <Input
+            size="md"
             value={text}
             onChange={e => onTextChange(e.target.value)}
             placeholder="Preview text…"

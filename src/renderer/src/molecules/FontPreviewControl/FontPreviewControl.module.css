@@ -13,27 +13,8 @@
   color: var(--haus-color-ink-tertiary);
 }
 
-/* The Input atom at a smaller height, redrawn: Input has no size prop, so this
-   states the same rules with control-height-md instead of lg. */
-.textInput {
-  width: 100%;
-  height: var(--haus-control-height-md);
-  padding: 0 var(--haus-space-3);
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  color: var(--haus-color-ink-primary);
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  outline: none;
-  transition:
-    border-color var(--haus-duration-fast) var(--haus-ease-move),
-    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
-}
-.textInput:focus-visible {
-  border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
-}
+/* The text field is an Input at size md now. It was stated again here because
+   Input had no size prop. */
 
 .sizeRow {
   display: flex;

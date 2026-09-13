@@ -1,4 +1,5 @@
 import React from 'react'
+import { Badge } from '../../atoms/Badge/Badge'
 import { contrast, WHITE, BLACK } from '../../lib/colour'
 import styles from './ContrastChip.module.css'
 
@@ -20,8 +21,8 @@ export function ContrastChip({ hex, bg }: ContrastChipProps): React.ReactElement
       </span>
       <span className={styles.label}>on {bg}</span>
       <span className={styles.ratio}>{ratio.toFixed(2)}:1</span>
-      <span className={[styles.badge, aa ? styles.pass : styles.fail].join(' ')}>AA</span>
-      <span className={[styles.badge, aaa ? styles.pass : styles.fail].join(' ')}>AAA</span>
+      <Badge label="AA" variant={aa ? 'success' : 'muted'} />
+      <Badge label="AAA" variant={aaa ? 'success' : 'muted'} />
     </div>
   )
 }

@@ -1,5 +1,4 @@
 .input {
-  height: var(--haus-control-height-lg);
   padding: 0 var(--haus-space-4);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-body-sm-size);
@@ -12,6 +11,16 @@
   transition:
     border-color var(--haus-duration-normal) var(--haus-ease-move),
     box-shadow var(--haus-duration-fast) var(--haus-ease-move);
+}
+
+/* Two sizes. lg is the form field; md is the compact one a popover or a dense
+   row wants, which FontPreviewControl drew by hand because Input had none. */
+.lg {
+  height: var(--haus-control-height-lg);
+}
+.md {
+  height: var(--haus-control-height-md);
+  padding: 0 var(--haus-space-3);
 }
 
 .input::placeholder {

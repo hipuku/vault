@@ -40,27 +40,5 @@
   color: var(--haus-color-ink-tertiary);
 }
 
-/* ── Shared badge ───────────────────────────────────────── */
-
-/* This is the Badge atom, drawn again: .pass is Badge's success variant exactly,
-   and the padding and radius are its. Only .fail has no Badge tone, which is why
-   the atom is not used here yet. Taking the whole label-xs role is what Badge
-   takes, so the two now read as one thing and a text style matches. */
-.badge {
-  font-size: var(--haus-type-label-xs-size);
-  font-weight: var(--haus-type-label-xs-weight);
-  line-height: var(--haus-type-label-xs-leading);
-  letter-spacing: var(--haus-type-label-xs-tracking);
-  padding: var(--haus-space-px) var(--haus-space-2);
-  border-radius: var(--haus-radius-full);
-}
-
-.pass {
-  background: var(--haus-color-success-subtle);
-  color: var(--haus-color-success-solid);
-}
-
-.fail {
-  background: var(--haus-color-surface-sunken);
-  color: var(--haus-color-ink-disabled);
-}
+/* The badges are Badge instances now: success when the level passes, muted when
+   it does not. They were drawn here because Badge had no muted tone. */

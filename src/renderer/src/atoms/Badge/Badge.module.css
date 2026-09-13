@@ -16,6 +16,13 @@
   color: var(--haus-color-ink-secondary);
 }
 
+/* Quieter than neutral: a result that did not happen, rather than one with no
+   tone. ContrastChip drew this by hand because Badge had no variant for it. */
+.muted {
+  background: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-disabled);
+}
+
 .success {
   background: var(--haus-color-success-subtle);
   color: var(--haus-color-success-solid);

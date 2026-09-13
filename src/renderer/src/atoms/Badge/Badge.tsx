@@ -3,7 +3,10 @@ import styles from './Badge.module.css'
 
 interface BadgeProps {
   label: string
-  variant?: 'success' | 'warning' | 'error' | 'neutral'
+  /** `muted` is the quiet one: a result that did not happen, where `neutral` is
+   *  a result that simply has no tone. ContrastChip's failing AA and AAA are
+   *  the first users. */
+  variant?: 'success' | 'warning' | 'error' | 'neutral' | 'muted'
   className?: string
 }
 
