@@ -13,9 +13,11 @@
   color: var(--haus-color-ink-tertiary);
 }
 
+/* The Input atom at a smaller height, redrawn: Input has no size prop, so this
+   states the same rules with control-height-md instead of lg. */
 .textInput {
   width: 100%;
-  height: 36px;
+  height: var(--haus-control-height-md);
   padding: 0 var(--haus-space-3);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-text-13);
@@ -39,8 +41,12 @@
   gap: var(--haus-space-3);
 }
 .sizeLabel {
+  /* The whole label-sm role. It read the role's size, then a weight primitive
+     that happens to be the role's weight, and inherited its leading. */
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 .slider {
