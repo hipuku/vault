@@ -203,9 +203,10 @@ describe('PaletteCreate · tonal', () => {
 })
 
 describe('PaletteCreate · expressive', () => {
-  // SegmentedControl is a tablist, not a group of buttons.
+  // SegmentedControl is a radio group, not a tablist and not plain buttons: it
+  // is a single choice from a set, and vault#45 corrected the roles.
   const toExpressive = async (user: ReturnType<typeof userEvent.setup>) => {
-    await user.click(screen.getByRole('tab', { name: 'Expressive Set' }))
+    await user.click(screen.getByRole('radio', { name: 'Expressive Set' }))
   }
 
   it('accumulates seeds rather than replacing them', async () => {
@@ -248,7 +249,7 @@ describe('PaletteCreate · expressive', () => {
     expect(seedButton('Aronia')).toHaveAttribute('aria-pressed', 'false')
 
     await user.click(seedButton('Cherry'))
-    await user.click(screen.getByRole('tab', { name: 'Tonal System' }))
+    await user.click(screen.getByRole('radio', { name: 'Tonal System' }))
     expect(seedButton('Aronia')).toHaveAttribute('aria-pressed', 'true')
     expect(seedButton('Cherry')).toHaveAttribute('aria-pressed', 'false')
   })
@@ -337,7 +338,7 @@ describe('PaletteCreate · accessibility', () => {
     expect(screen.getByLabelText(/Name/)).toBe(screen.getByPlaceholderText('Palette name'))
   })
 
-  it('has no axe violations on the tonal tab', async () => {
+  it('has no axe violations on the tonal choice', async () => {
     const { user } = setup()
     await chooseProject(user)
     await screen.findByRole('button', { name: /Aronia/ })
