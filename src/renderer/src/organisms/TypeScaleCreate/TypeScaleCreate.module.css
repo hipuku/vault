@@ -79,13 +79,19 @@
   background: none;
   outline: none;
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-body-sm-size);
+  font-size: var(--haus-type-mono-md-size);
+  font-weight: var(--haus-type-mono-md-weight);
+  line-height: var(--haus-type-mono-md-leading);
+  letter-spacing: var(--haus-type-mono-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 .unit {
   margin-left: var(--haus-space-1);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-type-mono-sm-size);
+  font-weight: var(--haus-type-mono-sm-weight);
+  line-height: var(--haus-type-mono-sm-leading);
+  letter-spacing: var(--haus-type-mono-sm-tracking);
   color: var(--haus-color-ink-disabled);
   pointer-events: none;
 }
@@ -134,7 +140,10 @@
 }
 .ratioVal {
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-text-11);
+  font-size: var(--haus-type-mono-xs-size);
+  font-weight: var(--haus-type-mono-xs-weight);
+  line-height: var(--haus-type-mono-xs-leading);
+  letter-spacing: var(--haus-type-mono-xs-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
