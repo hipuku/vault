@@ -14,7 +14,12 @@ interface CopyButtonProps {
   className?: string
 }
 
-/** A chip that copies `value` on click and flips to "Copied ✓" for ~1.2s. */
+/** A chip that copies `value` on click and flips to "Copied ✓" for ~1.2s.
+ *
+ *  The label is a polite live region, so the flip is announced rather than only
+ *  drawn: the tick and the colour are visual, and without this a screen reader
+ *  user pressed the button and got no confirmation that anything reached the
+ *  clipboard. */
 export function CopyButton({ value, label, mono, block, className }: CopyButtonProps): React.ReactElement {
   const { copy, copied } = useCopy()
   const text = label ?? value
@@ -34,7 +39,9 @@ export function CopyButton({ value, label, mono, block, className }: CopyButtonP
       aria-label={`Copy ${text}`}
       title={text}
     >
-      <span className={styles.label}>{copied ? 'Copied' : text}</span>
+      <span className={styles.label} aria-live="polite">
+        {copied ? 'Copied' : text}
+      </span>
       <FontAwesomeIcon icon={copied ? faCheck : faCopy} className={styles.icon} />
     </button>
   )
