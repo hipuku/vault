@@ -22,7 +22,10 @@
   letter-spacing: var(--haus-type-label-sm-tracking);
   border-radius: var(--haus-radius-sm);
   box-shadow: var(--haus-shadow-md);
-  pointer-events: none;
+  /* Hoverable, WCAG 1.4.13: the pointer can move onto the bubble and read it,
+     which matters at magnification. It used to be pointer-events: none, so the
+     bubble vanished on the way over. */
+  pointer-events: auto;
   animation: fade var(--haus-duration-fast) var(--haus-ease-move);
 }
 
