@@ -8,9 +8,15 @@
   align-items: center;
   gap: var(--haus-space-2);
   padding: var(--haus-space-5) var(--haus-space-6) 0;
-  font-size: var(--haus-type-label-md-size);
-  font-weight: var(--haus-weight-semibold);
-  letter-spacing: var(--haus-tracking-wide);
+  /* The whole label-eyebrow role, which is what haus names for exactly this: an
+     uppercase, tracked, muted section label. It took label-md's size and then
+     added semibold and wide tracking, which is no role, and it sat 1px larger
+     and less tracked than the global .eyebrow every other section title in the
+     app uses. */
+  font-size: var(--haus-type-label-eyebrow-size);
+  font-weight: var(--haus-type-label-eyebrow-weight);
+  line-height: var(--haus-type-label-eyebrow-leading);
+  letter-spacing: var(--haus-type-label-eyebrow-tracking);
   text-transform: uppercase;
   color: var(--haus-color-ink-tertiary);
 }
@@ -25,6 +31,9 @@
   border-radius: var(--haus-radius-full);
   background: var(--haus-color-surface-sunken);
   color: var(--haus-color-ink-tertiary);
+  /* 11 and medium with no tracking, which matches no haus role: label-xs is 11
+     and medium but tracked 0.08em, and a count is a number, which tracking
+     makes harder to read. haus has no numeric badge role; recorded in #43. */
   font-size: var(--haus-text-11);
   font-weight: var(--haus-weight-medium);
   letter-spacing: 0;
