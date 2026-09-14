@@ -10,6 +10,7 @@ import { TagModal } from '../../organisms/TagModal/TagModal'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
 import { parseWeights, fontStack, googleCssUrl, loadGoogleFont, localFontPaths } from '../../lib/fontLoader'
 import styles from './FontDrawer.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 interface FontDrawerProps {
   font: Font | null
@@ -119,7 +120,7 @@ export function FontDrawer({
                 className={styles.specimen}
                 style={{ fontFamily: stack, fontWeight: Number(w), fontSize: previewSize }}
               >
-                {previewText || 'The quick brown fox'}
+                {previewText || SPECIMEN_TEXT}
               </span>
             </div>
           ))}

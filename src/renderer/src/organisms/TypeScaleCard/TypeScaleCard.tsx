@@ -5,6 +5,7 @@ import type { TypeScale, TypeScaleStep } from '@shared/types'
 import { RATIO_PRESETS } from '@shared/lib/typeScale'
 import { Chip } from '../../atoms/Chip/Chip'
 import styles from './TypeScaleCard.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 interface TypeScaleCardProps {
   scale: TypeScale
@@ -13,8 +14,6 @@ interface TypeScaleCardProps {
   bodyStack: string
   onOpen: (scale: TypeScale) => void
 }
-
-const PREVIEW = 'The quick brown fox'
 
 function ratioLabel(ratio: string): string {
   const v = parseFloat(ratio)
@@ -59,12 +58,12 @@ export function TypeScaleCard({
                 lineHeight: 1.1,
               }}
             >
-              {PREVIEW}
+              {SPECIMEN_TEXT}
             </span>
           )}
           {body && (
             <span style={{ fontFamily: bodyStack, fontSize: 15, fontWeight: body.weight, lineHeight: 1.4 }}>
-              {PREVIEW} jumps over
+              {SPECIMEN_TEXT} jumps over
             </span>
           )}
           {caption && caption !== body && (
@@ -76,7 +75,7 @@ export function TypeScaleCard({
                 color: 'var(--haus-color-ink-tertiary)',
               }}
             >
-              {PREVIEW}
+              {SPECIMEN_TEXT}
             </span>
           )}
         </div>

@@ -25,6 +25,7 @@ import { UnitsControl } from '../../molecules/UnitsControl/UnitsControl'
 import { StepEditControl } from '../../molecules/StepEditControl/StepEditControl'
 import { type TypeUnits, DEFAULT_UNITS } from '../../lib/typeUnits'
 import styles from './TypeScaleCreate.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 interface TypeScaleCreateProps {
   fonts: Font[]
@@ -64,7 +65,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
   const [ratio, setRatio] = useState(DEFAULT_RATIO)
   const [steps, setSteps] = useState<TypeScaleStepInput[]>(() => generateTypeScaleSteps(16, DEFAULT_RATIO, 'semantic'))
 
-  const [preview, setPreview] = useState('The quick brown fox jumps over the lazy dog')
+  const [preview, setPreview] = useState(SPECIMEN_TEXT)
   const [units, setUnits] = useState<TypeUnits>(DEFAULT_UNITS)
 
   const [creating, setCreating] = useState(false)

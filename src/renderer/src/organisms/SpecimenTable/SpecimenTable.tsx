@@ -6,6 +6,7 @@ import type { TypeScaleStepName } from '@shared/types'
 import { isHeadingStep } from '@shared/lib/typeScale'
 import { type TypeUnits, formatSize, formatWeight, formatLineHeight, formatTracking } from '../../lib/typeUnits'
 import styles from './SpecimenTable.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 export interface SpecimenStep {
   step_name: TypeScaleStepName
@@ -75,7 +76,7 @@ export function SpecimenTable({
                 letterSpacing: step.letter_spacing,
               }}
             >
-              {previewText || 'The quick brown fox'}
+              {previewText || SPECIMEN_TEXT}
             </span>
             {/* The headers sit above the table, not beside each value, so a screen reader
                 heard four bare numbers per row. Each value carries its header, hidden. */}

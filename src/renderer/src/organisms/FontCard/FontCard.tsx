@@ -5,6 +5,7 @@ import type { Font } from '@shared/types'
 import { parseWeights, categoryGeneric, categoryLabel } from '../../lib/fontLoader'
 import { Chip } from '../../atoms/Chip/Chip'
 import styles from './FontCard.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 interface FontCardProps {
   font: Font
@@ -32,7 +33,7 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
     >
       <div className={styles.previewWrap}>
         <div className={styles.preview} style={{ fontFamily: stack, fontSize: `${previewSize}px` }}>
-          {previewText || 'The quick brown fox'}
+          {previewText || SPECIMEN_TEXT}
         </div>
         <span className="card-edit">
           <FontAwesomeIcon icon={faPen} />

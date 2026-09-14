@@ -16,8 +16,7 @@ import { TagGroup } from '../molecules/TagGroup/TagGroup'
 import { useFonts } from '../hooks/useFonts'
 import { useDrawer } from '../hooks/useDrawer'
 import { useConfirm } from '../hooks/useConfirm'
-
-const DEFAULT_PREVIEW = 'The quick brown fox jumps over the lazy dog'
+import { SPECIMEN_SIZE, SPECIMEN_TEXT } from '../lib/specimen'
 
 interface FontsPageProps {
   activeTagId: number | null
@@ -37,8 +36,8 @@ export function FontsPage({
   onItemOpened,
 }: FontsPageProps): React.ReactElement | null {
   const { fonts, addGoogle, addLocal, setFavourite, removeFont, loadError } = useFonts()
-  const [previewText, setPreviewText] = useState(DEFAULT_PREVIEW)
-  const [previewSize, setPreviewSize] = useState(20)
+  const [previewText, setPreviewText] = useState(SPECIMEN_TEXT)
+  const [previewSize, setPreviewSize] = useState(SPECIMEN_SIZE)
   const [favOnly, setFavOnly] = useState(false)
   const [tagIds, setTagIds] = useState<Set<number> | null>(null)
   const [adderOpen, setAdderOpen] = useState(false)

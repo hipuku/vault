@@ -17,6 +17,7 @@ import { UnitsControl } from '../../molecules/UnitsControl/UnitsControl'
 import { TYPE_EXPORT_FORMATS, exportTypeScale } from '../../lib/typeScaleExport'
 import { type TypeUnits, DEFAULT_UNITS } from '../../lib/typeUnits'
 import styles from './TypeScaleView.module.css'
+import { SPECIMEN_TEXT } from '../../lib/specimen'
 
 interface TypeScaleViewProps {
   scale: TypeScale
@@ -47,7 +48,7 @@ export function TypeScaleView({
 }: TypeScaleViewProps): React.ReactElement {
   const [project, setProject] = useState<Tag | null>(null)
   const [exportOpen, setExportOpen] = useState(false)
-  const [preview, setPreview] = useState('The quick brown fox jumps over the lazy dog')
+  const [preview, setPreview] = useState(SPECIMEN_TEXT)
   const [units, setUnits] = useState<TypeUnits>(DEFAULT_UNITS)
 
   useEffect(() => {
