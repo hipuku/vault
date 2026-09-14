@@ -1,21 +1,11 @@
-/* The shape is the global .pill, shared with PopoverTrigger. This keeps only
-   what is this component's own: its transition, a hover that tints the ground
-   rather than darkening the border, and the on state. */
+/* The shape, hover, focus and transition are the global .pill, shared with
+   PopoverTrigger, which takes the secondary Button's. This keeps only the on
+   state. */
 
-.toggle {
-  transition:
-    background var(--haus-duration-normal) var(--haus-ease-move),
-    color var(--haus-duration-normal) var(--haus-ease-move),
-    border-color var(--haus-duration-normal) var(--haus-ease-move);
-}
-
-.toggle:hover {
-  background: var(--haus-color-surface-subtle);
-  color: var(--haus-color-ink-primary);
-}
-
-/* Two classes deep so it outranks .pill's border and colour. */
-.toggle.on {
+/* Two classes deep so it outranks .pill, and held through hover, so pointing at
+   an active filter does not look like turning it off. */
+.toggle.on,
+.toggle.on:hover {
   background: var(--haus-color-primary-subtle);
   border-color: transparent;
   color: var(--haus-color-primary-default);

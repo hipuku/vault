@@ -59,7 +59,11 @@
   color: var(--haus-color-ink-primary);
 }
 
-.root .fieldTrigger:hover {
+/* A field, not a button: it keeps the pill's border darkening and not its fill,
+   which is the secondary Button's and would make a field in a form look pressable
+   in a way Input next to it does not. */
+.root .fieldTrigger:hover:not(:disabled) {
+  background: transparent;
   border-color: var(--haus-color-border-strong);
   color: var(--haus-color-ink-primary);
 }

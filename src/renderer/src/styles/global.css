@@ -124,6 +124,24 @@ textarea::placeholder {
   line-height: var(--haus-type-label-md-leading);
   letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-secondary);
+  transition:
+    background var(--haus-duration-normal) var(--haus-ease-move),
+    color var(--haus-duration-normal) var(--haus-ease-move),
+    border-color var(--haus-duration-normal) var(--haus-ease-move),
+    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
+}
+/* The hover, focus and transition are the secondary Button's, whose rest state
+   this already is: a transparent fill inside border-strong. The two pills had one
+   hover each, one darkening the border and one tinting the ground, at two
+   different speeds, side by side in the same toolbar. */
+.pill:hover:not(:disabled) {
+  background: var(--haus-color-surface-subtle);
+  border-color: var(--haus-color-ink-tertiary);
+  color: var(--haus-color-ink-primary);
+}
+.pill:focus-visible {
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 /* ── Icon button: THE locked pattern for every icon-only button ────────────
