@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef, useId } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKeyboard, faImage, faCheck, faPen, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faKeyboard, faImage, faCheck, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import type { Colour } from '@shared/types'
 import { Button } from '../../atoms/Button/Button'
+import { Input } from '../../atoms/Input/Input'
+import { InlineEdit } from '../../atoms/InlineEdit/InlineEdit'
 import { Spinner } from '../../atoms/Spinner/Spinner'
 import { Callout } from '../../molecules/Callout/Callout'
 import { Tooltip } from '../../atoms/Tooltip/Tooltip'
@@ -62,7 +64,6 @@ export function AddColorModal({
   }
   const [preview, setPreview] = useState<string | null>(null)
   const [rows, setRows] = useState<ImageRow[]>([])
-  const [editingHex, setEditingHex] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   // The write can fail: a duplicate name, a locked database. Closing on the next line
   // meant the colour silently never appeared.
@@ -70,6 +71,7 @@ export function AddColorModal({
   const [saveError, setSaveError] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+  const nameGroupId = useId()
 
   const hex = useMemo(() => normaliseHex(text), [text])
   const result = useMemo(() => (hex ? nearestNames(hex, 6) : null), [hex])
@@ -89,7 +91,6 @@ export function AddColorModal({
       closePicker()
       setPreview(null)
       setRows([])
-      setEditingHex(null)
       setLoading(false)
       setDragOver(false)
       setBusy(false)
@@ -205,8 +206,9 @@ export function AddColorModal({
               <button
                 type="button"
                 className={styles.preview}
-                style={{ background: hex ?? '#e7e7ed', cursor: fixedHex ? 'default' : 'pointer' }}
-                onClick={fixedHex ? undefined : togglePicker}
+                style={{ background: hex ?? '#e7e7ed' }}
+                onClick={togglePicker}
+                disabled={!!fixedHex}
                 aria-label={fixedHex ? 'Swatch colour' : 'Pick a colour'}
               />
               {pickerOpen && !fixedHex && (
@@ -215,7 +217,8 @@ export function AddColorModal({
                 </Popover>
               )}
             </div>
-            <input
+            <Input
+              mono
               className={styles.hexInput}
               value={text}
               onChange={e => setText(e.target.value)}
@@ -240,10 +243,12 @@ export function AddColorModal({
             <>
               <div className={styles.section}>
                 <div className={styles.sectionHead}>
-                  <span className={styles.sectionLabel}>Name</span>
+                  <span className="eyebrow" id={nameGroupId}>
+                    Name
+                  </span>
                   <span className={styles.confidence}>{confidenceLabel(result.confidence)}</span>
                 </div>
-                <div className={styles.names}>
+                <div className={styles.names} role="group" aria-labelledby={nameGroupId}>
                   {allNames.map(m => (
                     <button
                       key={m.name + m.hex}
@@ -251,6 +256,7 @@ export function AddColorModal({
                       className={[styles.nameChip, chosenName === m.name ? styles.nameChipOn : '']
                         .filter(Boolean)
                         .join(' ')}
+                      aria-pressed={chosenName === m.name}
                       onClick={() => setChosenName(m.name)}
                     >
                       {chosenName === m.name && <FontAwesomeIcon icon={faCheck} className={styles.nameCheck} />}
@@ -284,7 +290,7 @@ export function AddColorModal({
               Cancel
             </Button>
             {saveError && (
-              <span className={styles.saveError} title={saveError}>
+              <span className={styles.saveError} title={saveError} role="alert">
                 {saveError}
               </span>
             )}
@@ -295,8 +301,21 @@ export function AddColorModal({
         </div>
       ) : (
         <div className={styles.body}>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className={styles.fileInput}
+            tabIndex={-1}
+            aria-hidden
+            onChange={e => {
+              const f = e.target.files?.[0]
+              if (f) handleFile(f)
+            }}
+          />
           {!preview ? (
-            <div
+            <button
+              type="button"
               className={[styles.dropzone, dragOver ? styles.dropzoneActive : ''].filter(Boolean).join(' ')}
               onClick={() => fileRef.current?.click()}
               onDragOver={e => {
@@ -312,19 +331,9 @@ export function AddColorModal({
               }}
             >
               <FontAwesomeIcon icon={faImage} className={styles.dropIcon} />
-              <p className={styles.dropText}>Drop an image here, or click to choose</p>
-              <p className={styles.dropHint}>PNG · JPG · WEBP</p>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*"
-                className={styles.fileInput}
-                onChange={e => {
-                  const f = e.target.files?.[0]
-                  if (f) handleFile(f)
-                }}
-              />
-            </div>
+              <span className={styles.dropText}>Drop an image here, or click to choose</span>
+              <span className={styles.dropHint}>PNG · JPG · WEBP</span>
+            </button>
           ) : (
             <>
               <div className={styles.previewWrap}>
@@ -357,29 +366,24 @@ export function AddColorModal({
                           className={styles.extractCheck}
                           checked={r.included}
                           onChange={() => toggleRow(r.hex)}
+                          aria-label={`Include ${r.name}, ${r.hex}`}
                         />
                         <span className={styles.extractSwatch} style={{ background: r.hex }} />
                         <span className={styles.extractMain}>
-                          {editingHex === r.hex ? (
-                            <input
-                              type="text"
-                              autoFocus
-                              className={styles.extractName}
+                          <span className={styles.extractName}>
+                            <InlineEdit
                               value={r.name}
-                              onChange={e => setRowName(r.hex, e.target.value)}
-                              onBlur={() => setEditingHex(null)}
-                              onFocus={e => e.target.select()}
-                              onKeyDown={e => {
-                                if (e.key === 'Enter' || e.key === 'Escape') (e.target as HTMLInputElement).blur()
-                              }}
+                              onCommit={next => setRowName(r.hex, next)}
+                              ariaLabel={`colour name for ${r.hex}`}
                             />
-                          ) : (
-                            <span className={styles.extractNameText}>{r.name}</span>
-                          )}
+                          </span>
                           {warnings.length > 0 && (
                             <Tooltip label={warnings.join(' · ')} align="start">
                               <span
                                 className={styles.extractWarn}
+                                role="img"
+                                tabIndex={0}
+                                aria-label={warnings.join('. ')}
                                 onMouseDown={e => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -392,22 +396,6 @@ export function AddColorModal({
                                 <FontAwesomeIcon icon={faTriangleExclamation} />
                               </span>
                             </Tooltip>
-                          )}
-                          {editingHex !== r.hex && (
-                            <div className={styles.extractPen}>
-                              <button
-                                type="button"
-                                className="icon-btn icon-btn--xs"
-                                onMouseDown={e => e.preventDefault()}
-                                onClick={e => {
-                                  e.preventDefault()
-                                  setEditingHex(r.hex)
-                                }}
-                                aria-label="Edit name"
-                              >
-                                <FontAwesomeIcon icon={faPen} />
-                              </button>
-                            </div>
                           )}
                         </span>
                         <span className={styles.extractHex}>{r.hex}</span>
@@ -437,7 +425,7 @@ export function AddColorModal({
                 Cancel
               </Button>
               {saveError && (
-                <span className={styles.saveError} title={saveError}>
+                <span className={styles.saveError} title={saveError} role="alert">
                   {saveError}
                 </span>
               )}

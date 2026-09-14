@@ -155,6 +155,8 @@
   flex-shrink: 0;
   font-size: var(--haus-icon-xs);
   color: var(--haus-color-warning-on-subtle);
+  /* Focusable, so the tooltip opens from the keyboard and the ring has a shape. */
+  border-radius: var(--haus-radius-sm);
 }
 
 .nameActions {

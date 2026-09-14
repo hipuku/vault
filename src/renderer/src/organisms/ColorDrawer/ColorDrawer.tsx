@@ -158,7 +158,12 @@ export function ColorDrawer({
                           <span className={styles.nameText}>{m.name}</span>
                           {taken && (
                             <Tooltip label={`You already have a colour named “${m.name}”`} align="start">
-                              <span className={styles.nameWarn}>
+                              <span
+                                className={styles.nameWarn}
+                                role="img"
+                                tabIndex={0}
+                                aria-label={`You already have a colour named “${m.name}”`}
+                              >
                                 <FontAwesomeIcon icon={faTriangleExclamation} />
                               </span>
                             </Tooltip>

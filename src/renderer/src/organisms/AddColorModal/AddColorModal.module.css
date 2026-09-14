@@ -1,11 +1,5 @@
 /* Shell, header and the tab strip come from Modal + SegmentedControl. */
 
-.tabOn,
-.tabOn:hover {
-  background: var(--haus-color-primary-subtle);
-  color: var(--haus-color-primary-default);
-}
-
 .body {
   display: flex;
   flex-direction: column;
@@ -25,7 +19,8 @@
 }
 
 .preview {
-  width: 40px;
+  /* A circle at the field's height. It was 40 wide and 44 high, an oval. */
+  width: var(--haus-control-height-lg);
   height: var(--haus-control-height-lg);
   border-radius: var(--haus-radius-full);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
@@ -34,32 +29,14 @@
   cursor: pointer;
   padding: 0;
 }
+/* A fixed swatch, when a palette colour is being promoted, is not a picker. */
+.preview:disabled {
+  cursor: default;
+}
 
+/* The field is Input at lg, in its mono face, which this drew again by hand. */
 .hexInput {
   flex: 1;
-  height: var(--haus-control-height-lg);
-  padding: 0 var(--haus-space-4);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-md-size);
-  font-weight: var(--haus-type-mono-md-weight);
-  line-height: var(--haus-type-mono-md-leading);
-  letter-spacing: var(--haus-type-mono-md-tracking);
-  color: var(--haus-color-ink-primary);
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  outline: none;
-  transition:
-    border-color var(--haus-duration-normal) var(--haus-ease-move),
-    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
-}
-.hexInput::placeholder {
-  font-family: var(--haus-font-sans);
-  color: var(--haus-color-ink-disabled);
-}
-.hexInput:focus-visible {
-  border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
 }
 
 .section {
@@ -74,16 +51,15 @@
   justify-content: space-between;
 }
 
-.sectionLabel {
-  font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-semibold);
-  letter-spacing: var(--haus-tracking-wide);
-  text-transform: uppercase;
-  color: var(--haus-color-ink-tertiary);
-}
+/* The section label is the global .eyebrow, which it drew again at a wide rather
+   than wider tracking. */
 
 .confidence {
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -103,8 +79,11 @@
   background: var(--haus-color-surface-default);
   cursor: pointer;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role, which it read as two primitives. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-secondary);
   transition:
     background var(--haus-duration-normal) var(--haus-ease-move),
@@ -120,7 +99,7 @@
   color: var(--haus-color-primary-default);
 }
 .nameCheck {
-  width: 10px;
+  font-size: var(--haus-icon-xs);
 }
 .nameDelta {
   font-family: var(--haus-font-mono);
@@ -141,8 +120,11 @@
   padding: 0;
   margin-left: var(--haus-space-1);
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-body-sm-size);
-  font-weight: var(--haus-weight-semibold);
+  /* label-md: it read body-sm's size and overrode the weight to semibold, which is no role. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-primary-default);
   text-decoration: underline;
 }
@@ -164,8 +146,11 @@
 
 .dropzone {
   padding: var(--haus-space-10) var(--haus-space-6);
-  border: 2px dashed var(--haus-color-border-strong);
+  width: 100%;
+  border: var(--haus-border-width-thick) dashed var(--haus-color-border-strong);
   border-radius: var(--haus-radius-lg);
+  background: transparent;
+  font: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -186,12 +171,18 @@
   margin-bottom: var(--haus-space-1);
 }
 .dropText {
-  font-size: var(--haus-type-body-size);
-  font-weight: var(--haus-weight-medium);
+  /* 14 and medium is no haus role; label-md is 13 and medium. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-secondary);
 }
 .dropHint {
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 .fileInput {
@@ -219,6 +210,9 @@
   gap: var(--haus-space-2);
   color: var(--haus-color-ink-tertiary);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   padding: var(--haus-space-4) 0;
 }
 
@@ -233,7 +227,7 @@
   display: flex;
   align-items: center;
   gap: var(--haus-space-3);
-  height: 44px;
+  height: var(--haus-control-height-lg);
   padding: 0 var(--haus-space-2);
   border-radius: var(--haus-radius-md);
   cursor: pointer;
@@ -245,7 +239,7 @@
   background: var(--haus-color-surface-subtle);
 }
 .extractRowOff {
-  opacity: 0.4;
+  opacity: var(--haus-opacity-disabled);
 }
 
 .extractCheck {
@@ -275,59 +269,26 @@
 }
 
 .extractName {
-  field-sizing: content;
-  max-width: 240px;
-  min-width: 1ch;
-  background: none;
-  border: none;
-  outline: none;
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  line-height: var(--haus-leading-tight);
-  color: var(--haus-color-ink-primary);
-  padding: 2px 0;
-  cursor: text;
-}
-.extractName:focus,
-.extractName:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-.extractNameText {
+  /* The rename is InlineEdit, which this drew again by hand with a pen that
+     stayed invisible under keyboard focus. The type is set here and inherited:
+     the whole body-sm role, where it took the size and leading-tight. */
+  display: flex;
   min-width: 0;
   max-width: 240px;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  line-height: var(--haus-leading-tight);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
-  padding: 2px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .extractWarn {
   display: inline-flex;
   flex-shrink: 0;
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-icon-xs);
   color: var(--haus-color-warning-on-subtle);
-}
-
-.extractPen {
-  display: flex;
-  align-items: center;
-  width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    width var(--haus-duration-normal) var(--haus-ease-move),
-    opacity var(--haus-duration-fast) var(--haus-ease-move);
-}
-
-.extractRow:hover .extractPen {
-  width: 20px;
-  opacity: 1;
+  border-radius: var(--haus-radius-sm);
 }
 
 .extractHex {
@@ -346,6 +307,9 @@
   flex: 1;
   min-width: 0;
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-error-on-subtle);
   overflow: hidden;
   text-overflow: ellipsis;
