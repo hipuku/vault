@@ -15,6 +15,7 @@ import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
 import { IconButton } from '../../atoms/IconButton/IconButton'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
+import { Callout } from '../../molecules/Callout/Callout'
 import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { generateTonalSystem, TONAL_STOP_LABELS } from '@shared/lib/tonalSystem'
 import { generateExpressiveSet, MAX_HUE_GROUPS } from '@shared/lib/expressiveSet'
@@ -285,7 +286,7 @@ export function PaletteCreate({
 
           {/* 2. Builder type */}
           <div className={styles.field}>
-            <label className={styles.label}>Type</label>
+            <span className={styles.label}>Type</span>
             <SegmentedControl
               ariaLabel="Builder type"
               value={tab}
@@ -299,7 +300,7 @@ export function PaletteCreate({
 
           {/* 3. Project */}
           <div className={styles.field}>
-            <label className={styles.label}>Project</label>
+            <span className={styles.label}>Project</span>
             <ProjectPicker
               ariaLabel="Project"
               allTags={projects}
@@ -313,10 +314,10 @@ export function PaletteCreate({
 
           {/* 4. Seeds (scoped to project) */}
           <div className={styles.field}>
-            <label className={styles.label}>
+            <span className={styles.label}>
               {seedLabel}
               <span className={styles.labelHint}>{seedHint}</span>
-            </label>
+            </span>
 
             {projectId == null ? (
               <p className={styles.empty}>Choose a project to pick seed colours from.</p>
@@ -326,11 +327,13 @@ export function PaletteCreate({
               <>
                 <div className={styles.search}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} />
-                  <input
+                  <Input
+                    size="md"
                     className={styles.searchInput}
                     value={query}
                     onChange={e => setQuery(e.target.value)}
                     placeholder="Search colours…"
+                    aria-label="Search colours"
                     spellCheck={false}
                   />
                 </div>
@@ -362,7 +365,7 @@ export function PaletteCreate({
           {/* 5. Ramps / Strategy */}
           {tab === 'tonal' ? (
             <div className={styles.field}>
-              <label className={styles.label}>Ramps</label>
+              <span className={styles.label}>Ramps</span>
               <div className={styles.ramps}>
                 {ALL_RAMPS.map(r => {
                   const forced = r === 'primary' || r === 'neutral'
@@ -378,41 +381,30 @@ export function PaletteCreate({
           ) : (
             <>
               <div className={styles.field}>
-                <label className={styles.label}>Hue groups</label>
+                <span className={styles.label}>Hue groups</span>
                 <div className={styles.stepper}>
-                  <button
-                    type="button"
-                    className={styles.stepBtn}
+                  <IconButton
+                    label="Fewer hue groups"
                     onClick={() => setTargetCount(c => Math.max(minCount, c - 1))}
                     disabled={targetCount <= minCount}
                   >
                     <FontAwesomeIcon icon={faMinus} />
-                  </button>
-                  <span className={styles.stepVal}>{Math.max(minCount, Math.min(targetCount, MAX_HUE_GROUPS))}</span>
-                  <button
-                    type="button"
-                    className={styles.stepBtn}
+                  </IconButton>
+                  <span className={styles.stepVal} aria-live="polite">
+                    {Math.max(minCount, Math.min(targetCount, MAX_HUE_GROUPS))}
+                  </span>
+                  <IconButton
+                    label="More hue groups"
                     onClick={() => setTargetCount(c => Math.min(MAX_HUE_GROUPS, c + 1))}
                     disabled={targetCount >= MAX_HUE_GROUPS}
                   >
                     <FontAwesomeIcon icon={faPlus} />
-                  </button>
+                  </IconButton>
                 </div>
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Strategy</label>
-                <div className={styles.strategy}>
-                  {STRATEGIES.map(s => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      className={[styles.pill, strategy === s.id ? styles.pillOn : ''].filter(Boolean).join(' ')}
-                      onClick={() => setStrategy(s.id)}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
+                <span className={styles.label}>Strategy</span>
+                <SegmentedControl ariaLabel="Strategy" size="sm" value={strategy} onChange={setStrategy} options={STRATEGIES} />
               </div>
             </>
           )}
@@ -445,7 +437,7 @@ export function PaletteCreate({
           ) : (
             <>
               {nearIdentical && (
-                <p className={styles.advisory}>Some colours are nearly identical. Try a lower hue count.</p>
+                <Callout variant="warning">Some colours are nearly identical. Try a lower hue count.</Callout>
               )}
               <div className={styles.expPreview}>
                 {Array.from(expGroups.values()).map((hexes, gi) => {

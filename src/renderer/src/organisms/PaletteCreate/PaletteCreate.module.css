@@ -11,7 +11,11 @@
 }
 
 .error {
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-error-on-subtle);
   max-width: 280px;
   overflow: hidden;
@@ -44,20 +48,30 @@
 }
 
 .label {
+  /* The whole label-sm role: it read the size and a weight primitive that happens to be the role's weight. */
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 .labelHint {
-  font-weight: var(--haus-weight-regular);
+  /* label-caption, where it set regular inside a label-sm label and dimmed the
+     tertiary ink to 70%, which took the hint under 4.5:1. The smaller, lighter
+     role separates it now, at full contrast. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
-  opacity: 0.7;
 }
 
 .empty {
-  font-size: var(--haus-text-13);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
-  line-height: var(--haus-leading-normal);
 }
 
 /* Seed search + grid */
@@ -68,29 +82,18 @@
 }
 .searchIcon {
   position: absolute;
+  z-index: 1;
   left: var(--haus-space-3);
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-icon-xs);
   color: var(--haus-color-ink-tertiary);
   pointer-events: none;
 }
-.searchInput {
-  width: 100%;
-  height: 36px;
-  padding: 0 var(--haus-space-3) 0 calc(var(--haus-space-3) * 2 + 12px);
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  color: var(--haus-color-ink-primary);
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  outline: none;
-  transition:
-    border-color var(--haus-duration-fast) var(--haus-ease-move),
-    box-shadow var(--haus-duration-fast) var(--haus-ease-move);
-}
-.searchInput:focus-visible {
-  border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
+/* The field is Input at size md, which this drew again by hand. Input has no
+   icon, and this is the one search in the app that carries one, so the glyph
+   sits over the field and the field makes room for it: two classes deep so it
+   outranks Input's own padding. */
+.search .searchInput {
+  padding-left: calc(var(--haus-space-3) * 2 + var(--haus-icon-xs));
 }
 
 .seedGrid {
@@ -110,7 +113,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-icon-xs);
   transition: box-shadow var(--haus-duration-fast) var(--haus-ease-move);
 }
 .seedOn {
@@ -130,7 +133,10 @@
   display: flex;
   align-items: center;
   gap: var(--haus-space-2);
-  font-size: var(--haus-text-13);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
   cursor: pointer;
   user-select: none;
@@ -140,69 +146,25 @@
   cursor: default;
 }
 
-/* Stepper */
+/* Stepper: two IconButtons around the count */
 .stepper {
   display: flex;
   align-items: center;
   gap: var(--haus-space-2);
 }
-.stepBtn {
-  width: 30px;
-  height: 30px;
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  background: var(--haus-color-surface-default);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--haus-color-ink-secondary);
-  font-size: var(--haus-text-11);
-}
-.stepBtn:hover:not(:disabled) {
-  background: var(--haus-color-surface-subtle);
-}
-.stepBtn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
 .stepVal {
-  min-width: 28px;
+  min-width: var(--haus-control-height-sm);
   text-align: center;
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-medium);
+  /* 14 and medium is no haus role; label-md is 13 and medium. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 
-/* Strategy pills */
-.strategy {
-  display: flex;
-  gap: var(--haus-space-1);
-  flex-wrap: wrap;
-}
-.pill {
-  height: 30px;
-  padding: 0 var(--haus-space-3);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-full);
-  background: var(--haus-color-surface-default);
-  cursor: pointer;
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-12);
-  color: var(--haus-color-ink-secondary);
-  transition:
-    background var(--haus-duration-fast) var(--haus-ease-move),
-    color var(--haus-duration-fast) var(--haus-ease-move),
-    border-color var(--haus-duration-fast) var(--haus-ease-move);
-}
-.pill:hover {
-  background: var(--haus-color-surface-subtle);
-}
-.pillOn {
-  background: var(--haus-color-primary-subtle);
-  color: var(--haus-color-primary-default);
-  border-color: var(--haus-color-primary-default);
-}
+/* Strategy is a SegmentedControl, which the pills drew again at a 30px height
+   off the control scale, and without telling a screen reader which was chosen. */
 
 /* ── Preview pane ────────────────────────────────────────────────────────── */
 
@@ -217,7 +179,10 @@
 
 .previewEmpty {
   margin: auto;
-  font-size: var(--haus-text-14);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
+  line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -234,8 +199,11 @@
 }
 /* Heading shared with the expressive view (.expRowName) for consistency. */
 .rampName {
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-semibold);
+  /* 14 and semibold is no haus role. A name is label-md, as the cards' names are. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 .tonalStrip {
@@ -262,18 +230,14 @@
 }
 /* Stop label shared with the expressive view (.expStopLabel). */
 .tonalStopLabel {
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
-/* Expressive preview */
-.advisory {
-  font-size: var(--haus-text-12);
-  color: var(--haus-color-warning-on-subtle);
-  background: var(--haus-color-warning-subtle);
-  padding: var(--haus-space-2) var(--haus-space-3);
-  border-radius: var(--haus-radius-md);
-}
+/* Expressive preview. The advisory is a warning Callout, which it drew by hand. */
 .expPreview {
   display: flex;
   flex-direction: column;
@@ -285,8 +249,10 @@
   gap: var(--haus-space-2);
 }
 .expRowName {
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-semibold);
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 .expRowStops {
@@ -297,7 +263,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-0-5);
 }
 .expSwatch {
   width: 100%;
@@ -305,6 +271,9 @@
   border-radius: var(--haus-radius-sm);
 }
 .expStopLabel {
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }

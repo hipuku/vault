@@ -338,6 +338,33 @@ describe('PaletteCreate · accessibility', () => {
     expect(screen.getByLabelText(/Name/)).toBe(screen.getByPlaceholderText('Palette name'))
   })
 
+  it('names the hue-group stepper and its strategy, and names the search', async () => {
+    // The stepper's two buttons were bare glyphs, announced as "button". The
+    // strategy pills were plain buttons with the choice shown only by colour, and
+    // the colour search had only a placeholder. They are IconButtons, a
+    // SegmentedControl and an Input with a name now.
+    const { user } = setup()
+    await chooseProject(user)
+    await user.click(screen.getByRole('radio', { name: 'Expressive Set' }))
+
+    expect(screen.getByRole('button', { name: 'Fewer hue groups' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'More hue groups' })).toBeInTheDocument()
+    expect(screen.getByRole('radiogroup', { name: 'Strategy' })).toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Cohesive' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('textbox', { name: 'Search colours' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('radio', { name: 'Harmony' }))
+    expect(screen.getByRole('radio', { name: 'Harmony' })).toHaveAttribute('aria-checked', 'true')
+  })
+
+  it('has no axe violations on the expressive choice', async () => {
+    const { user } = setup()
+    await chooseProject(user)
+    await user.click(screen.getByRole('radio', { name: 'Expressive Set' }))
+    await screen.findByRole('button', { name: /Aronia/ })
+    expect((await axe(document.body)).violations).toEqual([])
+  })
+
   it('has no axe violations on the tonal choice', async () => {
     const { user } = setup()
     await chooseProject(user)
