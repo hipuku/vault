@@ -16,7 +16,8 @@
   background: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   border-radius: var(--haus-radius-lg);
-  box-shadow: var(--haus-shadow-lg);
+  /* The overlay role, as Modal and Drawer read: it read the shadow-lg primitive. */
+  box-shadow: var(--haus-elevation-overlay);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -32,7 +33,7 @@
 
 .inputIcon {
   color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-text-14);
+  font-size: var(--haus-icon-sm);
 }
 
 .input {
@@ -42,7 +43,11 @@
   background: transparent;
   padding: var(--haus-space-4) 0;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-16);
+  /* The whole body-lg role, which it read as the 16 primitive. */
+  font-size: var(--haus-type-body-lg-size);
+  font-weight: var(--haus-type-body-lg-weight);
+  line-height: var(--haus-type-body-lg-leading);
+  letter-spacing: var(--haus-type-body-lg-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -61,6 +66,9 @@
   padding: var(--haus-space-6);
   text-align: center;
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -71,7 +79,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-0-5);
 }
 
 .item {
@@ -82,7 +90,11 @@
   border-radius: var(--haus-radius-md);
   cursor: pointer;
   color: var(--haus-color-ink-primary);
+  /* The whole body role. These are not MenuOption rows: a result here is a combobox option at body size with an icon and a hint, where a menu row is body-sm with a tick. */
   font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
+  line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
 }
 
 .itemActive {
@@ -90,9 +102,9 @@
 }
 
 .itemIcon {
-  width: 1rem;
+  width: var(--haus-icon-sm);
   color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-text-13);
+  font-size: var(--haus-icon-xs);
 }
 
 .itemActive .itemIcon {
@@ -107,8 +119,10 @@
 }
 
 .itemHint {
+  /* The whole label-sm role; it left the leading to the row. */
   font-size: var(--haus-type-label-sm-size);
   font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
   letter-spacing: var(--haus-type-label-sm-tracking);
   text-transform: uppercase;
   color: var(--haus-color-ink-tertiary);

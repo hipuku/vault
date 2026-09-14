@@ -77,6 +77,37 @@ describe('CommandPalette', () => {
     expect(active()).toHaveTextContent('Fonts')
   })
 
+  it('keeps Tab inside the palette', async () => {
+    // aria-modal promises the page behind is out of reach, and Tab walked into it.
+    const outside = document.createElement('button')
+    outside.textContent = 'Behind'
+    document.body.appendChild(outside)
+    const { user } = open([cmd('Colours')])
+    expect(input()).toHaveFocus()
+    await user.tab()
+    expect(input()).toHaveFocus()
+    outside.remove()
+  })
+
+  it('gives focus back to whatever opened it', () => {
+    const opener = document.createElement('button')
+    document.body.appendChild(opener)
+    opener.focus()
+    const { rerender } = render(<CommandPalette open commands={[cmd('Colours')]} onClose={vi.fn()} />)
+    expect(input()).toHaveFocus()
+    rerender(<CommandPalette open={false} commands={[cmd('Colours')]} onClose={vi.fn()} />)
+    expect(opener).toHaveFocus()
+    opener.remove()
+  })
+
+  it('names the input, and says when nothing matches', async () => {
+    const { user } = open([cmd('Colours')])
+    expect(screen.getByRole('combobox', { name: 'Search commands' })).toHaveAttribute('aria-expanded', 'true')
+    await user.type(input(), 'zzz')
+    expect(input()).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.getByRole('status')).toHaveTextContent('No matches')
+  })
+
   it('has no violations', async () => {
     const { container } = render(<CommandPalette open commands={[cmd('Colours'), cmd('Fonts')]} onClose={vi.fn()} />)
     expect((await axe(container)).violations).toEqual([])

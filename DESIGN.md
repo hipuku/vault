@@ -277,8 +277,10 @@ one below it. Nothing points upward.
   did before a font was picked: it takes a `placeholder`. And `Modal` supplied no body padding, so
   its four dialogs each invented their own. Each has a test.
 
-  The exception is the command palette, which manages its own focus because it is a combobox
-  driven by `aria-activedescendant` and arrow keys rather than by Tab.
+  The exception is the command palette, which is not `Modal` because it is a combobox driven by
+  `aria-activedescendant` and arrow keys rather than by Tab, and which draws its own result rows
+  rather than `MenuOption` for the same reason. It does share `useFocusTrap`: until 2026-09-14 it
+  handled its own focus, and Tab walked out of an `aria-modal` dialog into the page behind it.
 
 - **A type role is taken whole, or not at all.** A haus type role is four tokens: size, weight,
   leading and tracking. Reading two of them and inventing the rest is how a component drifts while

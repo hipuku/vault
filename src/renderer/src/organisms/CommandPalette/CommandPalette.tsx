@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { filterCommands, type Searchable } from '../../lib/commandFilter'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import styles from './CommandPalette.module.css'
 
 export interface Command extends Searchable {
@@ -32,6 +33,7 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
   const [active, setActive] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
+  const paletteRef = useRef<HTMLDivElement>(null)
 
   const results = useMemo(() => {
     // Default view is just the actions; library items only appear once searching.
@@ -39,14 +41,20 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
     return filterCommands(commands, query)
   }, [commands, query])
 
-  // Reset query + selection and focus the input each time it opens.
+  // Reset query + selection each time it opens. The input is the first focusable
+  // node, so useFocusTrap puts focus there.
   useEffect(() => {
     if (open) {
       setQuery('')
       setActive(0)
-      inputRef.current?.focus()
     }
   }, [open])
+
+  // A combobox moves through its options with the arrows and never by Tab, which
+  // is why this is not Modal. But Tab still has to stay inside an aria-modal
+  // dialog, and it walked out into the page behind. The trap handles Tab, Escape
+  // and giving focus back, and leaves the arrows to the combobox.
+  useFocusTrap(open, paletteRef, onClose)
 
   // Selection returns to the top whenever the result set changes.
   useEffect(() => {
@@ -58,15 +66,13 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
     listRef.current?.querySelector<HTMLElement>('[data-active="true"]')?.scrollIntoView({ block: 'nearest' })
   }, [active, results])
 
-  // Lock background scroll while open; restore focus to the trigger on close.
+  // Lock background scroll while open.
   useEffect(() => {
     if (!open) return
-    const previouslyFocused = document.activeElement as HTMLElement | null
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = previousOverflow
-      previouslyFocused?.focus?.()
     }
   }, [open])
 
@@ -80,10 +86,6 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
 
   function handleKeyDown(e: React.KeyboardEvent): void {
     switch (e.key) {
-      case 'Escape':
-        e.preventDefault()
-        onClose()
-        break
       case 'ArrowDown':
         e.preventDefault()
         setActive(i => Math.min(i + 1, results.length - 1))
@@ -104,6 +106,7 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
   return (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
+        ref={paletteRef}
         className={styles.palette}
         role="dialog"
         aria-modal
@@ -118,8 +121,9 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
             className={styles.input}
             type="text"
             role="combobox"
-            aria-expanded
-            aria-controls="command-list"
+            aria-label="Search commands"
+            aria-expanded={results.length > 0}
+            aria-controls={results.length > 0 ? 'command-list' : undefined}
             aria-activedescendant={activeId}
             placeholder="Jump to a section, project, or create…"
             value={query}
@@ -130,7 +134,9 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
         </div>
 
         {results.length === 0 ? (
-          <div className={styles.empty}>No matches</div>
+          <div className={styles.empty} role="status">
+            No matches
+          </div>
         ) : (
           <ul id="command-list" ref={listRef} role="listbox" aria-label="Commands" className={styles.list}>
             {results.map((cmd, i) => (
