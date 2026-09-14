@@ -38,14 +38,18 @@
 }
 
 .specimenRole {
-  font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-semibold);
+  /* The whole label-field role: 12, semibold and tracked wide, which it set out of three primitives. */
+  font-size: var(--haus-type-label-field-size);
+  font-weight: var(--haus-type-label-field-weight);
+  line-height: var(--haus-type-label-field-leading);
+  letter-spacing: var(--haus-type-label-field-tracking);
   color: var(--haus-color-ink-tertiary);
   text-transform: uppercase;
-  letter-spacing: var(--haus-tracking-wide);
 }
 
 .specimenFamily {
+  /* The family and its glyphs below are specimens, set in the font itself at
+     sizes chosen for the banner: their type is the font's, not a role. */
   font-size: 32px;
   font-weight: var(--haus-weight-semibold);
   color: var(--haus-color-ink-primary);
@@ -70,7 +74,7 @@
 }
 
 .heroDivider {
-  width: 1px;
+  width: var(--haus-border-width-default);
   height: 16px;
   background: var(--haus-color-border-default);
   margin: 0 var(--haus-space-1);
@@ -80,18 +84,21 @@
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-1);
-  padding: 1px var(--haus-space-2);
+  padding: var(--haus-space-px) var(--haus-space-2);
   border-radius: var(--haus-radius-full);
   background: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-tertiary);
+  /* The whole label-xs role, as the Chips beside it read. PaletteView draws the same pill and was corrected the same way. */
   font-size: var(--haus-type-label-xs-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-xs-weight);
+  line-height: var(--haus-type-label-xs-leading);
+  letter-spacing: var(--haus-type-label-xs-tracking);
   white-space: nowrap;
 }
 .projectDot {
   width: var(--dot-xs);
   height: var(--dot-xs);
-  border-radius: 50%;
+  border-radius: var(--haus-radius-full);
   flex-shrink: 0;
 }
 

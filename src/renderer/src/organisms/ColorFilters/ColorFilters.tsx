@@ -34,7 +34,7 @@ export function ColorFilters({
       {open && (
         <Popover align="right" width="sm" pad="roomy" role="dialog" ariaLabel="Filters">
           <fieldset className={styles.section}>
-            <legend className={styles.legend}>Sort</legend>
+            <legend className={`eyebrow ${styles.legend}`}>Sort</legend>
             {SORT_OPTIONS.map(o => (
               <label key={o.key} className={styles.radio}>
                 <input
@@ -49,7 +49,7 @@ export function ColorFilters({
           </fieldset>
 
           <fieldset className={styles.section}>
-            <legend className={styles.legend}>Group by</legend>
+            <legend className={`eyebrow ${styles.legend}`}>Group by</legend>
             {GROUP_OPTIONS.map(o => (
               <label key={o.key} className={styles.radio}>
                 <input

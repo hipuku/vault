@@ -49,6 +49,8 @@ const DEFAULT_RATIO = 1.333
 export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreateProps): React.ReactElement {
   const [name, setName] = useState('')
   const nameId = useId()
+  const baseSizeId = useId()
+  const ratioLabelId = useId()
 
   // Project scope
   const [projects, setProjects] = useState<TagWithCount[]>([])
@@ -199,13 +201,13 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
 
           {/* 2. Preset kind */}
           <div className={styles.field}>
-            <label className={styles.label}>Type</label>
+            <span className={styles.label}>Type</span>
             <SegmentedControl ariaLabel="Scale type" value={kind} onChange={setKind} options={KIND_OPTIONS} />
           </div>
 
           {/* 3. Project */}
           <div className={styles.field}>
-            <label className={styles.label}>Project</label>
+            <span className={styles.label}>Project</span>
             <ProjectPicker
               ariaLabel="Project"
               allTags={projects}
@@ -225,7 +227,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
           ) : (
             <>
               <div className={styles.field}>
-                <label className={styles.label}>Heading font</label>
+                <span className={styles.label}>Heading font</span>
                 <Select
                   block
                   ariaLabel="Heading font"
@@ -236,7 +238,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
                 />
               </div>
               <div className={styles.field}>
-                <label className={styles.label}>Body font</label>
+                <span className={styles.label}>Body font</span>
                 <Select
                   block
                   ariaLabel="Body font"
@@ -253,9 +255,12 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
 
           {/* 5. Base size */}
           <div className={styles.field}>
-            <label className={styles.label}>Base size</label>
+            <label className={styles.label} htmlFor={baseSizeId}>
+              Base size
+            </label>
             <div className={styles.sizeInput}>
               <input
+                id={baseSizeId}
                 type="number"
                 min={10}
                 max={24}
@@ -269,18 +274,28 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
 
           {/* 6. Ratio presets */}
           <div className={styles.field}>
-            <label className={styles.label}>Ratio</label>
-            <div className={styles.ratios}>
+            <span className={styles.label} id={ratioLabelId}>
+              Ratio
+            </span>
+            <div className={styles.ratios} role="group" aria-labelledby={ratioLabelId}>
               {RATIO_PRESETS.map(p => (
                 <button
                   key={p.value}
                   type="button"
                   className={[styles.ratio, ratio === p.value ? styles.ratioOn : ''].filter(Boolean).join(' ')}
+                  aria-pressed={ratio === p.value}
                   onClick={() => setRatio(p.value)}
                 >
                   <span className={styles.ratioName}>
                     {p.name}
-                    {p.recommended && <span className={styles.rec}>★</span>}
+                    {p.recommended && (
+                      <>
+                        <span className={styles.rec} aria-hidden>
+                          ★
+                        </span>
+                        <span className="visually-hidden">, recommended</span>
+                      </>
+                    )}
                   </span>
                   <span className={styles.ratioVal}>{p.value}</span>
                 </button>
@@ -318,6 +333,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
                 units={units}
                 renderTrailing={step => (
                   <StepEditControl
+                    stepName={step.step_name}
                     size={step.size}
                     weight={step.weight}
                     lineHeight={step.line_height}

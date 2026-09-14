@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSliders } from '@fortawesome/free-solid-svg-icons'
 import { IconButton } from '../../atoms/IconButton/IconButton'
+import { Input } from '../../atoms/Input/Input'
 import { Select } from '../../molecules/Select/Select'
 import { usePopover } from '../../hooks/usePopover'
 import { Popover } from '../../atoms/Popover/Popover'
@@ -17,6 +18,9 @@ interface StepEditControlProps {
   lineHeight: string
   letterSpacing: string
   onChange: (size: number, weight: number, lineHeight: string, letterSpacing: string) => void
+  /** The step being edited, so each row's button and panel are named for their own
+   *  step. A table of steps otherwise gave every row the same "Edit step". */
+  stepName?: string
 }
 
 const WEIGHTS = [100, 200, 300, 400, 500, 600, 700, 800, 900]
@@ -27,16 +31,17 @@ export function StepEditControl({
   lineHeight,
   letterSpacing,
   onChange,
+  stepName,
 }: StepEditControlProps): React.ReactElement {
   const { open, toggle, ref } = usePopover()
 
   return (
     <div className={styles.root} ref={ref}>
-      <IconButton label="Edit step" size="sm" onClick={toggle} aria-expanded={open}>
+      <IconButton label={stepName ? `Edit ${stepName}` : 'Edit step'} size="sm" onClick={toggle} aria-expanded={open}>
         <FontAwesomeIcon icon={faSliders} />
       </IconButton>
       {open && (
-        <Popover align="right" width="md" role="dialog" ariaLabel="Edit step">
+        <Popover align="right" width="md" role="dialog" ariaLabel={stepName ? `Edit ${stepName}` : 'Edit step'}>
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Size</span>
             <span className={styles.unitField}>
@@ -65,7 +70,8 @@ export function StepEditControl({
           </div>
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Line height</span>
-            <input
+            <Input
+              mono
               value={lineHeight}
               onChange={e => onChange(size, weight, e.target.value, letterSpacing)}
               className={styles.control}
@@ -73,7 +79,8 @@ export function StepEditControl({
           </label>
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Tracking</span>
-            <input
+            <Input
+              mono
               value={letterSpacing}
               onChange={e => onChange(size, weight, lineHeight, e.target.value)}
               className={styles.control}

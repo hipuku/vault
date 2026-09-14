@@ -6,7 +6,7 @@
 }
 
 .triggerIcon {
-  width: 12px;
+  font-size: var(--haus-icon-xs);
 }
 
 .section {
@@ -23,13 +23,10 @@
   border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
+/* The type is the global .eyebrow, which this drew again at 11 with a typed
+   0.04em: the eyebrow's own tracking, a pixel smaller. */
 .legend {
   padding: 0 0 var(--haus-space-1);
-  font-size: var(--haus-text-11);
-  font-weight: var(--haus-weight-semibold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--haus-color-ink-tertiary);
 }
 
 .radio {
@@ -39,7 +36,11 @@
   padding: var(--haus-space-1) 0;
   cursor: pointer;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
+  /* The whole body-sm role, which it read as the 13 primitive. */
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-secondary);
 }
 

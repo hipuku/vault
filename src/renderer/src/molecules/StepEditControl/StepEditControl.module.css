@@ -37,24 +37,8 @@
   box-sizing: border-box;
 }
 
-/* Plain text/number inputs (line height, tracking) */
-.control {
-  padding: 0 var(--haus-space-3);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-md-size);
-  font-weight: var(--haus-type-mono-md-weight);
-  line-height: var(--haus-type-mono-md-leading);
-  letter-spacing: var(--haus-type-mono-md-tracking);
-  color: var(--haus-color-ink-primary);
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  outline: none;
-}
-.control:focus-visible {
-  border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
-}
+/* Line height and tracking are Input at lg in its mono face, which these drew
+   again by hand before Input had one. The width above is all they add. */
 
 /* Size field: value plus a px suffix that always hugs the number. */
 .unitField {

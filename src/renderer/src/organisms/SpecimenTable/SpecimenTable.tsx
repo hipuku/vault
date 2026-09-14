@@ -77,11 +77,25 @@ export function SpecimenTable({
             >
               {previewText || 'The quick brown fox'}
             </span>
+            {/* The headers sit above the table, not beside each value, so a screen reader
+                heard four bare numbers per row. Each value carries its header, hidden. */}
             <div className={styles.metricsRow}>
-              <span className={styles.metric}>{formatSize(step.size, units.size)}</span>
-              <span className={styles.metric}>{formatWeight(step.weight, units.weight)}</span>
-              <span className={styles.metric}>{formatLineHeight(step.line_height, step.size, units.lineHeight)}</span>
-              <span className={styles.metric}>{formatTracking(step.letter_spacing, step.size, units.tracking)}</span>
+              <span className={styles.metric}>
+                <span className="visually-hidden">Size </span>
+                {formatSize(step.size, units.size)}
+              </span>
+              <span className={styles.metric}>
+                <span className="visually-hidden">Weight </span>
+                {formatWeight(step.weight, units.weight)}
+              </span>
+              <span className={styles.metric}>
+                <span className="visually-hidden">Line height </span>
+                {formatLineHeight(step.line_height, step.size, units.lineHeight)}
+              </span>
+              <span className={styles.metric}>
+                <span className="visually-hidden">Tracking </span>
+                {formatTracking(step.letter_spacing, step.size, units.tracking)}
+              </span>
             </div>
           </div>
           {renderTrailing && <span className={styles.trailing}>{renderTrailing(step, i)}</span>}

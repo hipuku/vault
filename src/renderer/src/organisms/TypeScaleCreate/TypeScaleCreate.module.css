@@ -11,7 +11,11 @@
 }
 
 .error {
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-error-on-subtle);
   max-width: 280px;
   overflow: hidden;
@@ -45,14 +49,18 @@
 
 .label {
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
 .empty {
-  font-size: var(--haus-text-13);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
-  line-height: var(--haus-leading-normal);
 }
 
 /* Base size: value plus a px suffix that hugs the number (matches StepEditControl). */
@@ -105,7 +113,7 @@
 .ratio {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-0-5);
   padding: var(--haus-space-2) var(--haus-space-3);
   background: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
@@ -127,8 +135,11 @@
   display: flex;
   align-items: center;
   gap: var(--haus-space-1);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role, which it read as two primitives. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 .ratioOn .ratioName {
@@ -136,7 +147,7 @@
 }
 .rec {
   color: var(--haus-color-primary-default);
-  font-size: var(--haus-text-11);
+  font-size: var(--haus-icon-xs);
 }
 .ratioVal {
   font-family: var(--haus-font-mono);
@@ -160,7 +171,10 @@
 
 .previewEmpty {
   margin: auto;
-  font-size: var(--haus-text-14);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
+  line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 

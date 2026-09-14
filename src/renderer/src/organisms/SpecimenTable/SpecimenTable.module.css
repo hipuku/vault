@@ -28,18 +28,22 @@
   min-width: 0;
 }
 .headIcon {
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-icon-xs);
   color: var(--haus-color-ink-tertiary);
   align-self: center;
 }
+.headLabel,
+.headUnit {
+  /* 14 and semibold is no haus role. A column name is label-md, as the group names beside it are. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
+}
 .headLabel {
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-semibold);
   color: var(--haus-color-ink-primary);
 }
 .headUnit {
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-semibold);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -55,12 +59,14 @@
 }
 
 .stepName {
-  font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-semibold);
+  /* The whole label-field role: 12, semibold and tracked wide, which is what it set out of three primitives. */
+  font-size: var(--haus-type-label-field-size);
+  font-weight: var(--haus-type-label-field-weight);
+  line-height: var(--haus-type-label-field-leading);
+  letter-spacing: var(--haus-type-label-field-tracking);
   color: var(--haus-color-ink-tertiary);
   text-transform: uppercase;
-  letter-spacing: var(--haus-tracking-wide);
-  padding-top: 2px;
+  padding-top: var(--haus-space-0-5);
 }
 
 .content {
@@ -108,6 +114,8 @@
   opacity: 0;
   transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
 }
-.row:hover .trailing {
+/* Focus reveals it too: at opacity 0 a focused edit button was invisible. */
+.row:hover .trailing,
+.row:focus-within .trailing {
   opacity: 1;
 }
