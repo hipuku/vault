@@ -19,3 +19,10 @@
   font-size: 0.85em;
   opacity: 0.8;
 }
+
+.dot {
+  flex-shrink: 0;
+  width: var(--dot-xs);
+  height: var(--dot-xs);
+  border-radius: var(--haus-radius-full);
+}

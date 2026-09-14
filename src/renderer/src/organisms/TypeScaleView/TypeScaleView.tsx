@@ -145,12 +145,7 @@ export function TypeScaleView({
               <Chip icon={faTextHeight} label={`${steps.length} steps`} />
               <Chip label={custom ? 'Custom' : ratioName} />
               <Chip label={`${scale.base_size}px base`} />
-              {project && (
-                <span className={styles.projectPill}>
-                  <span className={styles.projectDot} style={{ background: project.colour }} />
-                  {project.label}
-                </span>
-              )}
+              {project && <Chip dot={project.colour} label={project.label} />}
               {quality && (
                 <>
                   <span className={styles.heroDivider} aria-hidden />

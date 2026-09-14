@@ -45,27 +45,6 @@
   margin: 0 var(--haus-space-1);
 }
 
-.projectPill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--haus-space-1);
-  padding: var(--haus-space-px) var(--haus-space-2);
-  border-radius: var(--haus-radius-full);
-  background: var(--haus-color-surface-subtle);
-  color: var(--haus-color-ink-tertiary);
-  /* The whole label-xs role, as the Chips beside it read: it took the size and the weight and no tracking, so it sat looser than its neighbours' letters. */
-  font-size: var(--haus-type-label-xs-size);
-  font-weight: var(--haus-type-label-xs-weight);
-  line-height: var(--haus-type-label-xs-leading);
-  letter-spacing: var(--haus-type-label-xs-tracking);
-  white-space: nowrap;
-}
-.projectDot {
-  width: var(--dot-xs);
-  height: var(--dot-xs);
-  border-radius: var(--haus-radius-full);
-  flex-shrink: 0;
-}
 
 /* ── Preview (inside a Panel) ────────────────────────────────────────────── */
 

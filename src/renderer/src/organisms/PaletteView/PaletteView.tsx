@@ -213,12 +213,7 @@ export function PaletteView({
             <div className={styles.heroMeta}>
               <Chip icon={kindMeta.icon} label={kindMeta.label} />
               <Chip label={kindMeta.value} />
-              {project && (
-                <span className={styles.projectPill}>
-                  <span className={styles.projectDot} style={{ background: project.colour }} />
-                  {project.label}
-                </span>
-              )}
+              {project && <Chip dot={project.colour} label={project.label} />}
               <span className={styles.heroDivider} aria-hidden />
               {quality?.kind === 'tonal' && (
                 <>
