@@ -39,7 +39,7 @@
 }
 
 .heroDivider {
-  width: 1px;
+  width: var(--haus-border-width-default);
   height: 16px;
   background: var(--haus-color-border-default);
   margin: 0 var(--haus-space-1);
@@ -49,18 +49,21 @@
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-1);
-  padding: 1px var(--haus-space-2);
+  padding: var(--haus-space-px) var(--haus-space-2);
   border-radius: var(--haus-radius-full);
   background: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-tertiary);
+  /* The whole label-xs role, as the Chips beside it read: it took the size and the weight and no tracking, so it sat looser than its neighbours' letters. */
   font-size: var(--haus-type-label-xs-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-xs-weight);
+  line-height: var(--haus-type-label-xs-leading);
+  letter-spacing: var(--haus-type-label-xs-tracking);
   white-space: nowrap;
 }
 .projectDot {
   width: var(--dot-xs);
   height: var(--dot-xs);
-  border-radius: 50%;
+  border-radius: var(--haus-radius-full);
   flex-shrink: 0;
 }
 
@@ -79,8 +82,11 @@
 }
 
 .groupName {
-  font-size: var(--haus-text-14);
-  font-weight: var(--haus-weight-semibold);
+  /* 14 and semibold is no haus role. A name is label-md, as in PaletteCreate. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -103,50 +109,44 @@
   gap: var(--haus-space-1);
 }
 
-.swatchWrap {
-  position: relative;
-}
 .swatch {
   display: block;
   width: 100%;
   border-radius: var(--haus-radius-sm);
 }
+
+/* The label and the swatch's action sit under the swatch, on the panel's own
+   ground. The action was a white glyph on a translucent black scrim over the
+   colour; as an IconButton it takes the ink colours, which no scrim can make
+   legible on every swatch, so it moved off the colour. */
+.stopFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--haus-space-1);
+  min-height: var(--haus-control-height-xs);
+}
 .stopLabel {
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
-/* Swatch overlay actions: a scrim so they read on any colour, plus a clear hover. */
-.promote,
-.inLib {
-  position: absolute;
-  top: var(--haus-space-1);
-  right: var(--haus-space-1);
-  width: 24px;
-  height: var(--haus-control-height-xs);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--haus-radius-full);
-  color: #fff;
-}
+/* Revealed on hover, and on focus: at opacity 0 a focused button was invisible. */
 .promote {
-  border: none;
-  background: rgb(0 0 0 / 0.4);
-  cursor: pointer;
-  font-size: var(--haus-text-12);
   opacity: 0;
-  transition:
-    opacity var(--haus-duration-fast) var(--haus-ease-move),
-    background var(--haus-duration-fast) var(--haus-ease-move);
+  transition: opacity var(--haus-duration-fast) var(--haus-ease-move);
 }
-.swatchWrap:hover .promote {
+.stop:hover .promote,
+.stop:focus-within .promote {
   opacity: 1;
 }
-.promote:hover {
-  background: rgb(0 0 0 / 0.65);
-}
+
 .inLib {
-  font-size: var(--haus-text-14);
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5));
+  display: inline-flex;
+  font-size: var(--haus-icon-xs);
+  color: var(--haus-color-success-solid);
 }

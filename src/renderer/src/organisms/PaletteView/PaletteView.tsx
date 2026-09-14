@@ -64,25 +64,24 @@ function Stop({ swatch, label, onPromoteClick }: StopProps): React.ReactElement 
   const inLibrary = swatch.colour_id != null
   return (
     <div className={styles.stop}>
-      <div className={styles.swatchWrap}>
-        <span className={styles.swatch} style={{ background: swatch.hex }} title={swatch.hex} />
+      <span className={styles.swatch} style={{ background: swatch.hex }} title={swatch.hex} />
+      <div className={styles.stopFoot}>
+        <span className={styles.stopLabel}>{label}</span>
         {inLibrary ? (
-          <span className={styles.inLib} title="In library">
+          <span className={styles.inLib} role="img" aria-label="In library" title="In library">
             <FontAwesomeIcon icon={faCircleCheck} />
           </span>
         ) : (
-          <button
-            type="button"
+          <IconButton
+            size="xs"
             className={styles.promote}
             onClick={() => onPromoteClick(swatch)}
-            aria-label="Save to library"
-            title="Save to library"
+            label={`Save ${swatch.hex} to library`}
           >
             <FontAwesomeIcon icon={faArrowUpFromBracket} />
-          </button>
+          </IconButton>
         )}
       </div>
-      <span className={styles.stopLabel}>{label}</span>
     </div>
   )
 }
