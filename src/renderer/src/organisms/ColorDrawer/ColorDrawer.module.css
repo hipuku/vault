@@ -49,47 +49,18 @@
 }
 
 .name {
-  field-sizing: content;
-  max-width: 100%;
-  min-width: 1ch;
+  /* The whole heading role. It took three of the four and set leading-tight,
+     which is display's. The field, its pen and the rename behaviour are
+     InlineEdit's, which this drew again by hand, with a pen that stayed
+     invisible under keyboard focus. */
+  display: flex;
+  min-width: 0;
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-heading-size);
   font-weight: var(--haus-type-heading-weight);
+  line-height: var(--haus-type-heading-leading);
   letter-spacing: var(--haus-type-heading-tracking);
-  line-height: var(--haus-leading-tight);
   color: var(--haus-color-ink-primary);
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: 2px 0;
-  cursor: default;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-input.name {
-  cursor: text;
-}
-.name:focus,
-.name:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-.nameActions {
-  display: flex;
-  align-items: center;
-  width: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition:
-    width var(--haus-duration-normal) var(--haus-ease-move),
-    opacity var(--haus-duration-fast) var(--haus-ease-move);
-}
-
-.section:hover .nameActions {
-  width: 24px;
-  opacity: 1;
 }
 
 .star {
@@ -118,14 +89,19 @@ input.name {
 }
 
 .confidence {
-  font-size: var(--haus-text-12);
+  /* The whole label-caption role. 12 and regular is no haus role; caption keeps
+     the weight and the quiet, a pixel smaller. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
 .nameList {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-0-5);
 }
 
 .nameRow {
@@ -134,8 +110,6 @@ input.name {
   gap: var(--haus-space-2);
   padding: var(--haus-space-2);
   border-radius: var(--haus-radius-md);
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-body-sm-size);
   color: var(--haus-color-ink-secondary);
   transition: background var(--haus-duration-normal) var(--haus-ease-move);
 }
@@ -164,7 +138,13 @@ input.name {
 
 .nameText {
   min-width: 0;
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role. The row set body-sm's size and this overrode the
+     weight to medium: 13 and medium is label-md. */
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,12 +153,26 @@ input.name {
 .nameWarn {
   display: inline-flex;
   flex-shrink: 0;
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-icon-xs);
   color: var(--haus-color-warning-on-subtle);
 }
 
-.nameRow:hover .nameActions {
-  width: 26px;
+.nameActions {
+  display: flex;
+  align-items: center;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width var(--haus-duration-normal) var(--haus-ease-move),
+    opacity var(--haus-duration-fast) var(--haus-ease-move);
+}
+
+/* Focus reveals it too: at width 0 a focused button, and its ring, were
+   invisible. The width is the sm IconButton's. */
+.nameRow:hover .nameActions,
+.nameRow:focus-within .nameActions {
+  width: var(--haus-control-height-xs);
   opacity: 1;
 }
 

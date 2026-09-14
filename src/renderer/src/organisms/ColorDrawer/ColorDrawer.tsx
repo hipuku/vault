@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faTrash, faPen, faRightLeft, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faTrash, faRightLeft, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
 import type { Colour, Tag } from '@shared/types'
 import { Drawer } from '../../molecules/Drawer/Drawer'
 import { Tooltip } from '../../atoms/Tooltip/Tooltip'
 import { generateLightnessScale } from '@shared/lib/lightnessScale'
 import { Button } from '../../atoms/Button/Button'
 import { IconButton } from '../../atoms/IconButton/IconButton'
+import { InlineEdit } from '../../atoms/InlineEdit/InlineEdit'
 import { CopyButton } from '../../molecules/CopyButton/CopyButton'
 import { ProjectPicker } from '../../molecules/ProjectPicker/ProjectPicker'
 import { TagModal } from '../../organisms/TagModal/TagModal'
@@ -40,16 +41,12 @@ export function ColorDrawer({
   onToggleFavourite,
   onDelete,
 }: ColorDrawerProps): React.ReactElement {
-  const [name, setName] = useState('')
-  const [editing, setEditing] = useState(false)
   const [allTags, setAllTags] = useState<Tag[]>([])
   const [assigned, setAssigned] = useState<Set<number>>(new Set())
   const [tagModalOpen, setTagModalOpen] = useState(false)
   const [newTagLabel, setNewTagLabel] = useState('')
 
   useEffect(() => {
-    setName(colour?.name ?? '')
-    setEditing(false)
     if (!colour) return
     let live = true
     Promise.all([window.api.tag.list(), window.api.tag.listForAsset('colour', colour.id)]).then(([tags, mine]) => {
@@ -72,14 +69,6 @@ export function ColorDrawer({
     for (const c of library) if (c.id !== colour?.id) s.add(c.name.toLowerCase())
     return s
   }, [library, colour?.id])
-
-  function commitName(): void {
-    setEditing(false)
-    if (!colour) return
-    const next = name.trim()
-    if (next && next !== colour.name) onRename(colour.id, next)
-    else setName(colour.name)
-  }
 
   async function toggleTag(tag: Tag): Promise<void> {
     if (!colour) return
@@ -124,40 +113,9 @@ export function ColorDrawer({
           </div>
 
           <div className={styles.section}>
-            {editing ? (
-              <input
-                autoFocus
-                className={styles.name}
-                value={name}
-                onChange={e => setName(e.target.value)}
-                onBlur={commitName}
-                onFocus={e => e.target.select()}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
-                  if (e.key === 'Escape') {
-                    setName(colour.name)
-                    setEditing(false)
-                  }
-                }}
-                aria-label="Colour name"
-              />
-            ) : (
-              <span className={styles.name} title={name}>
-                {name}
-              </span>
-            )}
-            {!editing && (
-              <div className={styles.nameActions}>
-                <button
-                  type="button"
-                  className="icon-btn icon-btn--xs"
-                  onClick={() => setEditing(true)}
-                  aria-label="Rename"
-                >
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
-              </div>
-            )}
+            <span className={styles.name}>
+              <InlineEdit value={colour.name} onCommit={next => onRename(colour.id, next)} ariaLabel="colour name" />
+            </span>
             <IconButton
               className={styles.star}
               pressed={Boolean(colour.favourite)}
@@ -208,14 +166,14 @@ export function ColorDrawer({
                         </span>
                         <span className={styles.nameDelta}>ΔE {formatDeltaE(m.deltaE)}</span>
                         <div className={styles.nameActions}>
-                          <button
-                            type="button"
-                            className="icon-btn icon-btn--sm icon-btn--primary"
+                          <IconButton
+                            size="sm"
+                            tone="primary"
                             onClick={() => onRename(colour.id, m.name)}
-                            aria-label={`Use “${m.name}”`}
+                            label={`Use “${m.name}”`}
                           >
                             <FontAwesomeIcon icon={faRightLeft} />
-                          </button>
+                          </IconButton>
                         </div>
                       </div>
                     )

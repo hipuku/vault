@@ -11,6 +11,8 @@
 }
 
 .bigName {
+  /* A specimen: the family set in itself, at haus's specimen step. Its type is
+     the font's, not a role. */
   flex: 1;
   font-size: var(--haus-text-28);
   line-height: 1.1;
@@ -22,7 +24,11 @@
 
 .sub {
   padding: var(--haus-space-1) var(--haus-space-5) var(--haus-space-5);
+  /* The whole body-sm role. */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -34,12 +40,9 @@
   border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
-.group:first-of-type {
-  border-top: none;
-}
-
 .specimen {
-  font-size: var(--haus-text-20);
+  /* The size is the toolbar's preview size, set inline, and the face and weight
+     are the font's: a specimen, not a role. */
   color: var(--haus-color-ink-primary);
   line-height: var(--haus-leading-snug);
   overflow-wrap: break-word;
