@@ -23,6 +23,10 @@
 
 .hint {
   flex: 1;
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-tertiary);
 }

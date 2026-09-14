@@ -8,6 +8,9 @@
 
 .error {
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-error-on-subtle);
 }
 
@@ -45,5 +48,5 @@
 }
 
 .check {
-  width: 12px;
+  font-size: var(--haus-icon-xs);
 }

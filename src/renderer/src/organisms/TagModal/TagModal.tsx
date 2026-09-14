@@ -83,7 +83,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
           </p>
         )}
 
-        <div className={styles.swatches}>
+        <div className={styles.swatches} role="group" aria-label="Project colour">
           {TAG_COLOURS.map(c => {
             const on = c === colour
             return (
@@ -93,6 +93,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
                 className={[styles.swatch, on ? styles.swatchOn : ''].filter(Boolean).join(' ')}
                 style={{ background: c }}
                 aria-label={`Colour ${c}`}
+                aria-pressed={on}
                 onClick={() => setColour(c)}
               >
                 {on && (

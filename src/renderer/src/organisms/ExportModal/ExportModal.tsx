@@ -75,7 +75,9 @@ export function ExportModal({
             <FontAwesomeIcon icon={faDownload} /> Download .{meta?.ext}
           </Button>
           <Button variant="primary" size="md" onClick={() => copy(code)}>
-            <FontAwesomeIcon icon={copied ? faCheck : faCopy} /> {copied ? 'Copied' : 'Copy'}
+            <FontAwesomeIcon icon={copied ? faCheck : faCopy} />{' '}
+            {/* The flip to Copied was silent: the one confirmation the copy gives. */}
+            <span aria-live="polite">{copied ? 'Copied' : 'Copy'}</span>
           </Button>
         </>
       }
@@ -89,7 +91,9 @@ export function ExportModal({
         />
       </div>
 
-      <pre className={styles.code}>
+      {/* It scrolls both ways, so it takes focus: a region only the pointer can scroll
+          is out of reach of a keyboard. */}
+      <pre className={styles.code} tabIndex={0} aria-label={`${meta?.label ?? 'Export'} preview`}>
         <code>{code}</code>
       </pre>
     </Modal>
