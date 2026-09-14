@@ -201,6 +201,105 @@ textarea::placeholder {
   color: var(--haus-color-ink-tertiary);
 }
 
+/* ── Card: THE shared shell for the four library cards ─────────────────────
+   ColorCard, FontCard, PaletteCard and TypeScaleCard each wrote this, and a
+   diff of the four returned the preview and one padding. The preview is the
+   card's own; everything around it is stated once, here. */
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-lg);
+  overflow: hidden;
+  background: var(--haus-color-surface-default);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: box-shadow var(--haus-duration-normal) var(--haus-ease-move);
+}
+.card:hover {
+  box-shadow: var(--haus-shadow-md);
+}
+
+/* A full-bleed swatch needs no divider. A preview on the card's own ground
+   does, and takes more room at the sides to sit level with the text above it. */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-3);
+}
+.card-body--divided {
+  padding: var(--haus-space-3) var(--haus-space-4) var(--haus-space-4);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+}
+
+.card-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-2);
+  min-width: 0;
+}
+.card-name {
+  /* The whole label-md role. The four read body's size and overrode the weight
+     to medium, and 14 and medium is no haus role: 13 and medium is label-md. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
+  color: var(--haus-color-ink-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-fav {
+  flex-shrink: 0;
+  font-size: var(--haus-icon-xs);
+  color: var(--accent-gold);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-2);
+}
+.card-value {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  font-weight: var(--haus-type-mono-sm-weight);
+  line-height: var(--haus-type-mono-sm-leading);
+  letter-spacing: var(--haus-type-mono-sm-tracking);
+  color: var(--haus-color-ink-tertiary);
+}
+
+/* The pen revealed on hover. It is decoration, not a control: the whole card
+   is the button. On a swatch it is always white with a shadow, because the
+   ramp behind it is dark at that corner and the swatch is sometimes pale. */
+.card-edit {
+  position: absolute;
+  z-index: 1;
+  top: var(--haus-space-2);
+  right: var(--haus-space-2);
+  width: var(--haus-control-height-xs);
+  height: var(--haus-control-height-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--haus-icon-xs);
+  color: var(--haus-color-ink-tertiary);
+  opacity: 0;
+  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
+}
+.card-edit--on-swatch {
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.45));
+}
+.card:hover .card-edit {
+  opacity: 0.9;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

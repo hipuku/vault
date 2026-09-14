@@ -36,7 +36,7 @@ export function TypeScaleCard({
   const caption = get('Caption', 'Small') ?? steps[steps.length - 1]
 
   return (
-    <button type="button" className={styles.card} onClick={() => onOpen(scale)} aria-label={`Open ${scale.name}`}>
+    <button type="button" className="card" onClick={() => onOpen(scale)} aria-label={`Open ${scale.name}`}>
       <div className={styles.previewWrap}>
         <div className={styles.preview}>
           {heading && (
@@ -69,18 +69,18 @@ export function TypeScaleCard({
             </span>
           )}
         </div>
-        <span className={styles.edit}>
+        <span className="card-edit">
           <FontAwesomeIcon icon={faPen} />
         </span>
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.nameRow}>
-          <span className={styles.name}>{scale.name}</span>
+      <div className="card-body card-body--divided">
+        <div className="card-name-row">
+          <span className="card-name">{scale.name}</span>
         </div>
-        <div className={styles.meta}>
+        <div className="card-meta">
           <Chip label={ratioLabel(scale.ratio)} />
-          <span className={styles.value}>{scale.base_size}px</span>
+          <span className="card-value">{scale.base_size}px</span>
         </div>
       </div>
     </button>

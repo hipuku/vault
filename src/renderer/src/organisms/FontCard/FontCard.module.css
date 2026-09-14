@@ -1,25 +1,11 @@
-.card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0;
-  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  border-radius: var(--haus-radius-lg);
-  overflow: hidden;
-  background: var(--haus-color-surface-default);
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-  transition: box-shadow var(--haus-duration-normal) var(--haus-ease-move);
-}
-.card:hover {
-  box-shadow: var(--haus-shadow-md);
-}
+/* The shell, body, name, meta and pen are the global .card classes. */
 
 .previewWrap {
   position: relative;
 }
 
+/* The specimen is the font itself at the size the toolbar sets, so its type is
+   data, not a haus role. */
 .preview {
   height: 168px;
   padding: var(--haus-space-5);
@@ -29,67 +15,4 @@
   align-items: center;
   overflow: hidden;
   overflow-wrap: break-word;
-}
-
-.edit {
-  position: absolute;
-  top: var(--haus-space-2);
-  right: var(--haus-space-2);
-  width: 24px;
-  height: var(--haus-control-height-xs);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--haus-text-12);
-  color: var(--haus-color-ink-tertiary);
-  opacity: 0;
-  transition: opacity var(--haus-duration-normal) var(--haus-ease-move);
-}
-.card:hover .edit {
-  opacity: 0.9;
-}
-
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-2);
-  padding: var(--haus-space-3) var(--haus-space-4) var(--haus-space-4);
-  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-}
-
-.nameRow {
-  display: flex;
-  align-items: center;
-  gap: var(--haus-space-2);
-  min-width: 0;
-}
-
-.favInline {
-  color: var(--accent-gold);
-  font-size: var(--haus-text-12);
-  flex-shrink: 0;
-}
-
-.name {
-  font-size: var(--haus-type-body-size);
-  font-weight: var(--haus-weight-medium);
-  color: var(--haus-color-ink-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  gap: var(--haus-space-2);
-}
-
-.value {
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
-  font-weight: var(--haus-type-mono-sm-weight);
-  line-height: var(--haus-type-mono-sm-leading);
-  letter-spacing: var(--haus-type-mono-sm-tracking);
-  color: var(--haus-color-ink-tertiary);
 }

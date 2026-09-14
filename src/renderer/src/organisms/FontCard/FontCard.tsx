@@ -18,24 +18,24 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
   const stack = `'${font.family}', ${categoryGeneric(font.category)}`
 
   return (
-    <button type="button" className={styles.card} onClick={() => onOpen(font)} aria-label={`Open ${font.family}`}>
+    <button type="button" className="card" onClick={() => onOpen(font)} aria-label={`Open ${font.family}`}>
       <div className={styles.previewWrap}>
         <div className={styles.preview} style={{ fontFamily: stack, fontSize: `${previewSize}px` }}>
           {previewText || 'The quick brown fox'}
         </div>
-        <span className={styles.edit}>
+        <span className="card-edit">
           <FontAwesomeIcon icon={faPen} />
         </span>
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.nameRow}>
-          {font.favourite === 1 && <FontAwesomeIcon icon={faStar} className={styles.favInline} />}
-          <span className={styles.name}>{font.family}</span>
+      <div className="card-body card-body--divided">
+        <div className="card-name-row">
+          {font.favourite === 1 && <FontAwesomeIcon icon={faStar} className="card-fav" />}
+          <span className="card-name">{font.family}</span>
         </div>
-        <div className={styles.meta}>
+        <div className="card-meta">
           <Chip label={categoryLabel(font.category)} />
-          <span className={styles.value}>
+          <span className="card-value">
             {weights.length} weight{weights.length === 1 ? '' : 's'}
           </span>
         </div>

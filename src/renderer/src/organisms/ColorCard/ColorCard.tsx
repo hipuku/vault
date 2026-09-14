@@ -18,7 +18,7 @@ export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElemen
   const activeShade = useMemo(() => nearestShadeIndex(colour.hex, shades), [colour.hex, shades])
 
   return (
-    <button type="button" className={styles.card} onClick={() => onOpen(colour)} aria-label={`Open ${colour.name}`}>
+    <button type="button" className={`card ${styles.card}`} onClick={() => onOpen(colour)} aria-label={`Open ${colour.name}`}>
       <div className={styles.swatch} style={{ background: colour.hex }}>
         <div className={styles.shades} aria-hidden>
           {shades.map((s, i) => (
@@ -29,19 +29,19 @@ export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElemen
             />
           ))}
         </div>
-        <span className={styles.edit}>
+        <span className="card-edit card-edit--on-swatch">
           <FontAwesomeIcon icon={faPen} />
         </span>
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.nameRow}>
-          {colour.favourite === 1 && <FontAwesomeIcon icon={faStar} className={styles.favInline} />}
-          <span className={styles.name}>{colour.name}</span>
+      <div className="card-body">
+        <div className="card-name-row">
+          {colour.favourite === 1 && <FontAwesomeIcon icon={faStar} className="card-fav" />}
+          <span className="card-name">{colour.name}</span>
         </div>
-        <div className={styles.meta}>
+        <div className="card-meta">
           <Chip label={hueFamily(colour.hex)} />
-          <span className={styles.hex}>{colour.hex}</span>
+          <span className="card-value">{colour.hex}</span>
         </div>
       </div>
     </button>

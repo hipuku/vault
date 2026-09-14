@@ -31,7 +31,7 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
       : { icon: faBarsStaggered, label: 'Tonal', value: `${count} ${count === 1 ? 'ramp' : 'ramps'}` }
 
   return (
-    <button type="button" className={styles.card} onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
+    <button type="button" className="card" onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
       <div className={styles.preview}>
         {palette.kind === 'expressive' ? (
           <div className={styles.expGrid}>
@@ -54,16 +54,18 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
             ))}
           </div>
         )}
-        <span className={styles.edit}>
+        <span className="card-edit card-edit--on-swatch">
           <FontAwesomeIcon icon={faPen} />
         </span>
       </div>
 
-      <div className={styles.body}>
-        <span className={styles.name}>{palette.name}</span>
-        <div className={styles.meta}>
+      <div className="card-body">
+        <div className="card-name-row">
+          <span className="card-name">{palette.name}</span>
+        </div>
+        <div className="card-meta">
           <Chip icon={meta.icon} label={meta.label} />
-          <span className={styles.value}>{meta.value}</span>
+          <span className="card-value">{meta.value}</span>
         </div>
       </div>
     </button>
