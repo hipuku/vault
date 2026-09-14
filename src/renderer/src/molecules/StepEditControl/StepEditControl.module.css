@@ -29,7 +29,6 @@
 /* Every control occupies the same footprint: control-height-lg, 44, which is
    what the Select trigger beside them is. */
 .controlBox,
-.unitField,
 .control {
   width: 120px;
   height: var(--haus-control-height-lg);
@@ -37,46 +36,12 @@
   box-sizing: border-box;
 }
 
-/* Line height and tracking are Input at lg in its mono face, which these drew
-   again by hand before Input had one. The width above is all they add. */
+/* Size, line height and tracking are Input at lg in its mono face, which these
+   drew again by hand before Input had one. The width above is all they add. */
 
 /* Size field: value plus a px suffix that always hugs the number. */
-.unitField {
-  display: inline-flex;
-  align-items: center;
-  padding: 0 var(--haus-space-3);
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-}
-.unitField:focus-within {
-  border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
-}
-.unitInput {
-  flex: 1;
-  min-width: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  outline: none;
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-md-size);
-  font-weight: var(--haus-type-mono-md-weight);
-  line-height: var(--haus-type-mono-md-leading);
-  letter-spacing: var(--haus-type-mono-md-tracking);
-  color: var(--haus-color-ink-primary);
-}
-.unit {
-  margin-left: var(--haus-space-1);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
-  font-weight: var(--haus-type-mono-sm-weight);
-  line-height: var(--haus-type-mono-sm-leading);
-  letter-spacing: var(--haus-type-mono-sm-tracking);
-  color: var(--haus-color-ink-disabled);
-  pointer-events: none;
-}
+/* Size is Input with a px unit, which this drew by hand as a box around a bare
+   input and a suffix. */
 
 /* The Weight Select (block) fills the control box. */
 .controlBox > * {

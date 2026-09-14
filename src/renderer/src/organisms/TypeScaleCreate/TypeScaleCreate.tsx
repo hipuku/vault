@@ -258,18 +258,17 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
             <label className={styles.label} htmlFor={baseSizeId}>
               Base size
             </label>
-            <div className={styles.sizeInput}>
-              <input
-                id={baseSizeId}
-                type="number"
-                min={10}
-                max={24}
-                value={baseSize}
-                onChange={e => setBaseSize(Number(e.target.value) || 16)}
-                className={styles.numInput}
-              />
-              <span className={styles.unit}>px</span>
-            </div>
+            <Input
+              id={baseSizeId}
+              mono
+              unit="px"
+              type="number"
+              min={10}
+              max={24}
+              value={baseSize}
+              onChange={e => setBaseSize(Number(e.target.value) || 16)}
+              className={styles.sizeInput}
+            />
           </div>
 
           {/* 6. Ratio presets */}

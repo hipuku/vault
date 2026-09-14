@@ -44,17 +44,16 @@ export function StepEditControl({
         <Popover align="right" width="md" role="dialog" ariaLabel={stepName ? `Edit ${stepName}` : 'Edit step'}>
           <label className={styles.field}>
             <span className={styles.fieldLabel}>Size</span>
-            <span className={styles.unitField}>
-              <input
-                type="number"
-                min={6}
-                max={200}
-                value={size}
-                onChange={e => onChange(Number(e.target.value) || size, weight, lineHeight, letterSpacing)}
-                className={styles.unitInput}
-              />
-              <span className={styles.unit}>px</span>
-            </span>
+            <Input
+              mono
+              unit="px"
+              type="number"
+              min={6}
+              max={200}
+              value={size}
+              onChange={e => onChange(Number(e.target.value) || size, weight, lineHeight, letterSpacing)}
+              className={styles.control}
+            />
           </label>
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Weight</span>

@@ -35,11 +35,48 @@
   font-family: var(--haus-font-sans);
 }
 
-.input::placeholder {
+.input::placeholder,
+.bare::placeholder {
   color: var(--haus-color-ink-disabled);
 }
 
+/* With a unit: the wrapper is the box, and the input inside it takes nothing of
+   its own, so the value and the unit share one border. */
+.withUnit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--haus-space-1);
+}
+.bare {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+.bare:focus-visible {
+  box-shadow: none;
+}
+.unit {
+  flex-shrink: 0;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  font-weight: var(--haus-type-mono-sm-weight);
+  line-height: var(--haus-type-mono-sm-leading);
+  letter-spacing: var(--haus-type-mono-sm-tracking);
+  /* Tertiary, where both hand-drawn copies used disabled ink, which is under
+     4.5:1: the unit is information, not a disabled control. */
+  color: var(--haus-color-ink-tertiary);
+  pointer-events: none;
+}
+
 /* Focus: the accent border, plus the haus focus ring (a surface gap, then the ring). */
+.withUnit:focus-within,
 .input:focus-visible {
   border-color: var(--haus-color-border-focus);
   box-shadow: var(--haus-focus-ring);
@@ -49,11 +86,13 @@
 .error {
   border-color: var(--haus-color-error-default);
 }
+.error.withUnit:focus-within,
 .error:focus-visible {
   border-color: var(--haus-color-error-default);
   box-shadow: var(--haus-focus-ring-error);
 }
 
+.disabled,
 .input:disabled {
   opacity: var(--haus-opacity-disabled);
   cursor: not-allowed;
