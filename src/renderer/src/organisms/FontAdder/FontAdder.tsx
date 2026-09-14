@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef, useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faMagnifyingGlass, faUpload, faCheck, faLaptop } from '@fortawesome/free-solid-svg-icons'
 import type { GoogleFontMeta, LocalFontFile, InstalledFamily } from '@shared/types'
 import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
+import { IconButton } from '../../atoms/IconButton/IconButton'
 import { Spinner } from '../../atoms/Spinner/Spinner'
 import { SegmentedControl } from '../../atoms/SegmentedControl/SegmentedControl'
 import { Select } from '../../molecules/Select/Select'
@@ -154,6 +155,8 @@ export function FontAdder({
   const [localFamily, setLocalFamily] = useState('')
   const [dragOver, setDragOver] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+  const familyId = useId()
+  const dupId = useId()
 
   useEffect(() => {
     if (!open || list) return
@@ -250,6 +253,13 @@ export function FontAdder({
         />
       }
     >
+      {/* A failed add on the Google or Installed tab set this and rendered it only in
+          the upload tab's footer, so the failure showed nowhere. */}
+      {saveError && tab !== 'local' && (
+        <p className={styles.tabError} role="alert">
+          {saveError}
+        </p>
+      )}
       {tab === 'google' ? (
         <div className={styles.googleBody}>
           <Input
@@ -337,7 +347,8 @@ export function FontAdder({
       ) : (
         <div className={styles.localBody}>
           {localRows.length === 0 ? (
-            <div
+            <button
+              type="button"
               className={[styles.dropzone, dragOver ? styles.dropzoneActive : ''].filter(Boolean).join(' ')}
               onClick={() => fileRef.current?.click()}
               onDragOver={e => {
@@ -352,33 +363,30 @@ export function FontAdder({
               }}
             >
               <FontAwesomeIcon icon={faUpload} className={styles.dropIcon} />
-              <p className={styles.dropText}>Drop font files, or click to choose</p>
-              <p className={styles.dropHint}>
+              <span className={styles.dropText}>Drop font files, or click to choose</span>
+              <span className={styles.dropHint}>
                 One family at a time. Add every weight & italic. .ttf · .otf · .woff · .woff2
-              </p>
-              <input
-                ref={fileRef}
-                type="file"
-                multiple
-                accept=".ttf,.otf,.woff,.woff2"
-                className={styles.fileInput}
-                onChange={e => {
-                  if (e.target.files) handleFiles(e.target.files)
-                  e.target.value = ''
-                }}
-              />
-            </div>
+              </span>
+            </button>
           ) : (
             <>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Family name</span>
-                <Input value={localFamily} onChange={e => setLocalFamily(e.target.value)} placeholder="e.g. Inter" />
+              <div className={styles.field}>
+                <label className={styles.fieldLabel} htmlFor={familyId}>
+                  Family name
+                </label>
+                <Input
+                  id={familyId}
+                  value={localFamily}
+                  onChange={e => setLocalFamily(e.target.value)}
+                  placeholder="e.g. Inter"
+                  aria-describedby={localDup ? dupId : undefined}
+                />
                 {localDup && (
-                  <span className={styles.dupWarn}>
+                  <span className={styles.dupWarn} id={dupId}>
                     “{localFamily.trim()}” is already in your library, so this adds a duplicate.
                   </span>
                 )}
-              </label>
+              </div>
               <div className={styles.fileRows}>
                 {localRows.map((row, i) => (
                   <div key={row.path + i} className={styles.fileRow}>
@@ -394,7 +402,7 @@ export function FontAdder({
                     <span className={styles.weightCell}>
                       <Select
                         block
-                        ariaLabel="Weight"
+                        ariaLabel={`Weight of ${row.filename}`}
                         align="right"
                         value={String(row.weight)}
                         onChange={k => setRow(i, { weight: Number(k) })}
@@ -404,7 +412,7 @@ export function FontAdder({
                     <span className={styles.styleCell}>
                       <Select
                         block
-                        ariaLabel="Style"
+                        ariaLabel={`Style of ${row.filename}`}
                         align="right"
                         value={row.style}
                         onChange={k => setRow(i, { style: k as 'normal' | 'italic' })}
@@ -414,14 +422,13 @@ export function FontAdder({
                         ]}
                       />
                     </span>
-                    <button
-                      type="button"
-                      className={['icon-btn', 'icon-btn--xs'].join(' ')}
+                    <IconButton
+                      size="xs"
                       onClick={() => setLocalRows(prev => prev.filter((_, idx) => idx !== i))}
-                      aria-label="Remove file"
+                      label={`Remove ${row.filename}`}
                     >
                       <FontAwesomeIcon icon={faXmark} />
-                    </button>
+                    </IconButton>
                   </div>
                 ))}
               </div>
@@ -430,26 +437,28 @@ export function FontAdder({
                   <FontAwesomeIcon icon={faUpload} /> Add more files
                 </Button>
               </span>
-              <input
-                ref={fileRef}
-                type="file"
-                multiple
-                accept=".ttf,.otf,.woff,.woff2"
-                className={styles.fileInput}
-                onChange={e => {
-                  if (e.target.files) handleFiles(e.target.files)
-                  e.target.value = ''
-                }}
-              />
             </>
           )}
+          <input
+            ref={fileRef}
+            type="file"
+            multiple
+            accept=".ttf,.otf,.woff,.woff2"
+            className={styles.fileInput}
+            tabIndex={-1}
+            aria-hidden
+            onChange={e => {
+              if (e.target.files) handleFiles(e.target.files)
+              e.target.value = ''
+            }}
+          />
         </div>
       )}
 
       {tab === 'local' && localRows.length > 0 && (
         <div className={styles.footer}>
           {saveError && (
-            <span className={styles.saveError} title={saveError}>
+            <span className={styles.saveError} title={saveError} role="alert">
               {saveError}
             </span>
           )}

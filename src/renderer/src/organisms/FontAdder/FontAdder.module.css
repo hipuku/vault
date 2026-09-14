@@ -1,11 +1,5 @@
 /* Shell, header and the tab strip come from Modal + SegmentedControl. */
 
-.tabOn,
-.tabOn:hover {
-  background: var(--haus-color-primary-subtle);
-  color: var(--haus-color-primary-default);
-}
-
 /* ── Google tab ──────────────────────────────────────────────────────────── */
 
 .googleBody {
@@ -35,11 +29,12 @@
 .resultMain {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-0-5);
   min-width: 0;
 }
 
 .resultName {
+  /* A specimen: the family set in itself. Its face is the font's, not a role. */
   font-size: var(--haus-text-20);
   color: var(--haus-color-ink-primary);
   line-height: 1.1;
@@ -50,6 +45,9 @@
 
 .resultMeta {
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 
@@ -57,8 +55,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-1);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-medium);
+  /* The whole label-md role, which it read as two primitives. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-success-solid);
   flex-shrink: 0;
 }
@@ -69,12 +70,18 @@
   gap: var(--haus-space-2);
   color: var(--haus-color-ink-tertiary);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   padding: var(--haus-space-6) 0;
 }
 
 .empty {
   color: var(--haus-color-ink-tertiary);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   padding: var(--haus-space-6) 0;
   text-align: center;
 }
@@ -106,8 +113,9 @@
   border-radius: var(--haus-radius-md);
 }
 .fileSpecimen {
-  width: 36px;
-  height: 36px;
+  /* "Ag" in the uploaded face: a specimen, so its size stays the font's. */
+  width: var(--haus-control-height-md);
+  height: var(--haus-control-height-md);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -120,7 +128,11 @@
 .fileName {
   flex: 1;
   min-width: 0;
-  font-size: var(--haus-text-12);
+  /* 12 and regular is no haus role; label-caption keeps the weight. */
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -142,7 +154,10 @@
 
 .dropzone {
   flex: 1;
-  border: 2px dashed var(--haus-color-border-strong);
+  width: 100%;
+  background: transparent;
+  font: inherit;
+  border: var(--haus-border-width-thick) dashed var(--haus-color-border-strong);
   border-radius: var(--haus-radius-lg);
   display: flex;
   flex-direction: column;
@@ -167,32 +182,22 @@
   margin-bottom: var(--haus-space-1);
 }
 .dropText {
-  font-size: var(--haus-type-body-size);
-  font-weight: var(--haus-weight-medium);
+  /* 14 and medium is no haus role; label-md is 13 and medium. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-secondary);
 }
 .dropHint {
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-tertiary);
 }
 .fileInput {
   display: none;
-}
-
-.localResult {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-4);
-}
-
-.localPreview {
-  font-size: var(--haus-text-24);
-  color: var(--haus-color-ink-primary);
-  line-height: var(--haus-leading-snug);
-  padding: var(--haus-space-4);
-  background: var(--haus-color-surface-subtle);
-  border-radius: var(--haus-radius-md);
-  overflow-wrap: break-word;
 }
 
 .field {
@@ -202,18 +207,10 @@
 }
 .fieldLabel {
   font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-medium);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   color: var(--haus-color-ink-tertiary);
-}
-
-.pathHint {
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
-  font-weight: var(--haus-type-mono-xs-weight);
-  line-height: var(--haus-type-mono-xs-leading);
-  letter-spacing: var(--haus-type-mono-xs-tracking);
-  color: var(--haus-color-ink-disabled);
-  word-break: break-all;
 }
 
 .footer {
@@ -225,17 +222,29 @@
 }
 
 .dupWarn {
-  font-size: var(--haus-text-12);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-warning-on-subtle);
 }
 
 /* Adds used to close the dialog whether or not the write succeeded. */
-.saveError {
+.saveError,
+.tabError {
   flex: 1;
   min-width: 0;
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-error-on-subtle);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.tabError {
+  flex: 0 0 auto;
+  margin-bottom: var(--haus-space-3);
+  white-space: normal;
 }
