@@ -15,6 +15,11 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  /* A scroll box clips what draws outside it, and each row's Add button sits at
+     its right edge, so the 4px focus ring was cut off. The box takes the ring's
+     room inside and gives it back outside, so nothing moves. */
+  padding-inline: var(--haus-space-1);
+  margin-inline: calc(var(--haus-space-1) * -1);
 }
 
 .result {

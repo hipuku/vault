@@ -1,10 +1,12 @@
 /* Shell, header and the tab strip come from Modal + SegmentedControl. */
 
+/* Modal's body scrolls and pads. This scrolled again inside it with no padding
+   of its own, so the hex field, which runs edge to edge, had its focus ring cut
+   off by this box's edges. */
 .body {
   display: flex;
   flex-direction: column;
   gap: var(--haus-space-4);
-  overflow-y: auto;
 }
 
 .hexRow {
