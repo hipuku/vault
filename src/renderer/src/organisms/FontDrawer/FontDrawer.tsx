@@ -159,17 +159,17 @@ export function FontDrawer({
                 >
                   <FontAwesomeIcon icon={faDownload} /> Download font file
                 </Button>
+                {/* The icon is the only sign this leaves the app, and it is hidden from a
+                    screen reader, so the name says where it goes. */}
                 <Button
                   variant="ghost"
                   size="md"
+                  aria-label="View on Google Fonts (opens in your browser)"
                   onClick={() =>
                     window.open(`https://fonts.google.com/specimen/${font.family.replace(/ /g, '+')}`, '_blank')
                   }
                 >
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} /> View on Google Fonts
-                  {/* The icon is the only sign this leaves the app, and it is hidden from a
-                      screen reader, so the destination is said in words as well. */}
-                  <span className="visually-hidden"> (opens in your browser)</span>
                 </Button>
               </span>
             )}
