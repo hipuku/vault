@@ -167,6 +167,9 @@ export function FontDrawer({
                   }
                 >
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} /> View on Google Fonts
+                  {/* The icon is the only sign this leaves the app, and it is hidden from a
+                      screen reader, so the destination is said in words as well. */}
+                  <span className="visually-hidden"> (opens in your browser)</span>
                 </Button>
               </span>
             )}

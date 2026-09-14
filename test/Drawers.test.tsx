@@ -103,6 +103,20 @@ describe('FontDrawer', () => {
     expect((await axe(container)).violations).toEqual([])
   })
 
+  it('says that View on Google Fonts leaves the app', () => {
+    render(
+      <FontDrawer
+        font={{ ...font, source: 'google' }}
+        previewText=""
+        previewSize={24}
+        onClose={vi.fn()}
+        onToggleFavourite={vi.fn()}
+        onDelete={vi.fn()}
+      />,
+    )
+    expect(screen.getByRole('button', { name: 'View on Google Fonts (opens in your browser)' })).toBeInTheDocument()
+  })
+
   it('marks the favourite as a pressed toggle', () => {
     render(
       <FontDrawer
