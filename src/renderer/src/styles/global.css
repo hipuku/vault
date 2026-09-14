@@ -117,8 +117,12 @@ textarea::placeholder {
   background: transparent;
   cursor: pointer;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-text-13);
-  font-weight: var(--haus-weight-semibold);
+  /* The whole label-md role. It read a size primitive and a weight primitive,
+     13 and semibold, which is no haus role: 13 and medium is label-md. */
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
