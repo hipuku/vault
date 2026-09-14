@@ -28,7 +28,7 @@ export function TypeScaleCard({
   onOpen,
 }: TypeScaleCardProps): React.ReactElement {
   // The label names the card for what it opens, and replaces its contents for a
-  // screen reader, so the meta row and the favourite star were never announced.
+  // screen reader, so the meta row was never announced.
   // A hidden description says them as a sentence: pointing at the visible row
   // runs its pieces together, because inline elements get no space between them.
   const metaId = useId()
