@@ -73,11 +73,25 @@ const cases: Array<[string, () => React.ReactElement, string]> = [
   ],
 ]
 
+const descriptions: Record<string, string> = {
+  // The colour is a favourite, so it says so first.
+  ColorCard: 'Favourite, Pink, #8B1E3F',
+  FontCard: 'Sans Serif, 2 weights',
+  PaletteCard: 'Tonal, 1 ramp',
+  TypeScaleCard: 'Major Third, 16px',
+}
+
 describe.each(cases)('%s', (_name, element, accessibleName) => {
   it('is one button, named for what it opens', () => {
     render(element())
     expect(screen.getAllByRole('button')).toHaveLength(1)
     expect(screen.getByRole('button', { name: accessibleName })).toBeTruthy()
+  })
+
+  it('describes itself with its meta row, since the label replaces its contents', () => {
+    render(element())
+    const button = screen.getByRole('button', { name: accessibleName })
+    expect(button).toHaveAccessibleDescription(descriptions[_name])
   })
 
   it('opens on click', async () => {

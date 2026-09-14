@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import type { TypeScale, TypeScaleStep } from '@shared/types'
@@ -28,6 +28,11 @@ export function TypeScaleCard({
   bodyStack,
   onOpen,
 }: TypeScaleCardProps): React.ReactElement {
+  // The label names the card for what it opens, and replaces its contents for a
+  // screen reader, so the meta row and the favourite star were never announced.
+  // A hidden description says them as a sentence: pointing at the visible row
+  // runs its pieces together, because inline elements get no space between them.
+  const metaId = useId()
   const get = (...names: string[]): TypeScaleStep | undefined => steps.find(s => names.includes(s.step_name))
   // Preset-agnostic: works for both the product (Display/Body/Caption) and
   // markup (H1/Paragraph/Small) presets.
@@ -36,7 +41,13 @@ export function TypeScaleCard({
   const caption = get('Caption', 'Small') ?? steps[steps.length - 1]
 
   return (
-    <button type="button" className="card" onClick={() => onOpen(scale)} aria-label={`Open ${scale.name}`}>
+    <button
+      type="button"
+      className="card"
+      onClick={() => onOpen(scale)}
+      aria-label={`Open ${scale.name}`}
+      aria-describedby={metaId}
+    >
       <div className={styles.previewWrap}>
         <div className={styles.preview}>
           {heading && (
@@ -83,6 +94,9 @@ export function TypeScaleCard({
           <span className="card-value">{scale.base_size}px</span>
         </div>
       </div>
+      <span id={metaId} className="visually-hidden">
+        {`${ratioLabel(scale.ratio)}, ${scale.base_size}px`}
+      </span>
     </button>
   )
 }

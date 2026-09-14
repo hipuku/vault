@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useId } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faPen } from '@fortawesome/free-solid-svg-icons'
 import type { Font } from '@shared/types'
@@ -14,11 +14,22 @@ interface FontCardProps {
 }
 
 export function FontCard({ font, previewText, previewSize, onOpen }: FontCardProps): React.ReactElement {
+  // The label names the card for what it opens, and replaces its contents for a
+  // screen reader, so the meta row and the favourite star were never announced.
+  // A hidden description says them as a sentence: pointing at the visible row
+  // runs its pieces together, because inline elements get no space between them.
+  const metaId = useId()
   const weights = parseWeights(font.weights)
   const stack = `'${font.family}', ${categoryGeneric(font.category)}`
 
   return (
-    <button type="button" className="card" onClick={() => onOpen(font)} aria-label={`Open ${font.family}`}>
+    <button
+      type="button"
+      className="card"
+      onClick={() => onOpen(font)}
+      aria-label={`Open ${font.family}`}
+      aria-describedby={metaId}
+    >
       <div className={styles.previewWrap}>
         <div className={styles.preview} style={{ fontFamily: stack, fontSize: `${previewSize}px` }}>
           {previewText || 'The quick brown fox'}
@@ -40,6 +51,9 @@ export function FontCard({ font, previewText, previewSize, onOpen }: FontCardPro
           </span>
         </div>
       </div>
+      <span id={metaId} className="visually-hidden">
+        {`${font.favourite === 1 ? 'Favourite, ' : ''}${categoryLabel(font.category)}, ${weights.length} weight${weights.length === 1 ? '' : 's'}`}
+      </span>
     </button>
   )
 }

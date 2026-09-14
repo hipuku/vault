@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useId, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faBarsStaggered, faTableColumns } from '@fortawesome/free-solid-svg-icons'
 import type { Palette, Swatch } from '@shared/types'
@@ -12,6 +12,11 @@ interface PaletteCardProps {
 }
 
 export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): React.ReactElement {
+  // The label names the card for what it opens, and replaces its contents for a
+  // screen reader, so the meta row and the favourite star were never announced.
+  // A hidden description says them as a sentence: pointing at the visible row
+  // runs its pieces together, because inline elements get no space between them.
+  const metaId = useId()
   // Group swatches by group_key, ordered by min sort_order within each group.
   const groups = useMemo(() => {
     const map = new Map<string, Swatch[]>()
@@ -31,7 +36,13 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
       : { icon: faBarsStaggered, label: 'Tonal', value: `${count} ${count === 1 ? 'ramp' : 'ramps'}` }
 
   return (
-    <button type="button" className="card" onClick={() => onOpen(palette)} aria-label={`Open ${palette.name}`}>
+    <button
+      type="button"
+      className="card"
+      onClick={() => onOpen(palette)}
+      aria-label={`Open ${palette.name}`}
+      aria-describedby={metaId}
+    >
       <div className={styles.preview}>
         {palette.kind === 'expressive' ? (
           <div className={styles.expGrid}>
@@ -68,6 +79,9 @@ export function PaletteCard({ palette, swatches, onOpen }: PaletteCardProps): Re
           <span className="card-value">{meta.value}</span>
         </div>
       </div>
+      <span id={metaId} className="visually-hidden">
+        {`${meta.label}, ${meta.value}`}
+      </span>
     </button>
   )
 }

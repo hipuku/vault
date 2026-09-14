@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useId, useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faPen } from '@fortawesome/free-solid-svg-icons'
 import type { Colour } from '@shared/types'
@@ -14,11 +14,22 @@ interface ColorCardProps {
 }
 
 export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElement {
+  // The label names the card for what it opens, and replaces its contents for a
+  // screen reader, so the meta row and the favourite star were never announced.
+  // A hidden description says them as a sentence: pointing at the visible row
+  // runs its pieces together, because inline elements get no space between them.
+  const metaId = useId()
   const shades = useMemo(() => generateLightnessScale(colour.hex), [colour.hex])
   const activeShade = useMemo(() => nearestShadeIndex(colour.hex, shades), [colour.hex, shades])
 
   return (
-    <button type="button" className={`card ${styles.card}`} onClick={() => onOpen(colour)} aria-label={`Open ${colour.name}`}>
+    <button
+      type="button"
+      className={`card ${styles.card}`}
+      onClick={() => onOpen(colour)}
+      aria-label={`Open ${colour.name}`}
+      aria-describedby={metaId}
+    >
       <div className={styles.swatch} style={{ background: colour.hex }}>
         <div className={styles.shades} aria-hidden>
           {shades.map((s, i) => (
@@ -44,6 +55,9 @@ export function ColorCard({ colour, onOpen }: ColorCardProps): React.ReactElemen
           <span className="card-value">{colour.hex}</span>
         </div>
       </div>
+      <span id={metaId} className="visually-hidden">
+        {`${colour.favourite === 1 ? 'Favourite, ' : ''}${hueFamily(colour.hex)}, ${colour.hex}`}
+      </span>
     </button>
   )
 }
