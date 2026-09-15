@@ -15,14 +15,21 @@
 }
 
 .swatches {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--haus-space-3) var(--haus-space-4);
+  /* One row of twelve at md: 12 × 32 and 11 × 12 is 516 of the body's 518. A six
+     column grid stretched each swatch to 73, which read as buttons rather than
+     colours. The padding leaves room above and below for the chosen ring, which
+     draws 4px out; at the sides the ring draws into the Modal body's own padding,
+     and side padding here would push the twelfth swatch onto a second row. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
   padding: var(--haus-space-1) 0;
 }
 
 .swatch {
-  aspect-ratio: 1;
+  flex-shrink: 0;
+  width: var(--haus-space-8);
+  height: var(--haus-space-8);
   border: none;
   border-radius: var(--haus-radius-full);
   /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- the colour is tokenised; the geometry is the shape of the affordance, and the rule cannot see inside a shorthand */
