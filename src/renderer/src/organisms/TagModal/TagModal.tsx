@@ -5,8 +5,25 @@ import { Button } from '../../atoms/Button/Button'
 import { Input } from '../../atoms/Input/Input'
 import { TAG_COLOURS } from '../../lib/tagColours'
 import { prefersDarkText } from '../../lib/colour'
+import { hueFamily } from '../../lib/colourSort'
 import Modal from '../../molecules/Modal/Modal'
 import styles from './TagModal.module.css'
+
+/** A name for each colour a screen reader can say. Each was named by its hex, which
+ *  is read out character by character and says nothing about the colour. The hue
+ *  family says it, numbered where the twelve share one: Blue 1, Blue 2, Blue 3. */
+const COLOUR_NAMES: Record<string, string> = (() => {
+  const families = TAG_COLOURS.map(c => hueFamily(c))
+  const seen: Record<string, number> = {}
+  return Object.fromEntries(
+    TAG_COLOURS.map((c, i) => {
+      const family = families[i]
+      const shared = families.filter(f => f === family).length > 1
+      seen[family] = (seen[family] ?? 0) + 1
+      return [c, shared ? `${family} ${seen[family]}` : family]
+    }),
+  )
+})()
 
 interface TagModalProps {
   open: boolean
@@ -92,7 +109,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
                 type="button"
                 className={[styles.swatch, on ? styles.swatchOn : ''].filter(Boolean).join(' ')}
                 style={{ background: c }}
-                aria-label={`Colour ${c}`}
+                aria-label={COLOUR_NAMES[c]}
                 aria-pressed={on}
                 onClick={() => setColour(c)}
               >

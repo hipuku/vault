@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -58,11 +58,32 @@ describe('TagModal', () => {
   it('marks the chosen colour as pressed', async () => {
     const user = userEvent.setup()
     render(<TagModal open mode="create" onSubmit={vi.fn()} onClose={vi.fn()} />)
-    const swatches = screen.getAllByRole('button', { name: /^Colour / })
+    const swatches = within(screen.getByRole('group', { name: 'Project colour' })).getAllByRole('button')
     expect(swatches[0]).toHaveAttribute('aria-pressed', 'true')
     await user.click(swatches[2])
     expect(swatches[2]).toHaveAttribute('aria-pressed', 'true')
     expect(swatches[0]).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('names each colour for its hue, numbered where hues repeat', () => {
+    render(<TagModal open mode="create" onSubmit={vi.fn()} onClose={vi.fn()} />)
+    const names = within(screen.getByRole('group', { name: 'Project colour' }))
+      .getAllByRole('button')
+      .map(b => b.getAttribute('aria-label'))
+    expect(names).toEqual([
+      'Pink',
+      'Red',
+      'Orange',
+      'Yellow',
+      'Green 1',
+      'Green 2',
+      'Cyan',
+      'Blue 1',
+      'Blue 2',
+      'Blue 3',
+      'Purple 1',
+      'Purple 2',
+    ])
   })
 
   it('has no axe violations', async () => {
