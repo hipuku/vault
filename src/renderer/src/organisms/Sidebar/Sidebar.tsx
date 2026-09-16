@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
-import { faPalette, faFont, faSwatchbook, faTextHeight, faPlus, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faPalette,
+  faFont,
+  faSwatchbook,
+  faTextHeight,
+  faPlus,
+  faPen,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
 import type { Section, TagWithCount } from '@shared/types'
 import { useConfirm } from '../../hooks/useConfirm'
 import { Button } from '../../atoms/Button/Button'

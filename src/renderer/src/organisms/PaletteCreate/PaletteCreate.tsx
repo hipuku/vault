@@ -404,7 +404,13 @@ export function PaletteCreate({
               </div>
               <div className={styles.field}>
                 <span className={styles.label}>Strategy</span>
-                <SegmentedControl ariaLabel="Strategy" size="sm" value={strategy} onChange={setStrategy} options={STRATEGIES} />
+                <SegmentedControl
+                  ariaLabel="Strategy"
+                  size="sm"
+                  value={strategy}
+                  onChange={setStrategy}
+                  options={STRATEGIES}
+                />
               </div>
             </>
           )}

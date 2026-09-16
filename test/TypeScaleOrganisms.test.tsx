@@ -24,8 +24,26 @@ beforeEach(() => {
 })
 
 const steps: TypeScaleStep[] = [
-  { id: 1, type_scale_id: 1, step_name: 'Display', size: 40, weight: 700, line_height: '1.1', letter_spacing: '0', sort_order: 0 },
-  { id: 2, type_scale_id: 1, step_name: 'Body', size: 16, weight: 400, line_height: '1.5', letter_spacing: '0', sort_order: 1 },
+  {
+    id: 1,
+    type_scale_id: 1,
+    step_name: 'Display',
+    size: 40,
+    weight: 700,
+    line_height: '1.1',
+    letter_spacing: '0',
+    sort_order: 0,
+  },
+  {
+    id: 2,
+    type_scale_id: 1,
+    step_name: 'Body',
+    size: 16,
+    weight: 400,
+    line_height: '1.5',
+    letter_spacing: '0',
+    sort_order: 1,
+  },
 ]
 
 /**
@@ -83,7 +101,9 @@ describe('SpecimenTable', () => {
 describe('StepEditControl', () => {
   it('is named for its step, and its fields are named inputs', async () => {
     const user = userEvent.setup()
-    render(<StepEditControl stepName="Body" size={16} weight={400} lineHeight="1.5" letterSpacing="0" onChange={vi.fn()} />)
+    render(
+      <StepEditControl stepName="Body" size={16} weight={400} lineHeight="1.5" letterSpacing="0" onChange={vi.fn()} />,
+    )
     await user.click(screen.getByRole('button', { name: 'Edit Body' }))
     expect(screen.getByRole('dialog', { name: 'Edit Body' })).toBeInTheDocument()
     expect(screen.getByRole('textbox', { name: 'Line height' })).toHaveValue('1.5')
