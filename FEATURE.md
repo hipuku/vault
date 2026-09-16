@@ -45,7 +45,7 @@ Add fonts from three sources. Installed fonts and local uploads are copied into 
 so the vault owns the bytes; a Google font is stored as a reference and rendered from
 Google's CDN, with `Download` fetching the file on demand.
 
-**Google Fonts.** Search the catalogue, preview in place, add in a click.
+**Google Fonts.** Search the catalogue, preview in place, add.
 
 ![Import font: Google](screenshots/fonts-import-google.png)
 
@@ -94,7 +94,7 @@ into your colour library**.
 
 ## Type scales
 
-Generate a type scale on a modular ratio, in two flavours.
+Generate a type scale on a modular ratio, from two presets.
 
 **Product.** Display down to Label, the design-system role set.
 
@@ -104,7 +104,7 @@ Generate a type scale on a modular ratio, in two flavours.
 
 ![Type scale creation: web](screenshots/typescale-create-web.png)
 
-The **viewer** is specimen-forward: a glyph hero, live **unit conversion** (px / rem / pt ·
+The **viewer** leads with the specimen: a glyph banner, live **unit conversion** (px / rem / pt ·
 unitless / px / % · em), and per-row metrics. Export captures whatever units are selected.
 
 ![Type scale viewer](screenshots/typescale-viewer.png)

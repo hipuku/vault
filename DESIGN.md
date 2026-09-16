@@ -1,9 +1,8 @@
 # Vault: Design Notes
 
 Why Vault is built the way it is: the product intent, the architecture, the design system, and
-the calls that weren't obvious. This is a decision log rather than a spec. I've recorded the choices
-that took real thought (and the alternatives I rejected), and skipped the parts the code already
-explains.
+the calls that weren't obvious. It is a decision log. It records the choices that took real thought and the
+alternatives rejected, and skips what the code already explains.
 
 ## What it is
 
@@ -14,8 +13,7 @@ colours, fonts, palettes, and type scales. Two jobs:
 2. **A studio.** Gather a project's colours and fonts, then _generate_ a palette and a type
    scale from them.
 
-It's deliberately personal software: no accounts, no cloud, no crowd metrics. The library lives
-on disk.
+No accounts, no cloud, no metrics. The library lives on disk.
 
 ![Colours library](screenshots/colors-library.png)
 ![Palette creation](screenshots/palette-create-tonal.png)
@@ -210,8 +208,9 @@ the application's job.
   pure helpers in `lib`.
 
   The rule is **never upward**: an atom cannot reach for a molecule, a molecule cannot reach for
-  an organism. Same-tier composition is allowed and happens ten times. `ConfirmDialog` is built
-  on `Modal`, `StepEditControl` and `UnitsControl` on `Select`, `PaletteView` on `ExportModal`.
+  an organism. Same-tier composition is allowed and happens eleven times. `ConfirmDialog` is built
+  on `Modal`, `StepEditControl` and `UnitsControl` on `Select`, `PaletteView` on `ExportModal`,
+  `Sidebar` on `TagModal`.
   The previous four-level split had zero same-tier imports, and that was worth giving up: the
   fourth level existed only because `primitives/` was holding both base controls and
   compositions, which is the distinction atoms and molecules already make.
@@ -220,7 +219,7 @@ the application's job.
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044'}}}%%
 flowchart TD
     P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
-    D["organisms · 17<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
+    D["organisms · 18<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
     R["molecules · 16<br/><small>Modal · Select · Drawer · Toolbar · ConfirmDialog<br/>ProjectPicker · UnitsControl · StepEditControl · …</small>"]
     A["atoms · 15<br/><small>Button · IconButton · Input · Badge · Chip · Panel · Popover<br/>SegmentedControl · PopoverTrigger · MenuOption · Tooltip · …</small>"]
     H["hooks<br/><small>state + IPC</small>"]
@@ -245,8 +244,8 @@ Solid arrows are the level ladder; dashed are the shortcuts a level is allowed t
 one below it. Nothing points upward.
 
 - **CSS Modules.** Co-located `.module.css` keeps the token vocabulary visible and the markup
-  readable, with no runtime styling cost. Tailwind and inline styles both move the vocabulary
-  into the markup, which is the thing this system is trying to keep out of it.
+  readable, with no runtime styling cost. Tailwind and inline styles both move that vocabulary
+  into the markup.
 - **The same patterns repeat across sections.** Card =
   whole-card button + hover edit pen + `Chip` (descriptor) + mono (value); viewers are
   hero + `Panel`s; create flows are a two-pane (controls | live preview).
@@ -257,8 +256,7 @@ one below it. Nothing points upward.
   iteration count, so an endless animation (the spinner) rests after one near-instant turn rather
   than flickering at 0.01ms a turn.
 
-  **The three defects the atom audit found are now closed**, and they are recorded rather than
-  quietly dropped. `vault#46`, `Tooltip` met one of WCAG 1.4.13's three requirements: Escape now
+  **The three defects the atom audit found are now closed.** `vault#46`, `Tooltip` met one of WCAG 1.4.13's three requirements: Escape now
   dismisses the bubble without moving focus, and the bubble takes pointer events so it can be
   hovered and read at magnification, closing on leaving both after a short grace period.
   `vault#45`, `SegmentedControl` rendered `role="tablist"` with `role="tab"` and none of what tabs
@@ -283,21 +281,20 @@ one below it. Nothing points upward.
   handled its own focus, and Tab walked out of an `aria-modal` dialog into the page behind it.
 
 - **A type role is taken whole, or not at all.** A haus type role is four tokens: size, weight,
-  leading and tracking. Reading two of them and inventing the rest is how a component drifts while
-  still looking tokenised, and it is invisible until something compares the four. Seven places did
+  leading and tracking. A component that takes two of them and sets the other two by hand is no
+  longer on the role, and nothing shows it until the four are compared. Seven places did
   exactly that and were corrected on 2026-09-11 and 12: `Badge` and `Chip` (which sit side by side
   in a viewer header and disagreed), the `Toolbar` title that `InlineEdit` inherits, `MenuOption`
   (whose two forms drew different row heights because only the `li` inherited a leading),
-  `SegmentedControl`, `Tooltip`, and the global `.eyebrow`. Each now sets all four. The test is
-  simple and worth applying to anything new: a component either declares a role's four properties
-  or it is not on that role, whatever its size says.
+  `SegmentedControl`, `Tooltip`, and the global `.eyebrow`. Each now sets all four. The check for anything
+  new: a component declares all four of a role's properties, or it is not on that role.
 
 - **What vault takes from haus, and what it keeps.** vault consumes haus's **token layer** in full:
   `brands/vault.css` supplies the brand and `semantics.css` resolves every role, so the vocabulary
   is shared and the values stay vault's. It takes **no components**, which is the portfolio's
   standing rule rather than an accident: vault consumes the tokens, core consumes the components.
-  A shared component a product then overrides buys a dependency and nothing else, where a shared
-  token keeps the vocabulary and leaves the value the product's.
+  A shared component that a product then overrides adds a dependency without removing work. A
+  shared token keeps the vocabulary and leaves the value to the product.
 
   What stays in `styles/tokens.css` is six primitives haus has no name for: a serif for the
   specimen previews, the four-step dot scale for swatch chips, and the favourite gold. One more
@@ -306,10 +303,8 @@ one below it. Nothing points upward.
   type forks all went to haus on 2026-09-09, and vault took haus's values rather than keeping
   its own.
 
-  _(drift was the other token consumer until 2026-09-09, when it took its foundation in-house on
-  the argument that a tool auditing design systems should not wear one. That leaves vault as the
-  token side of the rule on its own, and the rule is unchanged: it was never a claim about how
-  many products do it.)_
+  _(drift was the other token consumer until 2026-09-09, when it took its foundation in-house so
+  that it shares nothing with the systems it audits. vault is the only token consumer now.)_
 
   Of vault's 49 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
   Popover, Tooltip, Callout, EmptyState, Modal and Select. They stay vault's, because each is
@@ -319,8 +314,7 @@ one below it. Nothing points upward.
   `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows (`PaletteView`,
   `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`, `FontPreviewControl`,
   `UnitsControl`, `StepEditControl`), and the shell affordances haus does not ship (`CommandPalette`,
-  `Drawer`, `SegmentedControl`, `PopoverTrigger`, `InlineEdit`). That is the line the portfolio wants:
-  what a product still needs after the design system has done its half.
+  `Drawer`, `SegmentedControl`, `PopoverTrigger`, `InlineEdit`, `Sidebar`).
 
 ---
 
@@ -342,23 +336,20 @@ one below it. Nothing points upward.
   OKLCH ramp) is reserved for the wordmark, primary actions, focus rings, and the active nav
   item. One gold, `--accent-gold`, sits outside that rule, on the favourite star, because a
   marker of state should not read as something to click. It is vault's own token rather than
-  a read of the warning ramp it happens to match, because a star is not a warning and should
-  not move when the warning colour does. Everything else is calm neutral (the `onyx` greys),
-  so the accent reliably means "act here".
+  a read of the warning ramp it happens to match, so it does not move when that ramp does.
+  Everything else is neutral (the `onyx` greys), so the accent marks actions only.
 - **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
   via `@fontsource-variable/manrope` rather than the Google CDN, because a local-first app can't depend
   on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400
   only, which flattens the UI's weight hierarchy _and_ breaks the type-scale tool, whose entire
   job is demonstrating weight steps.
-- **Full-radius pill geometry.** Buttons, nav items, and tags are fully rounded, giving a soft,
-  friendly identity, distinct from the sharp-cornered "devtool" default, applied consistently
-  enough that the shape reads as Vault's rather than as decoration.
+- **Full-radius pill geometry.** Buttons, nav items and tags are fully rounded, applied to every
+  control of those kinds, so the shape is consistent across the app.
 - **Font Awesome (SVG) over Lucide.** I started on Lucide and switched: FA's solid set sits at a
   more consistent optical weight next to Manrope, and the SVG-React packages tree-shake to only
   the icons used, so there is no icon-font FOUT.
-- **Light mode only, on purpose.** A calm, paper-like single theme keeps attention on the
-  _content_, the colours and type you're collecting, and concentrated the design work on one
-  surface. The two-tier token layer means a dark theme is mostly a matter of overriding the
+- **Light mode only, on purpose.** One pale theme keeps the saved colours and type the brightest
+  thing on screen, and concentrated the design work on one surface. The two-tier token layer means a dark theme is mostly a matter of overriding the
   semantic aliases: deferred rather than ruled out.
 
 ### Colour
@@ -408,9 +399,8 @@ one below it. Nothing points upward.
 - **Four sections in a sidebar.** Colours, Fonts, Palettes and Type scales are peers,
   plus an aggregated per-project view.
 - **The interface says "Projects".** Underneath, the schema is a generic `tags` / `asset_tags` join:
-  any asset, many tags, because that's the flexible data model. But users don't think in tags;
-  they think in the project they're working on. So the UI says _Projects_ while the generic join
-  stays underneath.
+  any asset, many tags, which is the flexible data model. The UI says _Projects_ because that is
+  what assets are grouped for here, and the generic join stays underneath.
 - **Drawer for vault items, page for generated artifacts.** A colour or font is a quick glance
   (drawer); a palette or type scale is a worked object (full page with export).
 - **Generated artifacts are immutable after creation.** You tune a type scale while creating it
