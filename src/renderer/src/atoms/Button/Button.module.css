@@ -7,6 +7,12 @@
   cursor: pointer;
   font-family: var(--haus-font-sans);
   font-weight: var(--haus-weight-bold);
+  /* The one piece of type here that was never stated: the label took the
+     browser's `normal`, which is font-dependent, so its line box could not be
+     read off a token. leading-normal is haus's value for short UI text, and a
+     button's label is the shortest there is. The button's height comes from the
+     control scale either way, so nothing moves. */
+  line-height: var(--haus-leading-normal);
   white-space: nowrap;
   transition:
     background var(--haus-duration-normal) var(--haus-ease-move),

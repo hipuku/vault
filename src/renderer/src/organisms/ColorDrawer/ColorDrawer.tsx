@@ -134,7 +134,7 @@ export function ColorDrawer({
           </div>
 
           <div className={styles.group}>
-            <h3 className="eyebrow">Contrast</h3>
+            <h2 className="eyebrow">Contrast</h2>
             <ContrastChip hex={colour.hex} bg="white" />
             <ContrastChip hex={colour.hex} bg="black" />
           </div>
@@ -142,7 +142,7 @@ export function ColorDrawer({
           {naming && (
             <div className={styles.group}>
               <div className={styles.groupHead}>
-                <h3 className="eyebrow">Nearest names</h3>
+                <h2 className="eyebrow">Nearest names</h2>
                 <span className={styles.confidence}>{confidenceLabel(naming.confidence)}</span>
               </div>
               <div className={styles.nameList}>
@@ -188,7 +188,7 @@ export function ColorDrawer({
           )}
 
           <div className={styles.group}>
-            <h3 className="eyebrow">Projects</h3>
+            <h2 className="eyebrow">Projects</h2>
             <ProjectPicker
               ariaLabel="Projects"
               allTags={allTags}

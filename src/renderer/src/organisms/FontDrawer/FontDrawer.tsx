@@ -113,9 +113,9 @@ export function FontDrawer({
           {/* Each weight is its own titled block (eyebrow heading + specimen). */}
           {weights.map(w => (
             <div key={w} className={styles.group}>
-              <h3 className="eyebrow">
+              <h2 className="eyebrow">
                 {WEIGHT_NAMES[w] ?? w} {w}
-              </h3>
+              </h2>
               <span
                 className={styles.specimen}
                 style={{ fontFamily: stack, fontWeight: Number(w), fontSize: previewSize }}
@@ -126,7 +126,7 @@ export function FontDrawer({
           ))}
 
           <div className={styles.group}>
-            <h3 className="eyebrow">Use</h3>
+            <h2 className="eyebrow">Use</h2>
             <div className={styles.copyRow}>
               <CopyButton value={fontFamilyCss} label="font-family" />
               {importCss && <CopyButton value={importCss} label="@import" />}
@@ -134,7 +134,7 @@ export function FontDrawer({
           </div>
 
           <div className={styles.group}>
-            <h3 className="eyebrow">File</h3>
+            <h2 className="eyebrow">File</h2>
             {font.source === 'local' ? (
               <span className={styles.fileActions}>
                 <Button
@@ -176,7 +176,7 @@ export function FontDrawer({
           </div>
 
           <div className={styles.group}>
-            <h3 className="eyebrow">Projects</h3>
+            <h2 className="eyebrow">Projects</h2>
             <ProjectPicker
               ariaLabel="Projects"
               allTags={allTags}
