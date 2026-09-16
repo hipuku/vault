@@ -35,7 +35,7 @@
     "haus-colour-names": "^1.0.0",
     "haus-colour-utils": "^1.0.0",
     "haus-tokens": "^5.2.0",
-    "react-colorful": "^5.8.0"
+    "react-colorful": "^5.8.1"
   },
   "devDependencies": {
     "@electron-toolkit/preload": "^3.0.1",
