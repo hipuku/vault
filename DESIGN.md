@@ -311,10 +311,10 @@ one below it. Nothing points upward.
   token side of the rule on its own, and the rule is unchanged: it was never a claim about how
   many products do it.)_
 
-  Of vault's 48 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
+  Of vault's 49 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
   Popover, Tooltip, Callout, EmptyState, Modal and Select. They stay vault's, because each is
   already shipped, themed and tested, and importing haus's would mean restyling a released app or
-  overriding the import straight back to what vault draws. The other **38 have no haus equivalent**,
+  overriding the import straight back to what vault draws. The other **39 have no haus equivalent**,
   and they are what the app is for: the colour domain (`ColorCard`, `ColorDrawer`, `ColorFilters`,
   `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows (`PaletteView`,
   `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`, `FontPreviewControl`,
