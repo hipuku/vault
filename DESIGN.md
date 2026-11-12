@@ -109,6 +109,15 @@ event. Arbitrary renderer input never reaches it.
 
 ### Where the rest lives
 
+- **Tests.** 308 Vitest tests across 35 files. The pure logic in `shared/` and `lib/` is covered
+  directly: the exporters, the colour maths, both palette generators, gamut mapping, type-scale
+  units and the command filter. The UI suite runs in jsdom, and the component tests carry axe
+  assertions. Run them on Node 22: on Node 20 the jsdom files fail to start and only the logic
+  suite runs.
+- **Window lockdown.** `will-navigate` refuses any top-level navigation that is not the bundled
+  app (or the dev server in development), so nothing that can set `location.href` can move the
+  window, and the `window.api` surface with it, to a remote origin. `setWindowOpenHandler` denies
+  every new window and hands `http(s)` links to the system browser.
 - **CI** typechecks, lints, formats, tests, and builds on every push to `main` and every pull
   request. A tagged release builds unsigned `.dmg` installers for Apple Silicon and Intel and
   publishes them to GitHub Releases. It ships as a direct download rather than through the App
@@ -374,7 +383,18 @@ one below it. Nothing points upward.
   de-duplication by name that makes the runner list read as alternatives. Delegating would mean
   asking for the whole pool and re-deriving both here.
 - **Two palette models.** _Tonal_ (one seed → semantic ramps) and _Expressive_ (several seeds →
-  a multi-hue set). Same two-pane create flow, different generator.
+  a multi-hue set). Same two-pane create flow, different generator. Tonal builds a primary from
+  the seed, a near-grey neutral at the same lightness, and success, warning and error hues rotated
+  to fixed angles but kept in the seed's chroma family. Expressive fills out the set one of three
+  ways: _Cohesive_, the default, adds each new hue by maximising its perceptual distance from the
+  hues already chosen; _Interpolate_ walks the gaps between the seeds; _Harmony_ places the extras
+  at classical intervals from the first seed. Either result is measured for hue coverage, and two
+  swatches close enough to read as duplicates are flagged. Changing the model or a seed recomputes
+  the palette and the analysis together.
+- **How the name search runs.** Two passes over the 31,900 names: a CIE76 scan, cheap Euclidean
+  distance in Lab, cuts the field to the candidates inside a radius, then CIEDE2000 re-scores only
+  those. CIEDE2000 is the accurate measure and the expensive one, which is why it only sees the
+  shortlist. Ranking uses the raw distance; the value is rounded for display only.
 
 ### Fonts & type
 
@@ -411,7 +431,11 @@ one below it. Nothing points upward.
 - **⌘K command palette.** A keyboard-first path over the same actions the sidebar and toolbars
   already expose: jump to a section or project, or start a new asset, without reaching for the
   mouse. Every action it offers is also reachable from the sidebar or a toolbar. The fuzzy
-  ranking is a pure function (`lib/commandFilter.ts`) with its own unit tests.
+  ranking is a pure function (`lib/commandFilter.ts`) with its own unit tests. It is a
+  subsequence match, so `tsc` finds _Type Scales_: each matched character scores a point, a run
+  of adjacent characters three more, a match at a word start two more, and skipped characters
+  cost a little up to a cap. A short label gets a small edge over the same match in a long one,
+  so a three-letter query does not surface the longest thing it happens to fit.
 
 ---
 
