@@ -5,6 +5,34 @@ palettes, and type scales. Built with Electron, React, and SQLite.
 
 ![Vault](screenshots/colors-library.png)
 
+## Design
+
+- **One accent, for actions.** Ruby marks what you can act on: primary buttons, the active
+  filter and nav item, focus rings. Everything else is grey, so the colours you collect stay
+  the brightest thing on screen. The favourite star is gold, because it marks state rather than
+  an action.
+- **Light mode only, on purpose.** One pale theme keeps the design work on one surface. The
+  two-tier token layer means a dark theme is mostly an override of the semantic aliases:
+  deferred, not ruled out.
+- **Tokens from [haus](https://github.com/hipuku/haus), components of its own.** Vault reads
+  every role from `haus-tokens` and points the brand at its ruby ramp. Its 49 components sit in
+  three tiers (15 atoms, 16 molecules, 18 organisms), and imports only run downward. The atoms
+  and molecules were audited against WCAG and the ARIA patterns they claim; all seven defects
+  found are fixed.
+- **Manrope, bundled.** A 200 to 800 weight axis, shipped with the app because a local-first app
+  cannot depend on a font CDN. Cal Sans was tried first and reverted: one weight flattened the
+  hierarchy the type scale tool exists to show.
+- **The system is enforced.** Stylelint fails any colour, type, spacing, radius or z-index set as
+  a raw value instead of a token, with the few deliberate exceptions listed and explained in
+  `stylelint.config.mjs`.
+
+[`DESIGN.md`](./DESIGN.md) has the reasoning and the alternatives behind each of these.
+
+|                                                                             |                                                                                          |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| ![A colour open in a drawer over the library](screenshots/color-viewer.png) | ![A tonal palette on its own page](screenshots/palette-viewer.png)                       |
+| ![A type scale with its steps](screenshots/typescale-viewer.png)            | ![A project gathering colours, fonts, palettes and scales](screenshots/project-view.png) |
+
 ## Features
 
 - **Colours.** Capture hexes, auto-named, with perceptual ramps and contrast checks.
@@ -71,5 +99,5 @@ npm run dev      # launch the app with HMR
 
 ## Stack
 
-Electron · React · TypeScript · CSS Modules · better-sqlite3 · electron-vite ·
-`haus-tokens` · `haus-colour-utils` · `haus-colour-names`
+Electron · React · TypeScript · CSS Modules · better-sqlite3 · electron-vite · chroma-js ·
+culori · `haus-tokens` · `haus-colour-utils` · `haus-colour-names`

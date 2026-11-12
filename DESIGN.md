@@ -65,12 +65,19 @@ preload's scope, reach into `ipcRenderer` directly, or monkey-patch its way to N
 `window.api` and nothing else. Every database write and file read in Vault happens on the far
 side of that boundary. Network traffic is the one exception, described below.
 
-### `sandbox: false` is a deliberate trade-off
+### The renderer is sandboxed, and has a CSP
 
-It lets the preload script use Node built-ins directly, which is what keeps the bridge a single
-flat file rather than a second IPC hop. Context isolation still stands, so the renderer remains
-cut off from Node. The concession is that the preload script itself is privileged, which is why
-it holds no logic: every method on it is a one-line forwarding call.
+`sandbox` was off until 2026-09-01 (`vault#26`) for no recorded reason: it is the project
+template's default. Nothing needed it. The built preload requires one module, `electron`, which a
+sandboxed preload can load, and it holds no Node API of its own. The preload is the only code that
+can reach `ipcRenderer`, which is why it holds no logic: every method on it is a one-line
+forwarding call.
+
+The same change added a Content-Security-Policy. It is a meta element injected into the built
+`index.html` only (`electron.vite.config.ts`), because the dev server needs inline scripts, `eval`
+and a websocket for HMR, and a `file://` response has no headers to carry a policy. It allows what
+the app uses and nothing else: Google Fonts for the stylesheet and its faces, inline styles for
+the previews React sizes at runtime, and `data:` and `blob:` images for the exports.
 
 ### Why `shared/` is imported by both processes
 
@@ -269,7 +276,7 @@ one below it. Nothing points upward.
   dismisses the bubble without moving focus, and the bubble takes pointer events so it can be
   hovered and read at magnification, closing on leaving both after a short grace period.
   `vault#45`, `SegmentedControl` rendered `role="tablist"` with `role="tab"` and none of what tabs
-  promise; all six uses are a single choice from a set, so it is a radio group with one Tab stop
+  promise; all seven uses are a single choice from a set, so it is a radio group with one Tab stop
   and arrows that move and choose. `vault#44`, `ProjectPicker`'s rows drew a tick and announced
   nothing: the button form of `MenuOption` is a toggle, so `selected` sets `aria-pressed` and the
   tick cannot disagree with the accessibility tree. Fixed the same way: every `Input` call site now carries a name and
