@@ -121,7 +121,7 @@ describe('PaletteCreate · what it will let you ask for', () => {
     const { user } = setup()
     await chooseProject(user)
     expect(
-      await screen.findByText('This project has no colours yet. Add colours to it from the Colors page.'),
+      await screen.findByText('This project has no colours yet. Add colours to it from the Colours page.'),
     ).toBeInTheDocument()
   })
 

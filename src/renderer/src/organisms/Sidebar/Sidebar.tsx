@@ -21,7 +21,7 @@ import styles from './Sidebar.module.css'
 
 /** The four sections, in rail order. App reads this for its command palette. */
 export const NAV_ITEMS: Array<{ section: Section; label: string; icon: IconDefinition }> = [
-  { section: 'colours', label: 'Colors', icon: faPalette },
+  { section: 'colours', label: 'Colours', icon: faPalette },
   { section: 'fonts', label: 'Fonts', icon: faFont },
   { section: 'palettes', label: 'Palettes', icon: faSwatchbook },
   { section: 'type_scales', label: 'Type Scales', icon: faTextHeight },

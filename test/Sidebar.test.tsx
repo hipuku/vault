@@ -35,14 +35,14 @@ describe('Sidebar', () => {
   it('names the rail and marks the active section as the current page', () => {
     setup()
     expect(screen.getByRole('navigation', { name: 'Sections and projects' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Colors' }).getAttribute('aria-current')).toBe('page')
+    expect(screen.getByRole('button', { name: 'Colours' }).getAttribute('aria-current')).toBe('page')
     expect(screen.getByRole('button', { name: 'Fonts' }).getAttribute('aria-current')).toBeNull()
   })
 
   it('marks the open project as current, and no section with it', () => {
     setup({ activeSection: null, activeTagId: 1 })
     expect(screen.getByRole('button', { name: 'Brand refresh' }).getAttribute('aria-current')).toBe('page')
-    expect(screen.getByRole('button', { name: 'Colors' }).getAttribute('aria-current')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Colours' }).getAttribute('aria-current')).toBeNull()
   })
 
   it('names each project row action for its project', () => {

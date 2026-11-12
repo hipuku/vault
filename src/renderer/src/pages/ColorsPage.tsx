@@ -180,7 +180,7 @@ export function ColorsPage({
   return (
     <>
       <Toolbar
-        title="Colors"
+        title="Colours"
         actions={
           <>
             <ColorFilters sortKey={sortKey} onSortChange={setSortKey} groupKey={groupKey} onGroupChange={setGroupKey} />

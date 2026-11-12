@@ -30,7 +30,7 @@ test('opens on an empty library', async () => {
      the rendered document has had a level-1 heading all along. Asserted here
      the way a screen reader would ask for it, by role and name, rather than as
      the plain-text match this used to settle for. */
-  await expect(page.getByRole('heading', { level: 1, name: 'Colors' })).toBeVisible({ timeout: 20_000 })
+  await expect(page.getByRole('heading', { level: 1, name: 'Colours' })).toBeVisible({ timeout: 20_000 })
   await expect(page.getByRole('button', { name: 'Add colour' }).first()).toBeVisible()
 })
 

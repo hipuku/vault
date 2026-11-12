@@ -322,7 +322,7 @@ export function PaletteCreate({
             {projectId == null ? (
               <p className={styles.empty}>Choose a project to pick seed colours from.</p>
             ) : scopedColours.length === 0 ? (
-              <p className={styles.empty}>This project has no colours yet. Add colours to it from the Colors page.</p>
+              <p className={styles.empty}>This project has no colours yet. Add colours to it from the Colours page.</p>
             ) : (
               <>
                 <div className={styles.search}>

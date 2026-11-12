@@ -55,7 +55,7 @@ export function TagView({ tagId }: { tagId: number }): React.ReactElement {
           <div className={styles.groups}>
             <PalettesPage activeTagId={tagId} embedded={{ title: 'Palettes' }} />
             <TypeScalesPage activeTagId={tagId} embedded={{ title: 'Type Scales' }} />
-            <ColorsPage activeTagId={tagId} embedded={{ title: 'Colors' }} />
+            <ColorsPage activeTagId={tagId} embedded={{ title: 'Colours' }} />
             <FontsPage activeTagId={tagId} embedded={{ title: 'Fonts' }} />
           </div>
         )}
