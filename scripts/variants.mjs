@@ -34,7 +34,7 @@ export function variantsOf(tsxPath) {
     if (SKIP.has(prop) || SKIP_RE.test(prop)) continue
     const type = rawType.replace(/\s+/g, ' ').trim()
     let kind, values
-    if (/^'.*'(\s*\|\s*'.*')*$/.test(type)) {
+    if (/^'[^']*'(\s*\|\s*'[^']*')*$/.test(type)) {
       kind = 'variant'
       values = type.split('|').map(v => v.trim().replace(/'/g, ''))
     } else if (type === 'boolean') {
