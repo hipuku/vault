@@ -19,7 +19,7 @@ body:
     attributes:
       label: Vault version
       description: From the release you downloaded, or the commit if you built it.
-      placeholder: v0.3.0
+      placeholder: v0.3.1
     validations: { required: true }
   - type: input
     id: platform
