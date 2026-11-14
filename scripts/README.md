@@ -8,9 +8,9 @@ held to none. `--write` records the current state.
 
 ## `variants.mjs`: what a component's props and stylesheet say
 
-Reads a component's props interface into variant axes, booleans, text, slots and events, with their defaults, and
-lists the interaction states its stylesheet styles. The Figma parity check builds its code side
-from it.
+Reads a component's props interface into variant axes, booleans, text, slots and events, with
+their defaults, and lists the interaction states its stylesheet styles. The Figma parity check
+builds its code side from it.
 
 ## `figma/`: the Figma parity check
 
