@@ -7,6 +7,8 @@ import { diff, accept, applyExceptions } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
+import { retryDelay } from '../scripts/figma/rest.mjs'
+// @ts-expect-error: plain ESM scripts with no type declarations
 import { globalStates, globalClassesIn } from '../scripts/figma/code.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { show, report } from '../scripts/figma/report.mjs'
@@ -220,5 +222,23 @@ describe('reading global classes', () => {
     expect(globalClassesIn('<span title="card" className={styles.x} />', known)).toEqual([])
     expect(globalClassesIn('<div className="card x" />', known)).toEqual(['card'])
     expect(globalClassesIn("const classes = ['icon-btn', size ? 'icon-btn--sm' : '']", known)).toEqual(['icon-btn'])
+  })
+})
+
+describe('waiting on Figma', () => {
+  it('retries a rate limit or a server error, twice', () => {
+    expect(retryDelay(429, null, 1)).toBe(15)
+    expect(retryDelay(503, null, 2)).toBe(30)
+    expect(retryDelay(429, null, 3)).toBeNull()
+  })
+
+  it('honours a short Retry-After and gives up on a long one', () => {
+    expect(retryDelay(429, '20', 1)).toBe(20)
+    expect(retryDelay(429, '86400', 1)).toBeNull()
+  })
+
+  it('never retries a bad token or a missing file', () => {
+    expect(retryDelay(403, null, 1)).toBeNull()
+    expect(retryDelay(404, null, 1)).toBeNull()
   })
 })

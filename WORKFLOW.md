@@ -115,6 +115,11 @@ Plugin API, and the check warns when the tokens file has changed since that expo
 Without the token (a fork, a Dependabot pull request, or a local run), everything comes from the
 snapshots in `figma/snapshot/`, and the report says so.
 
+When Figma rate-limits the check or fails with a server error, it retries twice, honouring a
+`Retry-After` of up to a minute. A file Figma still cannot serve is compared from its snapshot, and
+the report names the file, the status and the snapshot's date. A rejected token is not a fallback:
+it fails the check, because a snapshot would hide it.
+
 ### How a finding is decided
 
 `figma/baseline.json` holds, for every item, the pair of values code and Figma had when the
