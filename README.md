@@ -68,19 +68,18 @@ npm run dev      # launch the app with HMR
 
 ## Scripts
 
-| Command              | Does                                                                   |
-| -------------------- | ---------------------------------------------------------------------- |
-| `npm run dev`        | Run the app (electron-vite, HMR)                                       |
-| `npm run typecheck`  | `tsc --noEmit` across main and renderer                                |
-| `npm run test`       | Vitest (watch): the pure `lib/` logic in node, the components in jsdom |
-| `npm run test:run`   | Vitest once (CI)                                                       |
-| `npm run e2e`        | Playwright against the built app (run `npm run build` first)           |
-| `npm run lint`       | ESLint (typescript-eslint + react-hooks)                               |
-| `npm run lint:css`   | Stylelint, including the raw-value gate                                |
-| `npm run lint:prose` | The em dash check across every tracked file                            |
-| `npm run format`     | Prettier write                                                         |
-| `npm run build`      | Production build                                                       |
-| `npm run dist:mac`   | Unsigned `.dmg` (arm64 and Intel)                                      |
+| Command             | Does                                                                   |
+| ------------------- | ---------------------------------------------------------------------- |
+| `npm run dev`       | Run the app (electron-vite, HMR)                                       |
+| `npm run typecheck` | `tsc --noEmit` across main and renderer                                |
+| `npm run test`      | Vitest (watch): the pure `lib/` logic in node, the components in jsdom |
+| `npm run test:run`  | Vitest once (CI)                                                       |
+| `npm run e2e`       | Playwright against the built app (run `npm run build` first)           |
+| `npm run lint`      | ESLint (typescript-eslint + react-hooks)                               |
+| `npm run lint:css`  | Stylelint, including the raw-value gate                                |
+| `npm run format`    | Prettier write                                                         |
+| `npm run build`     | Production build                                                       |
+| `npm run dist:mac`  | Unsigned `.dmg` (arm64 and Intel)                                      |
 
 ## Stack
 
