@@ -15,23 +15,24 @@ const ROOT_PX = 16
 
 export const joinSet = values => [...new Set(values)].sort().join('|')
 
+const round = n => String(Math.round(n * 1000) / 1000)
+
 /** A CSS value or a Figma value, reduced to what both can express. */
 export function normaliseValue(raw) {
   if (raw == null) return undefined
-  if (typeof raw === 'number') return String(Math.round(raw * 1000) / 1000)
+  if (typeof raw === 'number') return round(raw)
   if (typeof raw === 'object' && 'alias' in raw) return `{${raw.alias}}`
   if (typeof raw === 'object' && 'hex' in raw) return raw.hex.toLowerCase()
   const v = String(raw).trim()
   const alias = v.match(/^var\((--[\w-]+)\)$/)
   if (alias) return `{${alias[1]}}`
   const len = v.match(/^(-?[\d.]+)(px|rem)$/)
-  if (len) return String(Number(len[1]) * (len[2] === 'rem' ? ROOT_PX : 1))
+  if (len) return round(Number(len[1]) * (len[2] === 'rem' ? ROOT_PX : 1))
   if (chroma.valid(v)) return chroma(v).hex().toLowerCase()
-  // A font stack: Figma holds one family, so compare the first.
-  return v
-    .split(',')[0]
-    .trim()
-    .replace(/^['"]|['"]$/g, '')
+  // A font stack: Figma holds one family, so compare the first. A comma inside
+  // brackets belongs to a function (`cubic-bezier(0.2, 0, 0, 1)`), kept whole.
+  const unquote = s => s.trim().replace(/^['"]|['"]$/g, '')
+  return v.includes(',') && !v.includes('(') ? unquote(v.split(',')[0]) : unquote(v)
 }
 
 /** A Figma colour (0 to 1 channels) as hex, alpha included when it is not opaque. */

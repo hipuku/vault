@@ -24,7 +24,10 @@ export async function exportFile(figma) {
       if (raw && typeof raw === 'object' && raw.type === 'VARIABLE_ALIAS') {
         const target = byId[raw.id] ?? (await figma.variables.getVariableByIdAsync(raw.id))
         const syntax = target?.codeSyntax?.WEB?.match(/var\((--[\w-]+)\)/)
-        value = { alias: syntax ? syntax[1] : (target?.name ?? raw.id) }
+        // The same rule as variableToProperty in normalise.mjs: code syntax first,
+        // then the name with slashes as hyphens.
+        const property = target ? `--${target.name.replace(/\//g, '-')}` : `unresolved ${raw.id}`
+        value = { alias: syntax ? syntax[1] : property }
       } else if (raw && typeof raw === 'object' && 'r' in raw) {
         const hex = [raw.r, raw.g, raw.b]
           .map(x =>

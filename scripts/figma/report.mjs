@@ -23,7 +23,9 @@ const HEADINGS = {
   ],
 }
 
-const show = v => (v === undefined ? '(none)' : `\`${v}\``)
+/* A pipe ends a markdown table cell even inside a code span, and most values
+   here are joined with one, so it is escaped. */
+export const show = v => (v === undefined ? '(none)' : `\`${String(v).replaceAll('|', '\\|')}\``)
 
 /** `compact` is for pull requests: known drift is a count, not a table, so the
     comment shows only what this change needs to act on. */

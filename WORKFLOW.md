@@ -160,7 +160,7 @@ npm run figma:check -- --save tokens out.json  # store that export's result as a
 ## Releases
 
 A release is a tag. Pushing a `vX.Y.Z` tag on a commit on `main` runs `release.yml`, which builds
-unsigned `.dmg` files for Apple silicon and Intel and publishes them to a GitHub release. The version bump is its
-own pull request, so the tag points at a commit that passed every check. The release notes are
-generated from the merged pull requests, grouped by label through `.github/release.yml`, and edited
-before publishing.
+unsigned `.dmg` files for Apple silicon and Intel and attaches them to a draft GitHub release. The
+draft's notes are generated from the merged pull requests, grouped by label through
+`.github/release.yml`; they are edited, and the draft is published by hand. The version bump is its
+own pull request, so the tag points at a commit that passed every check.

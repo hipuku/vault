@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 import { diff, accept } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
+// @ts-expect-error: plain ESM scripts with no type declarations
+import { show } from '../scripts/figma/report.mjs'
 
 type Pair = { code?: string; figma?: string }
 const kindOf = (code: Record<string, string>, figma: Record<string, string>, baseline: Record<string, Pair>) =>
@@ -102,6 +104,14 @@ describe('normalising values', () => {
     expect(normaliseValue({ hex: '#C46300' })).toBe('#c46300')
   })
 
+  it('rounds a CSS length and a Figma number the same way', () => {
+    expect(normaliseValue('1.2345px')).toBe(normaliseValue(1.2345))
+  })
+
+  it('keeps a function value whole, commas and all', () => {
+    expect(normaliseValue('cubic-bezier(0.2, 0, 0, 1)')).toBe('cubic-bezier(0.2, 0, 0, 1)')
+  })
+
   it('compares the first family of a font stack', () => {
     expect(normaliseValue("'Iowan Old Style', Georgia, serif")).toBe('Iowan Old Style')
   })
@@ -142,5 +152,12 @@ describe('reading Figma components', () => {
       'axis Button.variant': 'ghost|primary',
       'states Button': 'hover|pressed',
     })
+  })
+})
+
+describe('the report', () => {
+  it('escapes the pipes in a value, so a table cell holds all of it', () => {
+    expect(show('lg|md|sm')).toBe('`lg\\|md\\|sm`')
+    expect(show(undefined)).toBe('(none)')
   })
 })

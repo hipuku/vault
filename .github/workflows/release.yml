@@ -39,6 +39,10 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: dist/*.dmg
-          draft: false
+          # A draft with notes generated from the merged pull requests, grouped by
+          # label (.github/release.yml). The notes are edited, then the draft is
+          # published by hand.
+          draft: true
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

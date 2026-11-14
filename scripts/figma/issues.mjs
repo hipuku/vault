@@ -12,6 +12,7 @@
 
 import fs from 'fs'
 import { execFileSync } from 'child_process'
+import { show } from './report.mjs'
 
 const KINDS = {
   'figma-new': { label: 'design-proposal', prefix: 'Design proposal' },
@@ -21,7 +22,6 @@ const KINDS = {
 const TRACKING = { label: 'design', title: 'Known drift between code and Figma' }
 
 const gh = args => execFileSync('gh', args, { encoding: 'utf8' })
-const show = v => (v === undefined ? '(none)' : `\`${v}\``)
 const openIssues = label =>
   JSON.parse(gh(['issue', 'list', '--label', label, '--state', 'open', '--limit', '200', '--json', 'number,title']))
 
