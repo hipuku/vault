@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-14T05:25:06.463Z",
+  "acceptedAt": "2026-11-14T05:50:22.825Z",
   "items": {
     "axis AddColorModal.view": {
       "figma": "hex empty|hex named|image empty|image extracted|save to library"
@@ -9,8 +9,8 @@
       "figma": "error|muted|neutral|success|warning"
     },
     "axis Button.size": {
-      "code": "md|sm",
-      "figma": "md|sm"
+      "code": "lg|md|sm",
+      "figma": "lg|md|sm"
     },
     "axis Button.variant": {
       "code": "danger|ghost|primary|secondary",

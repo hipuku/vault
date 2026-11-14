@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-14T05:24:21.071Z",
+  "exportedAt": "2026-11-14T05:50:22.000Z",
   "source": "plugin",
   "file": {
     "key": "A5ternYGD52mJ5HhCVqHKY",
@@ -54,7 +54,7 @@
         {
           "name": "size",
           "type": "VARIANT",
-          "options": ["md", "sm"]
+          "options": ["md", "sm", "lg"]
         },
         {
           "name": "state",
