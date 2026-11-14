@@ -58,12 +58,12 @@ Vault is a direct download for macOS. It is not on the App Store and needs no ac
 
 ## Develop
 
-Node 22.22.2 or later on the 22 line, or 24.15 or later, as the `engines` field says; `.nvmrc`
-picks the latest 22. Electron 45 and the SQLite driver need Node 22, and stylelint 18 and jsdom 31
+Node 22.22.2 or later on the 22 line, or 24.15 or later, as the `engines` field says. `.nvmrc`
+names the 22 line, and `nvm install` fetches its latest release. Electron 45 and the SQLite driver need Node 22, and stylelint 18 and jsdom 31
 set the minor floor.
 
 ```bash
-nvm use
+nvm install      # the latest Node 22, which clears the floor
 npm install      # postinstall fetches the Electron binary
 npm run dev      # launch the app with HMR
 ```
