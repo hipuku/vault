@@ -1,13 +1,13 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { diff, accept, applyExceptions } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
-import { retryDelay } from '../scripts/figma/rest.mjs'
+import { retryDelay, fetchComponents, FigmaUnavailable } from '../scripts/figma/rest.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { globalStates, globalClassesIn } from '../scripts/figma/code.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
@@ -240,5 +240,25 @@ describe('waiting on Figma', () => {
   it('never retries a bad token or a missing file', () => {
     expect(retryDelay(403, null, 1)).toBeNull()
     expect(retryDelay(404, null, 1)).toBeNull()
+  })
+})
+
+describe('reading Figma over the network', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('treats a body cut off after the headers as Figma being unavailable', async () => {
+    const body = new ReadableStream({
+      start(controller) {
+        controller.error(new Error('socket hang up'))
+      },
+    })
+    vi.stubGlobal('fetch', async () => new Response(body, { status: 200 }))
+    await expect(fetchComponents('key', 'token')).rejects.toBeInstanceOf(FigmaUnavailable)
+  })
+
+  it('keeps malformed JSON an error, not a fallback', async () => {
+    vi.stubGlobal('fetch', async () => new Response('{not json', { status: 200 }))
+    const err = await fetchComponents('key', 'token').catch((e: unknown) => e)
+    expect(err).toBeInstanceOf(SyntaxError)
   })
 })

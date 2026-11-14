@@ -41,7 +41,17 @@ async function get(url, token) {
     } catch (e) {
       throw new FigmaUnavailable(`Figma API unreachable for ${where}: ${e.message}`)
     }
-    if (res.ok) return res.json()
+    if (res.ok) {
+      // The body arrives after the headers and can fail on its own, so reading
+      // it is a transport step too. Malformed JSON is not: that stays an error.
+      let text
+      try {
+        text = await res.text()
+      } catch (e) {
+        throw new FigmaUnavailable(`Figma API response cut off for ${where}: ${e.message}`)
+      }
+      return JSON.parse(text)
+    }
     const delay = retryDelay(res.status, res.headers.get('retry-after'), attempt)
     if (delay === null) {
       const message = `Figma API ${res.status} for ${where}`
