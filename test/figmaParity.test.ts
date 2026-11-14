@@ -1,10 +1,15 @@
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
 import { describe, expect, it } from 'vitest'
 // @ts-expect-error: plain ESM scripts with no type declarations
-import { diff, accept } from '../scripts/figma/diff.mjs'
+import { diff, accept, applyExceptions } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { show } from '../scripts/figma/report.mjs'
+// @ts-expect-error: plain ESM scripts with no type declarations
+import { statesOf } from '../scripts/variants.mjs'
 
 type Pair = { code?: string; figma?: string }
 const kindOf = (code: Record<string, string>, figma: Record<string, string>, baseline: Record<string, Pair>) =>
@@ -159,5 +164,38 @@ describe('the report', () => {
   it('escapes the pipes in a value, so a table cell holds all of it', () => {
     expect(show('lg|md|sm')).toBe('`lg\\|md\\|sm`')
     expect(show(undefined)).toBe('(none)')
+  })
+})
+
+describe('exceptions', () => {
+  const exceptions = { 'axis Popover.align': 'Position, not appearance.' }
+
+  it('leaves an excepted item out of every side', () => {
+    const r = applyExceptions({
+      code: { 'axis Popover.align': 'left|right', 'axis Button.size': 'md|sm' },
+      figma: { 'axis Button.size': 'md|sm' },
+      baseline: { 'axis Popover.align': { code: 'left|right' } },
+      exceptions,
+    })
+    expect(r.code).toEqual({ 'axis Button.size': 'md|sm' })
+    expect(r.baseline).toEqual({})
+    expect(r.stale).toEqual([])
+  })
+
+  it('calls an exception stale once both sides agree', () => {
+    const both = { 'axis Popover.align': 'left|right' }
+    expect(applyExceptions({ code: both, figma: both, exceptions }).stale).toEqual(['axis Popover.align'])
+  })
+
+  it('calls an exception stale once its item has left both sides', () => {
+    expect(applyExceptions({ code: {}, figma: {}, exceptions }).stale).toEqual(['axis Popover.align'])
+  })
+})
+
+describe('reading states from a stylesheet', () => {
+  it('ignores a state that only appears inside :not()', () => {
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'states-')), 'X.module.css')
+    fs.writeFileSync(file, '.trigger:hover:not(:disabled) { color: red; }\n.trigger:active { color: blue; }\n')
+    expect(statesOf(file)).toEqual(['hover', 'active'])
   })
 })

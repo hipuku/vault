@@ -61,7 +61,12 @@ export function variantsOf(tsxPath) {
 /** Interaction states a component actually styles. These are variant axes in Figma. */
 export function statesOf(cssPath) {
   if (!fs.existsSync(cssPath)) return []
-  const css = fs.readFileSync(cssPath, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+  // `:not(:disabled)` excludes a state rather than styling it, so negations are
+  // dropped before looking: `.trigger:hover:not(:disabled)` styles hover only.
+  const css = fs
+    .readFileSync(cssPath, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/:not\([^()]*(?:\([^()]*\)[^()]*)*\)/g, '')
   const found = new Set()
   for (const m of css.matchAll(/:(hover|focus-visible|focus-within|active|disabled|checked)\b/g)) found.add(m[1])
   if (/\[disabled\]|\.disabled\b/.test(css)) found.add('disabled')

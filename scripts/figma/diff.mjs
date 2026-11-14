@@ -52,3 +52,16 @@ export function accept({ code, figma, baseline = {}, keys = [] }) {
   }
   return Object.fromEntries(Object.entries(next).sort(([a], [b]) => a.localeCompare(b)))
 }
+
+/** Items left out of the comparison on purpose, each with a reason, in the
+    manner of stylelint.config.mjs's enumerated exceptions: a known difference
+    is written down once rather than carried as drift. An exception goes stale
+    when its item has left both sides, or when both sides now agree; the check
+    warns, so the list cannot outlive its reasons. */
+export function applyExceptions({ code, figma, baseline = {}, exceptions = {} }) {
+  const without = map => Object.fromEntries(Object.entries(map).filter(([k]) => !(k in exceptions)))
+  const stale = Object.keys(exceptions).filter(
+    k => (code[k] === undefined && figma[k] === undefined) || code[k] === figma[k],
+  )
+  return { code: without(code), figma: without(figma), baseline: without(baseline), stale }
+}

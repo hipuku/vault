@@ -1,9 +1,6 @@
 {
-  "acceptedAt": "2026-11-14T05:50:22.825Z",
+  "acceptedAt": "2026-11-14T05:54:27.084Z",
   "items": {
-    "axis AddColorModal.view": {
-      "figma": "hex empty|hex named|image empty|image extracted|save to library"
-    },
     "axis Badge.variant": {
       "code": "error|muted|neutral|success|warning",
       "figma": "error|muted|neutral|success|warning"
@@ -20,9 +17,6 @@
       "code": "error|info|warning",
       "figma": "error|info|warning"
     },
-    "axis CommandPalette.view": {
-      "figma": "default|no matches|searching"
-    },
     "axis ConfirmDialog.kind": {
       "code": "alert|confirm",
       "figma": "alert|confirm"
@@ -30,18 +24,6 @@
     "axis ContrastChip.bg": {
       "code": "black|white",
       "figma": "black|white"
-    },
-    "axis ContrastChip.result": {
-      "figma": "fail|pass"
-    },
-    "axis Drawer.open": {
-      "figma": "closed|open"
-    },
-    "axis FontAdder.view": {
-      "figma": "google|installed|upload empty|upload files"
-    },
-    "axis FontDrawer.source": {
-      "figma": "google|local"
     },
     "axis IconButton.size": {
       "code": "md|sm|xs",
@@ -51,18 +33,9 @@
       "code": "danger|neutral|primary",
       "figma": "danger|neutral|primary"
     },
-    "axis Input.content": {
-      "figma": "placeholder|value"
-    },
     "axis Input.size": {
       "code": "lg|md",
       "figma": "lg|md"
-    },
-    "axis MenuOption.as": {
-      "figma": "button|li"
-    },
-    "axis Modal.align": {
-      "code": "center|top"
     },
     "axis Modal.chrome": {
       "code": "header|plain",
@@ -72,18 +45,6 @@
       "code": "lg|md|sm|xl",
       "figma": "lg|md|sm|xl"
     },
-    "axis PaletteCard.kind": {
-      "figma": "expressive|tonal"
-    },
-    "axis PaletteCreate.kind": {
-      "figma": "expressive|tonal"
-    },
-    "axis PaletteView.kind": {
-      "figma": "expressive|tonal"
-    },
-    "axis Popover.align": {
-      "code": "left|right|stretch"
-    },
     "axis Popover.pad": {
       "code": "default|roomy|tight",
       "figma": "default|roomy|tight"
@@ -92,21 +53,9 @@
       "code": "auto|lg|md|sm",
       "figma": "auto|lg|md|sm"
     },
-    "axis ProjectPicker.content": {
-      "figma": "chips|empty"
-    },
     "axis SegmentedControl.size": {
       "code": "md|sm",
       "figma": "md|sm"
-    },
-    "axis Select.align": {
-      "code": "left|right"
-    },
-    "axis Select.content": {
-      "figma": "placeholder|value"
-    },
-    "axis Sidebar.active": {
-      "figma": "colors|fonts|palettes|project|type-scales"
     },
     "axis Spinner.size": {
       "code": "md|sm",
@@ -115,12 +64,6 @@
     "axis TagModal.mode": {
       "code": "create|edit",
       "figma": "create|edit"
-    },
-    "axis Tooltip.align": {
-      "code": "center|end|start"
-    },
-    "axis Tooltip.side": {
-      "code": "bottom|top"
     },
     "component AddColorModal": {
       "code": "organisms",
@@ -318,9 +261,6 @@
       "code": "molecules",
       "figma": "molecules"
     },
-    "states AddColorModal": {
-      "code": "disabled|hover"
-    },
     "states Button": {
       "code": "disabled|hover|pressed",
       "figma": "disabled|hover|pressed"
@@ -333,9 +273,6 @@
       "code": "hover",
       "figma": "hover"
     },
-    "states ColorFilters": {
-      "code": "hover"
-    },
     "states CopyButton": {
       "code": "hover",
       "figma": "hover"
@@ -344,16 +281,12 @@
       "code": "hover",
       "figma": "hover"
     },
-    "states FontAdder": {
-      "code": "hover"
-    },
     "states FontCard": {
-      "figma": "hover"
-    },
-    "states FontPreviewControl": {
+      "code": "hover",
       "figma": "hover"
     },
     "states IconButton": {
+      "code": "disabled|hover",
       "figma": "disabled|hover"
     },
     "states InlineEdit": {
@@ -369,44 +302,23 @@
       "figma": "hover"
     },
     "states PaletteCard": {
+      "code": "hover",
       "figma": "hover"
     },
-    "states PaletteView": {
-      "code": "hover"
-    },
     "states PopoverTrigger": {
+      "code": "hover",
       "figma": "hover"
     },
     "states ProjectPicker": {
       "code": "hover",
       "figma": "hover"
     },
-    "states SegmentedControl": {
-      "code": "hover"
-    },
     "states Select": {
-      "code": "disabled|hover",
+      "code": "hover",
       "figma": "hover"
-    },
-    "states Sidebar": {
-      "code": "hover"
-    },
-    "states SpecimenTable": {
-      "code": "hover"
-    },
-    "states StepEditControl": {
-      "figma": "disabled|hover"
-    },
-    "states TagModal": {
-      "code": "hover"
     },
     "states TypeScaleCard": {
-      "figma": "hover"
-    },
-    "states TypeScaleCreate": {
-      "code": "hover"
-    },
-    "states UnitsControl": {
+      "code": "hover",
       "figma": "hover"
     },
     "token --accent-gold": {
@@ -429,12 +341,9 @@
       "code": "8",
       "figma": "8"
     },
-    "token --font-icon": {
-      "figma": "Font Awesome 7 Free"
-    },
     "token --font-serif": {
       "code": "Iowan Old Style",
-      "figma": "Georgia"
+      "figma": "Iowan Old Style"
     }
   }
 }

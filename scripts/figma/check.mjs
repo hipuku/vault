@@ -19,7 +19,7 @@ import path from 'path'
 import { FIGMA_FILES, PATHS, TIERS } from './config.mjs'
 import { codeItems } from './code.mjs'
 import { figmaItems } from './normalise.mjs'
-import { diff, accept } from './diff.mjs'
+import { diff, accept, applyExceptions } from './diff.mjs'
 import { report } from './report.mjs'
 import { fetchComponents, lastModified } from './rest.mjs'
 import { pluginCode } from './plugin-export.mjs'
@@ -93,10 +93,19 @@ async function main() {
     return
   }
 
-  const code = codeItems()
-  const { items: figma, warnings, source } = await figmaSide()
-  const baselineFile = fs.existsSync(PATHS.baseline) ? JSON.parse(fs.readFileSync(PATHS.baseline, 'utf8')) : {}
-  const baseline = baselineFile.items ?? {}
+  const read = p => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : {})
+  const exceptions = read(PATHS.exceptions).items ?? {}
+  const side = await figmaSide()
+  const { warnings, source } = side
+  const { code, figma, baseline, stale } = applyExceptions({
+    code: codeItems(),
+    figma: side.items,
+    baseline: read(PATHS.baseline).items ?? {},
+    exceptions,
+  })
+  for (const key of stale) {
+    warnings.push(`The exception for \`${key}\` is no longer needed: remove it from ${PATHS.exceptions}.`)
+  }
 
   if (flag('--accept')) {
     const keys = args.filter(a => !a.startsWith('--'))
@@ -109,7 +118,14 @@ async function main() {
   }
 
   const result = diff({ code, figma, baseline, figmaLater })
-  const md = report({ ...result, warnings, figmaLater, source, compact: flag('--compact') })
+  const md = report({
+    ...result,
+    warnings,
+    figmaLater,
+    source,
+    compact: flag('--compact'),
+    exceptions: Object.keys(exceptions).length,
+  })
   process.stdout.write(md)
   if (option('--report')) fs.writeFileSync(option('--report'), md)
   if (option('--json')) writeJson(option('--json'), { ...result, warnings })
