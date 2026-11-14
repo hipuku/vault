@@ -81,7 +81,7 @@ export function PaletteCreate({
 
   // Load projects (tags) once.
   useEffect(() => {
-    window.api.tag.list().then(setProjects)
+    void window.api.tag.list().then(setProjects)
   }, [])
 
   // Load the chosen project's colour membership.
@@ -91,7 +91,7 @@ export function PaletteCreate({
       return
     }
     let live = true
-    window.api.tag.listAssetIds('colour', projectId).then(ids => {
+    void window.api.tag.listAssetIds('colour', projectId).then(ids => {
       if (live) setProjectColourIds(new Set(ids))
     })
     return () => {

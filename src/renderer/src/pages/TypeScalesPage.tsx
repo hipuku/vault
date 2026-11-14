@@ -44,7 +44,7 @@ export function TypeScalesPage({
   const backToList = useCallback((): void => {
     setView('list')
     setViewId(null)
-    refresh()
+    void refresh()
   }, [refresh])
 
   // Opened from the command palette (⌘K → "New type scale").
@@ -61,7 +61,7 @@ export function TypeScalesPage({
       return
     }
     let live = true
-    window.api.tag.listAssetIds('type_scale', activeTagId).then(ids => {
+    void window.api.tag.listAssetIds('type_scale', activeTagId).then(ids => {
       if (live) setTagIds(new Set(ids))
     })
     return () => {

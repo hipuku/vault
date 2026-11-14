@@ -53,7 +53,7 @@ export function TypeScaleView({
 
   useEffect(() => {
     let live = true
-    window.api.tag.listForAsset('type_scale', scale.id).then(mine => {
+    void window.api.tag.listForAsset('type_scale', scale.id).then(mine => {
       if (live) setProject(mine[0] ?? null) // type scales belong to exactly one project
     })
     return () => {

@@ -234,7 +234,7 @@ export function AddColorModal({
               autoFocus={!fixedHex}
               readOnly={!!fixedHex}
               onKeyDown={e => {
-                if (e.key === 'Enter') addHex()
+                if (e.key === 'Enter') void addHex()
               }}
             />
           </div>
@@ -310,7 +310,7 @@ export function AddColorModal({
             aria-hidden
             onChange={e => {
               const f = e.target.files?.[0]
-              if (f) handleFile(f)
+              if (f) void handleFile(f)
             }}
           />
           {!preview ? (
@@ -327,7 +327,7 @@ export function AddColorModal({
                 e.preventDefault()
                 setDragOver(false)
                 const f = e.dataTransfer.files[0]
-                if (f) handleFile(f)
+                if (f) void handleFile(f)
               }}
             >
               <FontAwesomeIcon icon={faImage} className={styles.dropIcon} />

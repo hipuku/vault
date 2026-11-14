@@ -79,6 +79,18 @@ export default tseslint.config(
       ecmaVersion: 'latest',
     },
   },
+  // Promises with type information. Vault's IPC is all promises, so a call nobody
+  // awaits is where a failure disappears. A deliberate fire-and-forget says so
+  // with `void`. An async handler passed to a JSX attribute is allowed: React
+  // ignores a handler's return value.
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
+    },
+  },
   // Process boundaries. shared/ is imported by both sides, so it can depend on
   // neither: no Node, no Electron, and nothing from renderer, main or preload.
   { files: ['src/renderer/**/*.{ts,tsx}'], rules: boundaries(RENDERER) },

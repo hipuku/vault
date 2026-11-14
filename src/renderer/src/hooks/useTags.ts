@@ -19,7 +19,7 @@ export function useTags(): {
   }, [])
 
   useEffect(() => {
-    refresh()
+    void refresh()
   }, [refresh])
 
   // Create/update may reject on the UNIQUE(label) constraint, so callers catch

@@ -103,7 +103,7 @@ export function PaletteView({
 
   useEffect(() => {
     let live = true
-    Promise.all([window.api.tag.listForAsset('palette', palette.id), window.api.colour.list()]).then(
+    void Promise.all([window.api.tag.listForAsset('palette', palette.id), window.api.colour.list()]).then(
       ([mine, colours]) => {
         if (!live) return
         setProject(mine[0] ?? null) // palettes belong to exactly one project
@@ -118,7 +118,9 @@ export function PaletteView({
   const handlePromote = useCallback(
     async (swatchId: number, name: string): Promise<void> => {
       await onPromote(palette.id, swatchId, name)
-      setLibrary(await window.api.colour.list())
+      // The promotion is written by now, so a failed refresh must not read as a
+      // failed save: it stays a fire-and-forget read, like the other IPC reads.
+      void window.api.colour.list().then(setLibrary)
     },
     [palette.id, onPromote],
   )
@@ -276,10 +278,9 @@ export function PaletteView({
           library={library}
           fixedHex={promoting.hex}
           submitLabel="Save to library"
-          onAdd={(_hex, name) => {
-            handlePromote(promoting.id, name)
-            setPromoting(null)
-          }}
+          // The modal awaits this and closes itself once it succeeds, so a
+          // failed promotion keeps it open with the error showing.
+          onAdd={(_hex, name) => handlePromote(promoting.id, name)}
           onAddMany={() => {}}
         />
       )}

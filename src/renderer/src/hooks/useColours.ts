@@ -19,7 +19,7 @@ export function useColours(): {
   }, [guard])
 
   useEffect(() => {
-    refresh()
+    void refresh()
   }, [refresh])
 
   const addColour = useCallback(async (hex: string, name: string): Promise<Colour> => {
