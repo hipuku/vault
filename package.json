@@ -13,6 +13,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint . && node scripts/check-punctuation.mjs",
+    "figma:check": "node scripts/figma/check.mjs",
+    "figma:accept": "node scripts/figma/check.mjs --accept",
     "lint:css": "stylelint \"src/**/*.css\" --report-needless-disables",
     "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
     "lint:fix": "eslint . --fix",

@@ -1,0 +1,501 @@
+{
+  "exportedAt": "2026-11-14T05:24:21.268Z",
+  "source": "plugin",
+  "file": {
+    "key": "l3vhIuUGcFBtbCO0mP76uP",
+    "name": "vault · organisms"
+  },
+  "variables": [],
+  "components": [
+    {
+      "name": "_AddColorModal hex / Named",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_AddColorModal hex / Empty",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_AddColorModal save",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_AddColorModal image / Empty",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_AddColorModal image / Extracted",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "AddColorModal",
+      "page": "→ AddColorModal",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "view",
+          "type": "VARIANT",
+          "options": ["hex empty", "hex named", "image empty", "image extracted", "save to library"]
+        }
+      ]
+    },
+    {
+      "name": "ColorCard",
+      "page": "→ ColorCard",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "name#40:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "hex#40:4",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "favourite#40:8",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "ColorDrawer",
+      "page": "→ ColorDrawer",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover"]
+        }
+      ]
+    },
+    {
+      "name": "_ColorFilters panel",
+      "page": "→ ColorFilters",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "ColorFilters",
+      "page": "→ ColorFilters",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "open",
+          "type": "VARIANT",
+          "options": ["true", "false"]
+        }
+      ]
+    },
+    {
+      "name": "CommandPalette",
+      "page": "→ CommandPalette",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "view",
+          "type": "VARIANT",
+          "options": ["default", "searching", "no matches"]
+        }
+      ]
+    },
+    {
+      "name": "_ExportModal content",
+      "page": "→ ExportModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_ExportModal footer",
+      "page": "→ ExportModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_ExportModal footer / Copied",
+      "page": "→ ExportModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "ExportModal",
+      "page": "→ ExportModal",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "copied"]
+        }
+      ]
+    },
+    {
+      "name": "_FontAdder google",
+      "page": "→ FontAdder",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_FontAdder installed",
+      "page": "→ FontAdder",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_FontAdder upload empty",
+      "page": "→ FontAdder",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_FontAdder upload files",
+      "page": "→ FontAdder",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "FontAdder",
+      "page": "→ FontAdder",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "view",
+          "type": "VARIANT",
+          "options": ["google", "installed", "upload empty", "upload files"]
+        }
+      ]
+    },
+    {
+      "name": "FontCard",
+      "page": "→ FontCard",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "family#40:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "weights#40:4",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "favourite#40:8",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "previewText#51:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "FontDrawer",
+      "page": "→ FontDrawer",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "source",
+          "type": "VARIANT",
+          "options": ["google", "local"]
+        }
+      ]
+    },
+    {
+      "name": "PaletteCard",
+      "page": "→ PaletteCard",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "name#40:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "count#40:4",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "kind",
+          "type": "VARIANT",
+          "options": ["tonal", "expressive"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["hover", "rest", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "_PaletteCreate title",
+      "page": "→ PaletteCreate",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_PaletteCreate actions",
+      "page": "→ PaletteCreate",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "PaletteCreate",
+      "page": "→ PaletteCreate",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "kind",
+          "type": "VARIANT",
+          "options": ["tonal", "expressive"]
+        }
+      ]
+    },
+    {
+      "name": "_PaletteView title / Tonal",
+      "page": "→ PaletteView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_PaletteView title / Expressive",
+      "page": "→ PaletteView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_PaletteView actions",
+      "page": "→ PaletteView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_PaletteView preview / Tonal",
+      "page": "→ PaletteView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_PaletteView preview / Expressive",
+      "page": "→ PaletteView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "PaletteView",
+      "page": "→ PaletteView",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "kind",
+          "type": "VARIANT",
+          "options": ["tonal", "expressive"]
+        }
+      ]
+    },
+    {
+      "name": "SpecimenTable",
+      "page": "→ SpecimenTable",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "hasTrailing#116:0",
+          "type": "BOOLEAN",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "_TagModal content",
+      "page": "→ TagModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TagModal content / Error",
+      "page": "→ TagModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TagModal footer / Create",
+      "page": "→ TagModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TagModal footer / Edit",
+      "page": "→ TagModal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "TagModal",
+      "page": "→ TagModal",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "mode",
+          "type": "VARIANT",
+          "options": ["create", "edit"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "error"]
+        }
+      ]
+    },
+    {
+      "name": "TypeScaleCard",
+      "page": "→ TypeScaleCard",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "name#40:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "base#40:4",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["hover", "rest", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "_TypeScaleCreate title",
+      "page": "→ TypeScaleCreate",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TypeScaleCreate actions",
+      "page": "→ TypeScaleCreate",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "TypeScaleCreate",
+      "page": "→ TypeScaleCreate",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TypeScaleView title",
+      "page": "→ TypeScaleView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TypeScaleView actions",
+      "page": "→ TypeScaleView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_TypeScaleView panel content",
+      "page": "→ TypeScaleView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "TypeScaleView",
+      "page": "→ TypeScaleView",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Sidebar",
+      "page": "→ Sidebar",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "active",
+          "type": "VARIANT",
+          "options": ["colors", "fonts", "palettes", "type-scales", "project"]
+        }
+      ]
+    }
+  ]
+}

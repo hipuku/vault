@@ -1,0 +1,572 @@
+{
+  "exportedAt": "2026-11-14T05:24:21.170Z",
+  "source": "plugin",
+  "file": {
+    "key": "1OyWUcN60pO7C9TwNiv2Rj",
+    "name": "vault · molecules"
+  },
+  "variables": [],
+  "components": [
+    {
+      "name": "Callout",
+      "page": "→ Callout",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "content#54:12",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "variant",
+          "type": "VARIANT",
+          "options": ["info", "warning", "error"]
+        }
+      ]
+    },
+    {
+      "name": "_Callout content",
+      "page": "→ Callout",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Callout content / Similar colour",
+      "page": "→ Callout",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Callout content / Duplicate name",
+      "page": "→ Callout",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Confirm message",
+      "page": "→ ConfirmDialog",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Confirm actions",
+      "page": "→ ConfirmDialog",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "ConfirmDialog",
+      "page": "→ ConfirmDialog",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "kind",
+          "type": "VARIANT",
+          "options": ["confirm", "alert"]
+        }
+      ]
+    },
+    {
+      "name": "ContrastChip",
+      "page": "→ ContrastChip",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "ratio#110:5",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "bg",
+          "type": "VARIANT",
+          "options": ["white", "black"]
+        },
+        {
+          "name": "result",
+          "type": "VARIANT",
+          "options": ["pass", "fail"]
+        }
+      ]
+    },
+    {
+      "name": "CopyButton",
+      "page": "→ CopyButton",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "label#112:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "mono",
+          "type": "VARIANT",
+          "options": ["False", "True"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus", "copied"]
+        }
+      ]
+    },
+    {
+      "name": "Drawer",
+      "page": "→ Drawer",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "content#117:0",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "open",
+          "type": "VARIANT",
+          "options": ["open", "closed"]
+        }
+      ]
+    },
+    {
+      "name": "_Drawer content",
+      "page": "→ Drawer",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Drawer content / Colour",
+      "page": "→ Drawer",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Drawer content / Font",
+      "page": "→ Drawer",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "EmptyState",
+      "page": "→ EmptyState",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "title#169:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "descriptionText#169:5",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "content#169:10",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "description",
+          "type": "VARIANT",
+          "options": ["True", "False"]
+        },
+        {
+          "name": "action",
+          "type": "VARIANT",
+          "options": ["False", "True"]
+        }
+      ]
+    },
+    {
+      "name": "FavouriteToggle",
+      "page": "→ FavouriteToggle",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus", "on", "on-hover"]
+        }
+      ]
+    },
+    {
+      "name": "FontPreviewControl",
+      "page": "→ FontPreviewControl",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "_FontPreviewControl content",
+      "page": "→ FontPreviewControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_FontPreviewControl panel",
+      "page": "→ FontPreviewControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Modal content",
+      "page": "→ Modal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Modal footer",
+      "page": "→ Modal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Modal footer / Destructive",
+      "page": "→ Modal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Modal content / Export",
+      "page": "→ Modal",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Modal",
+      "page": "→ Modal",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "title#62:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "content#62:9",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "footer#62:18",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "hasFooter#62:27",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "customHeader#62:36",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "header#190:0",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm", "lg", "xl"]
+        },
+        {
+          "name": "chrome",
+          "type": "VARIANT",
+          "options": ["header", "plain"]
+        }
+      ]
+    },
+    {
+      "name": "ProjectPicker",
+      "page": "→ ProjectPicker",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "placeholder#137:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "content",
+          "type": "VARIANT",
+          "options": ["empty", "chips"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "_ProjectPicker rows",
+      "page": "→ ProjectPicker",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_ProjectPicker panel",
+      "page": "→ ProjectPicker",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "SectionGrid",
+      "page": "→ SectionGrid",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "content#143:0",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "_SectionGrid card",
+      "page": "→ SectionGrid",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_SectionGrid cards",
+      "page": "→ SectionGrid",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Select",
+      "page": "→ Select",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "label#48:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "prefix#48:7",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "hasPrefix#48:14",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "block",
+          "type": "VARIANT",
+          "options": ["True", "False"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        },
+        {
+          "name": "content",
+          "type": "VARIANT",
+          "options": ["value", "placeholder"]
+        }
+      ]
+    },
+    {
+      "name": "_Select menu",
+      "page": "→ Select",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "StepEditControl",
+      "page": "→ StepEditControl",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus", "disabled"]
+        }
+      ]
+    },
+    {
+      "name": "_StepEditControl fields",
+      "page": "→ StepEditControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_StepEditControl panel",
+      "page": "→ StepEditControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "TagGroup",
+      "page": "→ TagGroup",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "title#154:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "count#154:1",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "content#154:2",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "Toolbar",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "title#158:0",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "actions#158:1",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "hasActions#158:2",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "extras#158:3",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "hasExtras#158:4",
+          "type": "BOOLEAN",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "_Toolbar title",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Toolbar title / With back",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Toolbar title / Editable",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Toolbar actions / Library",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Toolbar actions / View",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Toolbar extras",
+      "page": "→ Toolbar",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "UnitsControl",
+      "page": "→ UnitsControl",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "_UnitsControl rows",
+      "page": "→ UnitsControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_UnitsControl panel",
+      "page": "→ UnitsControl",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    }
+  ]
+}

@@ -36,3 +36,10 @@ before source order, so `.trigger:focus-visible` correctly beats a later `.block
 the matrix showed a focus ring the browser never renders. And it marks combinations that do not
 differ from the default: Button multiplies out to 32 frames but only **13** are distinct, because
 `active` is styled for `primary` alone.
+
+## `figma/`: the Figma parity check
+
+Compares vault's own tokens and its components with the Figma files on every pull request, against
+the baseline in `figma/baseline.json`. `npm run figma:check` runs it and `npm run figma:accept`
+moves the baseline. What it compares, how it decides and where it reports are in
+[`WORKFLOW.md` § Design sync](../WORKFLOW.md#design-sync).

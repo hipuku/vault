@@ -1,0 +1,440 @@
+{
+  "acceptedAt": "2026-11-14T05:25:06.463Z",
+  "items": {
+    "axis AddColorModal.view": {
+      "figma": "hex empty|hex named|image empty|image extracted|save to library"
+    },
+    "axis Badge.variant": {
+      "code": "error|muted|neutral|success|warning",
+      "figma": "error|muted|neutral|success|warning"
+    },
+    "axis Button.size": {
+      "code": "md|sm",
+      "figma": "md|sm"
+    },
+    "axis Button.variant": {
+      "code": "danger|ghost|primary|secondary",
+      "figma": "danger|ghost|primary|secondary"
+    },
+    "axis Callout.variant": {
+      "code": "error|info|warning",
+      "figma": "error|info|warning"
+    },
+    "axis CommandPalette.view": {
+      "figma": "default|no matches|searching"
+    },
+    "axis ConfirmDialog.kind": {
+      "code": "alert|confirm",
+      "figma": "alert|confirm"
+    },
+    "axis ContrastChip.bg": {
+      "code": "black|white",
+      "figma": "black|white"
+    },
+    "axis ContrastChip.result": {
+      "figma": "fail|pass"
+    },
+    "axis Drawer.open": {
+      "figma": "closed|open"
+    },
+    "axis FontAdder.view": {
+      "figma": "google|installed|upload empty|upload files"
+    },
+    "axis FontDrawer.source": {
+      "figma": "google|local"
+    },
+    "axis IconButton.size": {
+      "code": "md|sm|xs",
+      "figma": "md|sm|xs"
+    },
+    "axis IconButton.tone": {
+      "code": "danger|neutral|primary",
+      "figma": "danger|neutral|primary"
+    },
+    "axis Input.content": {
+      "figma": "placeholder|value"
+    },
+    "axis Input.size": {
+      "code": "lg|md",
+      "figma": "lg|md"
+    },
+    "axis MenuOption.as": {
+      "figma": "button|li"
+    },
+    "axis Modal.align": {
+      "code": "center|top"
+    },
+    "axis Modal.chrome": {
+      "code": "header|plain",
+      "figma": "header|plain"
+    },
+    "axis Modal.size": {
+      "code": "lg|md|sm|xl",
+      "figma": "lg|md|sm|xl"
+    },
+    "axis PaletteCard.kind": {
+      "figma": "expressive|tonal"
+    },
+    "axis PaletteCreate.kind": {
+      "figma": "expressive|tonal"
+    },
+    "axis PaletteView.kind": {
+      "figma": "expressive|tonal"
+    },
+    "axis Popover.align": {
+      "code": "left|right|stretch"
+    },
+    "axis Popover.pad": {
+      "code": "default|roomy|tight",
+      "figma": "default|roomy|tight"
+    },
+    "axis Popover.width": {
+      "code": "auto|lg|md|sm",
+      "figma": "auto|lg|md|sm"
+    },
+    "axis ProjectPicker.content": {
+      "figma": "chips|empty"
+    },
+    "axis SegmentedControl.size": {
+      "code": "md|sm",
+      "figma": "md|sm"
+    },
+    "axis Select.align": {
+      "code": "left|right"
+    },
+    "axis Select.content": {
+      "figma": "placeholder|value"
+    },
+    "axis Sidebar.active": {
+      "figma": "colors|fonts|palettes|project|type-scales"
+    },
+    "axis Spinner.size": {
+      "code": "md|sm",
+      "figma": "md|sm"
+    },
+    "axis TagModal.mode": {
+      "code": "create|edit",
+      "figma": "create|edit"
+    },
+    "axis Tooltip.align": {
+      "code": "center|end|start"
+    },
+    "axis Tooltip.side": {
+      "code": "bottom|top"
+    },
+    "component AddColorModal": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component Badge": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Button": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Callout": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component Chip": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component ColorCard": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component ColorDrawer": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component ColorFilters": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component CommandPalette": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component ConfirmDialog": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component ContrastChip": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component CopyButton": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component Divider": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Drawer": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component EmptyState": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component ExportModal": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component FavouriteToggle": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component FontAdder": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component FontCard": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component FontDrawer": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component FontPreviewControl": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component IconButton": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component InlineEdit": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Input": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Logo": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component MenuOption": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Modal": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component PaletteCard": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component PaletteCreate": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component PaletteView": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component Panel": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Popover": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component PopoverTrigger": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component ProjectPicker": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component SectionGrid": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component SegmentedControl": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component Select": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component Sidebar": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component SpecimenTable": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component Spinner": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component StepEditControl": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component TagGroup": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component TagModal": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component Toolbar": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "component Tooltip": {
+      "code": "atoms",
+      "figma": "atoms"
+    },
+    "component TypeScaleCard": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component TypeScaleCreate": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component TypeScaleView": {
+      "code": "organisms",
+      "figma": "organisms"
+    },
+    "component UnitsControl": {
+      "code": "molecules",
+      "figma": "molecules"
+    },
+    "states AddColorModal": {
+      "code": "disabled|hover"
+    },
+    "states Button": {
+      "code": "disabled|hover|pressed",
+      "figma": "disabled|hover|pressed"
+    },
+    "states ColorCard": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states ColorDrawer": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states ColorFilters": {
+      "code": "hover"
+    },
+    "states CopyButton": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states FavouriteToggle": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states FontAdder": {
+      "code": "hover"
+    },
+    "states FontCard": {
+      "figma": "hover"
+    },
+    "states FontPreviewControl": {
+      "figma": "hover"
+    },
+    "states IconButton": {
+      "figma": "disabled|hover"
+    },
+    "states InlineEdit": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states Input": {
+      "code": "disabled",
+      "figma": "disabled"
+    },
+    "states MenuOption": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states PaletteCard": {
+      "figma": "hover"
+    },
+    "states PaletteView": {
+      "code": "hover"
+    },
+    "states PopoverTrigger": {
+      "figma": "hover"
+    },
+    "states ProjectPicker": {
+      "code": "hover",
+      "figma": "hover"
+    },
+    "states SegmentedControl": {
+      "code": "hover"
+    },
+    "states Select": {
+      "code": "disabled|hover",
+      "figma": "hover"
+    },
+    "states Sidebar": {
+      "code": "hover"
+    },
+    "states SpecimenTable": {
+      "code": "hover"
+    },
+    "states StepEditControl": {
+      "figma": "disabled|hover"
+    },
+    "states TagModal": {
+      "code": "hover"
+    },
+    "states TypeScaleCard": {
+      "figma": "hover"
+    },
+    "states TypeScaleCreate": {
+      "code": "hover"
+    },
+    "states UnitsControl": {
+      "figma": "hover"
+    },
+    "token --accent-gold": {
+      "code": "#c46300",
+      "figma": "#c46300"
+    },
+    "token --dot-lg": {
+      "code": "18",
+      "figma": "18"
+    },
+    "token --dot-md": {
+      "code": "16",
+      "figma": "16"
+    },
+    "token --dot-sm": {
+      "code": "12",
+      "figma": "12"
+    },
+    "token --dot-xs": {
+      "code": "8",
+      "figma": "8"
+    },
+    "token --font-icon": {
+      "figma": "Font Awesome 7 Free"
+    },
+    "token --font-serif": {
+      "code": "Iowan Old Style",
+      "figma": "Georgia"
+    }
+  }
+}

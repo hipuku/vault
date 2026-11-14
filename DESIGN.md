@@ -319,6 +319,10 @@ value still fails while the known ones stay visible in one place. Two examples f
 - `32px`, `18px` and `0.85em` for type above or between the scale's steps. Vault is a font tool,
   and some type in it is the subject rather than the interface.
 
+The Figma files are held to the same standard: every pull request compares vault's tokens and
+components with them, and a change made on one side only fails the check
+([`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync)).
+
 ---
 
 ## Known gaps

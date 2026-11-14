@@ -347,8 +347,11 @@ Why the palette exists is in [`DESIGN.md` § Command palette](./DESIGN.md#comman
   CI does not run it.
 - **CI** runs on every push to `main` and every pull request: ESLint, Stylelint, the prose
   punctuation check, Prettier, typecheck, the Vitest suite and a production build.
+- **Figma parity.** A second workflow compares vault's tokens and components with the Figma files
+  on every pull request; 22 more Vitest tests cover its decision rules. What it compares and how it
+  decides are in [`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync).
 - **Releases.** A tagged release builds unsigned `.dmg` installers for Apple Silicon and Intel and
-  publishes them to GitHub Releases.
+  attaches them to a draft GitHub release, published by hand once its notes are edited.
 
 ---
 
