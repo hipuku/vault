@@ -37,7 +37,7 @@ describe('Chip · dot', () => {
   it('draws the dot as decoration, so the label is the whole name', () => {
     const { container } = render(<Chip dot="#7653ab" label="Brand" />)
     const dot = container.querySelector('[aria-hidden]') as HTMLElement
-    expect(dot).toHaveStyle({ background: '#7653ab' })
+    expect(dot).toHaveStyle({ backgroundColor: '#7653ab' })
     expect(container.textContent).toBe('Brand')
   })
 })
