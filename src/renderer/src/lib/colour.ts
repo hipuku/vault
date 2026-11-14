@@ -1,5 +1,4 @@
 import { wcagContrast, differenceCiede2000, converter, formatHex, parse } from 'culori'
-import { nearestNames } from './colourNames'
 
 const toRgb = converter('rgb')
 const toHsl = converter('hsl')
@@ -94,16 +93,6 @@ export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): n
 }
 
 // ── Nearest name (meodai dataset, two-pass: see colourNames.ts) ───────────────
-
-export interface NameSuggestion {
-  name: string
-  hex: string
-  deltaE: number
-}
-
-export function nearestName(hex: string): NameSuggestion {
-  return nearestNames(hex, 1).best
-}
 
 // Re-export the richer naming API for callers that want runners + confidence.
 export { nearestNames, confidenceLabel, firstUnusedName, warmColourNames } from './colourNames'

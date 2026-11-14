@@ -25,6 +25,10 @@ jobs:
       # type values, and its own were the only ones nothing measured.
       - run: npm run lint:css
 
+      # Unused files, exports and dependencies. haus-tokens is ignored in
+      # knip.json because it is read through a CSS @import, which knip cannot see.
+      - run: npm run knip
+
   format:
     name: Format
     runs-on: macos-latest

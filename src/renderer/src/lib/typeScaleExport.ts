@@ -16,8 +16,6 @@ function slug(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-export type TypeExportFormat = 'css' | 'scss' | 'tokens' | 'tailwind'
-
 export const TYPE_EXPORT_FORMATS: ExportFormatDef[] = [
   { id: 'css', label: 'CSS', ext: 'css' },
   { id: 'scss', label: 'SCSS', ext: 'scss' },
