@@ -344,7 +344,7 @@ Why the palette exists is in [`DESIGN.md` § Command palette](./DESIGN.md#comman
 - **End-to-end tests.** A Playwright suite (`e2e/`, `npm run e2e`) launches the built app, so main,
   preload, renderer and SQLite are all real. It checks that the app opens on an empty library, that
   a colour can be added, named and persisted through IPC, and that the renderer cannot reach Node.
-  CI does not run it.
+  CI runs it on macOS after the build.
 - **CI** runs on every push to `main` and every pull request: ESLint, Stylelint, the prose
   punctuation check, Prettier, typecheck, the Vitest suite and a production build.
 - **Figma parity.** A second workflow compares vault's tokens and components with the Figma files
