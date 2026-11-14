@@ -12,15 +12,16 @@ const NODE = `^(node:|electron(/|$)|(${BUILTINS.join('|')})(/|$))`
 const MAIN = '(^|/)(main|preload)(/|$)'
 
 /** Both rules for a set of boundaries: no-restricted-imports covers static
-    imports and re-exports, and no-restricted-syntax covers `import('...')`,
-    which no-restricted-imports does not see. A slash cannot appear inside an
+    imports and re-exports, and no-restricted-syntax covers `import('...')`
+    and the type form `import('...').Name`, which no-restricted-imports does
+    not see. A slash cannot appear inside an
     esquery regex, so it is written as `\x2F` there. */
 const boundaries = list => ({
   'no-restricted-imports': ['error', { patterns: list.map(({ regex, message }) => ({ regex, message })) }],
   'no-restricted-syntax': [
     'error',
     ...list.map(({ regex, message }) => ({
-      selector: `ImportExpression[source.value=/${regex.replaceAll('/', '\\x2F')}/]`,
+      selector: `:matches(ImportExpression, TSImportType)[source.value=/${regex.replaceAll('/', '\\x2F')}/]`,
       message,
     })),
   ],
@@ -45,7 +46,7 @@ const tierRules = [
   rules: boundaries([
     ...RENDERER,
     {
-      regex: `(^|/)(${above.join('|')})/`,
+      regex: `(^|/)(${above.join('|')})(/|$)`,
       message: `Imports never run upward: a file in ${tier}/ cannot import from ${above.join('/, ')}/.`,
     },
   ]),
