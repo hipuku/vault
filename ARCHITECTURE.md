@@ -350,8 +350,8 @@ Why the palette exists is in [`DESIGN.md` § Command palette](./DESIGN.md#comman
   and the end-to-end suite, with an offline link check over the markdown. Which of these are
   required is in [`WORKFLOW.md` § Checks](./WORKFLOW.md#checks).
 - **Figma parity.** A second workflow compares vault's tokens and components with the Figma files
-  on every pull request; 34 more Vitest tests cover its decision rules and how it reads Figma. What it compares and how it
-  decides are in [`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync).
+  on every pull request; 34 more Vitest tests cover its decision rules and how it reads Figma. What
+  it compares and how it decides are in [`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync).
 - **Releases.** A tagged release builds unsigned `.dmg` installers for Apple Silicon and Intel and
   attaches them to a draft GitHub release, published by hand once its notes are edited.
 

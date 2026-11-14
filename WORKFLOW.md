@@ -32,12 +32,9 @@ history, and it applies to the owner too.
 | Typecheck    | `ci.yml`           | `npm run typecheck`                                                                                 | Yes      |
 | Test         | `ci.yml`           | `npm run test:run`                                                                                  | Yes      |
 | Build        | `ci.yml`           | `npm run build`, after the four above pass                                                          | Yes      |
-| Links        | `ci.yml`           | lychee, offline: every relative link and heading anchor in the markdown resolves                    | Not yet  |
+| End to end   | `ci.yml`           | `npm run e2e`, the built app launched in Electron, after Build passes                               | Yes      |
+| Links        | `ci.yml`           | lychee, offline: every relative link and heading anchor in the markdown resolves                    | Yes      |
 | Figma parity | `figma-parity.yml` | `npm run figma:check`, described under [Design sync](#design-sync)                                  | Yes      |
-
-Links is not required yet; it becomes required once it has run green on a few pull requests.
-
-End to end (`ci.yml`, `npm run e2e`) launches the built app in Electron after Build passes. It is not required yet; it becomes required once it has run cleanly on a few pull requests.
 
 ## Review
 
@@ -170,8 +167,8 @@ runs. It has a narrow brief:
   in line with code, and apply that change once the owner approves it.
 - **A component change includes its page.** Each component's page has Preview, Design and Code
   panels beside the set: its examples, its properties and tokens, its props and where it is used.
-  The check compares component sets only and cannot see those panels, so the agent updates them in
-  the same change, and checks that new variants keep their bindings to the component's text and
+  The check compares tokens and component sets, not those panels, so the agent updates them in the
+  same change, and checks that new variants keep their bindings to the component's text and
   boolean properties.
 - **Its edits add rather than replace** where they can: new variants cloned from existing ones,
   bound to the same library variables, so undoing one means deleting what it added. The Figma MCP
