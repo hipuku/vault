@@ -52,6 +52,7 @@ export default function Modal({
   if (!open) return null
 
   return (
+    // eslint-disable-next-line jsx-a11y-x/no-static-element-interactions -- the backdrop closes on a mouse press; Escape closes it from the keyboard
     <div
       className={[styles.overlay, styles[align]].join(' ')}
       onMouseDown={

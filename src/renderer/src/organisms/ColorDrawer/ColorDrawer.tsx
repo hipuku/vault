@@ -161,6 +161,7 @@ export function ColorDrawer({
                               <span
                                 className={styles.nameWarn}
                                 role="img"
+                                // eslint-disable-next-line jsx-a11y-x/no-noninteractive-tabindex -- focusable so its tooltip can be reached from the keyboard (WCAG 1.4.13, vault#46)
                                 tabIndex={0}
                                 aria-label={`You already have a colour named “${m.name}”`}
                               >

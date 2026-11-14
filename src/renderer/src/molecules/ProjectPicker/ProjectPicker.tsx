@@ -67,6 +67,7 @@ export function ProjectPicker({
 
   return (
     <div className={styles.root} ref={ref}>
+      {/* eslint-disable-next-line jsx-a11y-x/no-static-element-interactions -- a mouse press anywhere in the field focuses its input; keyboard users focus the input itself */}
       <div
         className={styles.field}
         onMouseDown={() => {
