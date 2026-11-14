@@ -1,10 +1,11 @@
 # Vault
 
 An offline, single-user Mac app for capturing and shaping design tokens: colours, fonts, palettes
-and type scales. It is a library for anything worth keeping, a hex or a typeface, and a studio that
-generates palettes and type scales from a project's colours and fonts. The library stays on the
-machine in a local SQLite database; the only network traffic is to Google Fonts, when a Google font
-is added or previewed.
+and type scales. It is a library for saved colours and fonts, and a studio that generates palettes and type scales
+from a project's colours and fonts. Everything stays on the machine: the library in a SQLite
+database and imported font files in the app's data folder, both under
+`~/Library/Application Support/vault`. The only network traffic is to Google Fonts, when the font
+adder opens, a Google font is shown, or its files are downloaded.
 
 ![Vault's colour library: a grid of named swatches, each with its hue family and hex](screenshots/colors-library.png)
 
@@ -26,8 +27,8 @@ is added or previewed.
   value. [`DESIGN.md` § Enforcement](./DESIGN.md#enforcement)
 - **Perceptual colour.** Names, ramps and palettes are computed in a perceptual space, with
   CIEDE2000 as the distance. [`ARCHITECTURE.md` § Colour naming](./ARCHITECTURE.md#colour-naming)
-- **Locked-down and tested.** A sandboxed renderer that reaches data only through typed IPC, 308
-  unit and component tests, and an end-to-end suite on the built app.
+- **Sandboxed and tested.** The renderer runs sandboxed and reaches data only through typed IPC;
+  308 unit and component tests, and an end-to-end suite on the built app.
   [`ARCHITECTURE.md` § Boundaries and security](./ARCHITECTURE.md#boundaries-and-security)
 
 ## Documentation

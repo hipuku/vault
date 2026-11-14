@@ -34,7 +34,7 @@ flowchart TB
     end
 
     subgraph PRELOAD ["preload · the bridge"]
-        B["contextBridge.exposeInMainWorld('api', api)<br/><small>every method is one line: ipcRenderer.invoke(channel, …)</small>"]
+        B["contextBridge.exposeInMainWorld('api', api)<br/><small>every method is one line: ipcRenderer.invoke(channel, …)<br/>except getPathForFile, a direct webUtils call</small>"]
     end
 
     subgraph MAIN ["main · Node, owns everything privileged"]
@@ -87,7 +87,7 @@ atoms, molecules and organisms, described in [`DESIGN.md` § Components](./DESIG
 
 ## Data model
 
-SQLite, one file. Two library tables (`colours`, `fonts`), two generated artifacts each with their
+SQLite, one file. Two library tables (`colours`, `fonts`), two generated artefacts each with their
 own children (`palettes` + `swatches`, `type_scales` + `type_scale_steps`), and a generic `tags` /
 `asset_tags` join so any asset can belong to projects.
 
@@ -142,17 +142,20 @@ erDiagram
 
     palettes     ||--o{ swatches         : "cascades on delete"
     type_scales  ||--o{ type_scale_steps : "cascades on delete"
-    colours      ||--o| swatches         : "anchors"
+    colours      |o--o{ swatches         : "anchors, once promoted"
     fonts        ||--o| type_scales      : "heading + body"
     tags         ||--o{ asset_tags       : ""
-    asset_tags   }o--|| colours          : "asset_type = colour"
-    asset_tags   }o--|| fonts            : "asset_type = font"
-    asset_tags   }o--|| palettes         : "asset_type = palette"
-    asset_tags   }o--|| type_scales      : "asset_type = type_scale"
+    asset_tags   }o..o| colours          : "one of, when asset_type = colour"
+    asset_tags   }o..o| fonts            : "one of, when asset_type = font"
+    asset_tags   }o..o| palettes         : "one of, when asset_type = palette"
+    asset_tags   }o..o| type_scales      : "one of, when asset_type = type_scale"
 ```
 
-Generated artifacts (palette, type scale) belong to **exactly one** project and join it at
-creation; library items (colour, font) belong to **many**.
+Library items (colour, font) belong to **many** projects. Generated artefacts (palette, type
+scale) are meant to belong to **one**: creation assigns at most one, the interface offers no way to
+add another, and the type scale view shows only the first it finds. That rule is the interface's,
+not the database's. `tag:assign` and `tag:remove` accept any asset type, so nothing below the
+interface stops an artefact gaining a second project or losing its only one.
 
 `asset_tags` is polymorphic, so SQLite cannot enforce it with a foreign key and cannot cascade it.
 The dashed relationships above are held by convention, and cleaning them up on delete is the
@@ -170,7 +173,8 @@ Why the interface calls tags "Projects" is in
 The renderer runs with `sandbox: true` (`src/main/index.ts`). The built preload requires one
 module, `electron`, which a sandboxed preload can load, and it holds no Node API of its own. The
 preload is the only code that can reach `ipcRenderer`, so it holds no logic: every method on it is
-a one-line forwarding call.
+a one-line forwarding call to main, except `getPathForFile`, which calls Electron's `webUtils` in
+the preload itself (see [File paths from drag and drop](#file-paths-from-drag-and-drop)).
 
 The built `index.html` carries a Content-Security-Policy as a meta element, injected at build time
 in `electron.vite.config.ts`. It is build-only because the dev server needs inline scripts, `eval`
@@ -183,14 +187,14 @@ default, and nothing needed the exemption.
 
 ### Outbound traffic
 
-Vault makes three outbound requests, all to Google Fonts, and none of them runs unless a font is
-added or previewed.
+Vault makes three outbound requests, all to Google Fonts, and each one starts from something the
+user does with fonts.
 
-| Request                                                               | Where from   | Host                                             |
-| --------------------------------------------------------------------- | ------------ | ------------------------------------------------ |
-| The family metadata catalogue (`getGoogleFonts`)                      | main         | `fonts.google.com`                               |
-| A family's CSS, then its `.woff2` bytes (`font:download-google`)      | main         | `fonts.googleapis.com`, then `fonts.gstatic.com` |
-| The stylesheet that renders a Google font in a preview (`fontLoader`) | **renderer** | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+| Request                                                               | Starts when                                                                                                           | Where from   | Host                                             |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------ |
+| The family metadata catalogue (`getGoogleFonts`)                      | The font adder first opens in a session                                                                               | main         | `fonts.google.com`                               |
+| A family's CSS, then its `.woff2` bytes (`font:download-google`)      | "Download font file" is pressed on a Google font                                                                      | main         | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+| The stylesheet that renders a Google font in a preview (`fontLoader`) | The Fonts or Type scales page opens, once per Google font in the library, and a family is previewed in the font adder | **renderer** | `fonts.googleapis.com`, then `fonts.gstatic.com` |
 
 The third is the exception to the boundary. Previewing a Google-sourced font appends a
 `<link rel="stylesheet">` to the document, so that request leaves the renderer rather than main.
@@ -202,7 +206,11 @@ There is no telemetry, no account check and no update ping.
 `getPathForFile` is a direct `webUtils` call in the preload rather than an `invoke`, the one
 method that is not IPC. Electron's file objects no longer expose a filesystem path to the
 renderer, so this resolves a dropped `File` to its real path on the privileged side and hands back
-a string. It reads from the drop event. Arbitrary renderer input never reaches it.
+a string. It is exposed on `window.api` like every other method, so any renderer code can call it,
+not only the drop handler. What limits it is the argument: it takes a `File` object, not a path,
+and returns an empty string for a `File` that has no file on disk behind it (one built in script
+with `new File()`). Renderer code can learn the path of a file the user dropped or picked, and
+cannot use the method to name one.
 
 ### Window lockdown
 

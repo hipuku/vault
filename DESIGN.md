@@ -119,7 +119,7 @@ The generic join stays underneath as the flexible data model
 ### Drawers and pages
 
 **Decision.** A library item (a colour or a font) opens in a drawer over the library. A generated
-artifact (a palette or a type scale) opens as a full page, with export.
+artefact (a palette or a type scale) opens as a full page, with export.
 
 **Reason.** A colour or a font is a quick look. A palette or a type scale is a worked object, with
 an export.
@@ -127,7 +127,7 @@ an export.
 | ![A colour open in a drawer over the library](screenshots/color-viewer.png) | ![A tonal palette on its own page](screenshots/palette-viewer.png) |
 | --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 
-### Generated artifacts
+### Generated artefacts
 
 **Decision.** Experimenting happens in the create flow: seeds, models, ratios and per-step tuning,
 all with a live preview. Saving produces a snapshot. A saved palette or type scale can be renamed,
@@ -135,7 +135,7 @@ exported or deleted, and a palette swatch can be promoted into the library, but 
 edited after creation. Hand-tuning a type scale past its ratio flips the meta pill to **Custom**.
 
 **Reason.** Vault is where a palette or a type scale is explored, not where it is maintained. The
-saved artifact is a hand-off to a design tool or to code, through the four export formats (CSS,
+saved artefact is a hand-off to a design tool or to code, through the four export formats (CSS,
 SCSS, Design Tokens and Tailwind), and the work continues there. A read-only snapshot is what
 was exported.
 
@@ -325,7 +325,7 @@ value still fails while the known ones stay visible in one place. Two examples f
 
 - **Dark theme.** Deferred, not ruled out. The two-tier token layer makes it an override of the
   semantic aliases.
-- **Starting from a saved artifact.** A saved palette stores its seed and model, and a type scale
+- **Starting from a saved artefact.** A saved palette stores its seed and model, and a type scale
   its base size, ratio and fonts, so either could open in the create flow as the start of a new
   one. There is no such action yet; today a variation starts from scratch.
 - **Ink on a user's colour.** Four labels sit on a swatch the user chose and use a literal `#fff`.

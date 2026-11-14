@@ -106,7 +106,7 @@ into your colour library**.
 ![Palette export](screenshots/palette-export.png)
 
 > [!NOTE]
-> **How it works:** [Palette generators](./ARCHITECTURE.md#palette-generators), [Shared code](./ARCHITECTURE.md#shared-code), [Generated artifacts](./DESIGN.md#generated-artifacts)
+> **How it works:** [Palette generators](./ARCHITECTURE.md#palette-generators), [Shared code](./ARCHITECTURE.md#shared-code), [Generated artefacts](./DESIGN.md#generated-artefacts)
 
 ---
 
@@ -128,7 +128,7 @@ unitless / px / % · em), and per-row metrics. Export captures whatever units ar
 ![Type scale viewer](screenshots/typescale-viewer.png)
 
 > [!NOTE]
-> **How it works:** [Type scales](./ARCHITECTURE.md#type-scales), [Generated artifacts](./DESIGN.md#generated-artifacts)
+> **How it works:** [Type scales](./ARCHITECTURE.md#type-scales), [Generated artefacts](./DESIGN.md#generated-artefacts)
 
 ---
 
