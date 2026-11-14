@@ -1,0 +1,457 @@
+{
+  "exportedAt": "2026-11-14T05:24:21.071Z",
+  "source": "plugin",
+  "file": {
+    "key": "A5ternYGD52mJ5HhCVqHKY",
+    "name": "vault · atoms"
+  },
+  "variables": [],
+  "components": [
+    {
+      "name": "Badge",
+      "page": "→ Badge",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "label#131:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "variant",
+          "type": "VARIANT",
+          "options": ["neutral", "success", "warning", "error", "muted"]
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "page": "→ Button",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "icon#173:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "iconName#173:35",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "children#173:70",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "variant",
+          "type": "VARIANT",
+          "options": ["primary", "secondary", "ghost", "danger"]
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "pressed", "focus", "disabled"]
+        }
+      ]
+    },
+    {
+      "name": "Chip",
+      "page": "→ Chip",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "icon#213:3",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "iconName#213:4",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "label#213:5",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "dot#303:0",
+          "type": "BOOLEAN",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "page": "→ Divider",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "IconButton",
+      "page": "→ IconButton",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "iconName#205:1",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm", "xs"]
+        },
+        {
+          "name": "tone",
+          "type": "VARIANT",
+          "options": ["neutral", "primary", "danger"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus", "disabled"]
+        },
+        {
+          "name": "pressed",
+          "type": "VARIANT",
+          "options": ["false", "true"]
+        }
+      ]
+    },
+    {
+      "name": "InlineEdit",
+      "page": "→ InlineEdit",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "value#190:1",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "hover-pen", "editing", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "Input",
+      "page": "→ Input",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "placeholder#207:2",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "value#207:3",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "unit#303:1",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "hasUnit#303:22",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "error",
+          "type": "VARIANT",
+          "options": ["false", "true"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "focus", "disabled"]
+        },
+        {
+          "name": "content",
+          "type": "VARIANT",
+          "options": ["placeholder", "value"]
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["lg", "md"]
+        },
+        {
+          "name": "mono",
+          "type": "VARIANT",
+          "options": ["false", "true"]
+        }
+      ]
+    },
+    {
+      "name": "Logo",
+      "page": "→ Logo",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "MenuOption",
+      "page": "→ MenuOption",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "leading#210:2",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "label#210:3",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "selected#272:13",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "as",
+          "type": "VARIANT",
+          "options": ["button", "li"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus", "active"]
+        }
+      ]
+    },
+    {
+      "name": "Panel",
+      "page": "→ Panel",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "showTitle#213:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "title#213:1",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "showActions#213:2",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "content#219:1",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "_Panel content",
+      "page": "→ Panel",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Panel content / Swatches",
+      "page": "→ Panel",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Popover",
+      "page": "→ Popover",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "content#221:3",
+          "type": "INSTANCE_SWAP",
+          "options": []
+        },
+        {
+          "name": "width",
+          "type": "VARIANT",
+          "options": ["auto", "sm", "md", "lg"]
+        },
+        {
+          "name": "pad",
+          "type": "VARIANT",
+          "options": ["default", "tight", "roomy"]
+        }
+      ]
+    },
+    {
+      "name": "_Popover content",
+      "page": "→ Popover",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Popover content / Menu",
+      "page": "→ Popover",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "_Popover content / Step editor",
+      "page": "→ Popover",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "PopoverTrigger",
+      "page": "→ PopoverTrigger",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "icon#224:4",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "iconName#224:5",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "label#224:6",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "caret#224:7",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "SegmentedControl / Segment",
+      "page": "→ SegmentedControl",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "icon#230:9",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "iconName#230:10",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "label#230:11",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm"]
+        },
+        {
+          "name": "state",
+          "type": "VARIANT",
+          "options": ["rest", "hover", "selected", "focus"]
+        }
+      ]
+    },
+    {
+      "name": "SegmentedControl",
+      "page": "→ SegmentedControl",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "segment3#230:20",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "segment4#230:21",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "segment5#230:22",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "segment6#230:23",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm"]
+        }
+      ]
+    },
+    {
+      "name": "Spinner",
+      "page": "→ Spinner",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "size",
+          "type": "VARIANT",
+          "options": ["md", "sm"]
+        }
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "page": "→ Tooltip",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "label#239:0",
+          "type": "TEXT",
+          "options": []
+        }
+      ]
+    }
+  ]
+}
