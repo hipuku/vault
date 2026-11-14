@@ -57,8 +57,9 @@ Vault is a direct download for macOS. It is not on the App Store and needs no ac
 
 ## Develop
 
-Node 22 or newer, as `.nvmrc` and the `engines` field both say. Electron 45 and the SQLite driver
-each require it.
+Node 22.22.2 or later on the 22 line, or 24.15 or later, as the `engines` field says; `.nvmrc`
+picks the latest 22. Electron 45 and the SQLite driver need Node 22, and stylelint 18 and jsdom 31
+set the minor floor.
 
 ```bash
 nvm use

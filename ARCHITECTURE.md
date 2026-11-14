@@ -379,7 +379,8 @@ CSS Modules. The reasoning is a design-system decision, in
 
 ### Runtime floor
 
-Electron 45 and `better-sqlite3` 13 both require Node 22, recorded in `engines` and `.nvmrc`. The
+Electron 45 and `better-sqlite3` 13 both require Node 22. Stylelint 18 and jsdom 31 raise the floor
+to 22.22.2 (or 24.15, or 26), and `engines` records that range; `.nvmrc` asks for the latest 22. The
 SQLite driver ships N-API prebuilds, so nothing rebuilds it at install time; electron-builder still
 rebuilds at package time through its own copy.
 
