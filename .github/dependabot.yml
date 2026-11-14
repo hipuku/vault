@@ -24,6 +24,9 @@ updates:
         patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*']
     commit-message:
       prefix: 'deps'
+    # Release notes group pull requests by label, and deps is the one they file under.
+    # Without this Dependabot adds its own dependencies and javascript labels instead.
+    labels: ['deps']
     ignore:
       # @types/node describes the runtime, so it tracks the Node that Electron ships
       # and that CI installs, currently 22, rather than the newest release line.
@@ -53,3 +56,4 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    labels: ['deps']
