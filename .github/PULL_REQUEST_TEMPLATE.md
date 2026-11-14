@@ -24,7 +24,7 @@
 
 ## Checklist
 
-- [ ] `npm run lint && npm run lint:prose && npm run lint:css && npm run format:check && npm run typecheck && npm run test:run`
+- [ ] `npm run lint && npm run lint:css && npm run format:check && npm run typecheck && npm run test:run`
 - [ ] A test that fails without this change, for a fix
 - [ ] Tokens only, no raw values in component styles
 - [ ] Keyboard and screen reader checked, for anything interactive
