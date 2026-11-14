@@ -80,6 +80,30 @@ Some things are left out on purpose:
 - **Construction parts.** Figma components named with a leading underscore or a slash.
 - **Screens.** They are compositions of the tiers, which are compared.
 
+A component's states come from its own stylesheet. When that styles none, they come from the global
+class the component is (IconButton is `.icon-btn`, PopoverTrigger is `.pill`, the cards are
+`.card`), as `global.css` writes them. A state inside `:not()` excludes rather than styles, so
+`:hover:not(:disabled)` counts as hover only.
+
+### Exceptions
+
+Some differences are meant to be there, and `figma/exceptions.json` lists each one with its reason,
+the way `stylelint.config.mjs` enumerates its raw-value exceptions. An excepted item is left out of
+the comparison, and the report gives the count. The check warns when an exception is no longer
+needed, because its item has left both sides or both sides now agree.
+
+The exceptions fall into four groups:
+
+- **States drawn as variants.** A modal's tabs, a field's placeholder or value, a palette's kind:
+  Figma draws each so every look exists, and the code derives them from data or internal state
+  rather than taking a prop.
+- **Position, not appearance.** `align` and `side` say where a popover, menu, tooltip or modal
+  sits, which Figma does not need a variant for.
+- **Hover on an organism's inner parts.** The rule styles a row, a swatch or a drop zone inside,
+  and Figma draws the organism at rest.
+- **States inherited through composition.** A molecule whose trigger is a PopoverTrigger or an
+  IconButton has that atom's states, compared on the atom.
+
 ### Where Figma is read from
 
 Components are read live from Figma's REST API, with a personal access token stored as the
@@ -138,8 +162,10 @@ runs. It has a narrow brief:
 - **It may** read the Figma files, refresh the snapshots (`npm run figma:check -- --plugin-code`
   prints the export it runs; `--save` stores the result), draft the change that would bring Figma
   in line with code, and apply that change once the owner approves it.
-- **Before any edit** it saves a named version of the Figma file, so every change can be undone
-  from Figma's version history.
+- **Its edits add rather than replace** where they can: new variants cloned from existing ones,
+  bound to the same library variables, so undoing one means deleting what it added. The Figma MCP
+  server cannot save a named version, so Figma's automatic version history holds the earlier
+  state, and the owner saves a named version by hand before a large edit.
 - **It may not** decide a drift decision, merge a pull request, accept a baseline, or publish the
   Figma library. Those are the owner's.
 

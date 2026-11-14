@@ -31,24 +31,63 @@ function unionAliases(src) {
   return aliases
 }
 
+/** The states a stylesheet writes for each of its classes: `.icon-btn:hover`
+    gives `icon-btn` hover. Some components are a global class rather than a
+    module (IconButton is `.icon-btn`, PopoverTrigger is `.pill`, the cards are
+    `.card`), so their states live in global.css. As in statesOf, a negation
+    excludes rather than styles, so `:not(...)` is dropped first and
+    `.icon-btn:not(:disabled):hover` gives hover. */
+export function globalStates(css) {
+  const bare = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/:not\([^()]*(?:\([^()]*\)[^()]*)*\)/g, '')
+  const states = {}
+  for (const m of bare.matchAll(/\.([\w-]+)((?::[\w-]+)+)/g)) {
+    for (const s of m[2].matchAll(/:(hover|active|disabled)\b/g)) (states[m[1]] ??= new Set()).add(s[1])
+  }
+  return states
+}
+
+const globalClassStates = root =>
+  globalStates(fs.readFileSync(path.join(root, PATHS.components, 'styles', 'global.css'), 'utf8'))
+
+/** Global classes a component applies: quoted strings made only of class-like
+    words, at least one of them a global class with states. A string given to
+    any attribute but `className` is not a class list (`title="card"`), so it
+    is skipped; class lists built in a variable, like IconButton's, still count. */
+export function globalClassesIn(src, known) {
+  const used = new Set()
+  for (const m of src.matchAll(/(?:([\w-]+)=\{?\s*)?['"`]([^'"`\n]+)['"`]/g)) {
+    if (m[1] && m[1] !== 'className') continue
+    const words = m[2].trim().split(/\s+/)
+    if (!words.every(w => /^[a-z][\w-]*$/.test(w))) continue
+    for (const w of words) if (known[w]) used.add(w)
+  }
+  return [...used]
+}
+
 /** Every component folder in the three tiers, with its variant axes and the
-    compared states its stylesheet styles. */
+    compared states it styles, in its own module or as a global class. */
 export function codeComponents(root = '.') {
   const items = {}
+  const global = globalClassStates(root)
   for (const tier of TIERS) {
     const dir = path.join(root, PATHS.components, tier)
     for (const name of fs.readdirSync(dir).sort()) {
       const tsx = path.join(dir, name, `${name}.tsx`)
       if (!fs.existsSync(tsx)) continue
       items[`component ${name}`] = tier
-      const aliases = unionAliases(fs.readFileSync(tsx, 'utf8'))
+      const src = fs.readFileSync(tsx, 'utf8')
+      const aliases = unionAliases(src)
       for (const p of variantsOf(tsx).props) {
         const values = p.kind === 'variant' ? p.values : aliases[p.type]
         if (values) items[`axis ${name}.${p.prop}`] = joinSet(values)
       }
-      const states = statesOf(path.join(dir, name, `${name}.module.css`))
-        .map(s => CSS_STATES[s])
-        .filter(Boolean)
+      // A component styles its own states in its module. Only when the module
+      // styles none is the component a global class (`.card`, `.pill`); a global
+      // class used inside a module-styled component belongs to a child, like
+      // InlineEdit's pen, which is an `.icon-btn`.
+      const own = statesOf(path.join(dir, name, `${name}.module.css`))
+      const raw = own.length ? own : globalClassesIn(src, global).flatMap(c => [...global[c]])
+      const states = raw.map(s => CSS_STATES[s]).filter(Boolean)
       if (states.length) items[`states ${name}`] = joinSet(states)
     }
   }

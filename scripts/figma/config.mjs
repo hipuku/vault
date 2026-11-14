@@ -18,6 +18,7 @@ export const PATHS = {
   components: 'src/renderer/src',
   snapshot: 'figma/snapshot',
   baseline: 'figma/baseline.json',
+  exceptions: 'figma/exceptions.json',
 }
 
 /* The states a stylesheet can express, in the words Figma's `state` axis uses.

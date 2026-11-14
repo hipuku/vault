@@ -29,13 +29,28 @@ export const show = v => (v === undefined ? '(none)' : `\`${String(v).replaceAll
 
 /** `compact` is for pull requests: known drift is a count, not a table, so the
     comment shows only what this change needs to act on. */
-export function report({ findings, failing, warnings = [], figmaLater = false, source, compact = false }) {
+export function report({
+  findings,
+  failing,
+  warnings = [],
+  figmaLater = false,
+  source,
+  compact = false,
+  exceptions = 0,
+}) {
   const lines = [MARKER, '## Figma parity', '']
-  if (!findings.length) lines.push('Code and Figma match, and the baseline is current.')
+  if (!findings.length)
+    lines.push(
+      exceptions
+        ? 'Every compared item matches in code and Figma, and the baseline is current. Excepted items are not compared.'
+        : 'Code and Figma match, and the baseline is current.',
+    )
   else if (failing.length) lines.push(`**Failing:** ${failing.length} item(s) need code and Figma brought together.`)
   else lines.push('**Passing.** Nothing is failing; the items below are for information.')
   if (figmaLater) lines.push('', 'The `figma-later` label is on: code ahead of Figma is a warning, not a failure.')
   if (source) lines.push('', `Figma read from: ${source}.`)
+  if (exceptions)
+    lines.push('', `${exceptions} item(s) are left out on purpose, each with its reason in figma/exceptions.json.`)
   for (const w of warnings) lines.push('', `> [!WARNING]\n> ${w}`)
 
   for (const kind of KINDS) {
