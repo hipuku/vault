@@ -1,55 +1,43 @@
 # Vault
 
-An offline, single-user desktop app for capturing and shaping design tokens: colours, fonts,
-palettes, and type scales. Built with Electron, React, and SQLite.
+An offline, single-user Mac app for capturing and shaping design tokens: colours, fonts, palettes
+and type scales. It is a library for saved colours and fonts, and a studio that generates palettes and type scales
+from a project's colours and fonts. Everything stays on the machine: the library in a SQLite
+database and imported font files in the app's data folder, both under
+`~/Library/Application Support/vault`. The only network traffic is to Google Fonts, when the font
+adder opens, a Google font is shown, or its files are downloaded.
 
-![Vault](screenshots/colors-library.png)
+![Vault's colour library: a grid of named swatches, each with its hue family and hex](screenshots/colors-library.png)
 
-## Design
+[![Case study on hipuku.dev](https://img.shields.io/badge/Case_study-hipuku.dev-AA1155?style=for-the-badge)](https://www.hipuku.dev/work/vault)
+[![Download the latest release for macOS](https://img.shields.io/github/v/release/hipuku/vault?label=Download&logo=apple&logoColor=white&color=AA1155&style=for-the-badge)](../../releases/latest)
+[![Figma files](https://img.shields.io/badge/Figma-5_files-AA1155?logo=figma&logoColor=white&style=for-the-badge)](https://www.figma.com/@hipuku)
 
-- **One accent, for actions.** Ruby marks what you can act on: primary buttons, the active
-  filter and nav item, focus rings. Everything else is grey, so the colours you collect stay
-  the brightest thing on screen. The favourite star is gold, because it marks state rather than
-  an action.
-- **Light mode only, on purpose.** One pale theme keeps the design work on one surface. The
-  two-tier token layer means a dark theme is mostly an override of the semantic aliases:
-  deferred, not ruled out.
-- **Tokens from [haus](https://github.com/hipuku/haus), components of its own.** Vault reads
-  every role from `haus-tokens` and points the brand at its ruby ramp. Its 49 components sit in
-  three tiers (15 atoms, 16 molecules, 18 organisms), and imports only run downward. The atoms
-  and molecules were audited against WCAG and the ARIA patterns they claim; all seven defects
-  found are fixed.
-- **Manrope, bundled.** A 200 to 800 weight axis, shipped with the app because a local-first app
-  cannot depend on a font CDN. Cal Sans was tried first and reverted: one weight flattened the
-  hierarchy the type scale tool exists to show.
-- **The system is enforced.** Stylelint fails any colour, type, spacing, radius or z-index set as
-  a raw value instead of a token, with the few deliberate exceptions listed and explained in
-  `stylelint.config.mjs`.
+## At a glance
 
-[`DESIGN.md`](./DESIGN.md) has the reasoning and the alternatives behind each of these.
+- **Designed and built end to end.** Five Figma files hold the tokens, the 49 components and the
+  screens, and every component has the same name in Figma and in code.
+  [`DESIGN.md` § Components](./DESIGN.md#components)
+- **Built on a design system.** Every colour, type and spacing value comes from the haus token
+  layer; the components are vault's own, in three tiers.
+  [`DESIGN.md` § Tokens](./DESIGN.md#tokens)
+- **Accessible.** Atoms and molecules follow the WAI-ARIA pattern for their role, and axe runs in
+  20 of the 22 component test files. [`DESIGN.md` § Accessibility](./DESIGN.md#accessibility)
+- **Enforced.** Stylelint fails any colour, type, spacing, radius or z-index written as a raw
+  value. [`DESIGN.md` § Enforcement](./DESIGN.md#enforcement)
+- **Perceptual colour.** Names, ramps and palettes are computed in a perceptual space, with
+  CIEDE2000 as the distance. [`ARCHITECTURE.md` § Colour naming](./ARCHITECTURE.md#colour-naming)
+- **Sandboxed and tested.** The renderer runs sandboxed and reaches data only through typed IPC;
+  308 unit and component tests, and an end-to-end suite on the built app.
+  [`ARCHITECTURE.md` § Boundaries and security](./ARCHITECTURE.md#boundaries-and-security)
 
-|                                                                             |                                                                                          |
-| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| ![A colour open in a drawer over the library](screenshots/color-viewer.png) | ![A tonal palette on its own page](screenshots/palette-viewer.png)                       |
-| ![A type scale with its steps](screenshots/typescale-viewer.png)            | ![A project gathering colours, fonts, palettes and scales](screenshots/project-view.png) |
+## Documentation
 
-## Features
-
-- **Colours.** Capture hexes, auto-named, with perceptual ramps and contrast checks.
-- **Fonts.** Add from Google Fonts, your installed fonts (Font Book), or a file; preview at any
-  size; grab the file back out.
-- **Palettes.** Generate tonal systems or expressive multi-hue sets from your library, then
-  export to CSS, SCSS, Design Tokens or Tailwind.
-- **Type scales.** Product or Web/Markup presets on a ratio, live unit conversion (px, rem, pt
-  and the rest), per-step tuning, and the same four export formats.
-- **Projects.** Tag any asset, then view everything for a project in one place.
-- **Command palette.** `⌘K` to jump to any section or project, or start a new asset, without
-  leaving the keyboard.
-
-Everything is local. There are no accounts and no cloud. Your library lives in
-`~/Library/Application Support/Vault/`, as a SQLite database plus copied font files, and never
-leaves your machine. The one exception is Google Fonts: adding or previewing a font from Google
-fetches it. [`DESIGN.md`](./DESIGN.md) lists every request.
+| File                                   | Covers                                                                  |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| [`FEATURE.md`](./FEATURE.md)           | Every feature, screen by screen                                         |
+| [`DESIGN.md`](./DESIGN.md)             | Visual language, typography, interaction and the design system          |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Processes, data model, security, the colour and type maths, and testing |
 
 ## Install
 
@@ -69,8 +57,9 @@ Vault is a direct download for macOS. It is not on the App Store and needs no ac
 
 ## Develop
 
-Node 22 or newer, as `.nvmrc` and the `engines` field both say. Electron 44 and the SQLite
-driver each require it.
+Node 22.22.2 or later on the 22 line, or 24.15 or later, as the `engines` field says; `.nvmrc`
+picks the latest 22. Electron 45 and the SQLite driver need Node 22, and stylelint 18 and jsdom 31
+set the minor floor.
 
 ```bash
 nvm use
@@ -86,18 +75,14 @@ npm run dev      # launch the app with HMR
 | `npm run typecheck` | `tsc --noEmit` across main and renderer                                |
 | `npm run test`      | Vitest (watch): the pure `lib/` logic in node, the components in jsdom |
 | `npm run test:run`  | Vitest once (CI)                                                       |
+| `npm run e2e`       | Playwright against the built app (run `npm run build` first)           |
 | `npm run lint`      | ESLint (typescript-eslint + react-hooks)                               |
+| `npm run lint:css`  | Stylelint, including the raw-value gate                                |
 | `npm run format`    | Prettier write                                                         |
 | `npm run build`     | Production build                                                       |
 | `npm run dist:mac`  | Unsigned `.dmg` (arm64 and Intel)                                      |
 
-## More
-
-- [`FEATURE.md`](./FEATURE.md) is a visual tour of every feature.
-- [`DESIGN.md`](./DESIGN.md) covers the architecture, the design system, and the decisions
-  behind the build.
-
 ## Stack
 
-Electron · React · TypeScript · CSS Modules · better-sqlite3 · electron-vite · chroma-js ·
-culori · `haus-tokens` · `haus-colour-utils` · `haus-colour-names`
+Electron · React · TypeScript · CSS Modules · better-sqlite3 · electron-vite · chroma-js · culori ·
+`haus-tokens` · `haus-colour-utils` · `haus-colour-names`

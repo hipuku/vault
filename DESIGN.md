@@ -1,238 +1,216 @@
-# Vault: Design Notes
+# Vault: design
 
-Why Vault is built the way it is: the product intent, the architecture, the design system, and
-the calls that weren't obvious. It is a decision log. It records the choices that took real thought and the
-alternatives rejected, and skips what the code already explains.
+How Vault looks and behaves, and the design system behind it. The Figma files (tokens, atoms,
+molecules, organisms and screens) are on [figma.com/@hipuku](https://www.figma.com/@hipuku). How
+the app is built is in [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 
-## What it is
+## Contents
 
-Vault is an **offline, single-user desktop app for capturing and shaping design tokens**:
-colours, fonts, palettes, and type scales. Two jobs:
-
-1. **A library.** Capture anything you see in the wild, a hex or a typeface. No project required.
-2. **A studio.** Gather a project's colours and fonts, then _generate_ a palette and a type
-   scale from them.
-
-No accounts, no cloud, no metrics. The library lives on disk.
-
-![Colours library](screenshots/colors-library.png)
-![Palette creation](screenshots/palette-create-tonal.png)
-![Type scale viewer](screenshots/typescale-viewer.png)
-
-> A full visual tour is in [`FEATURE.md`](./FEATURE.md).
+- [Visual language](#visual-language)
+- [Typography](#typography)
+- [Layout and interaction](#layout-and-interaction)
+- [Design system](#design-system): [Tokens](#tokens), [Components](#components),
+  [Styling](#styling), [Accessibility](#accessibility), [Enforcement](#enforcement)
+- [Known gaps](#known-gaps)
 
 ---
 
-## Architecture
+## Visual language
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044','edgeLabelBackground':'#ffffff'}}}%%
-flowchart TB
-    subgraph RENDERER ["renderer · Chromium, React, CSS Modules"]
-        R["contextIsolation: true · nodeIntegration: false<br/><b>window.api : VaultApi</b><br/><small>the only object it can reach privilege through</small>"]
-    end
+### Accent
 
-    subgraph PRELOAD ["preload · the bridge"]
-        B["contextBridge.exposeInMainWorld('api', api)<br/><small>every method is one line: ipcRenderer.invoke(channel, …)</small>"]
-    end
+**Decision.** Ruby, built as an OKLCH ramp anchored on `#AA1155` and `#880044`, is reserved for
+actions: primary buttons, the active filter and nav item, focus rings, and the wordmark. Everything
+else is the neutral `onyx` grey.
 
-    subgraph MAIN ["main · Node, owns everything privileged"]
-        DB["db/<br/><small>better-sqlite3, synchronous</small><br/><small>colour · font · palette · tag · type-scale</small>"]
-        LIB["lib/<br/><small>fontStorage · googleFonts · installedFonts</small>"]
-    end
+**Reason.** With the accent on actions only, the colours in the library are the most saturated
+thing on screen. The token chain that holds this is under [Tokens](#tokens).
 
-    subgraph SHARED ["shared/ · pure. no DOM, no Node, no Electron"]
-        S["colour maths · palette generators · type-scale ramp<br/>palette analysis · the VaultApi types"]
-    end
+![The colour library filtered to favourites: ruby on the Favourites filter, Add colour and the active nav item; gold on the favourite stars](screenshots/colors-favourites.png)
 
-    R -- "typed method calls<br/>the only way across" --> B
-    B -- "ipcRenderer.invoke ⇄ ipcMain.handle<br/>colour: font: palette: swatch:<br/>tag: type-scale: type-scale-step: clipboard:" --> DB
-    B --> LIB
-    S -. "imported by" .-> R
-    S -. "imported by" .-> DB
+### Favourite state
 
-    classDef box fill:#feeff2,stroke:#aa1055,color:#111113
-    classDef pure fill:#f5f4f9,stroke:#d1d0d7,color:#3f3f43
-    class R,B,DB,LIB box
-    class S pure
-```
+**Decision.** The favourite star is gold, `--accent-gold` (`oklch(60% 0.175 65)`), a token of
+vault's own.
 
-### What the renderer cannot do
+**Reason.** A favourite is state, and state should not read as something to click, so it stays out
+of the ruby. It is its own token rather than a read of the warning ramp it happens to match, so it
+does not move when that ramp does.
 
-`nodeIntegration: false` means renderer code has no `require`, and `contextIsolation: true` runs
-the preload script in a separate JavaScript world from the page. The renderer cannot read the
-preload's scope, reach into `ipcRenderer` directly, or monkey-patch its way to Node. It sees
-`window.api` and nothing else. Every database write and file read in Vault happens on the far
-side of that boundary. Network traffic is the one exception, described below.
+### Shape
 
-### The renderer is sandboxed, and has a CSP
+**Decision.** Buttons, nav items and tags are fully rounded (`--radius-full`).
 
-`sandbox` was off until 2026-09-01 (`vault#26`) for no recorded reason: it is the project
-template's default. Nothing needed it. The built preload requires one module, `electron`, which a
-sandboxed preload can load, and it holds no Node API of its own. The preload is the only code that
-can reach `ipcRenderer`, which is why it holds no logic: every method on it is a one-line
-forwarding call.
+**Reason.** A stylistic preference, applied to every control of those kinds so the shape is the
+same across the app.
 
-The same change added a Content-Security-Policy. It is a meta element injected into the built
-`index.html` only (`electron.vite.config.ts`), because the dev server needs inline scripts, `eval`
-and a websocket for HMR, and a `file://` response has no headers to carry a policy. It allows what
-the app uses and nothing else: Google Fonts for the stylesheet and its faces, inline styles for
-the previews React sizes at runtime, and `data:` and `blob:` images for the exports.
+### Icons
 
-### Why `shared/` is imported by both processes
+**Decision.** Font Awesome's solid set, as SVG React components.
 
-The palette generators run in two places on purpose. The renderer runs them to preview a palette
-live, and main re-runs them from the same seed before writing to SQLite. The saved palette and
-the previewed one therefore cannot drift, because they are the same function over the same
-input.
+**Reason.** It sits at a more consistent optical weight next to Manrope, and the SVG packages
+tree-shake to the icons used, so there is no icon font to flash in.
 
-Type scales take the other route. The renderer materialises the steps and main only persists the
-rows, so `shared/` there is shared across the renderer's own create flow, viewer and card rather
-than across the process boundary. It holds the ratio presets and the rule for what counts as a
-hand-tuned scale.
+**Alternatives.** Lucide, the first choice, dropped for the weight mismatch.
 
-### Outbound traffic
+### Theme
 
-Vault makes three outbound requests, all of them to Google Fonts, and none of them runs unless
-you add or preview a font.
+**Decision.** Light only.
 
-| Request                                                               | Where from   | Host                                             |
-| --------------------------------------------------------------------- | ------------ | ------------------------------------------------ |
-| The family metadata catalogue (`getGoogleFonts`)                      | main         | `fonts.google.com`                               |
-| A family's CSS, then its `.woff2` bytes (`font:download-google`)      | main         | `fonts.googleapis.com`, then `fonts.gstatic.com` |
-| The stylesheet that renders a Google font in a preview (`fontLoader`) | **renderer** | `fonts.googleapis.com`, then `fonts.gstatic.com` |
+**Reason.** One pale theme keeps the saved colours and type the brightest thing on screen, and
+keeps the design work on one surface. Tokens have two tiers, primitives and semantic aliases, so a
+dark theme is an override of the aliases. It has been deferred, not ruled out (see
+[Known gaps](#known-gaps)).
 
-The third is the exception to the boundary above. Previewing a Google-sourced font appends a
-`<link rel="stylesheet">` to the document, so that request leaves the renderer rather than main.
-Everything else stays local: the database, the library, every colour and palette and type scale.
-There is no telemetry, no account check, and no update ping.
+---
 
-### The one call that is not IPC
+## Typography
 
-`getPathForFile` is a direct `webUtils` call in the preload rather than an `invoke`. Electron's
-file objects no longer expose a filesystem path to the renderer, so this resolves a dropped
-`File` to its real path on the privileged side and hands back a string. It reads from the drop
-event. Arbitrary renderer input never reaches it.
+### Typeface
 
-### Where the rest lives
+**Decision.** Manrope, variable from 200 to 800, bundled with the app as
+`@fontsource-variable/manrope`. Specimen previews use a serif from vault's own tokens.
 
-- **Tests.** 308 Vitest tests across 35 files. The pure logic in `shared/` and `lib/` is covered
-  directly: the exporters, the colour maths, both palette generators, gamut mapping, type-scale
-  units and the command filter. The UI suite runs in jsdom, and the component tests carry axe
-  assertions. Run them on Node 22: on Node 20 the jsdom files fail to start and only the logic
-  suite runs.
-- **Window lockdown.** `will-navigate` refuses any top-level navigation that is not the bundled
-  app (or the dev server in development), so nothing that can set `location.href` can move the
-  window, and the `window.api` surface with it, to a remote origin. `setWindowOpenHandler` denies
-  every new window and hands `http(s)` links to the system browser.
-- **CI** typechecks, lints, formats, tests, and builds on every push to `main` and every pull
-  request. A tagged release builds unsigned `.dmg` installers for Apple Silicon and Intel and
-  publishes them to GitHub Releases. It ships as a direct download rather than through the App
-  Store, and the README has the one-time Gatekeeper step.
-- **Runtime floor.** Electron 44 and better-sqlite3 13 both require Node 22, recorded in
-  `engines` and `.nvmrc`. The SQLite driver ships N-API prebuilds, so nothing rebuilds it at
-  install time; electron-builder still rebuilds at package time through its own copy.
-- **Production tree.** Sixteen packages reach the shipped app. React and its scheduler, the
-  SQLite driver and its addon API, chroma-js, culori, react-colorful, the icon set, the
-  typeface, and three from the haus design system: `haus-tokens` for the token layer,
-  `haus-colour-utils` for the hue bins and `haus-colour-names` for the 31,900-name dataset.
-  None of the three adds a transitive dependency; `haus-colour-utils` runs on the chroma-js
-  that was already here.
+**Reason.** Vault works offline, so it cannot load a font from a CDN. Manrope is a
+geometric-humanist sans with a real weight axis, and the type scale tool shows hierarchy through
+weight, which needs the full axis.
 
-### Data model
+**Alternatives.** Cal Sans, tried first for more personality. It ships weight 400 only, which
+flattened the interface's weight hierarchy and broke the type scale tool, whose job is showing
+weight steps.
 
-SQLite, one file. Two library tables (`colours`, `fonts`), two generated artifacts each with
-their own children (`palettes` + `swatches`, `type_scales` + `type_scale_steps`), and a generic
-`tags` / `asset_tags` join so any asset can belong to projects.
+![A type scale page: the specimen table with size, weight, line height and tracking per step](screenshots/typescale-viewer.png)
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044','edgeLabelBackground':'#ffffff'}}}%%
-erDiagram
-    colours {
-        int id PK
-        string hex
-        string name
-    }
-    fonts {
-        int id PK
-        string family
-        string source "google | installed | local"
-        string source_url "managed paths, local only"
-    }
-    palettes {
-        int id PK
-        string kind "tonal | expressive"
-        string base_hex
-        string gen_params "the seed, so it can be regenerated"
-    }
-    swatches {
-        int id PK
-        int palette_id FK
-        int colour_id FK "set when promoted to the library"
-        string group_key
-    }
-    type_scales {
-        int id PK
-        int heading_font_id FK
-        int body_font_id FK
-        real base_size
-        string ratio
-    }
-    type_scale_steps {
-        int id PK
-        int type_scale_id FK
-        string step_name
-        real size
-    }
-    tags {
-        int id PK
-        string label "shown as Project in the UI"
-    }
-    asset_tags {
-        int tag_id FK
-        string asset_type "polymorphic, no FK"
-        int asset_id
-    }
+### Type roles
 
-    palettes     ||--o{ swatches         : "cascades on delete"
-    type_scales  ||--o{ type_scale_steps : "cascades on delete"
-    colours      ||--o| swatches         : "anchors"
-    fonts        ||--o| type_scales      : "heading + body"
-    tags         ||--o{ asset_tags       : ""
-    asset_tags   }o--|| colours          : "asset_type = colour"
-    asset_tags   }o--|| fonts            : "asset_type = font"
-    asset_tags   }o--|| palettes         : "asset_type = palette"
-    asset_tags   }o--|| type_scales      : "asset_type = type_scale"
-```
+**Decision.** A component on a haus type role declares all four of the role's properties: size,
+weight, leading and tracking.
 
-Generated artifacts (palette, type scale) belong to **exactly one** project and auto-join at
-creation; vault items (colour, font) belong to **many**.
+**Reason.** A component that takes two of the four and sets the other two by hand is no longer on
+the role, and nothing shows it until the four are compared. The check for anything new: a
+component declares all four of a role's properties, or it is not on that role.
 
-`asset_tags` is polymorphic, so SQLite cannot enforce it with a foreign key and cannot cascade
-it. The dashed relationships above are held by convention, and cleaning them up on delete is
-the application's job.
+**Alternatives.** Taking the size from the role and setting the rest by hand. Seven places did,
+until 2026-09-11 and 12: `Badge` and `Chip` (which sit side by side in a viewer header and
+disagreed), the `Toolbar` title that `InlineEdit` inherits, `MenuOption` (whose two forms drew
+different row heights because only the `li` inherited a leading), `SegmentedControl`, `Tooltip`
+and the global `.eyebrow`.
+
+---
+
+## Layout and interaction
+
+Figma: [vault · screens](https://www.figma.com/design/ts6Av4Zpw73BhNYmGC93LU/vault-%C2%B7-screens), with every section, the empty and open states, and the four main flows.
+
+### Navigation
+
+**Decision.** A sidebar with four peer sections, Colours, Fonts, Palettes and Type scales, plus a
+view per project that gathers everything tagged to it.
+
+### Projects
+
+**Decision.** The interface says _Projects_. Underneath, the schema is a generic `tags` /
+`asset_tags` join: any asset, many tags.
+
+**Reason.** Projects are what assets are grouped for here, so that is the word the interface uses.
+The generic join stays underneath as the flexible data model
+([`ARCHITECTURE.md` § Data model](./ARCHITECTURE.md#data-model)).
+
+### Drawers and pages
+
+**Decision.** A library item (a colour or a font) opens in a drawer over the library. A generated
+artefact (a palette or a type scale) opens as a full page, with export.
+
+**Reason.** A colour or a font is a quick look. A palette or a type scale is a worked object, with
+an export.
+
+| ![A colour open in a drawer over the library](screenshots/color-viewer.png) | ![A tonal palette on its own page](screenshots/palette-viewer.png) |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+
+### Generated artefacts
+
+**Decision.** Experimenting happens in the create flow: seeds, models, ratios and per-step tuning,
+all with a live preview. Saving produces a snapshot. A saved palette or type scale can be renamed,
+exported or deleted, and a palette swatch can be promoted into the library, but the values are not
+edited after creation. Hand-tuning a type scale past its ratio flips the meta pill to **Custom**.
+
+**Reason.** Vault is where a palette or a type scale is explored, not where it is maintained. The
+saved artefact is a hand-off to a design tool or to code, through the four export formats (CSS,
+SCSS, Design Tokens and Tailwind), and the work continues there. A read-only snapshot is what
+was exported.
+
+### Command palette
+
+**Decision.** ⌘K opens a keyboard-first path over the same actions the sidebar and toolbars
+already expose: jump to a section or project, start a new asset, or open a colour, font or project
+by name. Every action it offers is also reachable from the sidebar or a toolbar.
+
+**Reason.** Moving around the app and starting an asset without reaching for the mouse. How
+results are ranked is in
+[`ARCHITECTURE.md` § Command palette ranking](./ARCHITECTURE.md#command-palette-ranking).
+
+### Patterns
+
+The same patterns repeat across sections:
+
+- **Cards** are a whole-card button, a hover edit pen, a `Chip` for the descriptor and mono type
+  for the value.
+- **Viewers** are a hero and a stack of `Panel`s.
+- **Create flows** are two panes: controls on one side, a live preview on the other.
+- **Small rules apply everywhere.** Favourites are a filter, copy feedback is inline, deletes
+  confirm and duplicates warn.
 
 ---
 
 ## Design system
 
-- **Tokens first.** Colour, type, spacing, radius, motion, and elevation are CSS custom
-  properties. Components never hardcode values (the only literal colours are `#000`/`#fff`
-  contrast overlays on swatches, which are intentionally theme-independent).
-- **Component taxonomy.** Three levels, atoms then molecules then organisms, matching the vocabulary
-  the Figma library uses, so a component has one name in both places. Logic lives in `hooks`;
-  pure helpers in `lib`.
+### Tokens
 
-  The rule is **never upward**: an atom cannot reach for a molecule, a molecule cannot reach for
-  an organism. Same-tier composition is allowed and happens eleven times. `ConfirmDialog` is built
-  on `Modal`, `StepEditControl` and `UnitsControl` on `Select`, `PaletteView` on `ExportModal`,
-  `Sidebar` on `TagModal`.
-  The previous four-level split had zero same-tier imports, and that was worth giving up: the
-  fourth level existed only because `primitives/` was holding both base controls and
-  compositions, which is the distinction atoms and molecules already make.
+Figma: [vault · tokens](https://www.figma.com/design/gnDwjK1DXLHSQOF6GUnmgl/vault-%C2%B7-tokens).
+
+**Decision.** Every colour, type, spacing, radius, motion and elevation value is a CSS custom
+property, and vault takes haus's token layer in full: `brands/vault.css` supplies the brand and
+`semantics.css` resolves every role.
+
+**Reason.** Vault shares haus's vocabulary and keeps its own values. A component reads a role, the role reads the brand, and the brand reads a primitive:
+
+```text
+atoms/Button.module.css     background: var(--haus-color-primary-default);
+haus · semantics.css        --haus-color-primary-default: var(--haus-brand-primary-default);
+haus · brands/vault.css     --haus-brand-primary-default: var(--haus-ruby-500);
+haus · brands/vault.css     --haus-ruby-500: oklch(48.2% 0.186 2.5);
+```
+
+What stays in vault's `styles/tokens.css` is six primitives haus has no name for: the serif for
+specimen previews, the four-step dot scale for swatch chips, and the favourite gold. One more
+declaration is not a fork: `--haus-font-sans` names the variable build of the same Manrope. The
+only literal colours in components are `#000` and `#fff` contrast overlays on swatches, which are
+theme-independent by intent.
+
+**Alternatives.** Keeping vault's own values for the modal and popover widths, the 28px specimen
+size, the xs control height and three type forks. All of them went to haus on 2026-09-09, and
+vault took haus's values.
+
+### Components
+
+Figma: [vault · atoms](https://www.figma.com/design/A5ternYGD52mJ5HhCVqHKY/vault-%C2%B7-atoms), [vault · molecules](https://www.figma.com/design/1OyWUcN60pO7C9TwNiv2Rj/vault-%C2%B7-molecules), [vault · organisms](https://www.figma.com/design/l3vhIuUGcFBtbCO0mP76uP/vault-%C2%B7-organisms). Each component has its own page.
+
+**Decision.** 49 components in three tiers: 15 atoms, 16 molecules and 18 organisms, named as
+they are in the Figma library so a component has one name in both places. Imports never run
+upward: an atom cannot reach for a molecule, a molecule cannot reach for an organism. Same-tier
+composition is allowed and happens eleven times; `ConfirmDialog` is built on `Modal`,
+`StepEditControl` and `UnitsControl` on `Select`, `PaletteView` on `ExportModal`, and `Sidebar` on
+`TagModal`.
+
+**Reason.** Three tiers make the distinction that matters, between base controls and
+compositions, without a level that exists only to hold one or the other.
+
+**Alternatives.** A four-level split, which had zero same-tier imports. Its fourth level existed
+only because `primitives/` held both base controls and compositions, which is the distinction
+atoms and molecules already make.
 
 ```mermaid
-%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044'}}}%%
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#feeff2','primaryBorderColor':'#aa1055','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','mainBkg':'#feeff2','nodeBorder':'#aa1055','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#880044'},'themeCSS':'background-color:#ffffff;border-radius:8px;'}}%%
 flowchart TD
     P["pages<br/><small>Colours · Fonts · Palettes · Type scales · Project</small>"]
     D["organisms · 18<br/><small>cards · drawers · viewers · create flows · dialogs</small>"]
@@ -256,200 +234,100 @@ flowchart TD
     class H,L side
 ```
 
-Solid arrows are the level ladder; dashed are the shortcuts a level is allowed to take past the
-one below it. Nothing points upward.
+Solid arrows are the tier ladder; dashed arrows are the shortcuts a tier may take past the one
+below it. Nothing points upward.
 
-- **CSS Modules.** Co-located `.module.css` keeps the token vocabulary visible and the markup
-  readable, with no runtime styling cost. Tailwind and inline styles both move that vocabulary
-  into the markup.
-- **The same patterns repeat across sections.** Card =
-  whole-card button + hover edit pen + `Chip` (descriptor) + mono (value); viewers are
-  hero + `Panel`s; create flows are a two-pane (controls | live preview).
-- **Accessible by default.** Every overlay dismisses on Escape. Dialogs and drawers share one
-  `useFocusTrap`: focus moves to the first control on open, Tab cycles inside the overlay, and
-  focus returns to whatever opened it on close. Focus rings are `:focus-visible` with the accent
-  halo, and all motion respects `prefers-reduced-motion`: since 2026-09-12 that rule also caps the
-  iteration count, so an endless animation (the spinner) rests after one near-instant turn rather
-  than flickering at 0.01ms a turn.
+#### Components from haus
 
-  **The three defects the atom audit found are now closed.** `vault#46`, `Tooltip` met one of WCAG 1.4.13's three requirements: Escape now
-  dismisses the bubble without moving focus, and the bubble takes pointer events so it can be
-  hovered and read at magnification, closing on leaving both after a short grace period.
-  `vault#45`, `SegmentedControl` rendered `role="tablist"` with `role="tab"` and none of what tabs
-  promise; all seven uses are a single choice from a set, so it is a radio group with one Tab stop
-  and arrows that move and choose. `vault#44`, `ProjectPicker`'s rows drew a tick and announced
-  nothing: the button form of `MenuOption` is a toggle, so `selected` sets `aria-pressed` and the
-  tick cannot disagree with the accessibility tree. Fixed the same way: every `Input` call site now carries a name and
-  ties its error to the field (`ec8f009`), and `InlineEdit`'s pen is visible to keyboard focus with
-  its ring (`vault#40`, `#41`).
+**Decision.** Vault takes no components from haus. Ten of its 49 have a direct haus counterpart:
+`Badge`, `Button`, `Divider`, `Input`, `Popover`, `Tooltip`, `Callout`, `EmptyState`, `Modal` and
+`Select`. The other 39 have no haus equivalent: the colour domain (`ColorCard`, `ColorDrawer`,
+`ColorFilters`, `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows
+(`PaletteView`, `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`,
+`FontPreviewControl`, `UnitsControl`, `StepEditControl`), and the shell affordances haus does not
+ship (`CommandPalette`, `Drawer`, `SegmentedControl`, `PopoverTrigger`, `InlineEdit`, `Sidebar`).
 
-  **The molecule audit found four more, and all four are fixed.** A `Callout`'s icon is decorative,
-  so an error and a note were announced identically: each tone now names itself, `Note`, `Warning`
-  or `Error`. A `ConfirmDialog` that destroys nothing drew a danger button beside a Cancel that did
-  the same thing: `kind="alert"` draws one primary button and no Cancel. A `Select` whose value
-  matched no option drew an empty control with only an `aria-label`, which the type scale creator
-  did before a font was picked: it takes a `placeholder`. And `Modal` supplied no body padding, so
-  its four dialogs each invented their own. Each has a test.
+**Reason.** A shared component that the app then overrides adds a dependency without removing
+work; a shared token keeps the vocabulary and leaves the value to the app. The ten counterparts
+were already shipped, themed and tested in vault, and importing haus's would mean restyling a
+released app or overriding the import back to what vault draws.
 
-  The exception is the command palette, which is not `Modal` because it is a combobox driven by
-  `aria-activedescendant` and arrow keys rather than by Tab, and which draws its own result rows
-  rather than `MenuOption` for the same reason. It does share `useFocusTrap`: until 2026-09-14 it
-  handled its own focus, and Tab walked out of an `aria-modal` dialog into the page behind it.
+#### Component workbench
 
-- **A type role is taken whole, or not at all.** A haus type role is four tokens: size, weight,
-  leading and tracking. A component that takes two of them and sets the other two by hand is no
-  longer on the role, and nothing shows it until the four are compared. Seven places did
-  exactly that and were corrected on 2026-09-11 and 12: `Badge` and `Chip` (which sit side by side
-  in a viewer header and disagreed), the `Toolbar` title that `InlineEdit` inherits, `MenuOption`
-  (whose two forms drew different row heights because only the `li` inherited a leading),
-  `SegmentedControl`, `Tooltip`, and the global `.eyebrow`. Each now sets all four. The check for anything
-  new: a component declares all four of a role's properties, or it is not on that role.
+**Decision.** No Storybook.
 
-- **What vault takes from haus, and what it keeps.** vault consumes haus's **token layer** in full:
-  `brands/vault.css` supplies the brand and `semantics.css` resolves every role, so the vocabulary
-  is shared and the values stay vault's. It takes **no components**, which is the portfolio's
-  standing rule rather than an accident: vault consumes the tokens, core consumes the components.
-  A shared component that a product then overrides adds a dependency without removing work. A
-  shared token keeps the vocabulary and leaves the value to the product.
+**Reason.** The app already exercises every component, and a second harness would be a parallel
+surface to maintain.
 
-  What stays in `styles/tokens.css` is six primitives haus has no name for: a serif for the
-  specimen previews, the four-step dot scale for swatch chips, and the favourite gold. One more
-  declaration is not a fork: `--haus-font-sans` names the variable build of the same Manrope.
-  The modal and popover widths, the 28px specimen size, the xs control height and the three
-  type forks all went to haus on 2026-09-09, and vault took haus's values rather than keeping
-  its own.
+### Styling
 
-  _(drift was the other token consumer until 2026-09-09, when it took its foundation in-house so
-  that it shares nothing with the systems it audits. vault is the only token consumer now.)_
+**Decision.** CSS Modules, one co-located `.module.css` per component.
 
-  Of vault's 49 components, **ten have a direct haus counterpart**: Badge, Button, Divider, Input,
-  Popover, Tooltip, Callout, EmptyState, Modal and Select. They stay vault's, because each is
-  already shipped, themed and tested, and importing haus's would mean restyling a released app or
-  overriding the import straight back to what vault draws. The other **39 have no haus equivalent**,
-  and they are what the app is for: the colour domain (`ColorCard`, `ColorDrawer`, `ColorFilters`,
-  `AddColorModal`, `ContrastChip`), the palette, font and type-scale flows (`PaletteView`,
-  `PaletteCreate`, `FontAdder`, `FontDrawer`, `SpecimenTable`, `TypeScaleView`, `FontPreviewControl`,
-  `UnitsControl`, `StepEditControl`), and the shell affordances haus does not ship (`CommandPalette`,
-  `Drawer`, `SegmentedControl`, `PopoverTrigger`, `InlineEdit`, `Sidebar`).
+**Reason.** The token vocabulary stays visible in the stylesheet and the markup stays readable,
+with no runtime styling cost. A bespoke token system is the point of the app, and utilities would
+hide it.
 
----
+**Alternatives.** Tailwind and inline styles, which both move the vocabulary into the markup.
 
-## Decisions
+### Accessibility
 
-### Platform & stack
+**Decision.** Atoms and molecules follow the WAI-ARIA pattern for their role.
 
-- **Electron over Tauri.** Mature native APIs (Font Book access, dialogs, dock) and a single
-  language across processes mattered more than binary size for a personal desktop tool.
-- **better-sqlite3 over an ORM.** Synchronous, zero-ceremony, and the schema is small enough
-  that hand-written SQL is clearer than a query builder.
-- **CSS Modules over Tailwind.** A bespoke token system is the point; utilities would hide it.
-- **No Storybook.** The app already exercises every component; a second harness would be a
-  parallel surface to maintain.
+- Every overlay dismisses on Escape.
+- Dialogs and drawers share one `useFocusTrap`: focus moves to the first control on open, Tab
+  cycles inside the overlay, and focus returns to whatever opened it on close.
+- Focus rings are `:focus-visible`, with the accent halo.
+- All motion respects `prefers-reduced-motion`, and the rule also caps the iteration count, so an
+  endless animation (the spinner) rests after one near-instant turn instead of flickering at
+  0.01ms a turn.
+- The command palette is not a `Modal`: it is a combobox driven by `aria-activedescendant` and
+  arrow keys rather than Tab, and it draws its own result rows instead of `MenuOption` for the same
+  reason. It shares `useFocusTrap`.
 
-### Visual & brand
+Axe runs in 20 of the 22 component test files
+([`ARCHITECTURE.md` § Testing and CI](./ARCHITECTURE.md#testing-and-ci)).
 
-- **Deep ruby carries every action.** Ruby (anchored on `#AA1155` / `#880044`, built as an
-  OKLCH ramp) is reserved for the wordmark, primary actions, focus rings, and the active nav
-  item. One gold, `--accent-gold`, sits outside that rule, on the favourite star, because a
-  marker of state should not read as something to click. It is vault's own token rather than
-  a read of the warning ramp it happens to match, so it does not move when that ramp does.
-  Everything else is neutral (the `onyx` greys), so the accent marks actions only.
-- **Manrope, self-hosted.** A geometric-humanist sans with a real weight axis (200–800), bundled
-  via `@fontsource-variable/manrope` rather than the Google CDN, because a local-first app can't depend
-  on a network font. I tried **Cal Sans** for more personality and reverted: it ships weight 400
-  only, which flattens the UI's weight hierarchy _and_ breaks the type-scale tool, whose entire
-  job is demonstrating weight steps.
-- **Full-radius pill geometry.** Buttons, nav items and tags are fully rounded, applied to every
-  control of those kinds, so the shape is consistent across the app.
-- **Font Awesome (SVG) over Lucide.** I started on Lucide and switched: FA's solid set sits at a
-  more consistent optical weight next to Manrope, and the SVG-React packages tree-shake to only
-  the icons used, so there is no icon-font FOUT.
-- **Light mode only, on purpose.** One pale theme keeps the saved colours and type the brightest
-  thing on screen, and concentrated the design work on one surface. The two-tier token layer means a dark theme is mostly a matter of overriding the
-  semantic aliases: deferred rather than ruled out.
+#### Audit record
 
-### Colour
+The atoms and the molecules were audited in September 2026, one tier at a time, against WCAG 2.2
+and the WAI-ARIA Authoring Practices. Each molecule finding has a test.
 
-- **Perceptual maths (LCH, ΔE2000).** Ramps and "nearest name" run in a perceptual space so
-  steps look even and matches read as a human would judge them. RGB distance puts colours close
-  together that do not look alike.
-- **The hue bins come from `haus-colour-utils`.** vault carried its own copy with the same
-  shape and the boundaries of an HSL wheel, which is a different wheel: sRGB red sits at
-  OKLCH hue 29 rather than 0, so every family sat about one bin anticlockwise of where it
-  belonged and 17 of 27 canonical colours were misnamed. The bins are a shared decision, so they live in one place
-  and vault reads them, which is also how the second correction arrived without any work
-  here: 0.3.0 refits the boundaries to 4,275 human-named colours, because the midpoints
-  between eight anchor colours assumed a family is centred on the colour it is named after.
-  Fourteen of the swatches in a real library change family, all of them toward what the eye
-  reads.
-- **The name dataset comes from `haus-colour-names`.** 31,900 names, previously a 764KB
-  `colornames.json` committed here and a second copy in hexicon.
-- **The naming search stays here.** `haus-colour-utils` has the same two passes in
-  `createNamedColourMatcher`, but it returns a ranked top-N, and this needs the confidence
-  bands, which count every candidate inside the scan radius by distance band, and the
-  de-duplication by name that makes the runner list read as alternatives. Delegating would mean
-  asking for the whole pool and re-deriving both here.
-- **Two palette models.** _Tonal_ (one seed → semantic ramps) and _Expressive_ (several seeds →
-  a multi-hue set). Same two-pane create flow, different generator. Tonal builds a primary from
-  the seed, a near-grey neutral at the same lightness, and success, warning and error hues rotated
-  to fixed angles but kept in the seed's chroma family. Expressive fills out the set one of three
-  ways: _Cohesive_, the default, adds each new hue by maximising its perceptual distance from the
-  hues already chosen; _Interpolate_ walks the gaps between the seeds; _Harmony_ places the extras
-  at classical intervals from the first seed. Either result is measured for hue coverage, and two
-  swatches close enough to read as duplicates are flagged. Changing the model or a seed recomputes
-  the palette and the analysis together.
-- **How the name search runs.** Two passes over the 31,900 names: a CIE76 scan, cheap Euclidean
-  distance in Lab, cuts the field to the candidates inside a radius, then CIEDE2000 re-scores only
-  those. CIEDE2000 is the accurate measure and the expensive one, which is why it only sees the
-  shortlist. Ranking uses the raw distance; the value is rounded for display only.
+| Component          | Finding                                                                     | Now                                                                                      | Record            |
+| ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------- |
+| `Tooltip`          | Met one of WCAG 1.4.13's three requirements                                 | Escape dismisses it without moving focus; it can be hovered and read at magnification    | `vault#46`        |
+| `SegmentedControl` | `tablist` and `tab` roles without tab behaviour                             | A radio group: one Tab stop, arrows move and choose (all seven uses are a single choice) | `vault#45`        |
+| `ProjectPicker`    | Rows drew a tick and announced nothing                                      | The button form of `MenuOption` is a toggle; `selected` sets `aria-pressed`              | `vault#44`        |
+| `Input`            | Call sites without a name or a linked error                                 | Every call site carries a name and ties its error to the field                           | `ec8f009`         |
+| `InlineEdit`       | The pen was invisible to keyboard focus, and editing removed the focus ring | The pen and its ring show on keyboard focus                                              | `vault#40`, `#41` |
+| `Callout`          | The icon was decorative, so an error and a note sounded the same            | Each tone names itself: `Note`, `Warning` or `Error`                                     | Molecule audit    |
+| `ConfirmDialog`    | A dialog that destroys nothing drew a danger button beside Cancel           | `kind="alert"` draws one primary button and no Cancel                                    | Molecule audit    |
+| `Select`           | A value matching no option drew an empty control                            | Takes a `placeholder`                                                                    | Molecule audit    |
+| `CommandPalette`   | Tab walked out of the `aria-modal` dialog into the page                     | Shares `useFocusTrap`                                                                    | `221d3c9`         |
 
-### Fonts & type
+### Enforcement
 
-- **Three sources; two of them app-owned bytes.** **Installed** (enumerated via
-  `system_profiler`, the Font Book set) and **file upload** copy the bytes into app storage on
-  import, so a moved or deleted original never breaks the vault, and the file stays shareable
-  (Show in Finder / Download). **Google** is the exception: adding one stores family, category
-  and weights only, and previews render from Google's CDN over a stylesheet link. `Download`
-  fetches the `.woff2` on demand and saves it where you choose. Copying Google bytes into the
-  vault on add would make the library genuinely offline, and it is the obvious next change here.
-- **Two type-scale presets.** _Product_ (Display→Label) and _Web/Markup_ (h1–h6 +
-  paragraph/small), chosen at creation the way tonal and expressive are. The chosen ramp is materialised
-  into rows, so there's no schema cost and the "kind" is recoverable from the step names.
-- **Units are a reading concern, decoupled from storage.** Sizes persist in px, line-heights as
-  unitless multipliers, tracking in em; the viewer converts live (px/rem/pt · unitless/px/% ·
-  em/px/%) via one popover, and export captures whatever's selected, with one exception:
-  `letter-spacing` takes no percentage in CSS, so a tracking reading of `-2%` exports as
-  `-0.02em`. The viewer keeps the percentage because that is how type is discussed.
+**Decision.** Stylelint fails any colour, type, spacing, radius or z-index set as a raw value
+instead of a token. The deliberate exceptions are enumerated in `stylelint.config.mjs`, grouped,
+with a reason per group. The config was ported from haus, so the system and the app agree about
+what counts as a bypass.
 
-### Interaction
+**Reason.** A blanket rule exclusion would hide the exceptions. Enumerating them means a new raw
+value still fails while the known ones stay visible in one place. Two examples from the list:
 
-- **Four sections in a sidebar.** Colours, Fonts, Palettes and Type scales are peers,
-  plus an aggregated per-project view.
-- **The interface says "Projects".** Underneath, the schema is a generic `tags` / `asset_tags` join:
-  any asset, many tags, which is the flexible data model. The UI says _Projects_ because that is
-  what assets are grouped for here, and the generic join stays underneath.
-- **Drawer for vault items, page for generated artifacts.** A colour or font is a quick glance
-  (drawer); a palette or type scale is a worked object (full page with export).
-- **Generated artifacts are immutable after creation.** You tune a type scale while creating it
-  (hover-edit per step); the viewer is read-only, the same stance as palettes, which don't edit
-  swatches post-hoc. Hand-tuning past the ratio flips the meta pill to **Custom**.
-- **Favourites are a filter, copy feedback is inline, deletes confirm, duplicates warn.** Small
-  consistency rules applied everywhere.
-- **⌘K command palette.** A keyboard-first path over the same actions the sidebar and toolbars
-  already expose: jump to a section or project, or start a new asset, without reaching for the
-  mouse. Every action it offers is also reachable from the sidebar or a toolbar. The fuzzy
-  ranking is a pure function (`lib/commandFilter.ts`) with its own unit tests. It is a
-  subsequence match, so `tsc` finds _Type Scales_: each matched character scores a point, a run
-  of adjacent characters three more, a match at a word start two more, and skipped characters
-  cost a little up to a cap. A short label gets a small edge over the same match in a long one,
-  so a three-letter query does not surface the longest thing it happens to fit.
+- `#fff` for ink on a swatch the user chose, where the surface underneath is arbitrary and no
+  semantic role describes it.
+- `32px`, `18px` and `0.85em` for type above or between the scale's steps. Vault is a font tool,
+  and some type in it is the subject rather than the interface.
 
 ---
 
-## Known tradeoffs / next
+## Known gaps
 
-- **Storage durability.** Data lives in app `userData`, so it survives a moved application
-  and is not backed up anywhere. The planned **Phase 2** is an Obsidian-style nominated vault folder (assets +
-  data in one portable, sync-able directory).
-- **Variable fonts.** Installed-font import reads one weight per face from `system_profiler`;
-  variable axes aren't expanded yet.
+- **Dark theme.** Deferred, not ruled out. The two-tier token layer makes it an override of the
+  semantic aliases.
+- **Starting from a saved artefact.** A saved palette stores its seed and model, and a type scale
+  its base size, ratio and fonts, so either could open in the create flow as the start of a new
+  one. There is no such action yet; today a variation starts from scratch.
+- **Ink on a user's colour.** Four labels sit on a swatch the user chose and use a literal `#fff`.
+  Four occurrences make it a repeated decision, and it is a candidate for a semantic role of its
+  own.
