@@ -1,8 +1,17 @@
-# Vault: Features
+# Vault: features
 
 A visual tour of what Vault does. There are four asset types, **colours, fonts, palettes and type
 scales**, each of them a library you capture into and a studio you generate from, tied together by
 **projects**.
+
+## Contents
+
+- [Colours](#colours)
+- [Fonts](#fonts)
+- [Palettes](#palettes)
+- [Type scales](#type-scales)
+- [Projects](#projects)
+- [Command palette](#command-palette)
 
 ---
 
@@ -37,13 +46,16 @@ Empty states guide the first capture.
 
 ![Colours: empty state](screenshots/colors-empty.png)
 
+> [!NOTE]
+> **How it works:** [Colour naming](./ARCHITECTURE.md#colour-naming), [Accent](./DESIGN.md#accent), [Drawers and pages](./DESIGN.md#drawers-and-pages)
+
 ---
 
 ## Fonts
 
-Add fonts from three sources. Installed fonts and local uploads are copied into app storage,
-so the vault owns the bytes; a Google font is stored as a reference and rendered from
-Google's CDN, with `Download` fetching the file on demand.
+Add fonts from three sources. Installed fonts and local uploads are copied into the library. A
+Google font is kept as a reference and rendered from Google's CDN, and `Download` fetches the
+file on demand.
 
 **Google Fonts.** Search the catalogue, preview in place, add.
 
@@ -65,6 +77,9 @@ The **library** previews every family at a size you control…
 out (Show in Finder / Download).
 
 ![Font viewer](screenshots/font-viewer.png)
+
+> [!NOTE]
+> **How it works:** [Font storage](./ARCHITECTURE.md#font-storage), [Outbound traffic](./ARCHITECTURE.md#outbound-traffic)
 
 ---
 
@@ -90,6 +105,9 @@ into your colour library**.
 
 ![Palette export](screenshots/palette-export.png)
 
+> [!NOTE]
+> **How it works:** [Palette generators](./ARCHITECTURE.md#palette-generators), [Shared code](./ARCHITECTURE.md#shared-code), [Generated artifacts](./DESIGN.md#generated-artifacts)
+
 ---
 
 ## Type scales
@@ -109,6 +127,9 @@ unitless / px / % · em), and per-row metrics. Export captures whatever units ar
 
 ![Type scale viewer](screenshots/typescale-viewer.png)
 
+> [!NOTE]
+> **How it works:** [Type scales](./ARCHITECTURE.md#type-scales), [Generated artifacts](./DESIGN.md#generated-artifacts)
+
 ---
 
 ## Projects
@@ -119,6 +140,9 @@ and colours and fonts, in one aggregated view.
 ![Add a project](screenshots/project-add.png)
 ![Project view](screenshots/project-view.png)
 
+> [!NOTE]
+> **How it works:** [Projects](./DESIGN.md#projects), [Data model](./ARCHITECTURE.md#data-model)
+
 ---
 
 ## Command palette
@@ -127,3 +151,8 @@ Press **⌘K** anywhere to jump to a section or project, or start a new colour, 
 type scale, all without leaving the keyboard. Start typing to search your library too: existing
 **colours**, **fonts**, and **projects** match by name (colours show a swatch), and picking one
 opens it. Results are ranked by a fuzzy matcher; **↑/↓** to move, **⏎** to run, **Esc** to dismiss.
+
+<!-- ASK: a screenshot of the open palette, saved as screenshots/command-palette.png. -->
+
+> [!NOTE]
+> **How it works:** [Command palette](./DESIGN.md#command-palette), [Command palette ranking](./ARCHITECTURE.md#command-palette-ranking)
