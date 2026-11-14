@@ -1,11 +1,13 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { diff, accept, applyExceptions } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
+// @ts-expect-error: plain ESM scripts with no type declarations
+import { retryDelay, fetchComponents, FigmaUnavailable } from '../scripts/figma/rest.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { globalStates, globalClassesIn } from '../scripts/figma/code.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
@@ -220,5 +222,43 @@ describe('reading global classes', () => {
     expect(globalClassesIn('<span title="card" className={styles.x} />', known)).toEqual([])
     expect(globalClassesIn('<div className="card x" />', known)).toEqual(['card'])
     expect(globalClassesIn("const classes = ['icon-btn', size ? 'icon-btn--sm' : '']", known)).toEqual(['icon-btn'])
+  })
+})
+
+describe('waiting on Figma', () => {
+  it('retries a rate limit or a server error, twice', () => {
+    expect(retryDelay(429, null, 1)).toBe(15)
+    expect(retryDelay(503, null, 2)).toBe(30)
+    expect(retryDelay(429, null, 3)).toBeNull()
+  })
+
+  it('honours a short Retry-After and gives up on a long one', () => {
+    expect(retryDelay(429, '20', 1)).toBe(20)
+    expect(retryDelay(429, '86400', 1)).toBeNull()
+  })
+
+  it('never retries a bad token or a missing file', () => {
+    expect(retryDelay(403, null, 1)).toBeNull()
+    expect(retryDelay(404, null, 1)).toBeNull()
+  })
+})
+
+describe('reading Figma over the network', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('treats a body cut off after the headers as Figma being unavailable', async () => {
+    const body = new ReadableStream({
+      start(controller) {
+        controller.error(new Error('socket hang up'))
+      },
+    })
+    vi.stubGlobal('fetch', async () => new Response(body, { status: 200 }))
+    await expect(fetchComponents('key', 'token')).rejects.toBeInstanceOf(FigmaUnavailable)
+  })
+
+  it('keeps malformed JSON an error, not a fallback', async () => {
+    vi.stubGlobal('fetch', async () => new Response('{not json', { status: 200 }))
+    const err = await fetchComponents('key', 'token').catch((e: unknown) => e)
+    expect(err).toBeInstanceOf(SyntaxError)
   })
 })

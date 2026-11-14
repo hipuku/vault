@@ -21,7 +21,7 @@ import { codeItems } from './code.mjs'
 import { figmaItems } from './normalise.mjs'
 import { diff, accept, applyExceptions } from './diff.mjs'
 import { report } from './report.mjs'
-import { fetchComponents, lastModified } from './rest.mjs'
+import { FigmaUnavailable, fetchComponents, lastModified } from './rest.mjs'
 import { pluginCode } from './plugin-export.mjs'
 
 const args = process.argv.slice(2)
@@ -44,33 +44,64 @@ async function figmaSide() {
   const tokens = readSnapshot('tokens')
   const items = figmaItems({ variables: tokens.variables }, null)
 
+  // A file Figma cannot serve right now is read from its snapshot, as a fork
+  // would read every file, and the report says which. --refresh needs live data.
+  const fellBack = []
+  const unavailable = (e, file) => {
+    if (!(e instanceof FigmaUnavailable) || flag('--refresh')) throw e
+    const why = e.status ? `HTTP ${e.status}` : 'unreachable'
+    fellBack.push(`${file} (${why}; snapshot of ${readSnapshot(file).exportedAt.slice(0, 10)})`)
+  }
+
   if (token) {
-    const modified = await lastModified(FIGMA_FILES.tokens.key, token)
-    if (new Date(modified) > new Date(tokens.exportedAt)) {
-      warnings.push(
-        `The tokens snapshot was exported ${tokens.exportedAt} and the tokens file changed ${modified}. ` +
-          'Variables were compared against the snapshot; re-export it to compare the current file.',
-      )
+    try {
+      const modified = await lastModified(FIGMA_FILES.tokens.key, token)
+      if (new Date(modified) > new Date(tokens.exportedAt)) {
+        warnings.push(
+          `The tokens snapshot was exported ${tokens.exportedAt} and the tokens file changed ${modified}. ` +
+            'Variables were compared against the snapshot; re-export it to compare the current file.',
+        )
+      }
+    } catch (e) {
+      if (!(e instanceof FigmaUnavailable)) throw e
+      warnings.push('Figma could not be read, so whether the tokens snapshot is current was not checked.')
     }
   }
 
   for (const tier of TIERS) {
     let snap
     if (token) {
-      snap = await fetchComponents(FIGMA_FILES[tier].key, token)
-      if (flag('--refresh'))
-        writeJson(snapshotPath(tier), { exportedAt: new Date().toISOString(), source: 'rest', ...snap })
+      try {
+        snap = await fetchComponents(FIGMA_FILES[tier].key, token)
+        if (flag('--refresh'))
+          writeJson(snapshotPath(tier), { exportedAt: new Date().toISOString(), source: 'rest', ...snap })
+      } catch (e) {
+        unavailable(e, tier)
+        snap = readSnapshot(tier)
+      }
     } else {
       snap = readSnapshot(tier)
     }
     Object.assign(items, figmaItems({ components: snap.components }, tier))
   }
 
+  if (fellBack.length)
+    warnings.push(
+      `Figma could not be read for ${fellBack.join(', ')}, so those files were compared from their committed snapshots. ` +
+        'Re-run the check once Figma answers to compare live data.',
+    )
   if (!token) {
     const dates = ['tokens', ...TIERS].map(f => `${f} ${readSnapshot(f).exportedAt.slice(0, 10)}`).join(', ')
     warnings.push(`No FIGMA_TOKEN, so Figma was read from the committed snapshots (${dates}).`)
   }
-  return { items, warnings, source: token ? 'the REST API for components, the snapshot for variables' : 'snapshots' }
+  const source = !token
+    ? 'snapshots'
+    : fellBack.length === TIERS.length
+      ? 'snapshots, because the REST API could not be reached'
+      : fellBack.length
+        ? 'the REST API for components, with snapshots where it failed, and the snapshot for variables'
+        : 'the REST API for components, the snapshot for variables'
+  return { items, warnings, source }
 }
 
 async function main() {
