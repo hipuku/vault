@@ -39,7 +39,7 @@ export function useTypeScales(): {
   }, [guard])
 
   useEffect(() => {
-    refresh()
+    void refresh()
   }, [refresh])
 
   const create = useCallback(

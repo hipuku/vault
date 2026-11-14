@@ -359,7 +359,7 @@ export function FontAdder({
               onDrop={e => {
                 e.preventDefault()
                 setDragOver(false)
-                handleFiles(e.dataTransfer.files)
+                void handleFiles(e.dataTransfer.files)
               }}
             >
               <FontAwesomeIcon icon={faUpload} className={styles.dropIcon} />
@@ -448,7 +448,7 @@ export function FontAdder({
             tabIndex={-1}
             aria-hidden
             onChange={e => {
-              if (e.target.files) handleFiles(e.target.files)
+              if (e.target.files) void handleFiles(e.target.files)
               e.target.value = ''
             }}
           />

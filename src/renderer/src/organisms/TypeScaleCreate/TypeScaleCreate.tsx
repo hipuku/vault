@@ -73,7 +73,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
 
   // Load projects (tags) once.
   useEffect(() => {
-    window.api.tag.list().then(setProjects)
+    void window.api.tag.list().then(setProjects)
   }, [])
 
   // Load the chosen project's font membership.
@@ -83,7 +83,7 @@ export function TypeScaleCreate({ fonts, onCancel, onCreate }: TypeScaleCreatePr
       return
     }
     let live = true
-    window.api.tag.listAssetIds('font', projectId).then(ids => {
+    void window.api.tag.listAssetIds('font', projectId).then(ids => {
       if (live) setProjectFontIds(new Set(ids))
     })
     return () => {

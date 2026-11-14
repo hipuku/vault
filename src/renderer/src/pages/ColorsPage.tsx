@@ -77,7 +77,7 @@ export function ColorsPage({
       return
     }
     let live = true
-    window.api.tag.listAssetIds('colour', activeTagId).then(ids => {
+    void window.api.tag.listAssetIds('colour', activeTagId).then(ids => {
       if (live) setTagIds(new Set(ids))
     })
     return () => {

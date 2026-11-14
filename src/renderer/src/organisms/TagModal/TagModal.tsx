@@ -91,7 +91,7 @@ export function TagModal({ open, mode, initial, onSubmit, onClose }: TagModalPro
           }}
           placeholder="Project name"
           onKeyDown={e => {
-            if (e.key === 'Enter') submit()
+            if (e.key === 'Enter') void submit()
           }}
         />
         {error && (

@@ -85,7 +85,7 @@ function createWindow(): void {
   // handler registered by another app) is a way to have the shell run something on
   // the user's behalf from a string the renderer chose.
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (/^https?:$/.test(safeProtocol(url))) shell.openExternal(url)
+    if (/^https?:$/.test(safeProtocol(url))) void shell.openExternal(url)
     return { action: 'deny' }
   })
 
@@ -99,9 +99,9 @@ function createWindow(): void {
   })
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    win.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    void win.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    win.loadFile(join(__dirname, '../renderer/index.html'))
+    void win.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
 
@@ -267,12 +267,12 @@ ipcMain.handle('tag:list-asset-ids', (_e, assetType: AssetType, tagId: number) =
 // ── Clipboard ─────────────────────────────────────────────────────────────────
 
 ipcMain.handle('clipboard:write', (_e, text: string) => {
-  clipboard.writeText(text)
+  void clipboard.writeText(text)
 })
 
 // ── App lifecycle ─────────────────────────────────────────────────────────────
 
-app.whenReady().then(() => {
+void app.whenReady().then(() => {
   // Dev dock icon (packaged builds get it from electron-builder's build.mac.icon).
   if (process.platform === 'darwin' && app.dock) {
     const icon = nativeImage.createFromPath(join(app.getAppPath(), 'resources', 'icon.png'))

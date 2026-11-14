@@ -46,7 +46,7 @@ export function usePalettes(): PaletteData & {
   }, [guard])
 
   useEffect(() => {
-    refresh()
+    void refresh()
   }, [refresh])
 
   const createTonal = useCallback(

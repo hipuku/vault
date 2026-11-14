@@ -103,7 +103,7 @@ export function PaletteView({
 
   useEffect(() => {
     let live = true
-    Promise.all([window.api.tag.listForAsset('palette', palette.id), window.api.colour.list()]).then(
+    void Promise.all([window.api.tag.listForAsset('palette', palette.id), window.api.colour.list()]).then(
       ([mine, colours]) => {
         if (!live) return
         setProject(mine[0] ?? null) // palettes belong to exactly one project
@@ -277,7 +277,7 @@ export function PaletteView({
           fixedHex={promoting.hex}
           submitLabel="Save to library"
           onAdd={(_hex, name) => {
-            handlePromote(promoting.id, name)
+            void handlePromote(promoting.id, name)
             setPromoting(null)
           }}
           onAddMany={() => {}}

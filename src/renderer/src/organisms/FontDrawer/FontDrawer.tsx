@@ -50,7 +50,7 @@ export function FontDrawer({
     if (!font) return
     if (font.source === 'google') loadGoogleFont(font.family, parseWeights(font.weights))
     let live = true
-    Promise.all([window.api.tag.list(), window.api.tag.listForAsset('font', font.id)]).then(([tags, mine]) => {
+    void Promise.all([window.api.tag.list(), window.api.tag.listForAsset('font', font.id)]).then(([tags, mine]) => {
       if (!live) return
       setAllTags(tags)
       setAssigned(new Set(mine.map(t => t.id)))
@@ -142,7 +142,7 @@ export function FontDrawer({
                   size="md"
                   onClick={() => {
                     const p = localFontPaths(font)[0]
-                    if (p) window.api.font.reveal(p)
+                    if (p) void window.api.font.reveal(p)
                   }}
                 >
                   <FontAwesomeIcon icon={faFolderOpen} /> Show in Finder

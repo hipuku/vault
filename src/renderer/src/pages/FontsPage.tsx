@@ -66,7 +66,7 @@ export function FontsPage({
       return
     }
     let live = true
-    window.api.tag.listAssetIds('font', activeTagId).then(ids => {
+    void window.api.tag.listAssetIds('font', activeTagId).then(ids => {
       if (live) setTagIds(new Set(ids))
     })
     return () => {

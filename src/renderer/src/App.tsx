@@ -74,8 +74,8 @@ export default function App(): React.ReactElement {
   // so renames/additions/deletions are always reflected.
   useEffect(() => {
     if (!paletteOpen) return
-    window.api.colour.list().then(setLibColours)
-    window.api.font.list().then(setLibFonts)
+    void window.api.colour.list().then(setLibColours)
+    void window.api.font.list().then(setLibFonts)
   }, [paletteOpen])
 
   const commands: Command[] = useMemo(() => {

@@ -28,7 +28,7 @@ export function useFonts(): {
   }, [guard])
 
   useEffect(() => {
-    refresh()
+    void refresh()
   }, [refresh])
 
   const addGoogle = useCallback(async (meta: GoogleFontMeta): Promise<Font> => {

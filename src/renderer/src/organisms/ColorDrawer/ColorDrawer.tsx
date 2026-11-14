@@ -49,7 +49,7 @@ export function ColorDrawer({
   useEffect(() => {
     if (!colour) return
     let live = true
-    Promise.all([window.api.tag.list(), window.api.tag.listForAsset('colour', colour.id)]).then(([tags, mine]) => {
+    void Promise.all([window.api.tag.list(), window.api.tag.listForAsset('colour', colour.id)]).then(([tags, mine]) => {
       if (!live) return
       setAllTags(tags)
       setAssigned(new Set(mine.map(t => t.id)))

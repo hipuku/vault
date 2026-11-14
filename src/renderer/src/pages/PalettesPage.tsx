@@ -46,11 +46,11 @@ export function PalettesPage({
   const confirm = useConfirm()
 
   useEffect(() => {
-    window.api.colour.list().then(setLibrary)
+    void window.api.colour.list().then(setLibrary)
   }, [])
 
   const openCreate = useCallback((): void => {
-    window.api.colour.list().then(setLibrary)
+    void window.api.colour.list().then(setLibrary)
     setView('create')
   }, [])
 
@@ -61,7 +61,7 @@ export function PalettesPage({
   const backToList = useCallback((): void => {
     setView('list')
     setViewId(null)
-    refresh()
+    void refresh()
   }, [refresh])
 
   // Opened from the command palette (⌘K → "New palette").
@@ -78,7 +78,7 @@ export function PalettesPage({
       return
     }
     let live = true
-    window.api.tag.listAssetIds('palette', activeTagId).then(ids => {
+    void window.api.tag.listAssetIds('palette', activeTagId).then(ids => {
       if (live) setTagIds(new Set(ids))
     })
     return () => {
@@ -111,7 +111,7 @@ export function PalettesPage({
   const handlePromote = useCallback(
     async (paletteId: number, swatchId: number, name: string): Promise<unknown> => {
       return promoteSwatch(paletteId, swatchId, name, () => {
-        window.api.colour.list().then(setLibrary)
+        void window.api.colour.list().then(setLibrary)
       })
     },
     [promoteSwatch],
