@@ -48,6 +48,13 @@
   border-radius: var(--haus-radius-full);
 }
 
+.lg {
+  height: var(--haus-control-height-lg);
+  padding: 0 var(--haus-space-6);
+  font-size: var(--haus-text-16);
+  border-radius: var(--haus-radius-full);
+}
+
 /* ── Variants ────────────────────────────────────────────────────────────── */
 
 .primary {
