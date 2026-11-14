@@ -73,8 +73,8 @@ describe('Modal', () => {
   it('holds focus where the user put it while the parent re-renders', async () => {
     // Every caller passes an inline arrow for onClose, so it is a new function on
     // each render of the parent. Handed straight to the trap, that tears the effect
-    // down and sets it up again, which re-runs "focus the first field" and undoes
-    // the cleanup's "give focus back to the opener" — mid-typing.
+    // down and sets it up again mid-typing, which re-runs "focus the first field"
+    // and undoes the cleanup's "give focus back to the opener".
     function Parent(): React.ReactElement {
       const [count, setCount] = useState(0)
       return (

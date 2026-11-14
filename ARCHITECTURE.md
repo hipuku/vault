@@ -346,10 +346,12 @@ Why the palette exists is in [`DESIGN.md` § Command palette](./DESIGN.md#comman
   a colour can be added, named and persisted through IPC, and that the renderer cannot reach Node.
   CI runs it on macOS after the build.
 - **CI** runs on every push to `main` and every pull request: ESLint, Stylelint, the prose
-  punctuation check, Prettier, typecheck, the Vitest suite and a production build.
+  punctuation check, markdownlint, Knip, Prettier, typecheck, the Vitest suite, a production build
+  and the end-to-end suite, with an offline link check over the markdown. Which of these are
+  required is in [`WORKFLOW.md` § Checks](./WORKFLOW.md#checks).
 - **Figma parity.** A second workflow compares vault's tokens and components with the Figma files
-  on every pull request; 34 more Vitest tests cover its decision rules and how it reads Figma. What it compares and how it
-  decides are in [`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync).
+  on every pull request; 34 more Vitest tests cover its decision rules and how it reads Figma. What
+  it compares and how it decides are in [`WORKFLOW.md` § Design sync](./WORKFLOW.md#design-sync).
 - **Releases.** A tagged release builds unsigned `.dmg` installers for Apple Silicon and Intel and
   attaches them to a draft GitHub release, published by hand once its notes are edited.
 

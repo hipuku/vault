@@ -1,6 +1,3 @@
 {
-  "scripts/inject-variants.mjs": 3,
-  "src/main/index.ts": 2,
-  "src/renderer/src/atoms/IconButton/IconButton.tsx": 1,
-  "test/Modal.test.tsx": 1
+  "scripts/inject-variants.mjs": 3
 }
