@@ -29,6 +29,19 @@ jobs:
       # knip.json because it is read through a CSS @import, which knip cannot see.
       - run: npm run knip
 
+  # Every relative link and heading anchor in the markdown resolves. Offline,
+  # so the check never fails because an outside site is slow. Its own job on
+  # Linux, because the action only downloads a Linux build of lychee.
+  links:
+    name: Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress --exclude-path node_modules './**/*.md'
+          fail: true
+
   format:
     name: Format
     runs-on: macos-latest
