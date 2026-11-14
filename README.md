@@ -33,11 +33,12 @@ adder opens, a Google font is shown, or its files are downloaded.
 
 ## Documentation
 
-| File                                   | Covers                                                                  |
-| -------------------------------------- | ----------------------------------------------------------------------- |
-| [`FEATURE.md`](./FEATURE.md)           | Every feature, screen by screen                                         |
-| [`DESIGN.md`](./DESIGN.md)             | Visual language, typography, interaction and the design system          |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Processes, data model, security, the colour and type maths, and testing |
+| File                                   | Covers                                                                            |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| [`FEATURE.md`](./FEATURE.md)           | Every feature, screen by screen                                                   |
+| [`DESIGN.md`](./DESIGN.md)             | Visual language, typography, interaction and the design system                    |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Processes, data model, security, the colour and type maths, and testing           |
+| [`WORKFLOW.md`](./WORKFLOW.md)         | Branches, pull requests, checks, review, keeping Figma and code in step, releases |
 
 ## Install
 
