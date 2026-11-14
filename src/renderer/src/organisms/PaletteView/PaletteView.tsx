@@ -118,7 +118,9 @@ export function PaletteView({
   const handlePromote = useCallback(
     async (swatchId: number, name: string): Promise<void> => {
       await onPromote(palette.id, swatchId, name)
-      setLibrary(await window.api.colour.list())
+      // The promotion is written by now, so a failed refresh must not read as a
+      // failed save: it stays a fire-and-forget read, like the other IPC reads.
+      void window.api.colour.list().then(setLibrary)
     },
     [palette.id, onPromote],
   )
