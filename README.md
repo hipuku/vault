@@ -10,7 +10,7 @@ adder opens, a Google font is shown, or its files are downloaded.
 ![Vault's colour library: a grid of named swatches, each with its hue family and hex](screenshots/colors-library.png)
 
 [![Case study on hipuku.dev](https://img.shields.io/badge/Case_study-hipuku.dev-AA1155?style=for-the-badge)](https://www.hipuku.dev/work/vault)
-[![Download the latest release for macOS](https://img.shields.io/github/v/release/hipuku/vault?label=Download&logo=apple&logoColor=white&color=AA1155&style=for-the-badge)](../../releases/latest)
+[![Download the latest release for macOS](https://img.shields.io/github/v/release/hipuku/vault?label=Download&logo=apple&logoColor=white&color=AA1155&style=for-the-badge)](https://github.com/hipuku/vault/releases/latest)
 [![Figma files](https://img.shields.io/badge/Figma-5_files-AA1155?logo=figma&logoColor=white&style=for-the-badge)](https://www.figma.com/@hipuku)
 
 ## At a glance
@@ -44,7 +44,7 @@ adder opens, a Google font is shown, or its files are downloaded.
 
 Vault is a direct download for macOS. It is not on the App Store and needs no account.
 
-1. Download the `.dmg` for your Mac from [Releases](../../releases). `Vault-<version>-arm64.dmg`
+1. Download the `.dmg` for your Mac from [Releases](https://github.com/hipuku/vault/releases). `Vault-<version>-arm64.dmg`
    is for Apple Silicon, `Vault-<version>.dmg` for Intel.
 2. Open it and drag **Vault** into Applications.
 3. **First launch only.** The build is unsigned, so macOS quarantines it on download. Clear the

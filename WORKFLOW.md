@@ -25,16 +25,17 @@ history, and it applies to the owner too.
 
 ## Checks
 
-| Check        | Workflow           | Runs                                                                                  | Required |
-| ------------ | ------------------ | ------------------------------------------------------------------------------------- | -------- |
-| Lint         | `ci.yml`           | `npm run lint` (ESLint and the punctuation check), `npm run lint:css`, `npm run knip` | Yes      |
-| Format       | `ci.yml`           | `npm run format:check`                                                                | Yes      |
-| Typecheck    | `ci.yml`           | `npm run typecheck`                                                                   | Yes      |
-| Test         | `ci.yml`           | `npm run test:run`                                                                    | Yes      |
-| Build        | `ci.yml`           | `npm run build`, after the four above pass                                            | Yes      |
-| Figma parity | `figma-parity.yml` | `npm run figma:check`, described under [Design sync](#design-sync)                    | Not yet  |
+| Check        | Workflow           | Runs                                                                                                | Required |
+| ------------ | ------------------ | --------------------------------------------------------------------------------------------------- | -------- |
+| Lint         | `ci.yml`           | `npm run lint` (ESLint, the punctuation check and markdownlint), `npm run lint:css`, `npm run knip` | Yes      |
+| Format       | `ci.yml`           | `npm run format:check`                                                                              | Yes      |
+| Typecheck    | `ci.yml`           | `npm run typecheck`                                                                                 | Yes      |
+| Test         | `ci.yml`           | `npm run test:run`                                                                                  | Yes      |
+| Build        | `ci.yml`           | `npm run build`, after the four above pass                                                          | Yes      |
+| Links        | `ci.yml`           | lychee, offline: every relative link and heading anchor in the markdown resolves                    | Not yet  |
+| Figma parity | `figma-parity.yml` | `npm run figma:check`, described under [Design sync](#design-sync)                                  | Yes      |
 
-Figma parity becomes required once it has run against live Figma data for a few pull requests.
+Links is not required yet; it becomes required once it has run green on a few pull requests.
 
 The Playwright suite (`npm run e2e`) runs locally against the built app and is not in CI.
 
