@@ -13,6 +13,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint . && node scripts/check-punctuation.mjs",
+    "knip": "knip",
     "figma:check": "node scripts/figma/check.mjs",
     "figma:accept": "node scripts/figma/check.mjs --accept",
     "lint:css": "stylelint \"src/**/*.css\" --report-needless-disables",
@@ -39,7 +40,6 @@
     "react-colorful": "^5.8.1"
   },
   "devDependencies": {
-    "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@electron-toolkit/utils": "^4.0.0",
     "@eslint/js": "^10.0.1",
@@ -63,6 +63,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "jsdom": "^31.0.0",
+    "knip": "^5.88.1",
     "prettier": "^3.9.10",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

@@ -25,14 +25,14 @@ history, and it applies to the owner too.
 
 ## Checks
 
-| Check        | Workflow           | Runs                                                                  | Required |
-| ------------ | ------------------ | --------------------------------------------------------------------- | -------- |
-| Lint         | `ci.yml`           | `npm run lint` (ESLint and the punctuation check), `npm run lint:css` | Yes      |
-| Format       | `ci.yml`           | `npm run format:check`                                                | Yes      |
-| Typecheck    | `ci.yml`           | `npm run typecheck`                                                   | Yes      |
-| Test         | `ci.yml`           | `npm run test:run`                                                    | Yes      |
-| Build        | `ci.yml`           | `npm run build`, after the four above pass                            | Yes      |
-| Figma parity | `figma-parity.yml` | `npm run figma:check`, described under [Design sync](#design-sync)    | Not yet  |
+| Check        | Workflow           | Runs                                                                                  | Required |
+| ------------ | ------------------ | ------------------------------------------------------------------------------------- | -------- |
+| Lint         | `ci.yml`           | `npm run lint` (ESLint and the punctuation check), `npm run lint:css`, `npm run knip` | Yes      |
+| Format       | `ci.yml`           | `npm run format:check`                                                                | Yes      |
+| Typecheck    | `ci.yml`           | `npm run typecheck`                                                                   | Yes      |
+| Test         | `ci.yml`           | `npm run test:run`                                                                    | Yes      |
+| Build        | `ci.yml`           | `npm run build`, after the four above pass                                            | Yes      |
+| Figma parity | `figma-parity.yml` | `npm run figma:check`, described under [Design sync](#design-sync)                    | Not yet  |
 
 Figma parity becomes required once it has run against live Figma data for a few pull requests.
 

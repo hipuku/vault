@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/main/index.ts",
+    "src/preload/index.ts",
+    "src/renderer/src/main.tsx",
+    "scripts/**/*.mjs",
+    "test/**/*.test.{ts,tsx}",
+    "e2e/**/*.ts"
+  ],
+  "project": ["src/**/*.{ts,tsx}", "scripts/**/*.mjs", "test/**/*.{ts,tsx}", "e2e/**/*.ts"],
+  "ignoreExportsUsedInFile": true,
+  "ignore": ["src/**/*.d.ts"],
+  "ignoreDependencies": ["haus-tokens"]
+}

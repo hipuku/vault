@@ -79,6 +79,7 @@ npm run dev      # launch the app with HMR
 | `npm run e2e`       | Playwright against the built app (run `npm run build` first)           |
 | `npm run lint`      | ESLint (typescript-eslint + react-hooks)                               |
 | `npm run lint:css`  | Stylelint, including the raw-value gate                                |
+| `npm run knip`      | Unused files, exports and dependencies                                 |
 | `npm run format`    | Prettier write                                                         |
 | `npm run build`     | Production build                                                       |
 | `npm run dist:mac`  | Unsigned `.dmg` (arm64 and Intel)                                      |

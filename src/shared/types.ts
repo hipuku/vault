@@ -163,8 +163,6 @@ export interface TagWithCount extends Tag {
   count: number
 }
 
-export type CopyFormat = 'hex' | 'rgb' | 'hsl' | 'css-var'
-
 // Derived API surface: the source of truth for both preload and window.api typings
 export interface VaultApi {
   colour: {
