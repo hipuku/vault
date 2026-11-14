@@ -31,26 +31,33 @@ function unionAliases(src) {
   return aliases
 }
 
-/** The states global.css writes for each of its classes: `.icon-btn:hover`
+/** The states a stylesheet writes for each of its classes: `.icon-btn:hover`
     gives `icon-btn` hover. Some components are a global class rather than a
     module (IconButton is `.icon-btn`, PopoverTrigger is `.pill`, the cards are
-    `.card`), so their states live here. */
-function globalClassStates(root) {
-  const file = path.join(root, PATHS.components, 'styles', 'global.css')
-  const css = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+    `.card`), so their states live in global.css. As in statesOf, a negation
+    excludes rather than styles, so `:not(...)` is dropped first and
+    `.icon-btn:not(:disabled):hover` gives hover. */
+export function globalStates(css) {
+  const bare = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/:not\([^()]*(?:\([^()]*\)[^()]*)*\)/g, '')
   const states = {}
-  for (const m of css.matchAll(/\.([\w-]+):(hover|active|disabled)\b/g)) {
-    ;(states[m[1]] ??= new Set()).add(m[2])
+  for (const m of bare.matchAll(/\.([\w-]+)((?::[\w-]+)+)/g)) {
+    for (const s of m[2].matchAll(/:(hover|active|disabled)\b/g)) (states[m[1]] ??= new Set()).add(s[1])
   }
   return states
 }
 
+const globalClassStates = root =>
+  globalStates(fs.readFileSync(path.join(root, PATHS.components, 'styles', 'global.css'), 'utf8'))
+
 /** Global classes a component applies: quoted strings made only of class-like
-    words, at least one of them a global class with states. */
-function globalClassesIn(src, known) {
+    words, at least one of them a global class with states. A string given to
+    any attribute but `className` is not a class list (`title="card"`), so it
+    is skipped; class lists built in a variable, like IconButton's, still count. */
+export function globalClassesIn(src, known) {
   const used = new Set()
-  for (const m of src.matchAll(/['"`]([^'"`\n]+)['"`]/g)) {
-    const words = m[1].trim().split(/\s+/)
+  for (const m of src.matchAll(/(?:([\w-]+)=\{?\s*)?['"`]([^'"`\n]+)['"`]/g)) {
+    if (m[1] && m[1] !== 'className') continue
+    const words = m[2].trim().split(/\s+/)
     if (!words.every(w => /^[a-z][\w-]*$/.test(w))) continue
     for (const w of words) if (known[w]) used.add(w)
   }

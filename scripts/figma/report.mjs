@@ -39,7 +39,12 @@ export function report({
   exceptions = 0,
 }) {
   const lines = [MARKER, '## Figma parity', '']
-  if (!findings.length) lines.push('Code and Figma match, and the baseline is current.')
+  if (!findings.length)
+    lines.push(
+      exceptions
+        ? 'Every compared item matches in code and Figma, and the baseline is current. Excepted items are not compared.'
+        : 'Code and Figma match, and the baseline is current.',
+    )
   else if (failing.length) lines.push(`**Failing:** ${failing.length} item(s) need code and Figma brought together.`)
   else lines.push('**Passing.** Nothing is failing; the items below are for information.')
   if (figmaLater) lines.push('', 'The `figma-later` label is on: code ahead of Figma is a warning, not a failure.')

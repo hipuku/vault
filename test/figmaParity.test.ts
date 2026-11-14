@@ -7,7 +7,9 @@ import { diff, accept, applyExceptions } from '../scripts/figma/diff.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma/normalise.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
-import { show } from '../scripts/figma/report.mjs'
+import { globalStates, globalClassesIn } from '../scripts/figma/code.mjs'
+// @ts-expect-error: plain ESM scripts with no type declarations
+import { show, report } from '../scripts/figma/report.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { statesOf } from '../scripts/variants.mjs'
 
@@ -165,6 +167,12 @@ describe('the report', () => {
     expect(show('lg|md|sm')).toBe('`lg\\|md\\|sm`')
     expect(show(undefined)).toBe('(none)')
   })
+
+  it('says excepted items were not compared when everything else matches', () => {
+    const md = report({ findings: [], failing: [], exceptions: 2 })
+    expect(md).toContain('Excepted items are not compared.')
+    expect(md).not.toContain('Code and Figma match,')
+  })
 })
 
 describe('exceptions', () => {
@@ -197,5 +205,20 @@ describe('reading states from a stylesheet', () => {
     const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'states-')), 'X.module.css')
     fs.writeFileSync(file, '.trigger:hover:not(:disabled) { color: red; }\n.trigger:active { color: blue; }\n')
     expect(statesOf(file)).toEqual(['hover', 'active'])
+  })
+})
+
+describe('reading global classes', () => {
+  it('finds a state on either side of a negation', () => {
+    const states = globalStates('.a:hover:not(:disabled) {}\n.b:not(:disabled):hover {}\n')
+    expect([...states.a]).toEqual(['hover'])
+    expect([...states.b]).toEqual(['hover'])
+  })
+
+  it('reads class lists, not every string that names a class', () => {
+    const known = { card: new Set(['hover']), 'icon-btn': new Set(['hover']) }
+    expect(globalClassesIn('<span title="card" className={styles.x} />', known)).toEqual([])
+    expect(globalClassesIn('<div className="card x" />', known)).toEqual(['card'])
+    expect(globalClassesIn("const classes = ['icon-btn', size ? 'icon-btn--sm' : '']", known)).toEqual(['icon-btn'])
   })
 })
