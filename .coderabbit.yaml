@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit reviews every pull request. It is not a required check: each comment is
+# applied as a normal commit or answered and resolved. The path instructions below are
+# the rules from DESIGN.md and ARCHITECTURE.md that a reviewer should hold this repo to.
+language: en-AU
+reviews:
+  profile: chill
+  high_level_summary: true
+  poem: false
+  request_changes_workflow: false
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - '!package-lock.json'
+    - '!out/**'
+    - '!dist/**'
+    - '!**/*.snap'
+    - '!scripts/punctuation-baseline.json'
+    - '!src/renderer/src/lib/colornames.json'
+  path_instructions:
+    - path: 'src/renderer/src/**/*.module.css'
+      instructions: >-
+        Component styles read design tokens (--haus-* custom properties) only. Flag any raw colour, length, radius, shadow, duration or font value.
+    - path: 'src/renderer/src/{atoms,molecules,organisms}/**'
+      instructions: >-
+        Components are tiered atoms, molecules, organisms. An import may point to the same
+        tier or a lower one, never a higher one. Flag interactive elements with no
+        accessible name, no keyboard handling, or a click handler on an element that
+        cannot take focus.
+    - path: 'src/renderer/**'
+      instructions: >-
+        The renderer is sandboxed with context isolation. It reaches the file system and
+        the database only through the preload bridge. Flag any import from src/main or
+        any Node built-in.
+    - path: 'src/{main,preload}/**'
+      instructions: >-
+        Every argument that reaches SQLite is a bound parameter; flag any value
+        interpolated into a statement. Renderer-supplied file paths go through
+        ownedFontPath and URLs through safeProtocol; flag a new handler that touches the
+        filesystem or the shell without one. Flag any new outbound network request.
+    - path: '**/*.md'
+      instructions: >-
+        Australian English. No em dashes and no spaced hyphens. Headings are topic labels,
+        not claims. No marketing language. Flag any statement the code does not support.
+chat:
+  auto_reply: true
