@@ -379,9 +379,11 @@ export function AddColorModal({
                           </span>
                           {warnings.length > 0 && (
                             <Tooltip label={warnings.join(' · ')} align="start">
+                              {/* eslint-disable-next-line jsx-a11y-x/click-events-have-key-events, jsx-a11y-x/no-noninteractive-element-interactions -- the warning icon swallows clicks so they do not reach the row; its tooltip is the content */}
                               <span
                                 className={styles.extractWarn}
                                 role="img"
+                                // eslint-disable-next-line jsx-a11y-x/no-noninteractive-tabindex -- focusable so its tooltip can be reached from the keyboard (WCAG 1.4.13, vault#46)
                                 tabIndex={0}
                                 aria-label={warnings.join('. ')}
                                 onMouseDown={e => {

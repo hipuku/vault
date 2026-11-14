@@ -4,6 +4,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import reactHooks from 'eslint-plugin-react-hooks'
 import prettier from 'eslint-config-prettier'
+import jsxA11y from 'eslint-plugin-jsx-a11y-x'
 
 /* Import boundaries, each a regex over the written specifier. ESLint does not
    resolve aliases, so `@renderer/` is named alongside relative paths. */
@@ -14,8 +15,8 @@ const MAIN = '(^|/)(main|preload)(/|$)'
 /** Both rules for a set of boundaries: no-restricted-imports covers static
     imports and re-exports, and no-restricted-syntax covers `import('...')`
     and the type form `import('...').Name`, which no-restricted-imports does
-    not see. A slash cannot appear inside an
-    esquery regex, so it is written as `\x2F` there. */
+    not see. A slash cannot appear inside an esquery regex, so it is written
+    as `\x2F` there. */
 const boundaries = list => ({
   'no-restricted-imports': ['error', { patterns: list.map(({ regex, message }) => ({ regex, message })) }],
   'no-restricted-syntax': [
@@ -77,6 +78,22 @@ export default tseslint.config(
       globals: { ...globals.node },
       sourceType: 'module',
       ecmaVersion: 'latest',
+    },
+  },
+  // Accessibility in JSX, caught at the line rather than in an audit. A
+  // deliberate exception is disabled at its site with its reason. The fork is
+  // used because eslint-plugin-jsx-a11y does not support ESLint 10 yet.
+  {
+    files: ['src/renderer/**/*.tsx'],
+    ...jsxA11y.configs.recommended,
+    rules: {
+      ...jsxA11y.configs.recommended.rules,
+      // vault's Input and Select render the control inside a wrapping <label>.
+      'jsx-a11y-x/label-has-associated-control': ['error', { controlComponents: ['Input', 'Select'], depth: 3 }],
+      // Every autoFocus moves focus into a surface the user just opened (a
+      // dialog, a popover, an inline editor), as the WAI-ARIA dialog pattern
+      // asks; none fires on page load.
+      'jsx-a11y-x/no-autofocus': 'off',
     },
   },
   // Promises with type information. Vault's IPC is all promises, so a call nobody

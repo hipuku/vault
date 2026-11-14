@@ -93,6 +93,7 @@ export function ExportModal({
 
       {/* It scrolls both ways, so it takes focus: a region only the pointer can scroll
           is out of reach of a keyboard. */}
+      {/* eslint-disable-next-line jsx-a11y-x/no-noninteractive-tabindex -- a scrolling region must be reachable from the keyboard (WCAG 2.1.1) */}
       <pre className={styles.code} tabIndex={0} aria-label={`${meta?.label ?? 'Export'} preview`}>
         <code>{code}</code>
       </pre>

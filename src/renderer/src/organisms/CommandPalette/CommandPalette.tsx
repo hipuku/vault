@@ -104,7 +104,9 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
   const activeId = results[active] ? `command-${results[active].id}` : undefined
 
   return (
+    // eslint-disable-next-line jsx-a11y-x/no-static-element-interactions -- the backdrop closes on a mouse press; Escape closes it from the keyboard
     <div className={styles.overlay} onMouseDown={onClose}>
+      {/* eslint-disable-next-line jsx-a11y-x/no-noninteractive-element-interactions -- stops a press inside the dialog from reaching the backdrop */}
       <div
         ref={paletteRef}
         className={styles.palette}
@@ -140,6 +142,7 @@ export function CommandPalette({ open, commands, onClose }: CommandPaletteProps)
         ) : (
           <ul id="command-list" ref={listRef} role="listbox" aria-label="Commands" className={styles.list}>
             {results.map((cmd, i) => (
+              // eslint-disable-next-line jsx-a11y-x/click-events-have-key-events -- combobox option: the keyboard drives it from the input through aria-activedescendant
               <li
                 key={cmd.id}
                 id={`command-${cmd.id}`}
