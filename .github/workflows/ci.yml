@@ -90,3 +90,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+
+  # The built app, launched in Electron: main, preload, renderer and SQLite all
+  # real. Playwright drives Electron directly, so no browser is installed.
+  e2e:
+    name: End to end
+    runs-on: macos-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run e2e

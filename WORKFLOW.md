@@ -37,7 +37,7 @@ history, and it applies to the owner too.
 
 Links is not required yet; it becomes required once it has run green on a few pull requests.
 
-The Playwright suite (`npm run e2e`) runs locally against the built app and is not in CI.
+End to end (`ci.yml`, `npm run e2e`) launches the built app in Electron after Build passes. It is not required yet; it becomes required once it has run cleanly on a few pull requests.
 
 ## Review
 
