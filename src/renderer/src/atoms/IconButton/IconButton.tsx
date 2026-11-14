@@ -15,7 +15,7 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
  *  `pressed` is a state, not a tone: the favourite star in ColorDrawer and
  *  FontDrawer is on or off, and a toggle that only swaps its aria-label reads to
  *  a screen reader as two different buttons rather than one control with a
- *  state. Kept out of `tone` deliberately — that union is ruled to
+ *  state. Kept out of `tone` deliberately: that union is ruled to
  *  neutral / primary / danger. */
 export function IconButton({
   label,

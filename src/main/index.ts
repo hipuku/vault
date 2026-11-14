@@ -44,8 +44,8 @@ const ASSET_TYPES: readonly AssetType[] = ['colour', 'font', 'palette', 'type_sc
 /** Narrow a renderer-supplied asset type back to the union the database expects.
  *
  *  The rest of the IPC surface is left unvalidated on purpose. Every argument that
- *  reaches SQLite is a bound parameter — nothing is interpolated into a statement, in
- *  any query file — so a wrong type there throws at the bind and stops. The two
+ *  reaches SQLite is a bound parameter; nothing is interpolated into a statement in
+ *  any query file, so a wrong type there throws at the bind and stops. The two
  *  arguments that reach the filesystem and the shell are already narrowed by
  *  ownedFontPath and safeProtocol. This one is different because every wrong value is
  *  a *valid* bind: `asset_tags` takes any string, so a typo'd asset type writes a row
