@@ -276,10 +276,9 @@ export function PaletteView({
           library={library}
           fixedHex={promoting.hex}
           submitLabel="Save to library"
-          onAdd={(_hex, name) => {
-            void handlePromote(promoting.id, name)
-            setPromoting(null)
-          }}
+          // The modal awaits this and closes itself once it succeeds, so a
+          // failed promotion keeps it open with the error showing.
+          onAdd={(_hex, name) => handlePromote(promoting.id, name)}
           onAddMany={() => {}}
         />
       )}
