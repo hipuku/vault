@@ -56,8 +56,9 @@ resolved; the ruleset will not merge a pull request with an open conversation.
 ## Design sync
 
 Vault's design lives in five Figma files: tokens, atoms, molecules, organisms and screens. The
-Figma parity check compares the first four with the code on every pull request, so a difference
-between them is found when it is made rather than when someone notices.
+Figma parity check compares the first four with the code on every pull request, so a difference in
+a component is found when it is made rather than when someone notices. Variables are compared from
+an exported snapshot, so a variable changed in Figma is found once that snapshot is refreshed.
 
 ### What is compared
 
@@ -114,8 +115,10 @@ snapshots in `figma/snapshot/`, and the report says so.
 
 When Figma rate-limits the check or fails with a server error, it retries twice, honouring a
 `Retry-After` of up to a minute. A file Figma still cannot serve is compared from its snapshot, and
-the report names the file, the status and the snapshot's date. A rejected token is not a fallback:
-it fails the check, because a snapshot would hide it.
+the report names the file, the status and the snapshot's date, and the weekly run leaves the issues
+alone. While the tokens snapshot is older than the tokens file, the weekly run also leaves token
+issues alone, opening and closing only component ones. A rejected token is not a fallback: it fails
+the check, because a snapshot would hide it.
 
 ### How a finding is decided
 

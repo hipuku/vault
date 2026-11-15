@@ -9,7 +9,7 @@ import { normaliseValue, figmaItems, variableToProperty } from '../scripts/figma
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { retryDelay, fetchComponents, FigmaUnavailable } from '../scripts/figma/rest.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
-import { globalStates, globalClassesIn } from '../scripts/figma/code.mjs'
+import { globalStates, globalClassesIn, unionAliases } from '../scripts/figma/code.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
 import { show, report } from '../scripts/figma/report.mjs'
 // @ts-expect-error: plain ESM scripts with no type declarations
@@ -222,6 +222,12 @@ describe('reading global classes', () => {
     expect(globalClassesIn('<span title="card" className={styles.x} />', known)).toEqual([])
     expect(globalClassesIn('<div className="card x" />', known)).toEqual(['card'])
     expect(globalClassesIn("const classes = ['icon-btn', size ? 'icon-btn--sm' : '']", known)).toEqual(['icon-btn'])
+  })
+})
+
+describe('reading union aliases', () => {
+  it('reads a union written over several lines, leading pipe and all', () => {
+    expect(unionAliases("export type Shape =\n  | 'round'\n  | 'square'").Shape).toEqual(['round', 'square'])
   })
 })
 

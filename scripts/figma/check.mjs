@@ -53,10 +53,12 @@ async function figmaSide() {
     fellBack.push(`${file} (${why}; snapshot of ${readSnapshot(file).exportedAt.slice(0, 10)})`)
   }
 
+  let variablesFresh = false
   if (token) {
     try {
       const modified = await lastModified(FIGMA_FILES.tokens.key, token)
-      if (new Date(modified) > new Date(tokens.exportedAt)) {
+      variablesFresh = new Date(modified) <= new Date(tokens.exportedAt)
+      if (!variablesFresh) {
         warnings.push(
           `The tokens snapshot was exported ${tokens.exportedAt} and the tokens file changed ${modified}. ` +
             'Variables were compared against the snapshot; re-export it to compare the current file.',
@@ -101,7 +103,9 @@ async function figmaSide() {
       : fellBack.length
         ? 'the REST API for components, with snapshots where it failed, and the snapshot for variables'
         : 'the REST API for components, the snapshot for variables'
-  return { items, warnings, source }
+  // Components are live only when every tier was read from Figma itself.
+  const live = Boolean(token) && fellBack.length === 0
+  return { items, warnings, source, live, variablesFresh }
 }
 
 async function main() {
@@ -127,7 +131,7 @@ async function main() {
   const read = p => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : {})
   const exceptions = read(PATHS.exceptions).items ?? {}
   const side = await figmaSide()
-  const { warnings, source } = side
+  const { warnings, source, live, variablesFresh } = side
   const { code, figma, baseline, stale } = applyExceptions({
     code: codeItems(),
     figma: side.items,
@@ -159,7 +163,9 @@ async function main() {
   })
   process.stdout.write(md)
   if (option('--report')) fs.writeFileSync(option('--report'), md)
-  if (option('--json')) writeJson(option('--json'), { ...result, warnings })
+  // `live` says whether components came from Figma itself, and `variablesFresh`
+  // whether the tokens snapshot is as new as the tokens file. issues.mjs uses both.
+  if (option('--json')) writeJson(option('--json'), { ...result, warnings, live, variablesFresh })
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md)
   if (result.failing.length) process.exitCode = 1
 }
