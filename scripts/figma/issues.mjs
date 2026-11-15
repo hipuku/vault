@@ -22,12 +22,23 @@ const KINDS = {
 const TRACKING = { label: 'design', title: 'Known drift between code and Figma' }
 
 const gh = args => execFileSync('gh', args, { encoding: 'utf8' })
+/* Every open issue with the label, page by page, so a long list cannot hide an
+   existing title and lead to a duplicate. */
 const openIssues = label =>
-  JSON.parse(gh(['issue', 'list', '--label', label, '--state', 'open', '--limit', '200', '--json', 'number,title']))
+  gh([
+    'api',
+    '--paginate',
+    `repos/{owner}/{repo}/issues?state=open&per_page=100&labels=${encodeURIComponent(label)}`,
+    '--jq',
+    '.[] | select(.pull_request | not) | {number, title}',
+  ])
+    .split('\n')
+    .filter(Boolean)
+    .map(line => JSON.parse(line))
 
 function itemBody(f) {
   const lines = [
-    `Found by the Figma parity check on ${new Date().toISOString().slice(0, 10)}.`,
+    `Reported by the Figma parity check, last on ${new Date().toISOString().slice(0, 10)}.`,
     '',
     '| | Value |',
     '| --- | --- |',
@@ -49,7 +60,20 @@ function itemBody(f) {
 }
 
 function main() {
-  const { findings } = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+  const report = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+  const { live, variablesFresh } = report
+  // Reconciling closes issues whose finding has gone. Findings read from the
+  // snapshot because Figma could not be reached are not evidence of that.
+  if (!live) {
+    console.log('Components were not read live from Figma, so the issues were left as they are.')
+    return
+  }
+  // Token findings come from the variables snapshot. While it is older than the
+  // file they say nothing about Figma now, so token issues are neither opened
+  // nor closed until it is re-exported; component issues carry on.
+  const isToken = key => key.startsWith('token ')
+  const findings = variablesFresh ? report.findings : report.findings.filter(f => !isToken(f.key))
+  if (!variablesFresh) console.log('The variables snapshot is stale, so token issues were left as they are.')
 
   // One issue per item, opened once and closed when the item is resolved.
   for (const label of new Set(Object.values(KINDS).map(k => k.label))) {
@@ -58,12 +82,19 @@ function main() {
     const titles = new Map(wanted.map(f => [`${KINDS[f.kind].prefix}: ${f.key}`, f]))
     const open = openIssues(label)
     for (const [title, f] of titles) {
-      if (open.some(i => i.title === title)) continue
+      const existing = open.find(i => i.title === title)
+      // An item that moved again keeps its issue and its discussion, with the
+      // table brought up to date.
+      if (existing) {
+        gh(['issue', 'edit', String(existing.number), '--body', itemBody(f)])
+        continue
+      }
       gh(['issue', 'create', '--title', title, '--label', label, '--body', itemBody(f)])
       console.log(`Opened: ${title}`)
     }
     for (const issue of open) {
       if (titles.has(issue.title) || !kinds.some(([, k]) => issue.title.startsWith(`${k.prefix}: `))) continue
+      if (!variablesFresh && isToken(issue.title.replace(/^[^:]+: /, ''))) continue
       gh([
         'issue',
         'close',
@@ -76,7 +107,8 @@ function main() {
   }
 
   // One tracking issue for the known drift, rewritten each run.
-  const known = findings.filter(f => f.kind === 'known')
+  // The tracking issue lists what is known, which a stale snapshot does not change.
+  const known = report.findings.filter(f => f.kind === 'known')
   const tracking = openIssues(TRACKING.label).find(i => i.title === TRACKING.title)
   const body = [
     `${known.length} item(s) differ between code and Figma and have since the last accepted baseline. None fails a pull request. Updated ${new Date().toISOString().slice(0, 10)}.`,

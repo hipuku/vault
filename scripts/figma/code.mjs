@@ -23,9 +23,12 @@ export function codeTokens(root = '.') {
 
 /** String-union type aliases declared in the file: `size?: ModalSize` is as much
     a variant axis as `size?: 'sm' | 'md'`, and variantsOf only reads the second. */
-function unionAliases(src) {
+export function unionAliases(src) {
   const aliases = {}
-  for (const m of src.matchAll(/^(?:export )?type (\w+)\s*=\s*('[^'\n]*'(?:\s*\|\s*'[^'\n]*')+)/gm)) {
+  // A union may run over several lines, each member led by a pipe, and may open
+  // with one: join the lines, then allow the leading pipe.
+  const joined = src.replace(/\n\s*\|/g, ' |')
+  for (const m of joined.matchAll(/^(?:export )?type (\w+)\s*=\s*(?:\|\s*)?('[^'\n]*'(?:\s*\|\s*'[^'\n]*')+)/gm)) {
     aliases[m[1]] = m[2].split('|').map(v => v.trim().replace(/'/g, ''))
   }
   return aliases
