@@ -118,7 +118,8 @@ async function main() {
     if (!FIGMA_FILES[file]) throw new Error(`--save takes one of: ${Object.keys(FIGMA_FILES).join(', ')}`)
     const exported = JSON.parse(fs.readFileSync(from, 'utf8'))
     writeJson(snapshotPath(file), {
-      exportedAt: new Date().toISOString(),
+      // The capture time, not the save time: Figma may have changed in between.
+      exportedAt: exported.capturedAt ?? new Date().toISOString(),
       source: 'plugin',
       file: FIGMA_FILES[file],
       variables: exported.variables,

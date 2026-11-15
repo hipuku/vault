@@ -74,7 +74,9 @@ export async function exportFile(figma) {
     }
   }
 
-  return { variables, components }
+  // When the values were read, which is what freshness is measured against: an
+  // export saved later still describes the file as it was here.
+  return { capturedAt: new Date().toISOString(), variables, components }
 }
 
 export const pluginCode = () => `${exportFile.toString()}\nreturn await exportFile(figma)\n`

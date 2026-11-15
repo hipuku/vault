@@ -116,8 +116,9 @@ snapshots in `figma/snapshot/`, and the report says so.
 When Figma rate-limits the check or fails with a server error, it retries twice, honouring a
 `Retry-After` of up to a minute. A file Figma still cannot serve is compared from its snapshot, and
 the report names the file, the status and the snapshot's date, and the weekly run leaves the issues
-alone. While the tokens snapshot is older than the tokens file, the weekly run also leaves token
-issues alone, opening and closing only component ones. A rejected token is not a fallback: it fails
+alone. While the tokens snapshot is older than the tokens file, the weekly run leaves each token's own
+issue as it is, carries on opening and closing component issues, and still rewrites the known-drift
+tracking issue. A rejected token is not a fallback: it fails
 the check, because a snapshot would hide it.
 
 ### How a finding is decided
