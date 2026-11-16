@@ -96,7 +96,6 @@ export function nearestShadeIndex(hex: string, shades: ReadonlyArray<string>): n
 
 // Re-export the richer naming API for callers that want runners + confidence.
 export { nearestNames, confidenceLabel, firstUnusedName, warmColourNames } from './colourNames'
-export type { NameResult, NameMatch, ConfidenceBands } from './colourNames'
 
 // ── Similar-colour detection (against the existing library) ────────────────────
 
