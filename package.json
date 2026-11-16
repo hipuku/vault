@@ -31,7 +31,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.5.0",
-    "better-sqlite3": "^13.0.3",
+    "better-sqlite3": "^13.1.1",
     "chroma-js": "^3.3.0",
     "culori": "^4.0.2",
     "haus-colour-names": "^1.0.0",
